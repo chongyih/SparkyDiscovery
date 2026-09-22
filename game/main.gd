@@ -34,12 +34,15 @@ var staging: Node
 var soundscape: Node3D
 var reflection_topics: Dictionary = {}
 var closing_conversation := false
+## What the touch Interact button would do right now; empty when nothing is in reach.
+var interact_verb := ""
 
 func _ready() -> void:
 	# Tests and screenshots never overwrite the player's real progress.
 	persistence_enabled = not OS.get_cmdline_user_args().has("--test")
 	configure_input()
 	dialogue_voice.name = "DialogueVoice"
+	dialogue_voice.volume_db = Interface.VOICE_VOLUME_DB
 	add_child(dialogue_voice)
 	setup_lighting()
 	world = World.new()
@@ -49,6 +52,8 @@ func _ready() -> void:
 	player = Player.new()
 	add_child(player)
 	player.position = Vector3(0, 0.15, 3.8)
+	if not sun_shadows():
+		player.add_blob_shadow()
 	carried_aerial = world.aerial(player.visual, Vector3(0.55, 0.9, 0.3))
 	carried_aerial.scale = Vector3.ONE * 0.7
 	carried_aerial.visible = false
@@ -96,6 +101,11 @@ func configure_input() -> void:
 			if not InputMap.action_has_event(action, event):
 				InputMap.action_add_event(action, event)
 
+## The Compatibility renderer (used for web) washes sunlit surfaces out to white
+## when a light casts shadows (godotengine/godot#90259), so it gets a blob shadow instead.
+func sun_shadows() -> bool:
+	return RenderingServer.get_current_rendering_method() != "gl_compatibility"
+
 func setup_lighting() -> void:
 	var environment := WorldEnvironment.new()
 	var settings := Environment.new()
@@ -121,7 +131,7 @@ func setup_lighting() -> void:
 	sun.rotation_degrees = Vector3(-52, -28, 0)
 	sun.light_color = Color("fff0cf")
 	sun.light_energy = 1.1
-	sun.shadow_enabled = true
+	sun.shadow_enabled = sun_shadows()
 	sun.directional_shadow_max_distance = 60
 	add_child(sun)
 	var fill := DirectionalLight3D.new()
@@ -224,9 +234,11 @@ func _process(_delta: float) -> void:
 		world.community.reaction_paused = ui.archive_player.paused
 		soundscape.set_frozen(ui.archive_player.paused)
 		player.react_to_broadcast(ui.archive_player.stream_position)
+	interact_verb = ""
 	if mode != "play" or task_index >= chapter.tasks.size():
 		return
-	var target: Vector3 = chapter.tasks[task_index].at
+	var task: Dictionary = chapter.tasks[task_index]
+	var target: Vector3 = task.at
 	var distance := Vector2(player.position.x - target.x, player.position.z - target.z).length()
 	var relative := camera.global_basis.inverse() * (target - player.position)
 	var direction := "Ahead"
@@ -236,9 +248,11 @@ func _process(_delta: float) -> void:
 		direction = "To your left"
 	elif relative.x > 2:
 		direction = "To your right"
-	var interact_hint := "Tap Interact" if TouchControls.available() else "Press E"
+	if distance <= INTERACT_DISTANCE:
+		interact_verb = {"person": "Talk", "aerial": "Pick up"}.get(task.kind, "Tune" if aerial_fitted else "Fit aerial")
+	var interact_hint := "Tap the gold button" if TouchControls.available() else "Press E"
 	ui.set_navigation("%s  ·  %d m" % [direction, int(distance)] if distance > INTERACT_DISTANCE else "You’re here  ·  " + interact_hint)
-	ui.set_prompt(interact_hint + "   ·   " + chapter.tasks[task_index].name if distance <= INTERACT_DISTANCE else "")
+	ui.set_prompt(interact_hint + "   ·   " + task.name if distance <= INTERACT_DISTANCE else "")
 
 func _input(event: InputEvent) -> void:
 	if mode != "video" or not event is InputEventKey or not event.pressed or event.echo:
@@ -295,7 +309,7 @@ func interact() -> bool:
 
 func show_tuning() -> void:
 	set_mode("puzzle")
-	ui.show_tuner(finish_tuning, resume_play)
+	ui.show_tuner(finish_tuning, resume_play, soundscape.tune)
 
 func show_dialogue(speaker: String, text: String, after: Callable, voice_path: String = "", note: String = "") -> void:
 	dialogue_voice.stop()

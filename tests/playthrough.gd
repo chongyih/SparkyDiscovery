@@ -160,13 +160,15 @@ func run() -> void:
 	await frames(20)
 	check(absf(game.ui.archive_player.stream_position - paused_at) < 0.08, "Pausing preserves video position")
 	game.ui.toggle_video_pause()
-	# Video follows its playback clock, not Engine.time_scale. Check real EOF.
-	var waited := 0
-	while game.mode == "video" and waited < 125:
-		await create_timer(1.0).timeout
-		waited += 1
-		if waited % 30 == 0:
-			print("VIDEO CHECK: %d seconds elapsed" % waited)
+	# Seek instead of watching the whole clip; captions and reactions follow the footage clock.
+	check(is_equal_approx(game.ui.archive_player.get_stream_length(), 118.0), "Archival clip matches the 01:58 excerpt shown in the player")
+	game.ui.archive_player.stream_position = 64.0
+	await frames(6)
+	check(game.ui.archive_caption.text == "You see, the whole of my adult life…", "Captions follow a seek in the footage")
+	check(game.ui.archive_clock.text == "01:04 / 01:58", "Player clock follows a seek in the footage")
+	# The final 1.5 seconds still play for real, so the decoder's own end-of-file signal is exercised.
+	game.ui.archive_player.stream_position = game.ui.archive_player.get_stream_length() - 1.5
+	await wait_mode("dialogue", 8)
 	check(game.mode == "dialogue", "Actual end-of-file returns automatically to the historical reflection")
 	check(game.world.community.residents[0].tear.visible, "Emotional reactions develop during the actual broadcast")
 	game.advance_dialogue()

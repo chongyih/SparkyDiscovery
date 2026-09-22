@@ -57,7 +57,7 @@ jobs:
       - name: Run gameplay checks
         run: |
           mkdir -p artifacts
-          timeout 300 godot --headless --path . --script res://tests/playthrough.gd -- --test
+          timeout 120 godot --headless --path . --script res://tests/playthrough.gd -- --test
           timeout 60 godot --headless --path . --script res://tests/touch_controls.gd -- --test --touch
 
       - name: Export browser and desktop builds

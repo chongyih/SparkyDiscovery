@@ -8,7 +8,7 @@ The game currently contains **one chapter: 9 August 1965**. It is a small, explo
 2. Press **F5**, then choose **Step into 1965**.
 3. Follow the gold marker: speak to Uncle Tan on the shophouse pavement, collect and fit the spare aerial, then tune the television.
 
-Desktop builds use the **Mobile renderer**. Browser builds use **Compatibility** rendering and a single-threaded Web export. Phone browsers get movement buttons, Interact, Pause and Journal controls; drag elsewhere on the scene to orbit the camera. Play in landscape. Phone performance and browser compatibility still need real-device playtesting.
+Desktop builds use the **Mobile renderer**. Browser builds use **Compatibility** rendering and a single-threaded Web export. Phone browsers get a floating thumbstick (touch anywhere on the left half and slide), drag-to-look on the right half (double-tap there to centre the camera), a round Interact button that turns gold and names the action near the marker, and Journal and Pause buttons at the top right. Play in landscape. Phone performance and browser compatibility still need real-device playtesting.
 
 ## Publishing to itch.io
 
@@ -60,7 +60,7 @@ The broadcast plays directly on the wooden television in the open ground floor o
 
 Sparky now visibly fits the aerial before tuning. After tuning, Uncle Tan walks over from the pavement while Sparky approaches the bench and settles into his seat; both sequences can be skipped. During the broadcast, Sparky briefly lowers his head and glances towards the reacting couple. Afterwards, an optional conversation with Uncle Tan explores homes, jobs and Singapore's future. These new lines are text-only, with fictional dialogue separated from sourced historical notes.
 
-Original synthesized ambience adds footsteps, a ceiling fan, distant street noise and indistinct conversation that fades during the footage. Pause includes an **Ambient sound** toggle. The audio generator and asset notes are in `tools/build_soundscape.py` and `assets/audio/README.md`. The opening camera faces along the pavement towards Uncle Tan; shop signs and awnings also block the orbit camera.
+Ambience from free field recordings (CC0, plus CC BY-SA 4.0 bird calls credited in the journal) adds a daytime street, cicadas, occasional koel and myna calls from the trees, a ceiling fan, varied footsteps and indistinct neighbours' conversation that fades during the footage. Untuned TV static follows the tuning dial. Uncle Tan's voice sits a little under the broadcast, with ambience well below both. Pause includes an **Ambient sound** toggle. The build script, sources and licences are in `tools/build_soundscape.py` and `assets/audio/README.md`. The opening camera faces along the pavement towards Uncle Tan; shop signs and awnings also block the orbit camera.
 
 This first chapter is intended for a short playtest of movement, camera, exploration, interactions and storytelling. NPCs and environment meshes are placeholders. The streets and block are illustrative rather than a reconstruction of a named Singapore neighbourhood. NHB’s [history of void decks](https://www.nhb.gov.sg/~/media/nhb/files/resources/publications/ebooks/nhb_ebook_void_decks.pdf) records an early example at Jalan Klinik in 1963, while noting that widespread provision and the term came later. The block is an imagined early example, not a claim that open ground floors were standard in 1965. Upper-floor flats are scenery; the playable area remains at ground level. The full game's 5–10 minute duration is not a claim about this single chapter.
 
@@ -85,7 +85,7 @@ On macOS:
 /Applications/Godot.app/Contents/MacOS/Godot --path . --script res://tests/render_preview.gd -- --test
 ```
 
-`--test` isolates the tests from real player progress. The playthrough test takes about two minutes because it checks the real archival clip through to its end. Screenshots require graphics access. The supplied Blender source remains intact; direct Blender import is disabled because the game uses the exported GLB.
+`--test` isolates the tests from real player progress. The playthrough test takes about 20 seconds. It seeks through the archival clip rather than playing all of it, but still lets the final seconds play so the real end-of-file signal is checked. Screenshots require graphics access. The supplied Blender source remains intact; direct Blender import is disabled because the game uses the exported GLB.
 
 ---
 

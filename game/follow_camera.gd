@@ -55,5 +55,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			distance = minf(8.0, distance + 0.5)
 	elif event is InputEventKey and event.pressed and event.physical_keycode == KEY_R:
-		yaw = target.visual.rotation.y - PI
-		pitch = -0.23
+		recentre()
+
+## Swing behind Sparky's current heading.
+func recentre() -> void:
+	yaw = target.visual.rotation.y - PI
+	pitch = -0.23

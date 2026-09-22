@@ -27,8 +27,10 @@ assert all(abs(c)<5 for p in points for c in p), 'Invalid bounds'
 report={'round_trip':'passed','animations':sorted(actions),'bones':len(rig.data.bones),'mesh_objects':sum(o.type=='MESH' and not o.name.startswith('STUDIO') for o in scene.objects),'walk_frame_checked':7,'note':'Blender GLB reimport validated. Godot validation is recorded in assets/sparky/godot-validation.json.'}
 with open(os.path.join(out,'validation.json'),'w') as f: json.dump(report,f,indent=2)
 print(report)
-scene.render.resolution_x=700; scene.render.resolution_y=700
-for name,frame in [('Walk',7),('Wave',31)]:
+scene.render.resolution_x=600; scene.render.resolution_y=600
+scene.cycles.samples=20
+poses=[('Walk',7)] if os.environ.get('SPARKY_WALK_ONLY')=='1' else [('Walk',7),('Wave',31)]
+for name,frame in poses:
     rig.animation_data.action=actions[name]
     scene.frame_set(frame)
     scene.render.filepath=os.path.join(out,'sparky-export-'+name.lower()+'.png')

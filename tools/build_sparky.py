@@ -386,22 +386,23 @@ for name,duration in [('Idle',96),('Walk',32),('Wave',72)]:
             for side,s in [('L',1),('R',-1)]:
                 pose_arm(side,s*(.62+.012*sin(phase-.4)))
         elif name=='Walk':
-            bounce=.009*(1-cos(phase*2))
+            # Exaggerate the plush gait so it reads from the gameplay camera.
+            bounce=.020*(1-cos(phase*2))
             rig.pose.bones['root'].location.y=bounce
-            rig.pose.bones['root'].location.x=.016*sin(phase)
+            rig.pose.bones['root'].location.x=.028*sin(phase)
             for side,s in [('L',1),('R',-1)]:
-                angle=s*.27*cos(phase)
+                angle=s*.48*cos(phase)
                 rotate_world('leg.'+side,(1,0,0),angle)
                 pb=rig.pose.bones['leg.'+side]
                 pivot=pb.bone.head_local
                 rotation=Quaternion(Vector((1,0,0)),angle)
                 minimum=min((pivot+rotation @ (p-pivot)).z for p in leg_points[side])
-                clearance=.036*max(0,s*sin(phase))**1.5
+                clearance=.085*max(0,s*sin(phase))**1.25
                 correction=.006+clearance-minimum-bounce
                 pb.location=pb.bone.matrix_local.to_3x3().inverted() @ Vector((0,0,correction))
-                pose_arm(side,s*.62,-s*.20*cos(phase-.10))
-            rotate_world('body',(0,1,0),.035*sin(phase))
-            rotate_world('head',(0,1,0),-.025*sin(phase-.4))
+                pose_arm(side,s*.62,-s*.48*cos(phase-.10))
+            rotate_world('body',(0,1,0),.055*sin(phase))
+            rotate_world('head',(0,1,0),-.035*sin(phase-.4))
         else:
             lift=sin(pi*min((frame-1)/duration*3,1)/2)*sin(pi*min((duration-frame+1)/duration*3,1)/2)
             pose_arm('R',-.62)
@@ -452,7 +453,8 @@ for screen in bpy.data.screens:
             area.spaces.active.shading.color_type='MATERIAL'
             area.spaces.active.shading.type='MATERIAL'
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT,'sparky.blend'))
-for name,loc in [('preview',(3,-7,3.05)),('front',(0,-7,2.0)),('back',(3,7,2.7)),('side',(7,-.5,2.0))]:
+views=[] if os.environ.get('SPARKY_SKIP_STILLS')=='1' else [('preview',(3,-7,3.05)),('front',(0,-7,2.0)),('back',(3,7,2.7)),('side',(7,-.5,2.0))]
+for name,loc in views:
     camera.location=loc; aim(camera,(0,0,1.04))
     scene.render.filepath=os.path.join(OUT,'sparky-'+name+'.png')
     bpy.ops.render.render(write_still=True)

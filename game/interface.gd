@@ -16,8 +16,8 @@ var navigation: Label
 var prompt: PanelContainer
 var prompt_label: Label
 var timeline: HBoxContainer
-var main_font: SystemFont
-var heading_font: SystemFont
+var main_font: Font
+var heading_font: FontVariation
 var archive_player: VideoStreamPlayer
 var archive_caption: Label
 var caption_panel: PanelContainer
@@ -25,13 +25,19 @@ var archive_clock: Label
 var archive_pause_button: Button
 var captions: Array = []
 const ARCHIVE_PATH := "res://assets/video/lky-1965-excerpt.ogv"
+## The archive speech measures about -29 LUFS; this lifts it to the -18 LUFS dialogue level (peaks stay near -3 dBFS).
+const ARCHIVE_VOLUME_DB := 11.0
+## Uncle Tan's clean, close recording measures -15.6 LUFS and sounds far louder than the thin 1965
+## audio at the same level, so it sits about 6 dB under the broadcast (about -24.6 LUFS).
+const VOICE_VOLUME_DB := -9.0
 
 func _ready() -> void:
-	main_font = SystemFont.new()
-	main_font.font_names = PackedStringArray(["Helvetica Neue", "Arial", "Noto Sans"])
-	main_font.font_weight = 400
-	heading_font = SystemFont.new()
-	heading_font.font_names = PackedStringArray(["Georgia", "Noto Serif", "serif"])
+	# Bundled so browsers, which cannot reach system fonts, show the same type as desktop.
+	main_font = load("res://assets/fonts/Inter.ttf")
+	heading_font = FontVariation.new()
+	heading_font.base_font = load("res://assets/fonts/Gelasio.ttf")
+	# Gelasio has no check mark; Inter supplies it.
+	heading_font.fallbacks = [main_font]
 	root = Control.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -43,9 +49,11 @@ func _ready() -> void:
 	theme.set_stylebox("normal", "Button", style(TEAL, 10, 0, TEAL))
 	theme.set_stylebox("hover", "Button", style(TEAL.lightened(0.12), 10, 0, TEAL))
 	theme.set_stylebox("pressed", "Button", style(INK, 10, 0, INK))
+	# Switched-on toggles (Captions, Mute) otherwise hover with Godot's empty style and white text.
+	theme.set_stylebox("hover_pressed", "Button", style(INK.lightened(0.12), 10, 0, INK))
 	theme.set_stylebox("focus", "Button", style(Color.TRANSPARENT, 10, 3, GOLD))
 	theme.set_stylebox("disabled", "Button", style(Color("c1c5b8"), 10, 0, INK))
-	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
 		theme.set_color(state, "Button", PAPER)
 	theme.set_color("font_disabled_color", "Button", Color("65726b"))
 	theme.set_constant("outline_size", "Button", 0)
@@ -172,7 +180,7 @@ func show_menu(start: Callable, journal: Callable, resume: Callable, can_resume:
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	v.add_child(spacer)
-	label(v, "Arrows  Move    Drag  Look    Tap Interact  ·  Play in landscape" if TouchControls.available() else "WASD  Move    Mouse  Look    E  Interact", 14, MUTED)
+	label(v, "Left thumb  Move    Right thumb  Look    Gold button  Interact  ·  Play in landscape" if TouchControls.available() else "WASD  Move    Mouse  Look    E  Interact", 14, MUTED)
 	label(v, "The road to independence · First chapter prototype", 13, MUTED)
 	var tag := label(overlay, "SINGAPORE  /  01° N, 103° E", 14, PAPER)
 	tag.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
@@ -209,8 +217,12 @@ func build_hud(chapter: Dictionary, on_journal: Callable, on_pause: Callable) ->
 	row.add_child(titles)
 	label(titles, "THE ROAD TO INDEPENDENCE  /  %s" % chapter.date, 12, MUTED)
 	label(titles, chapter.title, 25, INK, true)
-	button(row, "Journal  ·  J", on_journal, true)
-	button(row, "Pause  ·  Esc", on_pause, true)
+	if TouchControls.available():
+		# Round touch buttons sit to the right of the header instead.
+		header.offset_right = -28 - TouchControls.MENU_RADIUS * 4 - 30
+	else:
+		button(row, "Journal  ·  J", on_journal, true)
+		button(row, "Pause  ·  Esc", on_pause, true)
 	var quest := PanelContainer.new()
 	quest.position = Vector2(28, 132)
 	quest.custom_minimum_size = Vector2(340, 110)
@@ -243,7 +255,7 @@ func build_hud(chapter: Dictionary, on_journal: Callable, on_pause: Callable) ->
 		chip.add_theme_stylebox_override("panel", chip_style)
 		timeline.add_child(chip)
 		label(chip, steps[i], 13, MUTED)
-	label(footer, "Arrows  Move    Drag the scene  Look    Tap Interact near the gold marker" if TouchControls.available() else "WASD  Move    Mouse  Look    Scroll  Zoom    R  Centre camera    E  Interact    J  Journal    Esc  Pause / release mouse", 13, INK)
+	label(footer, "Left thumb  Move    Right thumb  Look    Double-tap  Centre camera    Gold button  Interact" if TouchControls.available() else "WASD  Move    Mouse  Look    Scroll  Zoom    R  Centre camera    E  Interact    J  Journal    Esc  Pause / release mouse", 13, INK)
 	prompt = PanelContainer.new()
 	prompt.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	prompt.offset_left = -255
@@ -284,7 +296,7 @@ func show_intro(chapter: Dictionary, begin: Callable) -> void:
 	gap(v)
 	paragraph(v, chapter.intro, 21)
 	gap(v)
-	label(v, "Use the arrows to walk · Drag to look · Follow the gold marker · Tap Interact" if TouchControls.available() else "WASD to walk · Mouse to look · Follow the gold marker · E to interact", 16, MUTED)
+	label(v, "Left thumb to walk · Right thumb to look · Follow the gold marker · Tap the gold button" if TouchControls.available() else "WASD to walk · Mouse to look · Follow the gold marker · E to interact", 16, MUTED)
 	button(v, "Step into %s   →" % chapter.year, begin).grab_focus()
 
 func show_dialogue(speaker: String, text: String, next: Callable, voice: AudioStreamPlayer = null, note: String = "") -> void:
@@ -317,7 +329,10 @@ func show_dialogue(speaker: String, text: String, next: Callable, voice: AudioSt
 		var mute := button(row, "Unmute voice" if is_zero_approx(voice.volume_linear) else "Mute voice", func(): pass)
 		mute.name = "MuteVoice"
 		mute.pressed.connect(func():
-			voice.volume_linear = 1.0 if is_zero_approx(voice.volume_linear) else 0.0
+			if is_zero_approx(voice.volume_linear):
+				voice.volume_db = VOICE_VOLUME_DB
+			else:
+				voice.volume_linear = 0.0
 			mute.text = "Unmute voice" if is_zero_approx(voice.volume_linear) else "Mute voice"
 		)
 	button(row, "Continue  →", next).grab_focus()
@@ -377,7 +392,19 @@ func show_chapter_end(chapter: Dictionary, replay: Callable, journal: Callable) 
 	button(v, "Explore the historical notes", journal).grab_focus()
 	button(v, "Return to title", replay, true)
 
-func show_tuner(done: Callable, cancel: Callable) -> void:
+## TV snow from a tiny image. Block glyphs (░▒▓) are missing from the UI fonts
+## and made Godot load ~75 MB of system fallback fonts.
+func static_texture() -> ImageTexture:
+	var image := Image.create(96, 24, false, Image.FORMAT_L8)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 1965
+	for y in image.get_height():
+		for x in image.get_width():
+			var shade := rng.randf()
+			image.set_pixel(x, y, Color(shade, shade, shade))
+	return ImageTexture.create_from_image(image)
+
+func show_tuner(done: Callable, cancel: Callable, tuned: Callable = Callable()) -> void:
 	var v := modal(690)
 	label(v, "9 AUGUST 1965  /  TELEVISION CORNER", 14, TEAL)
 	label(v, "Find a clear signal", 36, INK, true)
@@ -387,7 +414,14 @@ func show_tuner(done: Callable, cancel: Callable) -> void:
 	screen.custom_minimum_size.y = 130
 	screen.add_theme_stylebox_override("panel", style(INK, 12))
 	v.add_child(screen)
-	var signal_label := label(screen, "░ ▒ ░ ▓ ▒ ░ ▓ ░\nNO SIGNAL", 26, PAPER)
+	var snow := TextureRect.new()
+	snow.texture = static_texture()
+	snow.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	snow.stretch_mode = TextureRect.STRETCH_SCALE
+	snow.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	snow.modulate.a = 0.4
+	screen.add_child(snow)
+	var signal_label := label(screen, "NO SIGNAL", 26, PAPER)
 	signal_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	signal_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var slider := HSlider.new()
@@ -399,15 +433,20 @@ func show_tuner(done: Callable, cancel: Callable) -> void:
 	slider.custom_minimum_size.y = 44
 	v.add_child(slider)
 	var strength := label(v, "Signal strength: 10%", 16, TEAL)
-	label(v, "Drag the dial, or focus it and use ← / →.", 15, MUTED)
+	label(v, "Drag the dial, or focus it and use the arrow keys.", 15, MUTED)
 	var watch := button(v, "Watch the announcement   →", done)
 	watch.disabled = true
-	slider.value_changed.connect(func(value: float):
+	var on_dial := func(value: float):
 		var clear := absf(value - 65) <= 4
-		strength.text = "Signal strength: %d%%" % int(clampf(100 - absf(value - 65) * 2, 0, 100))
-		signal_label.text = "SINGAPORE\n9 AUGUST 1965" if clear else "░ ▒ ░ ▓ ▒ ░ ▓ ░\nTUNING…"
+		var signal_strength := clampf(100 - absf(value - 65) * 2, 0, 100)
+		if tuned.is_valid():
+			tuned.call(value, signal_strength, clear)
+		strength.text = "Signal strength: %d%%" % int(signal_strength)
+		signal_label.text = "SINGAPORE\n9 AUGUST 1965" if clear else "TUNING…"
+		snow.modulate.a = 0.0 if clear else 0.4 * (1.0 - signal_strength / 100.0) + 0.1
 		watch.disabled = not clear
-	)
+	slider.value_changed.connect(on_dial)
+	on_dial.call(slider.value)
 	button(v, "Back to the street", cancel, true)
 	slider.grab_focus()
 
@@ -423,7 +462,7 @@ func show_archive(done: Callable, change_view: Callable) -> VideoStreamPlayer:
 	archive_player.self_modulate.a = 0.0
 	archive_player.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	archive_player.stream = load(ARCHIVE_PATH) as VideoStream
-	archive_player.volume_db = -80 if OS.get_cmdline_user_args().has("--test") else 8
+	archive_player.volume_db = -80 if OS.get_cmdline_user_args().has("--test") else ARCHIVE_VOLUME_DB
 	overlay.add_child(archive_player)
 	var title_panel := PanelContainer.new()
 	title_panel.position = Vector2(28, 24)
@@ -473,7 +512,7 @@ func show_archive(done: Callable, change_view: Callable) -> VideoStreamPlayer:
 	var mute := CheckButton.new()
 	mute.text = "Mute"
 	mute.button_pressed = OS.get_cmdline_user_args().has("--test")
-	mute.toggled.connect(func(on: bool): archive_player.volume_db = -80 if on else 8)
+	mute.toggled.connect(func(on: bool): archive_player.volume_db = -80 if on else ARCHIVE_VOLUME_DB)
 	row.add_child(mute)
 	button(row, "Skip  →", done, true)
 	archive_player.finished.connect(done)
@@ -528,6 +567,8 @@ func show_journal(chapter: Dictionary, completed: bool, sources: Array, close: C
 	pages.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	pages.add_theme_constant_override("separation", 12)
 	scroll.add_child(pages)
+	if TouchControls.available():
+		paragraph(pages, "Touch anywhere on the left half of the screen and slide your thumb to walk; push further to walk faster. Drag on the right half to look around, and double-tap there to centre the camera behind Sparky. Near the gold marker, the round button turns gold; tap it to talk or use things. The book and pause buttons sit at the top right.", 17, MUTED)
 	paragraph(pages, "Move with WASD or the arrow keys. Move the mouse to look around; scroll to zoom. R centres the camera behind Sparky. Follow the gold marker and press E nearby. J opens this journal; Esc pauses and releases the mouse. Menus also support Tab and Enter. Progress saves locally after each encounter.", 17, MUTED)
 	paragraph(pages, "Sparky, the neighbours, their dialogue and the streets are fictional. Dates and milestones follow the sources below. The scenes are illustrative, not exact reconstructions. The neighbours’ emotional reactions are imagined rather than documented eyewitness accounts. The television plays actual footage of Lee Kuan Yew’s 9 August 1965 press conference, with the original audio and pauses preserved.", 17, MUTED)
 	paragraph(pages, "The video is a 1 minute 58 second excerpt (02:08–04:06) from the Wikimedia Commons recording. Its file page marks the recording public domain. English captions are adapted from the Commons TimedText contributors, under CC BY-SA 4.0. The source and contributor links are below.", 15, MUTED)
@@ -537,10 +578,11 @@ func show_journal(chapter: Dictionary, completed: bool, sources: Array, close: C
 	label(pages, "READ THE HISTORY", 13, TEAL)
 	for source in sources:
 		var link := LinkButton.new()
-		link.text = source[0] + "  ↗"
+		link.text = source[0] + "  →"
 		link.add_theme_color_override("font_color", TEAL)
 		link.pressed.connect(func(): OS.shell_open(source[1]))
 		pages.add_child(link)
 	gap(pages)
 	paragraph(pages, "Character: Sparky, from the supplied Blender model. Built with Godot Engine (MIT licence). Engine notices: godotengine.org/license", 15, MUTED)
+	paragraph(pages, "Ambience: field recordings by Joseph Sardin (BigSoundBank.com, CC0) and footsteps by Kenney (CC0). Bird calls: Asian koel by Yosef Ben Melamed and common myna by James Ray (xeno-canto XC509296), via Wikimedia Commons under CC BY-SA 4.0; trimmed and filtered. These are modern recordings, not archival sound from 1965.", 15, MUTED)
 	button(v, "Back to the journey", close).grab_focus()
