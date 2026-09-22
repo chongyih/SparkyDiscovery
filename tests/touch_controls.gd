@@ -36,6 +36,10 @@ func run() -> void:
 	game.start_new()
 	game.resume_play()
 	await frames(4)
+	# Visibility follows the walking state in _process. After a slow first frame several physics
+	# steps can run back to back, so wait for two idle frames to be sure _process has run.
+	await process_frame
+	await process_frame
 	var controls: Node
 	for child in game.get_children():
 		if child.get_script() == load("res://game/touch_controls.gd"):
