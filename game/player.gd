@@ -7,6 +7,31 @@ var animator: AnimationPlayer
 var camera: Camera3D
 var seated := false
 var skeleton: Skeleton3D
+var scripted_motion := false
+var sit_blend := 1.0:
+	set(value):
+		sit_blend = value
+		apply_seat_pose(value)
+var reach_rest := Quaternion.IDENTITY
+var reach_blend := 0.0:
+	set(value):
+		reach_blend = value
+		if skeleton:
+			var bone := skeleton.find_bone("arm.L")
+			if bone >= 0:
+				skeleton.set_bone_pose_rotation(bone, Quaternion(Vector3.RIGHT, -0.9 * value) * reach_rest)
+
+func prepare_reach() -> void:
+	animator.stop()
+	play_animation("Idle")
+	animator.advance(0)
+	animator.pause()
+	reach_rest = skeleton.get_bone_pose_rotation(skeleton.find_bone("arm.L"))
+	reach_blend = 0
+
+func resume_idle() -> void:
+	animator.stop()
+	play_animation("Idle")
 
 func _ready() -> void:
 	var shape := CollisionShape3D.new()
@@ -56,6 +81,9 @@ func set_seated(active: bool) -> void:
 	if animator:
 		animator.advance(0.0)
 		animator.pause()
+	sit_blend = 1.0
+
+func apply_seat_pose(weight: float) -> void:
 	if skeleton:
 		for bone_name in ["leg.L", "leg.R"]:
 			var bone := skeleton.find_bone(bone_name)
@@ -63,14 +91,25 @@ func set_seated(active: bool) -> void:
 				var rest_basis := skeleton.get_bone_global_rest(bone).basis
 				var axis := (rest_basis.inverse() * Vector3.RIGHT).normalized()
 				var rest_rotation := skeleton.get_bone_rest(bone).basis.get_rotation_quaternion()
-				skeleton.set_bone_pose_rotation(bone, rest_rotation * Quaternion(axis, deg_to_rad(-75.0)))
+				skeleton.set_bone_pose_rotation(bone, rest_rotation * Quaternion(axis, deg_to_rad(-75.0) * weight))
 		var head_bone := skeleton.find_bone("head")
 		if head_bone >= 0:
 			# A small glance towards the gathering keeps both eyes readable in the wide shot.
-			skeleton.set_bone_pose_rotation(head_bone, Quaternion(Vector3.UP, -0.35))
+			skeleton.set_bone_pose_rotation(head_bone, Quaternion(Vector3.UP, -0.35 * weight))
+
+func react_to_broadcast(seconds: float) -> void:
+	if not seated or not skeleton:
+		return
+	var head_bone := skeleton.find_bone("head")
+	if head_bone < 0:
+		return
+	# The head dips during the long pause, then briefly turns towards the couple.
+	var dip := smoothstep(22.0, 26.0, seconds) * (1.0 - smoothstep(51.0, 57.0, seconds))
+	var glance := smoothstep(29.0, 32.0, seconds) * (1.0 - smoothstep(38.0, 42.0, seconds))
+	skeleton.set_bone_pose_rotation(head_bone, Quaternion(Vector3.UP, -0.35 - 0.6 * glance) * Quaternion(Vector3.RIGHT, 0.13 * dip))
 
 func _physics_process(delta: float) -> void:
-	if seated:
+	if seated or scripted_motion:
 		return
 	var direction := Vector3.ZERO
 	if enabled and camera:

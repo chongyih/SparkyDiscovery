@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://drmmndbpc3otf"
 path.s3tc="res://.godot/imported/sparky_Packed cotton weave Midnight navy cotton.png-8293f4d144a737df8f53f3cea76cf7c5.s3tc.ctex"
+path.etc2="res://.godot/imported/sparky_Packed cotton weave Midnight navy cotton.png-8293f4d144a737df8f53f3cea76cf7c5.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/sparky/sparky_Packed cotton weave Midnight navy cotton.png"
-dest_files=["res://.godot/imported/sparky_Packed cotton weave Midnight navy cotton.png-8293f4d144a737df8f53f3cea76cf7c5.s3tc.ctex"]
+dest_files=["res://.godot/imported/sparky_Packed cotton weave Midnight navy cotton.png-8293f4d144a737df8f53f3cea76cf7c5.s3tc.ctex", "res://.godot/imported/sparky_Packed cotton weave Midnight navy cotton.png-8293f4d144a737df8f53f3cea76cf7c5.etc2.ctex"]
 
 [params]
 

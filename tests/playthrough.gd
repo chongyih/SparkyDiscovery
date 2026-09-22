@@ -17,6 +17,12 @@ func frames(count: int) -> void:
 	for i in count:
 		await physics_frame
 
+func wait_mode(expected: String, timeout: float) -> void:
+	var deadline := Time.get_ticks_msec() + int(timeout * 1000)
+	while game.mode != expected and Time.get_ticks_msec() < deadline:
+		await process_frame
+	check(game.mode == expected, "Sequence reaches " + expected)
+
 func run() -> void:
 	game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
@@ -29,12 +35,20 @@ func run() -> void:
 	check(game.mode == "play" and game.task_index == 0, "New chapter starts at first objective")
 	check(game.camera.projection == Camera3D.PROJECTION_PERSPECTIVE, "Gameplay uses a third-person perspective camera")
 	check(game.follow_camera.enabled and game.camera.current, "Follow camera is active during gameplay")
+	await frames(4)
+	var sight := PhysicsRayQueryParameters3D.create(game.camera.global_position, game.player.global_position + Vector3(0, 1.5, 0))
+	sight.exclude = [game.player.get_rid()]
+	check(game.get_world_3d().direct_space_state.intersect_ray(sight).is_empty(), "Initial camera has a clear view of Sparky")
 	check(not game.interact(), "Cannot interact from across the street")
 	var before: Vector3 = game.player.position
 	Input.action_press("move_right")
 	await frames(30)
 	Input.action_release("move_right")
 	check(game.player.position.distance_to(before) > 0.5, "Keyboard movement moves Sparky")
+	game.player.position = Vector3(0, 0.2, 14)
+	game.follow_camera.reset()
+	await frames(5)
+	check(game.follow_camera.arm.get_hit_length() < 4.0, "The camera retracts before the shop banner and awning")
 	# Walk into the solid shopfront, then into the visible boundary wall.
 	game.player.position = Vector3(0, 0.1, 16)
 	game.follow_camera.reset()
@@ -110,13 +124,19 @@ func run() -> void:
 	check(game.mode == "play", "Journal returns to gameplay")
 	game.player.position = game.chapter.tasks[2].at + Vector3(0, 0.1, 1.4)
 	game.interact()
-	check(game.mode == "puzzle", "Television starts tuning puzzle")
+	check(game.mode == "fitting" and not game.aerial_fitted, "The aerial is visibly fitted before tuning")
+	await wait_mode("puzzle", 8)
+	check(game.aerial_fitted and game.world.tv_aerial.visible and not game.carried_aerial.visible, "Fitting transfers the aerial onto the television")
 	game.finish_tuning()
 	check(game.mode == "puzzle", "Poor signal cannot reveal announcement")
 	var dial: HSlider = game.ui.overlay.find_child("TuningDial", true, false)
 	dial.value = 65
 	game.finish_tuning()
-	check(game.mode == "video", "Clear signal starts the actual archival video")
+	check(game.mode == "arrival" and not game.player.seated, "Clear signal starts the walk-to-seat sequence")
+	var uncle_before: Vector3 = game.world.stations[0].position
+	await frames(45)
+	check(game.world.stations[0].position.distance_to(uncle_before) > 0.5, "Uncle Tan walks over from the pavement")
+	await wait_mode("video", 15)
 	check(game.ui.archive_player.stream is VideoStreamTheora, "Archival clip loads as native Godot video")
 	check(game.ui.archive_player.self_modulate.a == 0.0, "Video decoder has no onscreen popup surface")
 	check(game.world.tv_screen.material_override.albedo_texture == game.ui.archive_player.get_video_texture(), "Actual video texture is bound to the 3D television")
@@ -150,6 +170,14 @@ func run() -> void:
 	check(game.mode == "dialogue", "Actual end-of-file returns automatically to the historical reflection")
 	check(game.world.community.residents[0].tear.visible, "Emotional reactions develop during the actual broadcast")
 	game.advance_dialogue()
+	check(game.mode == "reflection" and game.checkpoint == 2, "The closing conversation comes before chapter completion")
+	for topic in ["homes", "jobs", "future"]:
+		game.ask_reflection(topic)
+		check(game.mode == "dialogue" and game.reflection_topics.has(topic), "Uncle Tan answers about " + topic)
+		game.advance_dialogue()
+		check(game.mode == "reflection", "Answers return to the optional conversation choices")
+	game.finish_reflection()
+	game.advance_dialogue()
 	check(game.mode == "complete" and game.task_index == 3, "Chapter reaches completion")
 	game.show_journal()
 	game.close_journal()
@@ -162,11 +190,23 @@ func run() -> void:
 	game.continue_saved()
 	game.player.position = game.chapter.tasks[2].at + Vector3(0, 0.1, 1.4)
 	game.interact()
+	game.show_menu()
+	await frames(60)
+	check(game.mode == "menu" and not game.aerial_fitted, "Leaving a sequence cancels pending changes")
+	game.continue_saved()
+	game.player.position = game.chapter.tasks[2].at + Vector3(0, 0.1, 1.4)
+	game.interact()
+	game.staging.finish_fitting(game.staging.serial)
 	dial = game.ui.overlay.find_child("TuningDial", true, false)
 	dial.value = 65
 	game.finish_tuning()
+	game.staging.finish_arrival()
 	game.finish_archive()
 	check(game.mode == "dialogue", "Skipping footage also reaches the reflection")
+	game.advance_dialogue()
+	game.finish_reflection()
+	game.advance_dialogue()
+	check(game.mode == "complete", "Players can finish without choosing a reflection topic")
 	game.queue_free()
 	await process_frame
 	print("RESULT: %d failures" % failures)

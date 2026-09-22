@@ -23,14 +23,16 @@ func _ready() -> void:
 	camera.far = 180
 	arm.add_child(camera)
 
-func reset() -> void:
-	yaw = 0
+func reset(heading := 0.0) -> void:
+	yaw = heading
 	pitch = -0.23
 	distance = 5.5
 	position = target.position + Vector3(0, 1.5, 0)
 	rotation = Vector3(0, yaw, 0)
 	arm.rotation.x = pitch
 	arm.spring_length = distance
+	# Start at the intended offset, even before the spring arm's first physics tick.
+	camera.position = Vector3(0, 0, distance)
 
 func _process(delta: float) -> void:
 	if not target:

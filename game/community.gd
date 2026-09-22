@@ -14,6 +14,8 @@ var reaction_paused := false
 var fan: Node3D
 var glow: OmniLight3D
 var time := 0.0
+var attention := 0.0
+var conversing := false
 
 func build(world: Node3D) -> void:
 	builder = world
@@ -206,8 +208,11 @@ func set_broadcast(active: bool) -> void:
 	broadcasting = active
 	reaction_paused = false
 	playback_time = 0
+	attention = 0
+	conversing = false
 	glow.light_energy = 0.65 if active else 0
 	for resident_data in residents:
+		resident_data["starting_gaze"] = resident_data.head.rotation.y
 		if resident_data.reaction == "arrival":
 			resident_data.root.visible = active
 	update_reactions()
@@ -227,18 +232,20 @@ func update_reactions() -> void:
 	var dab := emotion * lift
 	for resident_data in residents:
 		var head: Node3D = resident_data.head
-		head.rotation = Vector3.ZERO
+		head.rotation = Vector3(0, resident_data.get("starting_gaze", 0.0) * (1.0 - attention), 0)
 		if resident_data.reaction == "wipe":
 			head.rotation.x = emotion * (0.22 + 0.035 * sin(playback_time * 2.2))
 			head.rotation.z = -emotion * 0.16
 			resident_data.tear.visible = emotion > 0.55
 		elif resident_data.reaction == "comfort":
-			head.rotation.y = -emotion * 0.65
+			head.rotation.y += -emotion * 0.65
 			head.rotation.z = -emotion * 0.12
 		elif resident_data.reaction == "bow":
 			head.rotation.x = emotion * 0.22
 		elif resident_data.reaction == "child":
 			head.rotation.z = emotion * 0.16
+		elif resident_data.reaction == "arrival" and conversing:
+			head.rotation.y = 0.7
 		for arm in resident_data.arms:
 			var side: int = arm.side
 			var shoulder := Vector3(side * 0.24, 1.23, 0)
@@ -268,4 +275,8 @@ func _process(delta: float) -> void:
 	if is_instance_valid(fan):
 		fan.rotation.y += delta * 1.1
 	if broadcasting and not reaction_paused:
+		attention = minf(1.0, attention + delta * 0.55)
 		update_reactions()
+	elif not broadcasting:
+		for i in residents.size():
+			residents[i].head.rotation.y = sin(time * 0.5 + i * 1.8) * 0.24

@@ -6,9 +6,37 @@ The game currently contains **one chapter: 9 August 1965**. It is a small, explo
 
 1. Open this folder's `project.godot` in Godot 4.7.2.
 2. Press **F5**, then choose **Step into 1965**.
-3. Follow the gold marker: speak to Uncle Tan on the shophouse pavement, collect the spare aerial, then tune the television.
+3. Follow the gold marker: speak to Uncle Tan on the shophouse pavement, collect and fit the spare aerial, then tune the television.
 
-The **Mobile renderer** is configured and tested on desktop with Metal. This does not mean the prototype currently has touchscreen controls. Browser export is not configured.
+Desktop builds use the **Mobile renderer**. Browser builds use **Compatibility** rendering and a single-threaded Web export. Phone browsers get movement buttons, Interact, Pause and Journal controls; drag elsewhere on the scene to orbit the camera. Play in landscape. Phone performance and browser compatibility still need real-device playtesting.
+
+## Publishing to itch.io
+
+Pushing to `main` runs [Publish to itch.io](.github/workflows/publish-itch.yml): import with Godot 4.7.2, run the gameplay checks, export browser/Windows/Linux/macOS builds, save a GitHub Actions artifact, then upload each build using Butler. You can also run it manually from GitHub's Actions tab on `main`.
+
+One-time setup:
+
+1. Create an itch.io game page and set **Kind of project** to **HTML**. A draft page works for initial testing.
+2. In GitHub **Settings → Secrets and variables → Actions → Variables**, add `ITCH_PROJECT` as `username/game-slug` (for example, `your-name/sparky-discovery`). Use the username and slug from the itch.io URL, not the game title.
+3. Generate an [itch.io API key](https://itch.io/user/settings/api-keys) and save it under **Secrets** as `BUTLER_API_KEY`. Never commit it or paste it into chat.
+4. Push to `main` or manually run the workflow. After the first upload, edit the itch.io page and mark the `html5` upload **This file will be played in the browser**. Enable fullscreen and mobile-friendly play, with landscape orientation. Save the page. See [Butler's browser-upload instructions](https://itch.io/docs/butler/pushing.html#html-playable-in-browser-games).
+
+Uploads use the `html5`, `windows`, `linux` and `macos` channels. Later pushes update those same uploads. Windows and Linux are x86-64; macOS includes Apple Silicon and Intel. Desktop builds are not signed with a publisher certificate or notarized; macOS uses ad-hoc signing, so normal OS download protections may require additional user steps.
+
+If the itch.io settings are missing, the workflow still builds and saves its artifact, then fails with a setup message before uploading. Artifacts are kept for seven days. Native Android/iOS builds are not part of this workflow. Android APKs can be offered as separate itch.io downloads later; mobile browser play needs no app-store installation.
+
+For local exports, install the **4.7.2** export templates in Godot, create the output directories, then run:
+
+```sh
+mkdir -p build/{web,windows,linux,macos}
+godot --headless --editor --import
+godot --headless --export-release "Web" build/web/index.html
+godot --headless --export-release "Windows Desktop" build/windows/SparkyDiscovery.exe
+godot --headless --export-release "Linux" build/linux/SparkyDiscovery.x86_64
+godot --headless --export-release "macOS" build/macos/SparkyDiscovery.zip
+```
+
+Use your Godot executable's full path if `godot` is not on your PATH. Serve `build/web` over HTTP to test it; opening `index.html` as a local file will not work. Export presets include runtime caption JSON and attribution files and exclude development previews. Generated builds are ignored by Git.
 
 | Control | Action |
 | --- | --- |
@@ -29,6 +57,10 @@ The broadcast plays directly on the wooden television in the open ground floor o
 
 ## Current review scope
 
+Sparky now visibly fits the aerial before tuning. After tuning, Uncle Tan walks over from the pavement while Sparky approaches the bench and settles into his seat; both sequences can be skipped. During the broadcast, Sparky briefly lowers his head and glances towards the reacting couple. Afterwards, an optional conversation with Uncle Tan explores homes, jobs and Singapore's future. These new lines are text-only, with fictional dialogue separated from sourced historical notes.
+
+Original synthesized ambience adds footsteps, a ceiling fan, distant street noise and indistinct conversation that fades during the footage. Pause includes an **Ambient sound** toggle. The audio generator and asset notes are in `tools/build_soundscape.py` and `assets/audio/README.md`. The opening camera faces along the pavement towards Uncle Tan; shop signs and awnings also block the orbit camera.
+
 This first chapter is intended for a short playtest of movement, camera, exploration, interactions and storytelling. NPCs and environment meshes are placeholders. The streets and block are illustrative rather than a reconstruction of a named Singapore neighbourhood. NHB’s [history of void decks](https://www.nhb.gov.sg/~/media/nhb/files/resources/publications/ebooks/nhb_ebook_void_decks.pdf) records an early example at Jalan Klinik in 1963, while noting that widespread provision and the term came later. The block is an imagined early example, not a claim that open ground floors were standard in 1965. Upper-floor flats are scenery; the playable area remains at ground level. The full game's 5–10 minute duration is not a claim about this single chapter.
 
 ## Development
@@ -38,6 +70,8 @@ This first chapter is intended for a short playtest of movement, camera, explora
 - `game/follow_camera.gd`: mouse orbit, zoom and camera collision.
 - `game/world.gd`: the neighbourhood and interactable props.
 - `game/community.gd`: communal seating, neighbours and broadcast reactions.
+- `game/chapter_staging.gd`: interruptible aerial fitting and walk-to-seat sequences.
+- `game/soundscape.gd`: positional ambience, footsteps and broadcast audio transitions.
 - `game/interface.gd`: title, HUD, dialogue, tuner, journal and pause UI.
 - `game/history.gd`: the 1965 story and historical references.
 - `tests/playthrough.gd`: gameplay, collision, puzzle and persistence checks.

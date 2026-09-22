@@ -5,6 +5,7 @@ const World = preload("res://game/world.gd")
 const Player = preload("res://game/player.gd")
 const Interface = preload("res://game/interface.gd")
 const FollowCamera = preload("res://game/follow_camera.gd")
+const TouchControls = preload("res://game/touch_controls.gd")
 const SAVE_PATH := "user://independence_progress.cfg"
 const INTERACT_DISTANCE := 2.3
 
@@ -29,6 +30,10 @@ var aerial_fitted := false
 var watch_camera: Camera3D
 var broadcast_view := "community"
 var watch_tween: Tween
+var staging: Node
+var soundscape: Node3D
+var reflection_topics: Dictionary = {}
+var closing_conversation := false
 
 func _ready() -> void:
 	# Tests and screenshots never overwrite the player's real progress.
@@ -64,6 +69,15 @@ func _ready() -> void:
 	add_child(watch_camera)
 	ui = Interface.new()
 	add_child(ui)
+	staging = preload("res://game/chapter_staging.gd").new()
+	staging.game = self
+	add_child(staging)
+	soundscape = preload("res://game/soundscape.gd").new()
+	add_child(soundscape)
+	soundscape.setup(player)
+	var touch_controls := TouchControls.new()
+	touch_controls.game = self
+	add_child(touch_controls)
 	read_save()
 	show_menu()
 
@@ -120,13 +134,15 @@ func set_mode(value: String) -> void:
 	if value != "dialogue":
 		dialogue_voice.stop()
 	mode = value
+	if is_instance_valid(soundscape):
+		soundscape.set_scene_mode(value)
 	var can_walk := mode == "play" or (mode == "video" and broadcast_view == "walk")
 	if can_walk and player.seated:
 		player.set_seated(false)
 		player.position = Vector3(0.6, 0.15, -1.4)
 	player.enabled = can_walk
 	follow_camera.enabled = can_walk
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if can_walk else Input.MOUSE_MODE_VISIBLE
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if can_walk and not TouchControls.available() else Input.MOUSE_MODE_VISIBLE
 	if not can_walk:
 		player.velocity.x = 0
 		player.velocity.z = 0
@@ -139,6 +155,8 @@ func frame_scene(menu_view: bool) -> void:
 		camera.make_current()
 
 func show_menu() -> void:
+	staging.cancel()
+	if watch_tween: watch_tween.kill()
 	set_mode("menu")
 	player.set_seated(false)
 	world.set_active(-1)
@@ -160,11 +178,20 @@ func start_new() -> void:
 	ui.show_intro(chapter, resume_play)
 
 func prepare_chapter() -> void:
+	staging.cancel()
+	if watch_tween: watch_tween.kill()
+	closing_conversation = false
+	reflection_topics.clear()
+	world.stations[0].position = chapter.tasks[0].at
+	world.stations[0].visible = true
+	world.neighbour_visual.rotation.y = PI
+	world.community.set_broadcast(false)
+	aerial_fitted = false
 	player.set_seated(false)
 	player.position = Vector3(0, 0.2, 14)
 	player.velocity = Vector3.ZERO
-	player.visual.rotation.y = PI
-	follow_camera.reset()
+	player.visual.rotation.y = 1.85 + PI
+	follow_camera.reset(1.85)
 	frame_scene(false)
 	ui.build_hud(chapter, show_journal, pause_game)
 	refresh_objective()
@@ -176,7 +203,9 @@ func continue_saved() -> void:
 
 func resume_play() -> void:
 	ui.clear_overlay()
+	ui.hud.visible = true
 	set_mode("play")
+	frame_scene(false)
 	refresh_objective()
 
 func refresh_objective() -> void:
@@ -193,6 +222,8 @@ func _process(_delta: float) -> void:
 	if mode == "video" and is_instance_valid(ui.archive_player):
 		world.community.playback_time = ui.archive_player.stream_position
 		world.community.reaction_paused = ui.archive_player.paused
+		soundscape.set_frozen(ui.archive_player.paused)
+		player.react_to_broadcast(ui.archive_player.stream_position)
 	if mode != "play" or task_index >= chapter.tasks.size():
 		return
 	var target: Vector3 = chapter.tasks[task_index].at
@@ -205,8 +236,9 @@ func _process(_delta: float) -> void:
 		direction = "To your left"
 	elif relative.x > 2:
 		direction = "To your right"
-	ui.set_navigation("%s  ·  %d m" % [direction, int(distance)] if distance > INTERACT_DISTANCE else "You’re here  ·  Press E")
-	ui.set_prompt("E   ·   " + chapter.tasks[task_index].name if distance <= INTERACT_DISTANCE else "")
+	var interact_hint := "Tap Interact" if TouchControls.available() else "Press E"
+	ui.set_navigation("%s  ·  %d m" % [direction, int(distance)] if distance > INTERACT_DISTANCE else "You’re here  ·  " + interact_hint)
+	ui.set_prompt(interact_hint + "   ·   " + chapter.tasks[task_index].name if distance <= INTERACT_DISTANCE else "")
 
 func _input(event: InputEvent) -> void:
 	if mode != "video" or not event is InputEventKey or not event.pressed or event.echo:
@@ -253,16 +285,19 @@ func interact() -> bool:
 		return false
 	player.visual.rotation.y = atan2(target.x - player.position.x, target.z - player.position.z)
 	if task.kind == "tv":
-		aerial_fitted = true
-		world.tv_aerial.visible = true
-		carried_aerial.visible = false
-		set_mode("puzzle")
-		ui.show_tuner(finish_tuning, resume_play)
+		if aerial_fitted:
+			show_tuning()
+		else:
+			staging.fit_aerial()
 	else:
 		show_dialogue(task.speaker, task.text, complete_task, task.get("voice", ""))
 	return true
 
-func show_dialogue(speaker: String, text: String, after: Callable, voice_path: String = "") -> void:
+func show_tuning() -> void:
+	set_mode("puzzle")
+	ui.show_tuner(finish_tuning, resume_play)
+
+func show_dialogue(speaker: String, text: String, after: Callable, voice_path: String = "", note: String = "") -> void:
 	dialogue_voice.stop()
 	dialogue_voice.stream = null
 	if not voice_path.is_empty() and ResourceLoader.exists(voice_path):
@@ -271,7 +306,7 @@ func show_dialogue(speaker: String, text: String, after: Callable, voice_path: S
 	dialogue_action = after
 	if dialogue_voice.stream:
 		dialogue_voice.play()
-	ui.show_dialogue(speaker, text, advance_dialogue, dialogue_voice if dialogue_voice.stream else null)
+	ui.show_dialogue(speaker, text, advance_dialogue, dialogue_voice if dialogue_voice.stream else null, note)
 
 func advance_dialogue() -> void:
 	if mode != "dialogue":
@@ -291,6 +326,9 @@ func finish_tuning() -> void:
 		return
 	world.set_active(-1)
 	ui.set_objective("Watch the original press conference", 3, 3)
+	staging.arrive()
+
+func start_broadcast() -> void:
 	broadcast_view = "community"
 	set_mode("video")
 	world.community.set_broadcast(true)
@@ -318,25 +356,53 @@ func set_broadcast_view(value: String) -> void:
 		follow_camera.reset()
 		camera.make_current()
 		return
+	if value == "community":
+		frame_community()
+	else:
+		frame_watch(Vector3(-0.15, 2.05, -2.9), Vector3(-0.15, 1.84, -5.275), 48)
+
+func frame_community() -> void:
+	frame_watch(Vector3(5.2, 2.9, 2.4), Vector3(-0.5, 1.3, -2.5), 58)
+
+func frame_watch(at: Vector3, aim: Vector3, fov: float) -> void:
+	if watch_tween: watch_tween.kill()
 	var previous_camera: Camera3D = get_viewport().get_camera_3d()
 	watch_camera.global_transform = previous_camera.global_transform
 	watch_camera.fov = previous_camera.fov
 	watch_camera.make_current()
-	var at := Vector3(5.2, 2.9, 2.4) if value == "community" else Vector3(-0.15, 2.05, -2.9)
-	var aim := Vector3(-0.5, 1.3, -2.5) if value == "community" else Vector3(-0.15, 1.84, -5.275)
 	var destination := Transform3D(Basis.IDENTITY, at).looking_at(aim)
 	watch_tween = create_tween().set_parallel(true)
 	watch_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	watch_tween.tween_property(watch_camera, "global_transform", destination, 1.0)
-	watch_tween.tween_property(watch_camera, "fov", 58.0 if value == "community" else 48.0, 1.0)
+	watch_tween.tween_property(watch_camera, "fov", fov, 1.0)
 
 func finish_archive() -> void:
 	if mode != "video":
 		return
 	world.community.reaction_paused = true
+	world.community.conversing = true
+	world.community.update_reactions()
+	closing_conversation = true
 	ui.hud.visible = true
 	world.tv_screen.material_override = world.material(Color("d7e9da"), true)
-	show_dialogue("A new beginning", "Singapore is now a sovereign, independent nation. The footage captures the emotion and uncertainty of that moment.\n\nThe neighbours look towards the future: how will this small country provide jobs, defend itself and find its place in the world?", complete_task)
+	frame_watch(Vector3(0.4, 2.2, -4.6), Vector3(2.9, 1.3, -3.5), 56)
+	show_dialogue("Uncle Tan", "Aiyoh… what a day, Sparky. We're a country on our own now.\n\nStill so much to think about. Homes, work, how we'll get along with the world… What's on your mind?", show_reflection)
+
+func show_reflection() -> void:
+	if not closing_conversation: return
+	set_mode("reflection")
+	ui.show_reflection(History.REFLECTIONS, reflection_topics, ask_reflection, finish_reflection)
+
+func ask_reflection(topic_id: String) -> void:
+	if mode != "reflection" or not History.REFLECTIONS.has(topic_id): return
+	var topic: Dictionary = History.REFLECTIONS[topic_id]
+	reflection_topics[topic_id] = true
+	show_dialogue("Uncle Tan", topic.answer, show_reflection, "", topic.note)
+
+func finish_reflection() -> void:
+	if mode != "reflection" or not closing_conversation: return
+	closing_conversation = false
+	show_dialogue("Uncle Tan", "Nobody knows everything that comes next. But we can start by looking after the people beside us.\n\nThanks for helping us listen together, Sparky.", complete_task)
 
 func complete_task() -> void:
 	task_index += 1
@@ -356,7 +422,7 @@ func pause_game() -> void:
 	if mode != "play":
 		return
 	set_mode("pause")
-	ui.show_pause(resume_play, start_new, show_menu)
+	ui.show_pause(resume_play, start_new, show_menu, soundscape.set_enabled, soundscape.enabled)
 
 func show_journal() -> void:
 	if mode not in ["play", "menu", "complete"]:

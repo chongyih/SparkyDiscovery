@@ -16,6 +16,9 @@ var spare_aerial: Node3D
 var tv_aerial: Node3D
 var materials: Dictionary = {}
 var community: Node3D
+var neighbour_visual: Node3D
+var neighbour_walking := false
+var neighbour_limbs: Array[Node3D] = []
 
 func material(color: Color, emission: bool = false) -> StandardMaterial3D:
 	var key := str(color) + str(emission)
@@ -154,7 +157,7 @@ func shop(at: Vector3, color: Color, title: String, facing := 0.0) -> void:
 	root.rotation.y = facing
 	add_child(root)
 	box(root, Vector3(0, 2.1, 0), Vector3(5.8, 4.2, 2.9), color, true)
-	box(root, Vector3(0, 4.24, 0), Vector3(6.1, 0.2, 3.2), BRICK)
+	box(root, Vector3(0, 4.24, 0), Vector3(6.1, 0.2, 3.2), BRICK, true)
 	box(root, Vector3(0, 3.97, 1.54), Vector3(6, 0.19, 0.25), CREAM)
 	box(root, Vector3(0, 2.2, 1.52), Vector3(5.8, 0.19, 0.22), CREAM)
 	for x in [-1.85, 0.0, 1.85]:
@@ -163,11 +166,11 @@ func shop(at: Vector3, color: Color, title: String, facing := 0.0) -> void:
 		for slat in range(5):
 			box(root, Vector3(x, 2.74 + slat * 0.18, 1.65), Vector3(0.8, 0.035, 0.05), TEAL.lightened(0.18))
 		box(root, Vector3(x, 0.9, 1.49), Vector3(1.3, 1.65, 0.08), INK)
-	box(root, Vector3(0, 2.35, 2.8), Vector3(5.25, 0.47, 0.22), TEAL)
+	box(root, Vector3(0, 2.35, 2.8), Vector3(5.25, 0.47, 0.22), TEAL, true)
 	sign_text(root, Vector3(0, 2.35, 2.93), title, 29)
 	for x in [-2.7, 2.7]:
 		box(root, Vector3(x, 1.05, 2.12), Vector3(0.17, 2.1, 0.17), CREAM)
-	box(root, Vector3(0, 2.32, 1.95), Vector3(5.95, 0.12, 1.6), TEAL)
+	box(root, Vector3(0, 2.32, 1.95), Vector3(5.95, 0.12, 1.6), TEAL, true)
 
 func tree(at: Vector3) -> void:
 	cylinder(self, at + Vector3(0, 0.2, 0), 0.85, 0.4, CREAM)
@@ -210,7 +213,11 @@ func person(parent: Node3D, at: Vector3, shirt: Color) -> void:
 	for y in [0.78, 0.93, 1.08]:
 		ball(parent, at + Vector3(0, y, 0.28), 0.018, CREAM)
 	for x in [-0.15, 0.15]:
-		box(parent, at + Vector3(x, 0.25, 0), Vector3(0.18, 0.5, 0.23), INK)
+		var leg := Node3D.new()
+		leg.position = at + Vector3(x, 0.5, 0)
+		parent.add_child(leg)
+		neighbour_limbs.append(leg)
+		box(leg, Vector3(0, -0.25, 0), Vector3(0.18, 0.5, 0.23), INK)
 		ball(parent, at + Vector3(x * 2.1, 0.72, 0), 0.12, Color("bf926f"))
 
 func aerial(parent: Node3D, at: Vector3) -> Node3D:
@@ -232,6 +239,7 @@ func make_station(task: Dictionary) -> void:
 		"person":
 			var neighbour := Node3D.new()
 			neighbour.rotation.y = PI
+			neighbour_visual = neighbour
 			root.add_child(neighbour)
 			person(neighbour, Vector3.ZERO, BRICK)
 		"aerial":
@@ -290,5 +298,9 @@ func set_active(index: int) -> void:
 
 func _process(delta: float) -> void:
 	clock += delta
+	if is_instance_valid(neighbour_visual):
+		neighbour_visual.position.y = absf(sin(clock * 8)) * 0.025 if neighbour_walking else 0.0
+		for i in neighbour_limbs.size():
+			neighbour_limbs[i].rotation.x = sin(clock * 8 + i * PI) * 0.38 if neighbour_walking else 0.0
 	if active_index >= 0 and active_index < markers.size():
 		markers[active_index].get_child(0).position.y = 2.8 + sin(clock * 2.5) * 0.12

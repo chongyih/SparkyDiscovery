@@ -31,6 +31,9 @@ func run() -> void:
 	await capture("introduction")
 	game.resume_play()
 	await capture("street")
+	capture_viewport.size = Vector2i(2048, 780)
+	await capture("opening-wide")
+	capture_viewport.size = Vector2i(1440, 900)
 	game.menu_camera.position = Vector3(16, 11, 16)
 	game.menu_camera.look_at(Vector3(0, 6, -2))
 	game.menu_camera.make_current()
@@ -57,10 +60,17 @@ func run() -> void:
 	game.advance_dialogue()
 	game.player.position = game.chapter.tasks[2].at + Vector3(0, 0.1, 1.4)
 	game.interact()
+	await capture("fitting-aerial")
+	while game.mode == "fitting":
+		await process_frame
 	await capture("tuning")
 	var dial: HSlider = game.ui.overlay.find_child("TuningDial", true, false)
 	dial.value = 65
 	game.finish_tuning()
+	await create_timer(1.3).timeout
+	await capture("taking-seats")
+	while game.mode == "arrival":
+		await process_frame
 	await create_timer(2.0).timeout
 	await capture("archive-video")
 	game.set_broadcast_view("television")
@@ -77,6 +87,13 @@ func run() -> void:
 	await capture("sparky-seated-detail")
 	game.finish_archive()
 	await capture("announcement")
+	game.advance_dialogue()
+	await capture("closing-choices")
+	game.ask_reflection("homes")
+	await capture("closing-homes")
+	game.advance_dialogue()
+	game.finish_reflection()
+	await capture("closing-thanks")
 	game.advance_dialogue()
 	await capture("complete")
 	game.show_journal()

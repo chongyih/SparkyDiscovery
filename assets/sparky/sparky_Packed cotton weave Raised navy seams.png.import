@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c1x707yqb0w62"
 path.s3tc="res://.godot/imported/sparky_Packed cotton weave Raised navy seams.png-3208d83bb40d49e2246ac3e662aab49c.s3tc.ctex"
+path.etc2="res://.godot/imported/sparky_Packed cotton weave Raised navy seams.png-3208d83bb40d49e2246ac3e662aab49c.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/sparky/sparky_Packed cotton weave Raised navy seams.png"
-dest_files=["res://.godot/imported/sparky_Packed cotton weave Raised navy seams.png-3208d83bb40d49e2246ac3e662aab49c.s3tc.ctex"]
+dest_files=["res://.godot/imported/sparky_Packed cotton weave Raised navy seams.png-3208d83bb40d49e2246ac3e662aab49c.s3tc.ctex", "res://.godot/imported/sparky_Packed cotton weave Raised navy seams.png-3208d83bb40d49e2246ac3e662aab49c.etc2.ctex"]
 
 [params]
 

@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const TouchControls = preload("res://game/touch_controls.gd")
+
 const PAPER := Color("f5efdf")
 const INK := Color("203e42")
 const TEAL := Color("285b58")
@@ -170,7 +172,7 @@ func show_menu(start: Callable, journal: Callable, resume: Callable, can_resume:
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	v.add_child(spacer)
-	label(v, "WASD  Move    Mouse  Look    E  Interact", 14, MUTED)
+	label(v, "Arrows  Move    Drag  Look    Tap Interact  ·  Play in landscape" if TouchControls.available() else "WASD  Move    Mouse  Look    E  Interact", 14, MUTED)
 	label(v, "The road to independence · First chapter prototype", 13, MUTED)
 	var tag := label(overlay, "SINGAPORE  /  01° N, 103° E", 14, PAPER)
 	tag.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
@@ -241,7 +243,7 @@ func build_hud(chapter: Dictionary, on_journal: Callable, on_pause: Callable) ->
 		chip.add_theme_stylebox_override("panel", chip_style)
 		timeline.add_child(chip)
 		label(chip, steps[i], 13, MUTED)
-	label(footer, "WASD  Move    Mouse  Look    Scroll  Zoom    R  Centre camera    E  Interact    J  Journal    Esc  Pause / release mouse", 13, INK)
+	label(footer, "Arrows  Move    Drag the scene  Look    Tap Interact near the gold marker" if TouchControls.available() else "WASD  Move    Mouse  Look    Scroll  Zoom    R  Centre camera    E  Interact    J  Journal    Esc  Pause / release mouse", 13, INK)
 	prompt = PanelContainer.new()
 	prompt.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	prompt.offset_left = -255
@@ -282,10 +284,10 @@ func show_intro(chapter: Dictionary, begin: Callable) -> void:
 	gap(v)
 	paragraph(v, chapter.intro, 21)
 	gap(v)
-	label(v, "WASD to walk · Mouse to look · Follow the gold marker · E to interact", 16, MUTED)
+	label(v, "Use the arrows to walk · Drag to look · Follow the gold marker · Tap Interact" if TouchControls.available() else "WASD to walk · Mouse to look · Follow the gold marker · E to interact", 16, MUTED)
 	button(v, "Step into %s   →" % chapter.year, begin).grab_focus()
 
-func show_dialogue(speaker: String, text: String, next: Callable, voice: AudioStreamPlayer = null) -> void:
+func show_dialogue(speaker: String, text: String, next: Callable, voice: AudioStreamPlayer = null, note: String = "") -> void:
 	new_overlay(false)
 	var frame := MarginContainer.new()
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -303,6 +305,8 @@ func show_dialogue(speaker: String, text: String, next: Callable, voice: AudioSt
 	panel.add_child(v)
 	label(v, speaker.to_upper(), 14, TEAL)
 	paragraph(v, text, 20)
+	if not note.is_empty():
+		paragraph(v, note, 16, MUTED)
 	var row := HBoxContainer.new()
 	v.add_child(row)
 	var hint := label(row, "E or Enter to continue", 14, MUTED)
@@ -317,6 +321,49 @@ func show_dialogue(speaker: String, text: String, next: Callable, voice: AudioSt
 			mute.text = "Unmute voice" if is_zero_approx(voice.volume_linear) else "Mute voice"
 		)
 	button(row, "Continue  →", next).grab_focus()
+
+func show_sequence(title: String, text: String, skip: Callable, skip_label: String) -> void:
+	new_overlay(false)
+	hud.visible = false
+	var panel := PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	panel.offset_left = 200
+	panel.offset_right = -200
+	panel.offset_top = -175
+	panel.offset_bottom = -28
+	panel.add_theme_stylebox_override("panel", style(PAPER, 16))
+	overlay.add_child(panel)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 25)
+	panel.add_child(row)
+	var words := VBoxContainer.new()
+	words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(words)
+	label(words, title, 27, INK, true)
+	paragraph(words, text, 18, MUTED)
+	button(row, skip_label + "  →", skip, true).grab_focus()
+
+func show_reflection(topics: Dictionary, asked: Dictionary, choose: Callable, finish: Callable) -> void:
+	new_overlay(false)
+	hud.visible = false
+	var panel := PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	panel.offset_left = 28
+	panel.offset_right = 635
+	panel.offset_top = -425
+	panel.offset_bottom = -28
+	panel.add_theme_stylebox_override("panel", style(PAPER, 16))
+	overlay.add_child(panel)
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 10)
+	panel.add_child(v)
+	label(v, "A MOMENT WITH UNCLE TAN", 14, TEAL)
+	label(v, "What happens next?", 32, INK, true)
+	paragraph(v, "Ask about something on Sparky’s mind, or simply thank Uncle Tan.", 17, MUTED)
+	for id in topics:
+		var choice := button(v, topics[id].question + ("  ✓" if asked.has(id) else ""), func(): choose.call(id), true)
+		choice.name = "Topic_" + id
+	button(v, "Thank you, Uncle Tan  →", finish).grab_focus()
 
 func show_chapter_end(chapter: Dictionary, replay: Callable, journal: Callable) -> void:
 	var v := modal()
@@ -453,7 +500,7 @@ func _process(_delta: float) -> void:
 	archive_caption.text = text
 	caption_panel.visible = not text.is_empty() and archive_caption.visible
 
-func show_pause(resume: Callable, restart: Callable, menu: Callable) -> void:
+func show_pause(resume: Callable, restart: Callable, menu: Callable, ambience: Callable = Callable(), ambient_enabled := true) -> void:
 	var v := modal(570)
 	label(v, "TAKE A BREATHER", 14, TEAL)
 	label(v, "Journey paused", 38, INK, true)
@@ -462,6 +509,12 @@ func show_pause(resume: Callable, restart: Callable, menu: Callable) -> void:
 	button(v, "Resume", resume).grab_focus()
 	button(v, "Restart this chapter", restart, true)
 	button(v, "Return to title", menu, true)
+	if ambience.is_valid():
+		var toggle := CheckButton.new()
+		toggle.text = "Ambient sound"
+		toggle.button_pressed = ambient_enabled
+		toggle.toggled.connect(ambience)
+		v.add_child(toggle)
 
 func show_journal(chapter: Dictionary, completed: bool, sources: Array, close: Callable) -> void:
 	var v := modal(880)

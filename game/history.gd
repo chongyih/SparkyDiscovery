@@ -10,7 +10,29 @@ const SOURCES = [
 	["The Albatross File · National Library", "https://exhibitions.nlb.gov.sg/thealbatrossfile/about/"],
 	["Early public housing · National Heritage Board", "https://www.roots.gov.sg/places/places-landing/Places/landmarks/my-queenstown-heritage-trail/the-first-hdb-blocks-the-hdb-terraces"],
 	["History of void decks · National Heritage Board", "https://www.nhb.gov.sg/~/media/nhb/files/resources/publications/ebooks/nhb_ebook_void_decks.pdf"],
+	["Housing in the early years · National Library Board", "https://biblioasia.nlb.gov.sg/all-sections/vol-12-issue-3-oct-dec-2016-public-housing-private-lives/"],
+	["Jurong industrial development · National Library Board", "https://curiocity.nlb.gov.sg/digital-stories/jurong/jurong-industrial-estate-development/"],
+	["Foreign relations milestones · Ministry of Foreign Affairs", "https://www.mfa.gov.sg/about-mfa/histories-and-milestones/"],
 ]
+
+# Fictional present-day dialogue in August 1965; later events belong in the notes.
+const REFLECTIONS = {
+	"homes": {
+		"question": "Will everyone have a home?",
+		"answer": "People still need a safe place to live, Sparky. HDB has been building flats for several years already. Becoming independent doesn't finish that work.\n\nA home means a lot. Somewhere to rest, bring up children, and get to know your neighbours.",
+		"note": "HISTORY NOTE · HDB was formed in 1960. Public-housing construction was already underway before independence. Source: National Library Board; links in the journal.",
+	},
+	"jobs": {
+		"question": "Where will people find work?",
+		"answer": "A home needs a livelihood too. Factories are opening in Jurong, but finding enough work is still a big worry.\n\nPeople need a chance to earn a living. We have to keep working at that, together.",
+		"note": "HISTORY NOTE · Development of Jurong Industrial Estate began in 1961, before independence. Source: National Library Board; links in the journal.",
+	},
+	"future": {
+		"question": "What happens to Singapore now?",
+		"answer": "We're a country on our own now. We need friends abroad, and we need to look after one another here.\n\nI can't tell you how everything will turn out. We start with today, lah.",
+		"note": "WHAT FOLLOWED · Singapore established its Ministry of Foreign Affairs in August 1965 and joined the United Nations on 21 September 1965. Source: MFA; links in the journal.",
+	},
+}
 
 static func chapter() -> Dictionary:
 	return {

@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dkpwiiik0adbq"
 path.s3tc="res://.godot/imported/sparky_Packed plush pile Warm honey plush.png-c58b72d0d0f251749da12e08b8f942e8.s3tc.ctex"
+path.etc2="res://.godot/imported/sparky_Packed plush pile Warm honey plush.png-c58b72d0d0f251749da12e08b8f942e8.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/sparky/sparky_Packed plush pile Warm honey plush.png"
-dest_files=["res://.godot/imported/sparky_Packed plush pile Warm honey plush.png-c58b72d0d0f251749da12e08b8f942e8.s3tc.ctex"]
+dest_files=["res://.godot/imported/sparky_Packed plush pile Warm honey plush.png-c58b72d0d0f251749da12e08b8f942e8.s3tc.ctex", "res://.godot/imported/sparky_Packed plush pile Warm honey plush.png-c58b72d0d0f251749da12e08b8f942e8.etc2.ctex"]
 
 [params]
 
