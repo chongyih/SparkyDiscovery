@@ -64,6 +64,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/{web,windows,linux,macos}
+          touch build/.gdignore
           godot --headless --path . --export-release "Web" build/web/index.html
           godot --headless --path . --export-release "Windows Desktop" build/windows/SparkyDiscovery.exe
           godot --headless --path . --export-release "Linux" build/linux/SparkyDiscovery.x86_64

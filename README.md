@@ -29,6 +29,7 @@ For local exports, install the **4.7.2** export templates in Godot, create the o
 
 ```sh
 mkdir -p build/{web,windows,linux,macos}
+touch build/.gdignore
 godot --headless --editor --import
 godot --headless --export-release "Web" build/web/index.html
 godot --headless --export-release "Windows Desktop" build/windows/SparkyDiscovery.exe

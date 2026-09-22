@@ -19,10 +19,10 @@ func _ready() -> void:
 	controls.visible = false
 	if not touch_enabled:
 		return
-	add_button("move_up", "↑", Vector2(130, -290))
-	add_button("move_left", "←", Vector2(35, -195))
-	add_button("move_down", "↓", Vector2(130, -100))
-	add_button("move_right", "→", Vector2(225, -195))
+	add_button("move_up", "↑", Vector2(130, -380))
+	add_button("move_left", "←", Vector2(35, -285))
+	add_button("move_down", "↓", Vector2(130, -190))
+	add_button("move_right", "→", Vector2(225, -285))
 	add_button("interact", "Interact", Vector2(-155, -195))
 	add_button("pause_game", "Pause", Vector2(-155, -300))
 	add_button("journal", "Journal", Vector2(-260, -195))
