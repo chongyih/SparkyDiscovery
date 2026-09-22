@@ -16,34 +16,63 @@ const SOURCES = [
 ]
 
 # Fictional present-day dialogue in August 1965; later events belong in the notes.
+# Uncle Tan speaks everyday Singapore English with a little Hokkien and Malay, kept readable for learners.
 const REFLECTIONS = {
 	"homes": {
 		"question": "Will everyone have a home?",
-		"answer": "People still need a safe place to live, Sparky. HDB has been building flats for several years already. Becoming independent doesn't finish that work.\n\nA home means a lot. Somewhere to rest, bring up children, and get to know your neighbours.",
-		"note": "HISTORY NOTE · HDB was formed in 1960. Public-housing construction was already underway before independence. Source: National Library Board; links in the journal.",
+		"answer": "My cousin still staying in an attap house in the kampong. One fire, everything gone, you know.\n\nNow HDB building flats, one block after another. Independent or not, people still need a roof over their heads.",
+		"tag": "History note",
+		"note": "HDB was formed in 1960 and was already building flats before independence.",
+		"source": "National Library Board",
 	},
 	"jobs": {
 		"question": "Where will people find work?",
-		"answer": "A home needs a livelihood too. Factories are opening in Jurong, but finding enough work is still a big worry.\n\nPeople need a chance to earn a living. We have to keep working at that, together.",
-		"note": "HISTORY NOTE · Development of Jurong Industrial Estate began in 1961, before independence. Source: National Library Board; links in the journal.",
+		"answer": "They clearing the swamp at Jurong to build factories. But so many young people finishing school... where got enough jobs for everybody?\n\nMy son also still looking. Everybody needs a rice bowl.",
+		"tag": "History note",
+		"note": "Work on Jurong Industrial Estate began in 1961, before independence.",
+		"source": "National Library Board",
 	},
 	"future": {
 		"question": "What happens to Singapore now?",
-		"answer": "We're a country on our own now. We need friends abroad, and we need to look after one another here.\n\nI can't tell you how everything will turn out. We start with today, lah.",
-		"note": "WHAT FOLLOWED · Singapore established its Ministry of Foreign Affairs in August 1965 and joined the United Nations on 21 September 1965. Source: MFA; links in the journal.",
+		"answer": "Such a small island. Even our water comes from Johor. People keep asking, how to survive?\n\nI also don't know, Sparky. But Chinese, Malay, Indian, everybody here is in the same boat. Must jaga each other.",
+		"tag": "What followed",
+		"note": "Singapore set up its Ministry of Foreign Affairs in August 1965 and joined the United Nations on 21 September 1965.",
+		"source": "Ministry of Foreign Affairs",
 	},
 }
+
+## After the footage, before the questions.
+const AFTER_BROADCAST := "Wah... even Mr Lee also cannot hold back. You saw or not?\n\nSo that's it. From today, Singapore is on our own. What's on your mind, Sparky?"
+## After Sparky thanks him; completes the chapter.
+const FAREWELL := "Okay lah, cannot think so much in one day. Come, have some kopi first.\n\nThank you ah, Sparky. Because of you, the whole block could watch together."
+
+## The road to 9 August, for the journal.
+const TIMELINE = [
+	["16 Sep 1963", "Singapore joins the new Federation of Malaysia."],
+	["Jul & Sep 1964", "Racial riots break out, deepening tensions."],
+	["9 Aug 1965", "Separation. Singapore becomes an independent nation."],
+]
+
+## What Sparky writes in the journal once each step is done, in order.
+const JOURNEY = [
+	["Met Uncle Tan outside the shops", "The TV under the block could not get a clear picture."],
+	["Found the spare aerial", "Few families had their own television, so neighbours often watched together."],
+	["Fixed and tuned the TV", "Snow, then a picture, then the whole block crowding onto the benches."],
+	["Watched the announcement", "Mr Lee Kuan Yew spoke about the separation. Some neighbours cried."],
+]
 
 static func chapter() -> Dictionary:
 	return {
 		"year": "1965", "date": "9 AUGUST 1965", "title": "A nation of our own",
-		"place": "A neighbourhood television corner", "short": "Independence",
-		"intro": "On 9 August 1965, Singapore separated from Malaysia and became a sovereign, independent nation.\n\nAfter political and economic tensions and negotiations between leaders, the future had changed. Help neighbours gather around a television to learn what has happened.",
-		"fact": "Singapore became a sovereign, independent nation on 9 August 1965. Independence brought urgent questions about the economy, defence and relations with other countries.",
-		"bridge": "Independence is the beginning of a new task. Singapore must build its economy, establish international relationships and strengthen its defence. Homes and industrial development, already underway before 1965, remain priorities.",
+		"place": "Under the block, in a neighbourhood like many others", "short": "Independence",
+		"intro": "That morning, the radio carried news that changed everything. Singapore had separated from Malaysia. It was now a sovereign, independent nation.\n\nFew families had a television yet. Help the neighbours get the set under the block working, so everyone can watch the Prime Minister speak.",
+		"fact": "Singapore became a sovereign, independent nation on 9 August 1965. Independence brought urgent questions about jobs, defence and relations with other countries.",
+		"background": "Singapore joined Malaysia in 1963. Political and economic disagreements strained relations, and racial riots in 1964 deepened tensions. Negotiations among leaders led to separation in 1965; the outcome cannot be reduced to a single disagreement.",
+		"bridge": "Independence was the start of a new task. Singapore had to build its economy, make friends abroad and strengthen its defence. Homes and industry, already underway before 1965, stayed priorities.",
 		"tasks": [
-			{"id": "neighbour", "name": "Speak to Uncle Tan", "kind": "person", "at": Vector3(-5, 0, 15.5), "speaker": "Uncle Tan", "voice": "res://assets/voice/neighbour_01.mp3", "text": "Eh, Sparky! Got important news today. Everyone coming to watch, but the TV cannot receive properly.\n\nCan help me bring the spare aerial from the table? We all want to hear the announcement together. Aiyoh... so much happening today. Don't know what comes next."},
-			{"id": "aerial", "name": "Collect the spare television aerial", "kind": "aerial", "at": Vector3(11.5, 0, 1.9), "speaker": "Getting a clear picture", "text": "Sparky picks up the spare aerial. Televisions could bring neighbours together to follow major events.\n\nTake it to the television corner and adjust the signal. The neighbours are waiting to learn what this day will mean for their home."},
-			{"id": "television", "name": "Tune the television for the announcement", "kind": "tv", "at": Vector3(0, 0, -5.7), "speaker": "9 August 1965 · Independence", "text": "Singapore has separated from Malaysia and is now a sovereign, independent nation. Prime Minister Lee Kuan Yew speaks emotionally about the separation at a televised press conference.\n\nThe neighbours listen. There is hope, but also uncertainty: how will this small country provide jobs, defend itself and find its place in the world?"},
+			# Subtitles match assets/voice/neighbour_01.mp3; regenerate the recording before changing this line.
+			{"id": "neighbour", "name": "Talk to Uncle Tan outside the shops", "kind": "person", "at": Vector3(-5, 0, 15.5), "speaker": "Uncle Tan", "voice": "res://assets/voice/neighbour_01.mp3", "text": "Eh, Sparky! Got important news today. Everyone coming to watch, but the TV cannot receive properly.\n\nCan help me bring the spare aerial from the table? We all want to hear the announcement together. Aiyoh... so much happening today. Don't know what comes next."},
+			{"id": "aerial", "name": "Fetch the spare aerial from the table", "kind": "aerial", "at": Vector3(11.5, 0, 1.9), "speaker": "The spare aerial", "text": "Sparky picks up the aerial. Few families owned a television in 1965, so neighbours often squeezed around one set to watch together.\n\nBring it to the TV under the block. Everyone is waiting."},
+			{"id": "television", "name": "Fix the aerial and tune the TV", "kind": "tv", "at": Vector3(0, 0, -5.7), "speaker": "Television"},
 		],
 	}

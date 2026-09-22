@@ -46,13 +46,14 @@ Use your Godot executable's full path if `godot` is not on your PATH. Serve `bui
 | Scroll wheel | Zoom |
 | R | Centre the camera behind Sparky |
 | E | Interact nearby / continue dialogue |
-| J | Historical journal |
+| J | Sparky's journal |
+| ← / → (in the journal) | Turn pages |
 | Esc | Pause / release the mouse |
 | Tab / Enter | Navigate / activate menu controls |
 | Space (during broadcast) | Pause / resume the footage |
 | V (during broadcast) | Switch between community and close television views |
 
-Progress saves locally after each encounter. Pause offers restart and return-to-title controls. The journal includes historical sources and identifies fictional dialogue and scenery. The television plays a 1 minute 58 second excerpt of the actual Lee Kuan Yew press conference, with original audio, optional English captions, pause, mute and skip controls. The source and rights designation are recorded in `assets/video/ATTRIBUTION.md`. Uncle Tan now speaks a short Singlish audition generated with ElevenLabs, with matching subtitles and replay/mute controls. Continuing stops the voice. Generation details are in `assets/voice/README.md`; other dialogue is text-only.
+Progress saves locally after each encounter. Pause offers restart and return-to-title controls. The journal is an open book: a contents page, a log of the chapter that fills in as Sparky completes each step, a merger-to-separation timeline, notes on what came next, sources, a page separating real from imagined content, controls and credits. The television plays a 1 minute 58 second excerpt of the actual Lee Kuan Yew press conference, with original audio, optional English captions, pause, mute and skip controls. The source and rights designation are recorded in `assets/video/ATTRIBUTION.md`. Uncle Tan now speaks a short Singlish audition generated with ElevenLabs, with matching subtitles and replay/mute controls. Continuing stops the voice. Generation details are in `assets/voice/README.md`; other dialogue is text-only.
 
 The broadcast plays directly on the wooden television in the open ground floor of a residential block, with flats and common corridors above. The shops face it from across the road. All four slatted benches angle inward towards the TV, with seated characters aligned to their benches. Seven neighbours gather with cups, a thermos and a slowly turning ceiling fan nearby. On the foreground-left bench, one neighbour raises a handkerchief to dab her eyes while her companion turns towards her and pats her shoulder. The eye-wiping happens briefly three times across the clip, with long quiet rests. Sparky sits on an angled left-hand bench beside a neighbour; the community camera shows his face, the reacting pair and the television together. **Walk around** returns him to the aisle; choosing a viewing camera seats him again. These reactions are fictional interpretations. Use **Community view**, **TV view**, or **Walk around** to choose how Sparky watches; press **Esc** to release the mouse and pause while walking.
 

@@ -98,6 +98,9 @@ func run() -> void:
 	await capture("complete")
 	game.show_journal()
 	await capture("journal")
+	for spread in 3:
+		game.ui.turn_page(1)
+		await capture("journal-%d" % (spread + 2))
 	game.queue_free()
 	await process_frame
 	quit()

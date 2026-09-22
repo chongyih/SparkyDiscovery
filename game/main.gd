@@ -252,7 +252,7 @@ func _process(_delta: float) -> void:
 		interact_verb = {"person": "Talk", "aerial": "Pick up"}.get(task.kind, "Tune" if aerial_fitted else "Fit aerial")
 	var interact_hint := "Tap the gold button" if TouchControls.available() else "Press E"
 	ui.set_navigation("%s  ·  %d m" % [direction, int(distance)] if distance > INTERACT_DISTANCE else "You’re here  ·  " + interact_hint)
-	ui.set_prompt(interact_hint + "   ·   " + task.name if distance <= INTERACT_DISTANCE else "")
+	ui.set_prompt(task.name if distance <= INTERACT_DISTANCE else "")
 
 func _input(event: InputEvent) -> void:
 	if mode != "video" or not event is InputEventKey or not event.pressed or event.echo:
@@ -304,14 +304,14 @@ func interact() -> bool:
 		else:
 			staging.fit_aerial()
 	else:
-		show_dialogue(task.speaker, task.text, complete_task, task.get("voice", ""))
+		show_dialogue(task.speaker, task.text, complete_task, task.get("voice", ""), {}, task.kind != "person")
 	return true
 
 func show_tuning() -> void:
 	set_mode("puzzle")
 	ui.show_tuner(finish_tuning, resume_play, soundscape.tune)
 
-func show_dialogue(speaker: String, text: String, after: Callable, voice_path: String = "", note: String = "") -> void:
+func show_dialogue(speaker: String, text: String, after: Callable, voice_path: String = "", note: Dictionary = {}, narration := false) -> void:
 	dialogue_voice.stop()
 	dialogue_voice.stream = null
 	if not voice_path.is_empty() and ResourceLoader.exists(voice_path):
@@ -320,7 +320,7 @@ func show_dialogue(speaker: String, text: String, after: Callable, voice_path: S
 	dialogue_action = after
 	if dialogue_voice.stream:
 		dialogue_voice.play()
-	ui.show_dialogue(speaker, text, advance_dialogue, dialogue_voice if dialogue_voice.stream else null, note)
+	ui.show_dialogue(speaker, text, advance_dialogue, dialogue_voice if dialogue_voice.stream else null, note, narration)
 
 func advance_dialogue() -> void:
 	if mode != "dialogue":
@@ -358,6 +358,7 @@ func set_broadcast_view(value: String) -> void:
 	if mode != "video":
 		return
 	broadcast_view = value
+	ui.set_archive_view(value)
 	if value != "walk":
 		var seat: Transform3D = world.community.global_transform * world.community.seat_transform(0, -0.8, 0.28)
 		player.global_position = seat.origin
@@ -397,10 +398,9 @@ func finish_archive() -> void:
 	world.community.conversing = true
 	world.community.update_reactions()
 	closing_conversation = true
-	ui.hud.visible = true
 	world.tv_screen.material_override = world.material(Color("d7e9da"), true)
 	frame_watch(Vector3(0.4, 2.2, -4.6), Vector3(2.9, 1.3, -3.5), 56)
-	show_dialogue("Uncle Tan", "Aiyoh… what a day, Sparky. We're a country on our own now.\n\nStill so much to think about. Homes, work, how we'll get along with the world… What's on your mind?", show_reflection)
+	show_dialogue("Uncle Tan", History.AFTER_BROADCAST, show_reflection)
 
 func show_reflection() -> void:
 	if not closing_conversation: return
@@ -411,12 +411,12 @@ func ask_reflection(topic_id: String) -> void:
 	if mode != "reflection" or not History.REFLECTIONS.has(topic_id): return
 	var topic: Dictionary = History.REFLECTIONS[topic_id]
 	reflection_topics[topic_id] = true
-	show_dialogue("Uncle Tan", topic.answer, show_reflection, "", topic.note)
+	show_dialogue("Uncle Tan", topic.answer, show_reflection, "", topic)
 
 func finish_reflection() -> void:
 	if mode != "reflection" or not closing_conversation: return
 	closing_conversation = false
-	show_dialogue("Uncle Tan", "Nobody knows everything that comes next. But we can start by looking after the people beside us.\n\nThanks for helping us listen together, Sparky.", complete_task)
+	show_dialogue("Uncle Tan", History.FAREWELL, complete_task)
 
 func complete_task() -> void:
 	task_index += 1
@@ -443,7 +443,7 @@ func show_journal() -> void:
 		return
 	journal_return = mode
 	set_mode("journal")
-	ui.show_journal(chapter, checkpoint == 3, History.SOURCES, close_journal)
+	ui.show_journal(chapter, checkpoint, History.SOURCES, close_journal)
 
 func close_journal() -> void:
 	match journal_return:

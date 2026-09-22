@@ -41,7 +41,7 @@ func fit_aerial() -> void:
 	var token := serial
 	game.set_mode("fitting")
 	game.world.set_active(-1)
-	game.ui.show_sequence("Getting a clear picture", "Sparky fits the spare aerial to the television.", func(): finish_fitting(token), "Finish fitting")
+	game.ui.show_sequence("Up it goes", "Sparky fixes the spare aerial on top of the TV set.", func(): finish_fitting(token), "Skip")
 	game.frame_watch(Vector3(3.2, 2.8, -1.6), Vector3(0, 1.8, -5.1), 52)
 	game.player.scripted_motion = true
 	game.player.play_animation("Walk")
@@ -88,7 +88,7 @@ func arrive() -> void:
 	var token := serial
 	pending = 2
 	game.set_mode("arrival")
-	game.ui.show_sequence("Come, sit with us", "Uncle Tan joins the gathering. Sparky finds a place on the bench.", finish_arrival, "Take our seats")
+	game.ui.show_sequence("Come, come, sit!", "The neighbours shift up to make space. Sparky squeezes onto the bench.", finish_arrival, "Skip")
 	game.frame_community()
 	var seat: Transform3D = game.world.community.seat_transform(0, -0.8, 0.28)
 	var approach := seat.origin + seat.basis.z * 0.85
