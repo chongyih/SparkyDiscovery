@@ -36,6 +36,9 @@ var journal_pages: Array = []
 var journal_data := {}
 var captions: Array = []
 const ARCHIVE_PATH := "res://assets/video/lky-1965-excerpt.ogv"
+## Browsers decode Theora in WebAssembly on the main thread, and the 640×480 / 25 fps clip took
+## over a second of CPU per second of footage. The web copy is 320×240 / 12 fps.
+const ARCHIVE_WEB_PATH := "res://assets/video/lky-1965-excerpt-web.ogv"
 ## The archive speech measures about -29 LUFS; this lifts it to the -18 LUFS dialogue level (peaks stay near -3 dBFS).
 const ARCHIVE_VOLUME_DB := 11.0
 ## Uncle Tan's clean, close recording measures -15.6 LUFS and sounds far louder than the thin 1965
@@ -695,7 +698,7 @@ func show_archive(done: Callable, change_view: Callable) -> VideoStreamPlayer:
 	archive_player.size = Vector2.ONE
 	archive_player.self_modulate.a = 0.0
 	archive_player.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	archive_player.stream = load(ARCHIVE_PATH) as VideoStream
+	archive_player.stream = load(ARCHIVE_WEB_PATH if OS.has_feature("web") else ARCHIVE_PATH) as VideoStream
 	archive_player.volume_db = -80 if OS.get_cmdline_user_args().has("--test") else ARCHIVE_VOLUME_DB
 	overlay.add_child(archive_player)
 	var title_panel := PanelContainer.new()

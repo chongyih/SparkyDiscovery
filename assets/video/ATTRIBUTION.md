@@ -24,4 +24,18 @@ ffmpeg -ss 128 -i lky-1965-source.webm -t 118 -vf scale=640:480 \
   lky-1965-excerpt.ogv
 ```
 
+### Web copy
+
+Browsers decode Theora in WebAssembly on the main thread, where the 640×480 / 25 fps excerpt needed more than a second of CPU per second of footage. Web exports therefore ship `lky-1965-excerpt-web.ogv` instead: the same 118-second cut at 320×240 / 12 fps (3.2 MB), with the original audio. Desktop exports keep the full excerpt. Each preset excludes the file its platform does not use.
+
+The Homebrew ffmpeg build has no Theora encoder, so frames and audio were extracted with ffmpeg and re-encoded by Godot 4.7's Movie Maker (Theora/Vorbis, video quality 0.8, audio quality 0.5, keyframe interval 64, 44.1 kHz). The replay script showed frame *n* on frame *n* and started the audio on the first frame.
+
+```sh
+ffmpeg -ss 128 -i lky-1965-source.webm -t 118 -vf "scale=320:240:flags=lanczos,fps=12" frames/%05d.png
+ffmpeg -ss 128 -i lky-1965-source.webm -t 118 -vn -ac 2 -ar 44100 -c:a pcm_s16le audio.wav
+godot --path <replay project> --script record.gd --write-movie lky-1965-excerpt-web.ogv --fixed-fps 12
+```
+
+With a Theora-enabled ffmpeg, `-vf scale=320:240 -r 12` on the command above gives an equivalent file.
+
 Historical corroboration: [National Archives press-conference transcript](https://www.nas.gov.sg/archivesonline/data/pdfdoc/lky19650809b.pdf) and [National Museum gallery guide](https://www.nhb.gov.sg/nationalmuseum/-/media/nms2017/documents/senior-programmes/nms-easy-publications-shg-seniors-online.pdf).

@@ -21,6 +21,7 @@ var touch_enabled := false
 var was_walking := false
 var look_finger := -1
 var look_start := Vector2.ZERO
+var look_last := Vector2.ZERO
 var look_start_time := 0.0
 var last_tap_time := -10.0
 var last_tap_position := Vector2.ZERO
@@ -120,6 +121,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif look_finger == -1:
 				look_finger = event.index
 				look_start = event.position
+				look_last = event.position
 				look_start_time = now()
 		elif event.index == stick_finger:
 			stick_finger = -1
@@ -139,8 +141,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			apply_stick()
 			get_viewport().set_input_as_handled()
 		elif event.index == look_finger:
-			game.follow_camera.yaw -= event.relative.x * LOOK_SPEED
-			game.follow_camera.pitch = clampf(game.follow_camera.pitch - event.relative.y * LOOK_SPEED, -0.85, 0.22)
+			# Web builds measure `relative` against whichever finger last used the same event slot
+			# (godot platform/web touch_callback), so with the stick held it can jump by the
+			# distance between thumbs. Track this finger's own previous position instead.
+			var moved: Vector2 = event.position - look_last
+			look_last = event.position
+			game.follow_camera.yaw -= moved.x * LOOK_SPEED
+			game.follow_camera.pitch = clampf(game.follow_camera.pitch - moved.y * LOOK_SPEED, -0.85, 0.22)
 			get_viewport().set_input_as_handled()
 
 ## Analogue strengths let a small push walk slowly; get_vector applies the dead zone.

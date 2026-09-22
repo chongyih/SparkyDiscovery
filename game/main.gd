@@ -45,6 +45,7 @@ func _ready() -> void:
 	dialogue_voice.volume_db = Interface.VOICE_VOLUME_DB
 	add_child(dialogue_voice)
 	setup_lighting()
+	configure_web_resolution()
 	world = World.new()
 	add_child(world)
 	world.build(chapter)
@@ -105,6 +106,12 @@ func configure_input() -> void:
 ## when a light casts shadows (godotengine/godot#90259), so it gets a blob shadow instead.
 func sun_shadows() -> bool:
 	return RenderingServer.get_current_rendering_method() != "gl_compatibility"
+
+## Browsers size the canvas by device pixel ratio, so a 3x phone renders 3D at nine times the
+## pixels of a plain screen. Render 3D at about 1.5x CSS pixels there; the UI stays sharp.
+func configure_web_resolution() -> void:
+	if OS.has_feature("web"):
+		get_viewport().scaling_3d_scale = clampf(1.5 / DisplayServer.screen_get_scale(), 0.5, 1.0)
 
 func setup_lighting() -> void:
 	var environment := WorldEnvironment.new()

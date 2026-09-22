@@ -159,10 +159,13 @@ func build(chapter: Dictionary) -> void:
 		tree(Vector3((i - 4) * 8, 0, 32))
 	bake_static(self, [community] + stations)
 
-## Merges the static meshes under `root` into one mesh per material, so the scenery
-## costs a few dozen draw calls instead of hundreds. Anything under a node in `keep`
-## moves or toggles at runtime and stays a separate instance.
+## Merges the static meshes under `root` into one mesh per material and 8 m tile, so the
+## scenery costs a few dozen draw calls instead of hundreds. Tiles keep culling local: the
+## web renderer redraws every mesh an omni light touches, and whole-world meshes touched
+## the TV corner's lights everywhere. Anything under a node in `keep` moves or toggles at
+## runtime and stays a separate instance.
 func bake_static(root: Node3D, keep: Array) -> void:
+	const TILE := 8.0
 	var surfaces := {}
 	for mesh: MeshInstance3D in root.find_children("*", "MeshInstance3D", true, false):
 		if not is_instance_valid(mesh):
@@ -176,11 +179,13 @@ func bake_static(root: Node3D, keep: Array) -> void:
 			parent = parent.get_parent() as Node3D
 		if dynamic:
 			continue
-		var surface: SurfaceTool = surfaces.get(mesh.material_override)
+		var center := to_root * mesh.get_aabb().get_center()
+		var key := [mesh.material_override, floori(center.x / TILE), floori(center.z / TILE)]
+		var surface: SurfaceTool = surfaces.get(key)
 		if not surface:
 			surface = SurfaceTool.new()
 			surface.begin(Mesh.PRIMITIVE_TRIANGLES)
-			surfaces[mesh.material_override] = surface
+			surfaces[key] = surface
 		surface.append_from(mesh.mesh, 0, to_root)
 		# Colliders hang off their mesh; keep them in the same place under `root`.
 		for body in mesh.get_children():
@@ -188,10 +193,10 @@ func bake_static(root: Node3D, keep: Array) -> void:
 			body.transform = to_root * body.transform
 			root.add_child(body)
 		mesh.free()
-	for mat in surfaces:
+	for key in surfaces:
 		var merged := MeshInstance3D.new()
-		merged.mesh = surfaces[mat].commit()
-		merged.material_override = mat
+		merged.mesh = surfaces[key].commit()
+		merged.material_override = key[0]
 		root.add_child(merged)
 
 func shop(at: Vector3, color: Color, title: String, facing := 0.0) -> void:

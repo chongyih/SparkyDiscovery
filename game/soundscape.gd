@@ -3,6 +3,10 @@ extends Node3D
 ## -18 LUFS; the beds together sit about 20 dB below that while walking, lower while listening.
 const TREES := [Vector3(-16, 3.4, -3.5), Vector3(-16, 3.4, 1.5), Vector3(16, 3.4, -3.5), Vector3(16, 3.4, 1.5), Vector3(-21, 3.4, -2), Vector3(20, 3.4, -1), Vector3(-20, 3.4, 12.8), Vector3(20, 3.4, 12.8)]
 const BIRDS := ["koel-long", "koel-short", "koel-long", "myna"]
+## Web builds default to Web Audio samples, which decode a whole file to 32-bit PCM up front:
+## the 130 s street bed alone needed a 50 MB buffer, and phone browsers ran out of memory.
+## Long loops stream instead; short one-shots keep the low-latency default.
+const LONG_LOOP_PLAYBACK := AudioServer.PLAYBACK_TYPE_STREAM
 var enabled := true
 var mode := "menu"
 var player: CharacterBody3D
@@ -45,6 +49,7 @@ func setup(target: CharacterBody3D) -> void:
 	tv_static = AudioStreamPlayer.new()
 	tv_static.stream = load("res://assets/audio/tv-static.ogg").duplicate()
 	tv_static.stream.loop = true
+	tv_static.playback_type = LONG_LOOP_PLAYBACK
 	tv_static.volume_db = -80
 	add_child(tv_static)
 	set_scene_mode("menu")
@@ -54,6 +59,8 @@ func make_source(file: String, at: Vector3, looping: bool, radius: float) -> Aud
 	var stream := load("res://assets/audio/" + file + ".ogg").duplicate() as AudioStreamOggVorbis
 	stream.loop = looping
 	source.stream = stream
+	if looping:
+		source.playback_type = LONG_LOOP_PLAYBACK
 	source.position = at
 	source.max_distance = radius
 	source.unit_size = 5

@@ -65,7 +65,13 @@ func run() -> void:
 	await frames(2)
 	check(game.follow_camera.yaw != yaw, "Second finger orbits while moving")
 	check(Input.is_action_pressed("move_up"), "Looking does not interrupt the thumbstick")
-	touch(1, look + Vector2(80, 0), false)
+	# Browsers report `relative` against the other thumb when both are down; 10 px of real
+	# movement must not turn the camera by hundreds of pixels' worth.
+	yaw = game.follow_camera.yaw
+	drag(1, look + Vector2(90, 0), Vector2(-900, 250))
+	await frames(2)
+	check(is_equal_approx(game.follow_camera.yaw, yaw - 10 * controls.LOOK_SPEED), "Looking follows the finger, not the browser's relative")
+	touch(1, look + Vector2(90, 0), false)
 	touch(0, stick, false)
 	await frames(2)
 	check(not Input.is_action_pressed("move_up"), "Lifting the thumb stops movement")
