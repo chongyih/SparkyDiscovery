@@ -9,6 +9,7 @@ const BRICK := Color("b86750")
 var stations: Array[Node3D] = []
 var markers: Array[Node3D] = []
 var labels: Array[Label3D] = []
+var sign_font: FontVariation
 var active_index := -1
 var clock := 0.0
 var tv_screen: MeshInstance3D
@@ -79,8 +80,14 @@ func ball(parent: Node3D, at: Vector3, radius: float, color: Color) -> MeshInsta
 	return mesh
 
 func sign_text(parent: Node3D, at: Vector3, text: String, size := 38, color := CREAM) -> Label3D:
+	if not sign_font:
+		# The UI's Inter, at the semi-bold weight of Godot's default font, keeps signs as legible.
+		sign_font = FontVariation.new()
+		sign_font.base_font = load("res://assets/fonts/Inter.ttf")
+		sign_font.variation_opentype = {TextServerManager.get_primary_interface().name_to_tag("wght"): 600}
 	var label := Label3D.new()
 	label.text = text
+	label.font = sign_font
 	label.font_size = size
 	label.pixel_size = 0.009
 	label.modulate = color
@@ -150,6 +157,42 @@ func build(chapter: Dictionary) -> void:
 		box(self, at + Vector3(0, 6.05, 0), Vector3(6.3, 0.2, 5.2), BRICK)
 	for i in range(8):
 		tree(Vector3((i - 4) * 8, 0, 32))
+	bake_static(self, [community] + stations)
+
+## Merges the static meshes under `root` into one mesh per material, so the scenery
+## costs a few dozen draw calls instead of hundreds. Anything under a node in `keep`
+## moves or toggles at runtime and stays a separate instance.
+func bake_static(root: Node3D, keep: Array) -> void:
+	var surfaces := {}
+	for mesh: MeshInstance3D in root.find_children("*", "MeshInstance3D", true, false):
+		if not is_instance_valid(mesh):
+			continue
+		var to_root := mesh.transform
+		var parent := mesh.get_parent() as Node3D
+		var dynamic := not mesh.visible or mesh in keep
+		while parent != root and not dynamic:
+			dynamic = parent in keep or not parent.visible
+			to_root = parent.transform * to_root
+			parent = parent.get_parent() as Node3D
+		if dynamic:
+			continue
+		var surface: SurfaceTool = surfaces.get(mesh.material_override)
+		if not surface:
+			surface = SurfaceTool.new()
+			surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+			surfaces[mesh.material_override] = surface
+		surface.append_from(mesh.mesh, 0, to_root)
+		# Colliders hang off their mesh; keep them in the same place under `root`.
+		for body in mesh.get_children():
+			mesh.remove_child(body)
+			body.transform = to_root * body.transform
+			root.add_child(body)
+		mesh.free()
+	for mat in surfaces:
+		var merged := MeshInstance3D.new()
+		merged.mesh = surfaces[mat].commit()
+		merged.material_override = mat
+		root.add_child(merged)
 
 func shop(at: Vector3, color: Color, title: String, facing := 0.0) -> void:
 	var root := Node3D.new()

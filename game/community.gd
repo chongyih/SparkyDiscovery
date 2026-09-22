@@ -89,6 +89,7 @@ func build(world: Node3D) -> void:
 	glow.light_energy = 0
 	glow.omni_range = 4.5
 	add_child(glow)
+	builder.bake_static(self, [fan] + residents.map(func(resident_data): return resident_data.root))
 
 func seat_transform(bench_index: int, offset: float, height := 0.0) -> Transform3D:
 	var bench: Dictionary = BENCH_LAYOUT[bench_index]

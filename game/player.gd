@@ -51,10 +51,68 @@ func _ready() -> void:
 			if "Idle" in animation_name or "Walk" in animation_name:
 				animator.get_animation(animation_name).loop_mode = Animation.LOOP_LINEAR
 		play_animation("Idle")
-	# The mesh fibres should not produce thousands of tiny fur shadows.
-	for mesh in visual.find_children("*", "MeshInstance3D", true, false):
-		if "pile" in mesh.name.to_lower():
-			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	if skeleton:
+		merge_parts()
+
+## The model arrives as 41 skinned parts (59 draw calls). They share one skeleton and skin,
+## so parts with the same material merge into one surface without changing the look.
+func merge_parts() -> void:
+	var skin: Skin
+	var groups := {"Body": {}, "Fur": {}}
+	for mesh in skeleton.get_children():
+		if not mesh is MeshInstance3D:
+			continue
+		skin = mesh.skin
+		var group: Dictionary = groups["Fur" if "pile" in mesh.name.to_lower() else "Body"]
+		for i in mesh.mesh.get_surface_count():
+			var mat: Material = mesh.get_active_material(i)
+			if not group.has(mat):
+				var surface := SurfaceTool.new()
+				surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+				surface.set_material(mat)
+				group[mat] = surface
+			group[mat].append_from(mesh.mesh, i, mesh.transform)
+		mesh.free()
+	for group_name in groups:
+		var merged := ArrayMesh.new()
+		for surface: SurfaceTool in groups[group_name].values():
+			surface.commit(merged)
+		var part := MeshInstance3D.new()
+		part.name = group_name
+		part.mesh = merged
+		part.skin = skin
+		part.skeleton = NodePath("..")
+		skeleton.add_child(part)
+	var fur := skeleton.get_node("Fur") as MeshInstance3D
+	# The fibres should not produce thousands of tiny fur shadows.
+	fur.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	# Past the 8 m gameplay zoom the fibres are sub-pixel; drop them in the distant menu shot.
+	fur.visibility_range_end = 14.0
+
+## Soft contact shadow for renderers where the sun casts no shadow.
+func add_blob_shadow() -> void:
+	var gradient := Gradient.new()
+	gradient.set_color(0, Color(0, 0, 0, 0.42))
+	gradient.set_color(1, Color(0, 0, 0, 0))
+	var texture := GradientTexture2D.new()
+	texture.gradient = gradient
+	texture.fill = GradientTexture2D.FILL_RADIAL
+	texture.fill_from = Vector2(0.5, 0.5)
+	texture.fill_to = Vector2(0.5, 0.0)
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.albedo_texture = texture
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(1.1, 1.1)
+	var blob := MeshInstance3D.new()
+	blob.name = "BlobShadow"
+	blob.mesh = plane
+	blob.material_override = mat
+	blob.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	# Sit just above the ground so the kerb and road do not flicker through it.
+	blob.position.y = 0.02
+	add_child(blob)
 
 func play_animation(suffix: String) -> void:
 	if not animator:
