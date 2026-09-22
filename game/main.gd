@@ -1,0 +1,392 @@
+extends Node3D
+
+const History = preload("res://game/history.gd")
+const World = preload("res://game/world.gd")
+const Player = preload("res://game/player.gd")
+const Interface = preload("res://game/interface.gd")
+const FollowCamera = preload("res://game/follow_camera.gd")
+const SAVE_PATH := "user://independence_progress.cfg"
+const INTERACT_DISTANCE := 2.3
+
+var chapter: Dictionary = History.chapter()
+var world: Node3D
+var player: CharacterBody3D
+var camera: Camera3D
+var menu_camera: Camera3D
+var follow_camera: Node3D
+var ui: CanvasLayer
+var task_index := 0
+var mode := "menu"
+var journal_return := "menu"
+var checkpoint := 0
+var has_save := false
+var persistence_enabled := true
+var save_path := SAVE_PATH
+var dialogue_action: Callable
+var dialogue_voice := AudioStreamPlayer.new()
+var carried_aerial: Node3D
+var aerial_fitted := false
+var watch_camera: Camera3D
+var broadcast_view := "community"
+var watch_tween: Tween
+
+func _ready() -> void:
+	# Tests and screenshots never overwrite the player's real progress.
+	persistence_enabled = not OS.get_cmdline_user_args().has("--test")
+	configure_input()
+	dialogue_voice.name = "DialogueVoice"
+	add_child(dialogue_voice)
+	setup_lighting()
+	world = World.new()
+	add_child(world)
+	world.build(chapter)
+	world.set_active(-1)
+	player = Player.new()
+	add_child(player)
+	player.position = Vector3(0, 0.15, 3.8)
+	carried_aerial = world.aerial(player.visual, Vector3(0.55, 0.9, 0.3))
+	carried_aerial.scale = Vector3.ONE * 0.7
+	carried_aerial.visible = false
+	menu_camera = Camera3D.new()
+	add_child(menu_camera)
+	menu_camera.fov = 55
+	menu_camera.position = Vector3(15, 9, 22)
+	menu_camera.look_at(Vector3(0, 1.0, -1))
+	menu_camera.current = true
+	follow_camera = FollowCamera.new()
+	add_child(follow_camera)
+	follow_camera.target = player
+	follow_camera.arm.add_excluded_object(player.get_rid())
+	follow_camera.reset()
+	camera = follow_camera.camera
+	player.camera = camera
+	watch_camera = Camera3D.new()
+	add_child(watch_camera)
+	ui = Interface.new()
+	add_child(ui)
+	read_save()
+	show_menu()
+
+func configure_input() -> void:
+	var actions := {
+		"move_left": [KEY_A, KEY_LEFT], "move_right": [KEY_D, KEY_RIGHT],
+		"move_up": [KEY_W, KEY_UP], "move_down": [KEY_S, KEY_DOWN],
+		"interact": [KEY_E], "journal": [KEY_J], "pause_game": [KEY_ESCAPE],
+	}
+	for action in actions:
+		if not InputMap.has_action(action):
+			InputMap.add_action(action)
+		for key in actions[action]:
+			var event := InputEventKey.new()
+			event.physical_keycode = key
+			if not InputMap.action_has_event(action, event):
+				InputMap.action_add_event(action, event)
+
+func setup_lighting() -> void:
+	var environment := WorldEnvironment.new()
+	var settings := Environment.new()
+	settings.background_mode = Environment.BG_SKY
+	var sky := Sky.new()
+	var sky_material := ProceduralSkyMaterial.new()
+	sky_material.sky_top_color = Color("689dad")
+	sky_material.sky_horizon_color = Color("dce4d9")
+	sky_material.ground_horizon_color = Color("dce4d9")
+	sky_material.ground_bottom_color = Color("8a9e91")
+	sky.sky_material = sky_material
+	settings.sky = sky
+	settings.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	settings.ambient_light_color = Color("c9dedb")
+	settings.ambient_light_energy = 0.55
+	settings.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	settings.fog_enabled = true
+	settings.fog_light_color = Color("c3d6cb")
+	settings.fog_density = 0.003
+	environment.environment = settings
+	add_child(environment)
+	var sun := DirectionalLight3D.new()
+	sun.rotation_degrees = Vector3(-52, -28, 0)
+	sun.light_color = Color("fff0cf")
+	sun.light_energy = 1.1
+	sun.shadow_enabled = true
+	sun.directional_shadow_max_distance = 60
+	add_child(sun)
+	var fill := DirectionalLight3D.new()
+	fill.rotation_degrees = Vector3(-25, 135, 0)
+	fill.light_color = Color("c1dedf")
+	fill.light_energy = 0.35
+	add_child(fill)
+
+func set_mode(value: String) -> void:
+	if value != "dialogue":
+		dialogue_voice.stop()
+	mode = value
+	var can_walk := mode == "play" or (mode == "video" and broadcast_view == "walk")
+	if can_walk and player.seated:
+		player.set_seated(false)
+		player.position = Vector3(0.6, 0.15, -1.4)
+	player.enabled = can_walk
+	follow_camera.enabled = can_walk
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if can_walk else Input.MOUSE_MODE_VISIBLE
+	if not can_walk:
+		player.velocity.x = 0
+		player.velocity.z = 0
+	ui.set_prompt("")
+
+func frame_scene(menu_view: bool) -> void:
+	if menu_view:
+		menu_camera.make_current()
+	else:
+		camera.make_current()
+
+func show_menu() -> void:
+	set_mode("menu")
+	player.set_seated(false)
+	world.set_active(-1)
+	player.position = Vector3(10, 0.15, 8)
+	player.visual.rotation.y = 0.35
+	frame_scene(true)
+	ui.show_menu(start_new, show_journal, continue_saved, has_save and checkpoint < 3)
+
+func start_new() -> void:
+	task_index = 0
+	checkpoint = 0
+	aerial_fitted = false
+	world.community.set_broadcast(false)
+	world.stations[0].visible = true
+	world.tv_screen.material_override = world.material(Color("718a83"))
+	prepare_chapter()
+	write_save()
+	set_mode("intro")
+	ui.show_intro(chapter, resume_play)
+
+func prepare_chapter() -> void:
+	player.set_seated(false)
+	player.position = Vector3(0, 0.2, 14)
+	player.velocity = Vector3.ZERO
+	player.visual.rotation.y = PI
+	follow_camera.reset()
+	frame_scene(false)
+	ui.build_hud(chapter, show_journal, pause_game)
+	refresh_objective()
+
+func continue_saved() -> void:
+	task_index = checkpoint
+	prepare_chapter()
+	resume_play()
+
+func resume_play() -> void:
+	ui.clear_overlay()
+	set_mode("play")
+	refresh_objective()
+
+func refresh_objective() -> void:
+	world.set_active(task_index if task_index < chapter.tasks.size() else -1)
+	world.spare_aerial.visible = task_index < 2
+	world.tv_aerial.visible = aerial_fitted or task_index == 3
+	carried_aerial.visible = task_index == 2 and not aerial_fitted
+	if task_index < chapter.tasks.size():
+		ui.set_objective(chapter.tasks[task_index].name, task_index, 3)
+	else:
+		ui.set_objective("Independence · 9 August 1965", 3, 3)
+
+func _process(_delta: float) -> void:
+	if mode == "video" and is_instance_valid(ui.archive_player):
+		world.community.playback_time = ui.archive_player.stream_position
+		world.community.reaction_paused = ui.archive_player.paused
+	if mode != "play" or task_index >= chapter.tasks.size():
+		return
+	var target: Vector3 = chapter.tasks[task_index].at
+	var distance := Vector2(player.position.x - target.x, player.position.z - target.z).length()
+	var relative := camera.global_basis.inverse() * (target - player.position)
+	var direction := "Ahead"
+	if relative.z > 1:
+		direction = "Behind you"
+	elif relative.x < -2:
+		direction = "To your left"
+	elif relative.x > 2:
+		direction = "To your right"
+	ui.set_navigation("%s  ·  %d m" % [direction, int(distance)] if distance > INTERACT_DISTANCE else "You’re here  ·  Press E")
+	ui.set_prompt("E   ·   " + chapter.tasks[task_index].name if distance <= INTERACT_DISTANCE else "")
+
+func _input(event: InputEvent) -> void:
+	if mode != "video" or not event is InputEventKey or not event.pressed or event.echo:
+		return
+	if event.physical_keycode == KEY_SPACE:
+		ui.toggle_video_pause()
+		get_viewport().set_input_as_handled()
+	elif event.physical_keycode == KEY_V:
+		set_broadcast_view("community" if broadcast_view == "television" else "television")
+		get_viewport().set_input_as_handled()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause_game"):
+		if mode == "play":
+			pause_game()
+		elif mode == "pause" or mode == "puzzle":
+			resume_play()
+		elif mode == "journal":
+			close_journal()
+		elif mode == "video":
+			if broadcast_view == "walk":
+				set_broadcast_view("community")
+			ui.toggle_video_pause()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("journal"):
+		if mode == "play":
+			show_journal()
+		elif mode == "journal":
+			close_journal()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("interact"):
+		if mode == "play":
+			interact()
+		elif mode == "dialogue":
+			advance_dialogue()
+		get_viewport().set_input_as_handled()
+
+func interact() -> bool:
+	if mode != "play" or task_index >= chapter.tasks.size():
+		return false
+	var task: Dictionary = chapter.tasks[task_index]
+	var target: Vector3 = task.at
+	if Vector2(player.position.x - target.x, player.position.z - target.z).length() > INTERACT_DISTANCE:
+		return false
+	player.visual.rotation.y = atan2(target.x - player.position.x, target.z - player.position.z)
+	if task.kind == "tv":
+		aerial_fitted = true
+		world.tv_aerial.visible = true
+		carried_aerial.visible = false
+		set_mode("puzzle")
+		ui.show_tuner(finish_tuning, resume_play)
+	else:
+		show_dialogue(task.speaker, task.text, complete_task, task.get("voice", ""))
+	return true
+
+func show_dialogue(speaker: String, text: String, after: Callable, voice_path: String = "") -> void:
+	dialogue_voice.stop()
+	dialogue_voice.stream = null
+	if not voice_path.is_empty() and ResourceLoader.exists(voice_path):
+		dialogue_voice.stream = load(voice_path) as AudioStream
+	set_mode("dialogue")
+	dialogue_action = after
+	if dialogue_voice.stream:
+		dialogue_voice.play()
+	ui.show_dialogue(speaker, text, advance_dialogue, dialogue_voice if dialogue_voice.stream else null)
+
+func advance_dialogue() -> void:
+	if mode != "dialogue":
+		return
+	dialogue_voice.stop()
+	var action := dialogue_action
+	dialogue_action = Callable()
+	if action.is_valid():
+		action.call()
+
+func finish_tuning() -> void:
+	if mode != "puzzle":
+		return
+	# The UI guards its button, and this check also guards programmatic activation.
+	var dial := ui.overlay.find_child("TuningDial", true, false) as HSlider
+	if not dial or absf(dial.value - 65) > 4:
+		return
+	world.set_active(-1)
+	ui.set_objective("Watch the original press conference", 3, 3)
+	broadcast_view = "community"
+	set_mode("video")
+	world.community.set_broadcast(true)
+	world.stations[0].visible = false
+	var video: VideoStreamPlayer = ui.show_archive(finish_archive, set_broadcast_view)
+	var screen_material := StandardMaterial3D.new()
+	screen_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	screen_material.albedo_texture = video.get_video_texture()
+	world.tv_screen.material_override = screen_material
+	set_broadcast_view("community")
+
+func set_broadcast_view(value: String) -> void:
+	if mode != "video":
+		return
+	broadcast_view = value
+	if value != "walk":
+		var seat: Transform3D = world.community.global_transform * world.community.seat_transform(0, -0.8, 0.28)
+		player.global_position = seat.origin
+		player.visual.global_rotation.y = seat.basis.get_euler().y
+		player.set_seated(true)
+	set_mode("video")
+	if watch_tween and watch_tween.is_running():
+		watch_tween.kill()
+	if value == "walk":
+		follow_camera.reset()
+		camera.make_current()
+		return
+	var previous_camera: Camera3D = get_viewport().get_camera_3d()
+	watch_camera.global_transform = previous_camera.global_transform
+	watch_camera.fov = previous_camera.fov
+	watch_camera.make_current()
+	var at := Vector3(5.2, 2.9, 2.4) if value == "community" else Vector3(-0.15, 2.05, -2.9)
+	var aim := Vector3(-0.5, 1.3, -2.5) if value == "community" else Vector3(-0.15, 1.84, -5.275)
+	var destination := Transform3D(Basis.IDENTITY, at).looking_at(aim)
+	watch_tween = create_tween().set_parallel(true)
+	watch_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	watch_tween.tween_property(watch_camera, "global_transform", destination, 1.0)
+	watch_tween.tween_property(watch_camera, "fov", 58.0 if value == "community" else 48.0, 1.0)
+
+func finish_archive() -> void:
+	if mode != "video":
+		return
+	world.community.reaction_paused = true
+	ui.hud.visible = true
+	world.tv_screen.material_override = world.material(Color("d7e9da"), true)
+	show_dialogue("A new beginning", "Singapore is now a sovereign, independent nation. The footage captures the emotion and uncertainty of that moment.\n\nThe neighbours look towards the future: how will this small country provide jobs, defend itself and find its place in the world?", complete_task)
+
+func complete_task() -> void:
+	task_index += 1
+	checkpoint = task_index
+	write_save()
+	if task_index >= chapter.tasks.size():
+		show_complete()
+	else:
+		resume_play()
+
+func show_complete() -> void:
+	set_mode("complete")
+	refresh_objective()
+	ui.show_chapter_end(chapter, show_menu, show_journal)
+
+func pause_game() -> void:
+	if mode != "play":
+		return
+	set_mode("pause")
+	ui.show_pause(resume_play, start_new, show_menu)
+
+func show_journal() -> void:
+	if mode not in ["play", "menu", "complete"]:
+		return
+	journal_return = mode
+	set_mode("journal")
+	ui.show_journal(chapter, checkpoint == 3, History.SOURCES, close_journal)
+
+func close_journal() -> void:
+	match journal_return:
+		"menu": show_menu()
+		"complete": show_complete()
+		_: resume_play()
+
+func read_save() -> void:
+	if not persistence_enabled:
+		return
+	var config := ConfigFile.new()
+	if config.load(save_path) == OK:
+		var saved: Variant = config.get_value("progress", "task", 0)
+		if saved is int and saved >= 0 and saved <= 3:
+			checkpoint = saved
+			has_save = true
+
+func write_save() -> void:
+	has_save = true
+	if not persistence_enabled:
+		return
+	var config := ConfigFile.new()
+	config.set_value("progress", "task", checkpoint)
+	var result := config.save(save_path)
+	if result != OK:
+		push_warning("Could not save progress: %s" % error_string(result))

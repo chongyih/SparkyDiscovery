@@ -1,0 +1,12 @@
+{
+  "round_trip": "passed",
+  "animations": [
+    "Idle",
+    "Walk",
+    "Wave"
+  ],
+  "bones": 7,
+  "mesh_objects": 42,
+  "walk_frame_checked": 7,
+  "note": "Blender GLB reimport validated. Godot validation is recorded in assets/sparky/godot-validation.json."
+}

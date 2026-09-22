@@ -1,0 +1,19 @@
+{
+  "bones": 7,
+  "clips": {
+    "Idle": {
+      "seconds": 4.04166650772095,
+      "tracks": 10
+    },
+    "Walk": {
+      "seconds": 1.375,
+      "tracks": 10
+    },
+    "Wave": {
+      "seconds": 3.04166674613953,
+      "tracks": 10
+    }
+  },
+  "engine": "4.7.2-stable (official)",
+  "result": "passed"
+}

@@ -1,0 +1,6 @@
+godot_preview/.godot/
+*.blend1
+__pycache__/
+.godot/
+artifacts/
+.DS_Store
