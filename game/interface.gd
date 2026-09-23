@@ -434,9 +434,9 @@ func clear_memory_notice() -> void:
 		memory_notice.queue_free()
 	memory_notice = null
 
-func show_memory_notice(checkpoint: int) -> void:
+func show_memory_notice(checkpoint: int, illustration := "") -> void:
 	clear_memory_notice()
-	if checkpoint < 1 or checkpoint > 3:
+	if checkpoint < 1 or (checkpoint > 3 and illustration.is_empty()):
 		return
 	var holder := Control.new()
 	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -456,7 +456,7 @@ func show_memory_notice(checkpoint: int) -> void:
 	panel.offset_top = 16 if compact else 110
 	panel.add_theme_stylebox_override("panel", card_style())
 	holder.add_child(panel)
-	var words := illustrated_row(panel, ["uncle-tan", "antenna", "television"][checkpoint - 1], 44)
+	var words := illustrated_row(panel, illustration if not illustration.is_empty() else ["uncle-tan", "antenna", "television"][checkpoint - 1], 44)
 	label(words, "Memory added", 19, INK, true)
 	paragraph(words, "See it in your journal." if TouchControls.available() else "Press J to see it.", 15, MUTED)
 	memory_tween = create_tween()
@@ -1017,7 +1017,10 @@ func render_spread(focus_side := -1) -> void:
 		scroll.follow_focus = true
 		content.add_child(scroll)
 		scroll.add_child(body)
-		call("page_" + JOURNAL_PAGES[index], body)
+		if journal_data.chapter.year == "1942":
+			preload("res://game/ww2_journal.gd").render(self, body, JOURNAL_PAGES[index])
+		else:
+			call("page_" + JOURNAL_PAGES[index], body)
 		if journal_page_count == 1:
 			for item in body.find_children("*", "Label", true, false):
 				item.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1214,6 +1217,8 @@ func page_controls(page: VBoxContainer) -> void:
 		["R", "Centre the camera"], ["E", "Talk, pick up, continue"], ["J", "Open or close this journal"],
 		["Esc", "Pause and release the mouse"], ["Space", "Pause the broadcast"], ["V", "Change view during the broadcast"],
 	]
+	if journal_data.get("chapter", {}).get("year", "") == "1942":
+		rows = rows.filter(func(item): return item[0] not in ["Space", "V"])
 	for item in rows:
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 14)

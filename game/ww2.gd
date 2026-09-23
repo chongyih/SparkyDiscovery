@@ -20,7 +20,6 @@ var blast_hit := false
 var reduced_effects := false
 var audio_enabled := true
 var paused_mode := "play"
-var journal_page := 0
 var lines: Array = []
 var lines_done: Callable
 var original_visual_position := Vector3.ZERO
@@ -267,6 +266,7 @@ func complete_task() -> void:
 	write_save()
 	if task_index == 4: show_complete()
 	else: resume_play()
+	ui.show_memory_notice(checkpoint, "uncle-tan" if checkpoint in [1, 4] else "homes")
 
 func start_blast() -> void:
 	set_mode("blast")
@@ -315,10 +315,11 @@ func pause_game() -> void:
 	war_audio.stream_paused = true
 	blast_audio.stream_paused = true
 	world.dust.speed_scale = 0
-	var v: VBoxContainer = ui.modal()
-	ui.label(v, "A moment to pause", 32, Interface.INK)
-	ui.button(v, "Continue", resume_pause).grab_focus()
-	ui.button(v, "Restart 1942", start_new, true)
+	var v: VBoxContainer = ui.modal(570)
+	ui.label(v, "TAKE A BREATHER", 14, Interface.TEAL)
+	ui.label(v, "Journey paused", 38, Interface.INK, true)
+	ui.button(v, "Resume", resume_pause).grab_focus()
+	ui.button(v, "Restart this chapter", start_new, true)
 	ui.button(v, "Return to title", show_menu, true)
 	var quiet := CheckButton.new()
 	quiet.text = "Sound"
@@ -384,23 +385,7 @@ func show_journal() -> void:
 	if mode != "journal": journal_return = mode
 	set_mode("journal")
 	war_audio.stream_paused = true
-	var v: VBoxContainer = ui.modal(850)
-	ui.label(v, "SPARKY'S JOURNAL · 1942–1945", 16, Interface.TEAL)
-	var pages := [
-		["A street under threat", "Japanese forces advanced down Malaya and crossed the Johor Strait. The main landings on Singapore's northwest coast began on 8 February 1942. British-led forces surrendered on 15 February.\n\nSome coastal guns could fire inland and did so. The defeat cannot be explained simply by saying the guns pointed the wrong way."],
-		["What happened next", "During the Japanese Occupation, food shortages and fear changed everyday life. People grew food, found substitutes and helped neighbours survive.\n\nJapanese forces also carried out persecution and mass killings. During Sook Ching, many Chinese civilians were taken away and killed. These losses remain part of Singapore's wartime memory.\n\nThe Occupation ended in 1945. Recovery took time."],
-		["Our imagined encounter", "Sparky, Uncle Tan, Mei, their dialogue, this street and the nearby blast are fictional. This is not a reconstruction of a particular raid or shelter. Sparky's hooded civilian outfit is a stylised costume.\n\n" + ("We brought water into the shelter. Mei shared it, and Uncle Tan stayed with the neighbours." if checkpoint >= 4 else "Our task: help Uncle Tan and Mei bring water into the shelter.") + "\n\nWASD / left thumb: move. Mouse / right thumb: look. E / gold button: interact. J: journal. Escape: pause. The blast plays through; reduced motion/light and sound controls are in Pause. Sound effects combine original synthesis and a modern siren recording, not wartime archival audio."],
-	]
-	ui.label(v, pages[journal_page][0], 32, Interface.INK)
-	ui.paragraph(v, pages[journal_page][1], 19)
-	ui.button(v, "Historical source · NHB: World War Two", func(): OS.shell_open("https://www.roots.gov.sg/stories-landing/stories/world-war-ii/story"), true)
-	ui.button(v, "Historical source · National Museum: coastal guns", func(): OS.shell_open("https://www.nhb.gov.sg/nationalmuseum/-/media/nms2024/documents/media-releases/220128-dislocations-memory-meaning-fall-of-singapore.pdf"), true)
-	var row := HBoxContainer.new()
-	v.add_child(row)
-	ui.button(row, "Previous", func(): journal_page = posmod(journal_page - 1, 3); show_journal(), true)
-	ui.label(row, "  %d / 3  " % (journal_page + 1), 18, Interface.MUTED)
-	ui.button(row, "Next", func(): journal_page = (journal_page + 1) % 3; show_journal(), true)
-	ui.button(v, "Close journal", close_journal).grab_focus()
+	ui.show_journal(chapter, checkpoint, preload("res://game/ww2_journal.gd").SOURCES, close_journal)
 
 func read_save() -> void:
 	if not persistence_enabled: return

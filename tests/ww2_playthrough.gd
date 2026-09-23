@@ -151,8 +151,7 @@ func run() -> void:
 	check(game.checkpoint == 4 and game.mode == "complete", "Chapter ends with historical epilogue")
 	await capture("epilogue")
 	game.show_journal()
-	game.journal_page = 1
-	game.show_journal()
+	game.ui.open_page("after")
 	await capture("occupation")
 	game.close_journal()
 	check(game.mode == "complete", "Journal returns to epilogue")

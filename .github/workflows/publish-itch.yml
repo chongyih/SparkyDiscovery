@@ -62,6 +62,7 @@ jobs:
           timeout 60 godot --headless --path . --script res://tests/ww2_playthrough.gd -- --test
           timeout 60 godot --headless --path . --script res://tests/ww2_playthrough.gd -- --test --touch
           timeout 60 godot --headless --path . --script res://tests/ww2_residents.gd -- --test
+          timeout 60 godot --headless --path . --script res://tests/ww2_journal.gd -- --test
 
       - name: Export browser and desktop builds
         run: |
