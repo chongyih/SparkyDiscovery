@@ -1,0 +1,76 @@
+{
+  "voice": "Kelvin",
+  "model": "Eleven v3",
+  "settings": {
+    "stability": 0.5
+  },
+  "lines": [
+    {
+      "text": "Sparky, give us a hand. Mei is getting everyone into the shelter. We need water inside.",
+      "file": "opening.mp3",
+      "generation_text": "[nervous] Sparky, give us a hand. [urgent] Mei is getting everyone into the shelter. We need water inside!",
+      "status": "User-selected download imported and normalized",
+      "selected_generation": 2,
+      "generation_id": "fuovNg30Cwe0HFQajDd1",
+      "source_download": "ElevenLabs_2026-09-23T15_42_29__s50_v3.mp3",
+      "source_sha256": "45f8e894648bc34e4ea2fd3255f063261ab45df7104880d00cd0aa0ea50d2ec4"
+    },
+    {
+      "text": "They came down through Malaya. Now they've crossed from Johor. There's fighting on the island.",
+      "file": "invasion.mp3",
+      "generation_text": "[worried] They came down through Malaya. Now they've crossed from Johor. [tense] There's fighting on the island.",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T15_48_17__s50_v3.mp3",
+      "source_sha256": "c8b9d0b51ed3ef18acff9b22197eabe9e1932dcd0b55ce9b34e9784e6186dd75"
+    },
+    {
+      "text": "I'll come with you, Sparky. Stay close. We'll be inside soon.",
+      "file": "stay_close.mp3",
+      "generation_text": "[nervous] I'll come with you, Sparky. [reassuring] Stay close. We'll be inside soon.",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T15_48_37__s50_v3.mp3",
+      "source_sha256": "0267c26af10d1e3bf68eabd9159efa8af868b93fd2977a251772e8b204577fc6"
+    },
+    {
+      "text": "Wait—the shop—",
+      "file": "shop.mp3",
+      "generation_text": "[shocked] Wait—the shop—!",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T15_49_13__s50_v3.mp3",
+      "source_sha256": "762b32111f3f303793c8942a98b7d687b4edc5650e7fb30952f3d69115a57ffc"
+    },
+    {
+      "text": "They said Singapore was a fortress.",
+      "file": "fortress.mp3",
+      "generation_text": "[shaken] They said Singapore was a fortress...",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T15_55_50__s50_v3.mp3",
+      "source_sha256": "9396d6e4c70dc8817e2c1fe111115f11ca75b89d2cd359cf188170f648c3bd5f"
+    },
+    {
+      "text": "I couldn't see anyone. Stay close, Sparky.",
+      "file": "shelter.mp3",
+      "generation_text": "[shaken] I couldn't see anyone. [reassuring] Stay close, Sparky.",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T15_56_12__s50_v3.mp3",
+      "source_sha256": "b8b8fa36bac2bbdadba973dbd9f51c7169919e3ea02dea3612573b85d5a8d96c"
+    },
+    {
+      "text": "Come here, Sparky. I'm here.",
+      "file": "comfort.mp3",
+      "generation_text": "[softly] Come here, Sparky. [reassuring] I'm here.",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T15_56_41__s50_v3.mp3",
+      "source_sha256": "64c521f4776852a951b3740682d177399feeed4e6715158ff3809520f8ba481e"
+    },
+    {
+      "text": "Of course. Right here beside you.",
+      "file": "stay_beside.mp3",
+      "generation_text": "[warmly] Of course. [softly] Right here beside you.",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T15_57_12__s50_v3.mp3",
+      "source_sha256": "f759b3a6dccaf7e8aedcdaccd9113e3113d13929ec12b249e0c5f04d8008ec82"
+    }
+  ],
+  "status": "All user-selected takes imported and normalized."
+}

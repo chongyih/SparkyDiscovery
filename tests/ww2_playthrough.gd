@@ -16,6 +16,10 @@ func frames(count: int) -> void:
 func finish_dialogue() -> void:
 	var limit := 20
 	while game.mode == "dialogue" and limit > 0:
+		if game.task_index == 3 and game.dialogue_context.get("speaker") == "Sparky":
+			var toward_tan: Vector3 = game.world.tan.position - game.player.position
+			toward_tan.y = 0
+			check(game.player.visual.basis.z.normalized().dot(toward_tan.normalized()) > 0.98, "Sparky faces Tan during his shelter questions")
 		game.advance_dialogue()
 		limit -= 1
 	check(limit > 0, "Dialogue advances without a loop")
@@ -49,8 +53,13 @@ func run() -> void:
 	for i in 3:
 		game.player.position = game.chapter.tasks[i].at + Vector3(0, 0.1, 1)
 		check(game.interact(), "Interaction " + str(i))
-		if i == 0: await capture("tan-conversation")
+		if i == 0:
+			check(game.dialogue_voice.playing, "Tan's opening voice plays")
+			check(game.dialogue_voice.stream.resource_path.ends_with("ww2/opening.mp3"), "Tan uses selected WWII opening")
+			await capture("tan-conversation")
 		if i == 1:
+			check(game.dialogue_voice.playing, "Mei's selected voice plays")
+			check(game.dialogue_voice.stream.resource_path.ends_with("ww2/mei_pail.mp3"), "Mei uses her own selected take")
 			var clear_lane := true
 			for route in game.world.resident_routes:
 				for waypoint in range(route.size() - 1):
@@ -70,6 +79,7 @@ func run() -> void:
 			game.update_stage(game.stage_duration)
 		finish_dialogue()
 	check(game.mode == "blast", "Water collection starts siren sequence")
+	check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.ends_with("ww2/mei_get_inside.mp3"), "Mei calls everyone inside during the siren")
 	var facing: Vector3 = (game.world.tan.position - game.player.position).normalized()
 	check(game.player.visual.basis.z.normalized().dot(facing) > 0.98 and game.world.tan.basis.z.normalized().dot(-facing) > 0.98, "Sparky and Tan face each other before the blast")
 	var skip_found := false
@@ -139,6 +149,10 @@ func run() -> void:
 	finish_dialogue()
 	check(game.mode == "staging" and game.stage_kind == "quiet", "Ending shows water being taken to a neighbour")
 	game.world.update_relief(3.8)
+	game.update_stage(0.01)
+	var toward_comfort: Vector3 = game.world.tan.position - game.player.position
+	toward_comfort.y = 0
+	check(game.player.visual.basis.z.normalized().dot(toward_comfort.normalized()) > 0.98, "Sparky keeps facing Tan after their conversation")
 	await capture("handoff")
 	game.world.update_relief(1.0)
 	await capture("relief")

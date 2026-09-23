@@ -38,7 +38,9 @@ func _ready() -> void:
 	save_path = WAR_SAVE
 	chapter = WAR_CHAPTER.duplicate(true)
 	configure_input()
+	dialogue_voice.volume_db = Interface.VOICE_VOLUME_DB
 	add_child(dialogue_voice)
+	load_wartime_voice()
 	setup_lighting()
 	configure_web_resolution()
 	for child in get_children():
@@ -246,6 +248,18 @@ func conversation(script: Array, after: Callable) -> void:
 	lines_done = after
 	next_line()
 
+var wartime_voice: Dictionary = {}
+
+func load_wartime_voice() -> void:
+	for filename in ["lines.json", "mei-lines.json"]:
+		var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://assets/voice/ww2/" + filename))
+		var speaker: String = manifest.get("speaker", "Uncle Tan")
+		for entry in manifest.lines:
+			var path: String = "res://assets/voice/ww2/" + entry.file
+			if ResourceLoader.exists(path):
+				wartime_voice[speaker + ":" + entry.text] = path
+				voice_pages[path.get_file().get_basename()] = [{"text": entry.text, "audio": path}]
+
 func next_line() -> void:
 	if lines.is_empty():
 		lines_done.call()
@@ -258,7 +272,8 @@ func next_line() -> void:
 	else:
 		world.tan.pose = "speak" if line[0] == "Uncle Tan" else "listen"
 		world.mei.pose = "beckon" if task_index == 2 else ("speak" if line[0] == "Mei" else "listen")
-	show_dialogue(line[0], line[1], next_line)
+	var voice_path: String = wartime_voice.get(line[0] + ":" + line[1], "")
+	show_dialogue(line[0], line[1], next_line, voice_path)
 
 func complete_task() -> void:
 	task_index += 1
@@ -276,6 +291,10 @@ func start_blast() -> void:
 	frame_wartime_conversation("Uncle Tan")
 	war_mix.start_siren()
 	blast_overlay()
+	var call_path: String = wartime_voice.get("Mei:Sparky! Tan! Get inside!", "")
+	if not call_path.is_empty():
+		dialogue_voice.stream = load(call_path)
+		dialogue_voice.play()
 
 func blast_overlay() -> void:
 	ui.new_overlay(false)
@@ -326,6 +345,7 @@ func pause_game() -> void:
 	quiet.button_pressed = audio_enabled
 	quiet.toggled.connect(func(value: bool):
 		audio_enabled = value
+		dialogue_voice.volume_db = Interface.VOICE_VOLUME_DB if value else -80
 		war_audio.volume_db = (-45 if war_mix.indoors else -27) if value else -80
 		blast_audio.volume_db = -14 if value else -80
 		war_mix.mute(not value)
@@ -446,7 +466,7 @@ func frame_wartime_conversation(speaker: String) -> void:
 				cut_camera(Vector3(9.8, 2.5, 4.5), Vector3(6.4, 1.0, 1.6), 62)
 		3:
 			if mode == "dialogue":
-				var focus: Vector3 = world.tan.position if speaker == "Uncle Tan" else world.mei.position
+				var focus: Vector3 = world.tan.position if speaker in ["Uncle Tan", "Sparky"] else world.mei.position
 				if speaker == "Neighbour": focus = world.evacuees[0].position
 				var toward := focus - player.position
 				player.visual.rotation.y = atan2(toward.x, toward.z)
@@ -460,7 +480,7 @@ func stage_overlay() -> void:
 	ui.new_overlay(false)
 	ui.hud.visible = false
 	var panel := sequence_panel()
-	var captions := {"pickup": "Sparky lifts the water pail.", "setdown": "[The door closes. Outside sounds fade.]", "quiet": "Mei brings water to a neighbour. Uncle Tan rests a hand on Sparky’s shoulder."}
+	var captions := {"pickup": "Sparky lifts the water pail.", "setdown": "[The door closes. Outside sounds fade.]", "quiet": "Mei brings water to a neighbour."}
 	ui.label(panel, captions[stage_kind], 19, Interface.PAPER)
 
 func begin_stage(kind: String, duration: float) -> void:
@@ -500,8 +520,7 @@ func begin_stage(kind: String, duration: float) -> void:
 		frame_wartime_conversation("Mei")
 	else:
 		cut_camera(Vector3(0, 2.7, -3.5), Vector3(0, 1, -7.8), 78)
-		var neighbour_direction: Vector3 = world.evacuees[0].position - player.position
-		player.visual.rotation.y = atan2(neighbour_direction.x, neighbour_direction.z)
+		face_tan()
 		world.comfort_target = player.position + Vector3(0.45, 1.05, 0.05)
 		world.begin_pour()
 		war_mix.fade_siren()
@@ -509,6 +528,8 @@ func begin_stage(kind: String, duration: float) -> void:
 	stage_overlay()
 
 func update_stage(delta: float) -> void:
+	if stage_kind == "quiet":
+		face_tan()
 	stage_clock += delta
 	var t := clampf(stage_clock / stage_duration, 0, 1)
 	if stage_kind != "quiet":
@@ -545,7 +566,7 @@ func finish_stage() -> void:
 		world.pail.position = stage_target
 		body_pose.quiet = 1
 		conversation([
-			["Mei", "On the table, beside the cups. Thank you, Sparky."],
+			["Mei", "Thank you, Sparky."],
 			["Neighbour", "Is anyone still outside?"],
 			["Uncle Tan", "I couldn't see anyone. Stay close, Sparky."],
 			["Mei", "Have a little water. You can rest here."],

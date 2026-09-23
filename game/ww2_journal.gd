@@ -70,4 +70,4 @@ static func render(ui, page: VBoxContainer, key: String) -> void:
 			ui.paragraph(page, "Sparky uses the supplied Blender model. Built with Godot Engine (MIT licence).", 18)
 			ui.optional_note(page, "Sound credits", {"tag": "Modern recordings", "note": "Siren: Techtonic, Civil-defense-siren-waver (2008), public domain. Trimmed, volume-adjusted and filtered. Footsteps: Kenney (CC0). Neighbours: Joseph Sardin / BigSoundBank (CC0). Other wartime effects are original synthesis. These are not wartime archival recordings."})
 			ui.text_button(page, "Siren source & licence →", func(): OS.shell_open("https://commons.wikimedia.org/wiki/File:Civil-defense-siren-waver.ogg"))
-			ui.paragraph(page, "Wartime dialogue is text-only.", 17, ui.MUTED)
+			ui.paragraph(page, "AI voices from ElevenLabs: Uncle Tan — Kelvin; Mei — Lilian (Warm, Calm and Captivating). Other dialogue is presented as text.", 17, ui.MUTED)

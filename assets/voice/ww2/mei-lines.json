@@ -1,0 +1,55 @@
+{
+  "voice": "Lilian - Warm, Calm and Captivating",
+  "speaker": "Mei",
+  "model": "Eleven v3",
+  "settings": {
+    "stability": 0.5
+  },
+  "lines": [
+    {
+      "file": "mei_pail.mp3",
+      "text": "The water pail is by the courtyard barrel. Bring it here. I'll make room for the next family.",
+      "generation_text": "[concerned] The water pail is by the courtyard barrel. [urgent] Bring it here. I'll make room for the next family.",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T16_04_27__s50_v3.mp3",
+      "source_sha256": "d6792d7172078d8639798b69e48558a6d760d6a5c68146a875d48632da569a4d"
+    },
+    {
+      "file": "mei_get_inside.mp3",
+      "text": "Sparky! Tan! Get inside!",
+      "generation_text": "[shouting] Sparky! Tan! [urgent] Get inside!",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T16_05_35__s50_v3.mp3",
+      "source_sha256": "64b3fc5ce173b5df582b1d82d2101f9232781bebf3e3699ee8553505a2ed7393"
+    },
+    {
+      "file": "mei_leave_it.mp3",
+      "text": "Leave it, Tan. Come inside!",
+      "generation_text": "[urgent] Leave it, Tan. Come inside!",
+      "status": "User-selected download imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T16_06_07__s50_v3.mp3",
+      "source_sha256": "35021a1555ed22e83798d4d0569dd1e39f46f839d455ffd0112c51cdc1f6158b"
+    },
+    {
+      "file": "mei_table.mp3",
+      "text": "Thank you, Sparky.",
+      "generation_text": "On the table, beside the cups. Thank you, Sparky!",
+      "status": "User-selected replacement imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T16_15_33_Lilian - Warm, Calm and Captivating_pvc_sp100_s50_sb10_v3.mp3",
+      "source_sha256": "de5e22cea3f0ee17325daa7300d3701145e1e6d699561dbd7a9681129967dcea",
+      "edit": {
+        "trim_start_seconds": 2.32,
+        "note": "Cut in the pause after the trailing s of cups; 10 ms fade-in. Original retained."
+      }
+    },
+    {
+      "file": "mei_rest.mp3",
+      "text": "Have a little water. You can rest here.",
+      "generation_text": "Have a little water... You can rest here.",
+      "status": "User-selected replacement imported and normalized",
+      "source_download": "ElevenLabs_2026-09-23T16_14_36_Lilian - Warm, Calm and Captivating_pvc_sp100_s50_sb10_v3.mp3",
+      "source_sha256": "984f6f6467e0d89f9e5f3c2fd7297d5a7dd9c1380acbb8e92321c0dba3d9bc12"
+    }
+  ],
+  "status": "All user-selected takes imported and normalized."
+}
