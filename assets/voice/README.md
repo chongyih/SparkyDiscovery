@@ -20,6 +20,16 @@ Eight AI-generated fictional performances made in ElevenLabs on 23 September 202
 | `signal_found.mp3` | “There, that's it!” | Antenna signal lock caption |
 | `come_sit.mp3` | “Come, come, sit!” | Seating sequence title |
 
-`lines.json` records the exact generation text and resulting durations. Regenerate a take whenever its spoken subtitle changes. Main conversations have replay/mute controls and stop when advanced. Short cues share the same mute level, stop on scene changes, and do not overlap each other. Narration, player choices, history notes and journal entries are unvoiced. Original archival audio is unchanged.
+`lines.json` records the exact generation text and resulting durations. Regenerate a take whenever its spoken subtitle changes. Main conversations stop when advanced. Short cues stop on scene changes and do not overlap each other. Narration, player choices, history notes and journal entries are unvoiced. Original archival audio is unchanged.
 
 ElevenLabs usage rights depend on the account and generation terms; this file does not establish a separate license grant.
+
+## Short dialogue pages
+
+`pages.json` maps the exact original words to short clips under `pages/`.
+`python3 tools/build_voice_pages.py` rebuilds them from the normalized takes;
+cut points lie within detected pauses. No voice is regenerated or reworded.
+Each page plays only its clip and waits for player continuation. Previous returns
+to an earlier page and plays its clip again. Dialogue cards omit replay/mute controls. Historical notes appear
+on the final page. Review the clips by listening before release; detected silence
+and script validation alone do not establish perfect phrase alignment.

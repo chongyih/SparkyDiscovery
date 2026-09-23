@@ -23,6 +23,13 @@ func wait_mode(expected: String, timeout: float) -> void:
 		await process_frame
 	check(game.mode == expected, "Sequence reaches " + expected)
 
+func finish_dialogue() -> void:
+	# Explicitly advance every short page, stopping when its conversation ends.
+	for i in 12:
+		if game.mode != "dialogue":
+			return
+		game.advance_dialogue()
+
 func run() -> void:
 	game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
@@ -91,19 +98,29 @@ func run() -> void:
 			check(game.interact(), "Objective %d accepts nearby interaction" % i)
 		check(game.mode == "dialogue" and game.task_index == i, "Reading has not yet completed objective %d" % i)
 		if i == 0:
-			check(game.dialogue_voice.playing and game.dialogue_voice.stream.get_length() > 10, "Kelvin opening voice plays")
-			var mute: Button = game.ui.overlay.find_child("MuteVoice", true, false)
-			mute.pressed.emit()
-			check(is_zero_approx(game.dialogue_voice.volume_linear), "Dialogue can be muted")
-			mute.pressed.emit()
-			game.dialogue_voice.stop()
-			game.ui.overlay.find_child("ReplayVoice", true, false).pressed.emit()
-			check(game.dialogue_voice.playing and game.task_index == 0, "Replay does not advance the conversation")
+			check(game.dialogue_voice.playing and game.dialogue_voice.stream.get_length() > 1, "Kelvin opening voice plays")
+			check(game.ui.overlay.find_child("ReplayVoice", true, false) == null and game.ui.overlay.find_child("MuteVoice", true, false) == null, "Dialogue omits audio controls")
+			await create_timer(game.dialogue_voice.stream.get_length() + 0.2).timeout
+			check(game.dialogue_page == 0 and game.mode == "dialogue", "Finished audio waits for the reader")
+			game.advance_dialogue()
+			check(game.dialogue_page == 1 and game.checkpoint == 0, "Next page does not complete the task")
+			check(game.dialogue_voice.stream.resource_path.ends_with("02.mp3"), "Next page plays only its matching clip")
+			game.previous_dialogue_page()
+			check(game.dialogue_page == 0 and game.dialogue_voice.stream.resource_path.ends_with("01.mp3"), "Previous returns to matching words and voice")
+			game.advance_dialogue()
+			game.advance_dialogue()
+			await create_timer(2.78).timeout
+			check(game.player.nod_amount > 0.1, "Sparky nods after the antenna request")
+			var head_rotation: Quaternion = game.player.skeleton.get_bone_pose_rotation(game.player.skeleton.find_bone("head"))
+			check(head_rotation.angle_to(game.player.nod_rest) > 0.02, "Nod visibly rotates the head bone")
+			game.advance_dialogue()
+			check(is_zero_approx(game.player.nod_amount) and game.player.nod_tween == null, "Advancing cancels the nod cleanly")
 		else:
 			check(game.dialogue_voice.stream == null, "Narration remains text-only")
-		game.advance_dialogue()
+		finish_dialogue()
 		check(not game.dialogue_voice.playing, "Continuing stops dialogue voice %d" % i)
 		check(game.task_index == i + 1 and game.checkpoint == i + 1, "Objective %d advances checkpoint" % i)
+		check(is_instance_valid(game.ui.memory_notice), "Completed objective adds a memory notice")
 	check(not game.world.spare_aerial.visible and game.carried_aerial.visible, "Collecting the aerial moves it from the table to Sparky")
 	game.save_path = "res://artifacts/test-progress.cfg"
 	game.persistence_enabled = true
@@ -165,7 +182,14 @@ func run() -> void:
 	await frames(12)
 	check(game.player.position.is_equal_approx(seated_at), "Seated Sparky stays on the bench instead of falling or sliding")
 	check(not game.world.stations[0].visible and game.world.community.residents[5].root.visible, "The waiting neighbour joins the seated gathering")
-	game.set_broadcast_view("walk")
+	var options: PopupMenu = game.ui.archive_options_menu.get_popup()
+	options.id_pressed.emit(0)
+	check(not game.ui.archive_caption.visible and not options.is_item_checked(0), "Options menu toggles captions")
+	options.id_pressed.emit(0)
+	options.id_pressed.emit(1)
+	check(game.ui.archive_player.volume_db > -1 and options.is_item_checked(1), "Options menu toggles sound")
+	options.id_pressed.emit(1)
+	game.ui.archive_view_menu.get_popup().id_pressed.emit(2)
 	check(game.player.enabled and game.camera.current, "Sparky can walk around while the television plays")
 	check(not game.player.seated and game.player.position.x < 1.0, "Walking restores the standing pose in the clear aisle")
 	game.set_broadcast_view("television")
@@ -189,20 +213,20 @@ func run() -> void:
 	game.ui.archive_player.stream_position = game.ui.archive_player.get_stream_length() - 1.5
 	await wait_mode("dialogue", 8)
 	check(game.mode == "dialogue", "Actual end-of-file returns automatically to the historical reflection")
-	check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.ends_with("after_broadcast.mp3"), "Post-broadcast reply plays its matching voice")
+	check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.contains("pages/after_broadcast/"), "Post-broadcast reply plays its matching voice")
 	check(game.world.community.residents[0].tear.visible, "Emotional reactions develop during the actual broadcast")
-	game.advance_dialogue()
+	finish_dialogue()
 	check(game.mode == "reflection" and game.checkpoint == 2, "The closing conversation comes before chapter completion")
 	for topic in ["homes", "jobs", "future"]:
 		game.ask_reflection(topic)
 		check(game.mode == "dialogue" and game.reflection_topics.has(topic), "Uncle Tan answers about " + topic)
-		check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.ends_with(topic + ".mp3"), "Matching optional reply voice: " + topic)
-		game.advance_dialogue()
+		check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.contains("pages/" + topic + "/"), "Matching optional reply voice: " + topic)
+		finish_dialogue()
 		check(not game.dialogue_voice.playing, "Reply stops when returning to choices")
 		check(game.mode == "reflection", "Answers return to the optional conversation choices")
 	game.finish_reflection()
-	check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.ends_with("farewell.mp3"), "Farewell is voiced")
-	game.advance_dialogue()
+	check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.contains("pages/farewell/"), "Farewell is voiced")
+	finish_dialogue()
 	check(game.mode == "complete" and game.task_index == 3, "Chapter reaches completion")
 	game.show_journal()
 	game.close_journal()
@@ -227,12 +251,12 @@ func run() -> void:
 	await create_timer(0.9).timeout
 	game.finish_tuning()
 	game.staging.finish_arrival()
-	game.finish_archive()
+	game.ui.overlay.find_child("ArchiveSkip", true, false).pressed.emit()
 	check(game.mode == "dialogue", "Skipping footage also reaches the reflection")
-	game.advance_dialogue()
+	finish_dialogue()
 	game.finish_reflection()
-	check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.ends_with("farewell.mp3"), "Farewell is voiced")
-	game.advance_dialogue()
+	check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.contains("pages/farewell/"), "Farewell is voiced")
+	finish_dialogue()
 	check(game.mode == "complete", "Players can finish without choosing a reflection topic")
 	game.queue_free()
 	await process_frame

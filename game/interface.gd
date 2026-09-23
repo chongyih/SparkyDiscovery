@@ -29,9 +29,15 @@ var caption_panel: PanelContainer
 var archive_clock: Label
 var archive_pause_button: Button
 var archive_progress: ProgressBar
-var archive_views := {}
-## The journal remembers its open spread, like a bookmark.
+var archive_view_menu: MenuButton
+var archive_options_menu: MenuButton
+## The journal opens on the current adventure; deeper reading stays optional.
 var journal_spread := 0
+var journal_page_count := 2
+var journal_close: Callable
+var journal_layout_size := Vector2.ZERO
+var memory_notice: Control
+var memory_tween: Tween
 var journal_pages: Array = []
 var journal_data := {}
 var captions: Array = []
@@ -47,8 +53,10 @@ const VOICE_VOLUME_DB := -3.6
 func _ready() -> void:
 	# Bundled so browsers, which cannot reach system fonts, show the same type as desktop.
 	main_font = load("res://assets/fonts/Inter.ttf")
+	main_font.oversampling = 4.0
 	heading_font = FontVariation.new()
 	heading_font.base_font = load("res://assets/fonts/Gelasio.ttf")
+	heading_font.base_font.oversampling = 4.0
 	# Gelasio has no check mark; Inter supplies it.
 	heading_font.fallbacks = [main_font]
 	root = Control.new()
@@ -244,6 +252,7 @@ func gap(parent: Node, height := 12) -> void:
 	parent.add_child(c)
 
 func clear_overlay() -> void:
+	clear_memory_notice()
 	if is_instance_valid(archive_player):
 		archive_player.stop()
 	archive_player = null
@@ -311,7 +320,7 @@ func show_menu(start: Callable, journal: Callable, resume: Callable, can_resume:
 	else:
 		button(v, "Step into 1965   →", start).grab_focus()
 	gap(v, 2)
-	button(v, "Historical notes & controls", journal, true)
+	button(v, "Sparky’s journal", journal, true)
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -390,7 +399,7 @@ func build_hud(chapter: Dictionary, on_journal: Callable, on_pause: Callable) ->
 	hint_style.content_margin_right = 16
 	hint.add_theme_stylebox_override("panel", hint_style)
 	hud.add_child(hint)
-	label(hint, "Left thumb  Walk      Right thumb  Look      Double-tap  Centre camera" if TouchControls.available() else "WASD  Walk      Mouse  Look      Scroll  Zoom      R  Centre camera      E  Interact", 14, PAPER)
+	label(hint, "Left thumb · Walk     Right thumb · Look" if TouchControls.available() else "WASD · Walk     Mouse · Look", 14, PAPER)
 	var fade := hint.create_tween()
 	fade.tween_interval(18.0)
 	fade.tween_property(hint, "modulate:a", 0.0, 1.5)
@@ -413,6 +422,43 @@ func build_hud(chapter: Dictionary, on_journal: Callable, on_pause: Callable) ->
 		key_cap(prompt_row, "E", 16, GOLD)
 	prompt_label = label(prompt_row, "", 18, PAPER)
 	prompt.visible = false
+
+func clear_memory_notice() -> void:
+	if memory_tween:
+		memory_tween.kill()
+	if is_instance_valid(memory_notice):
+		memory_notice.queue_free()
+	memory_notice = null
+
+func show_memory_notice(checkpoint: int) -> void:
+	clear_memory_notice()
+	if checkpoint < 1 or checkpoint > 3:
+		return
+	var holder := Control.new()
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var compact := journal_display_size().x < 1100 or journal_display_size().y < 650
+	var ui_scale := 1.0 / maxf(get_viewport().get_screen_transform().get_scale().x, 0.01) if compact else 1.0
+	holder.size = get_viewport().get_visible_rect().size / ui_scale
+	holder.scale = Vector2.ONE * ui_scale
+	root.add_child(holder)
+	memory_notice = holder
+	holder.name = "MemoryNotice"
+	var panel := PanelContainer.new()
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	panel.offset_left = -minf(350, holder.size.x - 16)
+	panel.offset_right = -16
+	panel.offset_top = 16 if compact else 110
+	panel.add_theme_stylebox_override("panel", card_style())
+	holder.add_child(panel)
+	var words := illustrated_row(panel, ["uncle-tan", "antenna", "television"][checkpoint - 1], 44)
+	label(words, "Memory added", 19, INK, true)
+	paragraph(words, "See it in your journal." if TouchControls.available() else "Press J to see it.", 15, MUTED)
+	memory_tween = create_tween()
+	memory_tween.tween_interval(4.0)
+	memory_tween.tween_property(holder, "modulate:a", 0.0, 0.5)
+	memory_tween.tween_callback(holder.queue_free)
 
 func set_objective(text: String, done: int, _total: int) -> void:
 	objective.text = text
@@ -474,10 +520,16 @@ func card_style(bg := PAPER) -> StyleBoxFlat:
 	return s
 
 ## A card centred at the bottom of the screen, at a comfortable reading width.
-func bottom_card(width := 840.0) -> VBoxContainer:
+func bottom_card(width := 840.0, readable := false) -> VBoxContainer:
 	var holder := VBoxContainer.new()
 	holder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	holder.offset_bottom = -32
+	if readable and (journal_display_size().x < 1100 or journal_display_size().y < 650):
+		var ui_scale := 1.0 / maxf(get_viewport().get_screen_transform().get_scale().x, 0.01)
+		holder.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		holder.size = get_viewport().get_visible_rect().size / ui_scale - Vector2(0, 12)
+		holder.scale = Vector2.ONE * ui_scale
+		width = minf(720, journal_display_size().x - 24)
 	holder.alignment = BoxContainer.ALIGNMENT_END
 	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	overlay.add_child(holder)
@@ -521,47 +573,70 @@ func note_card(parent: Node, note: Dictionary) -> void:
 	label(v, note.tag.to_upper(), 12, TEAL)
 	paragraph(v, note.note, 17)
 	if note.has("source"):
-		label(v, "Source: %s  ·  links in the journal" % note.source, 13, MUTED)
+		paragraph(v, "Source: %s  ·  links in the journal" % note.source, 13, MUTED)
 
-func show_dialogue(speaker: String, text: String, next: Callable, voice: AudioStreamPlayer = null, note: Dictionary = {}, narration := false) -> void:
+## Keep extra context available without showing another text block immediately.
+func optional_note(parent: Node, title: String, note: Dictionary) -> void:
+	var details := VBoxContainer.new()
+	var toggle := small_button(parent, title + "  +", func(): pass)
+	toggle.name = "HistoryDetails"
+	toggle.toggle_mode = true
+	parent.add_child(details)
+	note_card(details, note)
+	details.visible = false
+	toggle.toggled.connect(func(expanded: bool):
+		details.visible = expanded
+		toggle.text = title + ("  −" if expanded else "  +")
+	)
+
+func show_dialogue(speaker: String, text: String, next: Callable, _voice: AudioStreamPlayer = null, note: Dictionary = {}, narration := false, page_number := 1, page_count := 1, previous: Callable = Callable()) -> void:
 	new_overlay(false)
 	if is_instance_valid(hud):
 		hud.visible = false
 	bottom_shade()
-	var v := bottom_card()
+	var v := bottom_card(minf(840, get_viewport().get_visible_rect().size.x - 40), true)
+	var header := HBoxContainer.new()
+	header.add_theme_constant_override("separation", 12)
+	v.add_child(header)
 	if narration:
-		label(v, speaker.to_upper(), 13, TEAL)
+		label(header, speaker.to_upper(), 13, TEAL)
 	else:
-		name_tag(v, speaker)
+		name_tag(header, speaker)
+	fill(header)
+	if page_count > 1:
+		var counter := label(header, "%d / %d" % [page_number, page_count], 14, MUTED)
+		counter.name = "DialoguePageCount"
+		counter.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var body := VBoxContainer.new()
 	body.add_theme_constant_override("separation", 10)
-	v.add_child(body)
+	if journal_display_size().x < 1100 or journal_display_size().y < 650:
+		var scroll := ScrollContainer.new()
+		scroll.custom_minimum_size.y = clampf(journal_display_size().y - 310, 80, 180)
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		scroll.follow_focus = true
+		v.add_child(scroll)
+		body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		scroll.add_child(body)
+	else:
+		v.add_child(body)
+	body.name = "DialogueText"
 	for part in text.split("\n\n"):
 		var line := paragraph(body, part, 21)
 		if narration:
 			line.add_theme_font_override("font", heading_font)
 	if not note.is_empty():
-		note_card(v, note)
+		optional_note(body, "Explore the history", note)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 8)
 	v.add_child(row)
-	if voice:
-		var replay := small_button(row, "Replay voice", func(): voice.play())
-		replay.name = "ReplayVoice"
-		var mute := small_button(row, "Unmute voice" if is_zero_approx(voice.volume_linear) else "Mute voice", func(): pass)
-		mute.name = "MuteVoice"
-		mute.pressed.connect(func():
-			if is_zero_approx(voice.volume_linear):
-				voice.volume_db = VOICE_VOLUME_DB
-			else:
-				voice.volume_linear = 0.0
-			mute.text = "Unmute voice" if is_zero_approx(voice.volume_linear) else "Mute voice"
-		)
 	fill(row)
-	if not TouchControls.available():
-		key_cap(row, "E")
-		gap(row, 0)
-	button(row, "Continue  →", next).grab_focus()
+	if page_number > 1 and previous.is_valid():
+		small_button(row, "Previous", previous).name = "PreviousDialogue"
+	var advance_text := "Next" if page_number < page_count else "Continue"
+	advance_text += "  →" if TouchControls.available() else "  [E]"
+	var advance := button(row, advance_text, next)
+	advance.name = "NextDialogue"
+	advance.grab_focus()
 
 func show_sequence(title: String, text: String, skip: Callable, skip_label: String) -> void:
 	new_overlay(false)
@@ -616,16 +691,13 @@ func show_reflection(topics: Dictionary, asked: Dictionary, choose: Callable, fi
 
 func show_chapter_end(chapter: Dictionary, replay: Callable, journal: Callable) -> void:
 	var v := modal(760)
-	label(v, "CHAPTER ONE COMPLETE  ·  NEW JOURNAL ENTRY", 13, TEAL)
-	label(v, chapter.year + " · " + chapter.short, 40, INK, true)
-	paragraph(v, chapter.fact, 21)
-	gap(v, 4)
-	rule(v)
-	gap(v, 4)
-	label(v, "INDEPENDENCE WAS A BEGINNING", 12, TEAL)
-	paragraph(v, chapter.bridge, 18, MUTED)
+	label(v, "CHAPTER COMPLETE", 14, TEAL)
+	label(v, "Everyone watched together.", 36, INK, true)
+	paragraph(v, "Singapore became independent on 9 August 1965.", 22)
+	gap(v, 8)
+	optional_note(v, "What happened next?", {"tag": "After independence", "note": chapter.bridge})
 	gap(v)
-	button(v, "Open Sparky’s journal", journal).grab_focus()
+	button(v, "See my memories", journal).grab_focus()
 	button(v, "Return to title", replay, true)
 
 func show_tuner(done: Callable, cancel: Callable, tuned: Callable = Callable()) -> void:
@@ -643,7 +715,7 @@ func show_tuner(done: Callable, cancel: Callable, tuned: Callable = Callable()) 
 	v.add_theme_constant_override("separation", 8)
 	label(v, "Find a clear picture", 32 if touch else 28, INK, true)
 	gesture.hint = label(v, "Move the antenna until the snow clears.", 26 if touch else 19, TEAL)
-	label(v, "Swipe across the TV view, or tap the arrows." if touch else "Drag across the TV view, tap the arrows, or use ← →.", 24 if touch else 16, MUTED)
+	label(v, "Swipe left or right to tune." if touch else "Drag left or right, or press ← → to tune.", 24 if touch else 16, MUTED)
 	gesture.progress = ProgressBar.new()
 	gesture.progress.custom_minimum_size.y = 8
 	gesture.progress.show_percentage = false
@@ -714,6 +786,9 @@ func show_archive(done: Callable, change_view: Callable) -> VideoStreamPlayer:
 	controls.add_child(row)
 	archive_pause_button = small_button(row, "Pause", toggle_video_pause)
 	archive_pause_button.custom_minimum_size.x = 96
+	var skip := small_button(row, "Skip →", done)
+	skip.name = "ArchiveSkip"
+	skip.tooltip_text = "Skip the broadcast and talk to Uncle Tan"
 	archive_clock = label(row, "00:00 / 01:58", 15, MUTED)
 	archive_clock.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	archive_clock.size_flags_vertical = Control.SIZE_FILL
@@ -731,27 +806,28 @@ func show_archive(done: Callable, change_view: Callable) -> VideoStreamPlayer:
 		archive_progress.add_theme_stylebox_override(part[0], bar)
 	row.add_child(archive_progress)
 	gap(row, 0)
-	# The camera views act as one segmented choice; the current one is filled.
-	archive_views.clear()
-	var views := HBoxContainer.new()
-	views.add_theme_constant_override("separation", 4)
-	row.add_child(views)
-	for view in [["community", "Community view"], ["television", "TV view"], ["walk", "Walk around"]]:
-		archive_views[view[0]] = small_button(views, view[1], func(): change_view.call(view[0]))
+	archive_view_menu = archive_menu(row, "View ▾", "ArchiveViewMenu")
+	var views := archive_view_menu.get_popup()
+	for title in ["Watch together", "TV close-up", "Walk around"]:
+		views.add_radio_check_item(title)
+	views.id_pressed.connect(func(id: int): change_view.call(["community", "television", "walk"][id]))
 	set_archive_view("community")
-	gap(row, 0)
-	var cc := small_button(row, "Captions on", func(): pass)
-	cc.pressed.connect(func():
-		archive_caption.visible = not archive_caption.visible
-		cc.text = "Captions on" if archive_caption.visible else "Captions off"
+	archive_options_menu = archive_menu(row, "Options ▾", "ArchiveOptionsMenu")
+	var options := archive_options_menu.get_popup()
+	options.add_check_item("Captions", 0)
+	options.set_item_checked(0, true)
+	options.add_check_item("Sound", 1)
+	options.set_item_checked(1, archive_player.volume_db > -1.0)
+	options.id_pressed.connect(func(id: int):
+		match id:
+			0:
+				archive_caption.visible = not archive_caption.visible
+				options.set_item_checked(0, archive_caption.visible)
+			1:
+				var silence := archive_player.volume_db > -1.0
+				archive_player.volume_db = -80 if silence else ARCHIVE_VOLUME_DB
+				options.set_item_checked(1, not silence)
 	)
-	var sound := small_button(row, "Sound off" if OS.get_cmdline_user_args().has("--test") else "Sound on", func(): pass)
-	sound.pressed.connect(func():
-		var silence := archive_player.volume_db > -1.0
-		archive_player.volume_db = -80 if silence else ARCHIVE_VOLUME_DB
-		sound.text = "Sound off" if silence else "Sound on"
-	)
-	small_button(row, "Skip  →", done)
 	archive_player.finished.connect(done)
 	archive_player.play()
 	archive_pause_button.grab_focus()
@@ -763,14 +839,35 @@ func toggle_video_pause() -> void:
 	archive_player.paused = not archive_player.paused
 	archive_pause_button.text = "Resume" if archive_player.paused else "Pause"
 
+func archive_menu(parent: Node, title: String, node_name: String) -> MenuButton:
+	var menu := MenuButton.new()
+	menu.name = node_name
+	menu.text = title
+	menu.custom_minimum_size.y = 44
+	menu.add_theme_font_size_override("font_size", 16)
+	set_secondary(menu, true)
+	shrink(menu)
+	parent.add_child(menu)
+	var popup := menu.get_popup()
+	popup.add_theme_font_size_override("font_size", 18)
+	popup.add_theme_constant_override("v_separation", 16)
+	return menu
+
 func set_archive_view(view: String) -> void:
-	for id in archive_views:
-		var b: Button = archive_views[id]
-		if is_instance_valid(b):
-			set_secondary(b, id != view)
-			shrink(b)
+	if not is_instance_valid(archive_view_menu):
+		return
+	var popup := archive_view_menu.get_popup()
+	var ids := ["community", "television", "walk"]
+	for i in ids.size():
+		popup.set_item_checked(i, ids[i] == view)
+	archive_view_menu.tooltip_text = popup.get_item_text(ids.find(view))
 
 func _process(_delta: float) -> void:
+	if not journal_pages.is_empty() and journal_layout_size != journal_display_size():
+		var page_index := journal_spread * journal_page_count
+		show_journal(journal_data.chapter, journal_data.progress, journal_data.sources, journal_close)
+		journal_spread = page_index / journal_page_count
+		render_spread()
 	if not is_instance_valid(archive_player):
 		return
 	var seconds := archive_player.stream_position
@@ -802,16 +899,23 @@ func show_pause(resume: Callable, restart: Callable, menu: Callable, ambience: C
 
 ## Sparky's journal is an open book: two pages per spread, turned with the page buttons or ← →.
 const JOURNAL_PAGES := ["title", "day", "before", "after", "sources", "real", "controls", "credits"]
-const CONTENTS := [
-	["9 August 1965", "day"], ["How we got here", "before"], ["What came next", "after"],
-	["Read the history", "sources"], ["What is real here?", "real"], ["How to play", "controls"], ["Credits", "credits"],
-]
+
+func journal_display_size() -> Vector2:
+	return get_viewport().get_visible_rect().size * get_viewport().get_screen_transform().get_scale().abs()
 
 func show_journal(chapter: Dictionary, progress: int, sources: Array, close: Callable) -> void:
 	new_overlay(true, 0.6)
 	journal_data = {"chapter": chapter, "progress": progress, "sources": sources}
+	journal_spread = 0
+	journal_close = close
+	journal_layout_size = journal_display_size()
+	var compact := journal_layout_size.x < 1100 or journal_layout_size.y < 650
+	journal_page_count = 1 if compact else 2
+	var ui_scale := 1.0 / maxf(get_viewport().get_screen_transform().get_scale().x, 0.01) if compact else 1.0
+	var layout_size := get_viewport().get_visible_rect().size / ui_scale
 	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.size = layout_size
+	center.scale = Vector2.ONE * ui_scale
 	overlay.add_child(center)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 16)
@@ -827,11 +931,11 @@ func show_journal(chapter: Dictionary, progress: int, sources: Array, close: Cal
 	var spread := HBoxContainer.new()
 	spread.add_theme_constant_override("separation", 0)
 	cover.add_child(spread)
-	for side in 2:
+	for side in journal_page_count:
 		if side == 1:
 			spread.add_child(gutter())
 		var page := PanelContainer.new()
-		page.custom_minimum_size = Vector2(560, 680)
+		page.custom_minimum_size = Vector2(minf(560, layout_size.x - 44), maxf(180, layout_size.y - 114)) if compact else Vector2(560, 680)
 		var page_style := style(PAGE, 0)
 		page_style.corner_radius_top_left = 10 if side == 0 else 0
 		page_style.corner_radius_bottom_left = 10 if side == 0 else 0
@@ -841,6 +945,11 @@ func show_journal(chapter: Dictionary, progress: int, sources: Array, close: Cal
 		page_style.content_margin_right = 40 if side == 0 else 50
 		page_style.content_margin_top = 42
 		page_style.content_margin_bottom = 24
+		if compact:
+			page_style.content_margin_left = 18
+			page_style.content_margin_right = 18
+			page_style.content_margin_top = 20
+			page_style.content_margin_bottom = 14
 		page.add_theme_stylebox_override("panel", page_style)
 		spread.add_child(page)
 		var content := VBoxContainer.new()
@@ -851,11 +960,9 @@ func show_journal(chapter: Dictionary, progress: int, sources: Array, close: Cal
 	actions.alignment = BoxContainer.ALIGNMENT_CENTER
 	actions.add_theme_constant_override("separation", 18)
 	column.add_child(actions)
-	var back := button(actions, "Back to the journey", close)
+	var back := button(actions, "Close journal" if TouchControls.available() else "Close journal  [J]", close)
 	back.name = "CloseJournal"
 	back.custom_minimum_size.x = 260
-	if not TouchControls.available():
-		label(actions, "←  →  Turn pages      J  Close", 14, PAPER).vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	render_spread()
 	back.grab_focus()
 
@@ -877,36 +984,58 @@ func gutter() -> TextureRect:
 	return crease
 
 func turn_page(delta: int) -> void:
-	var last := (JOURNAL_PAGES.size() - 1) / 2
+	var last := (JOURNAL_PAGES.size() - 1) / journal_page_count
 	var target := clampi(journal_spread + delta, 0, last)
 	if target != journal_spread:
 		journal_spread = target
-		render_spread(0 if delta < 0 else 1)
+		render_spread(0 if delta < 0 or journal_page_count == 1 else 1)
 
 func open_page(page: String) -> void:
-	journal_spread = JOURNAL_PAGES.find(page) / 2
+	journal_spread = maxi(0, JOURNAL_PAGES.find(page)) / journal_page_count
 	render_spread()
 
 func render_spread(focus_side := -1) -> void:
-	var last := (JOURNAL_PAGES.size() - 1) / 2
+	var last := (JOURNAL_PAGES.size() - 1) / journal_page_count
 	journal_spread = clampi(journal_spread, 0, last)
-	for side in 2:
+	for side in journal_page_count:
 		var content: VBoxContainer = journal_pages[side]
 		for child in content.get_children():
 			content.remove_child(child)
 			child.queue_free()
-		var index := journal_spread * 2 + side
+		var index := journal_spread * journal_page_count + side
 		var body := VBoxContainer.new()
+		body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		body.add_theme_constant_override("separation", 10)
-		content.add_child(body)
+		var scroll := ScrollContainer.new()
+		scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		scroll.follow_focus = true
+		content.add_child(scroll)
+		scroll.add_child(body)
 		call("page_" + JOURNAL_PAGES[index], body)
+		if journal_page_count == 1:
+			for item in body.find_children("*", "Label", true, false):
+				item.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			for item in body.find_children("*", "Button", true, false):
+				item.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+				item.custom_minimum_size.y = 44
 		var footer := HBoxContainer.new()
 		content.add_child(footer)
 		var number := label(footer, str(index + 1), 14, MUTED)
 		number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		var turn: Button
-		if side == 0:
+		if journal_page_count == 1:
+			var previous := text_button(footer, "← Back", func(): turn_page(-1))
+			previous.name = "PreviousPage"
+			previous.custom_minimum_size.y = 44
+			previous.disabled = journal_spread == 0
+			footer.move_child(previous, 0)
+			fill(footer)
+			turn = text_button(footer, "Next →", func(): turn_page(1))
+			turn.custom_minimum_size.y = 44
+			turn.disabled = journal_spread == last
+		elif side == 0:
 			turn = text_button(footer, "←  Previous", func(): turn_page(-1))
 			turn.disabled = journal_spread == 0
 			footer.move_child(turn, 0)
@@ -916,7 +1045,7 @@ func render_spread(focus_side := -1) -> void:
 			fill(footer)
 			turn = text_button(footer, "Next  →", func(): turn_page(1))
 			turn.disabled = journal_spread == last
-		turn.name = "PreviousPage" if side == 0 else "NextPage"
+		turn.name = "PreviousPage" if side == 0 and journal_page_count == 2 else "NextPage"
 		if side == focus_side:
 			var target: Control = turn if not turn.disabled else overlay.find_child("CloseJournal", true, false)
 			target.grab_focus.call_deferred()
@@ -937,86 +1066,112 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func page_heading(page: Node, eyebrow: String, title: String) -> void:
-	label(page, eyebrow, 12, TEAL)
-	label(page, title, 32, INK, true)
+	if journal_page_count == 2 or journal_layout_size.y >= 500:
+		label(page, eyebrow, 12, TEAL)
+	label(page, title, 26 if journal_page_count == 1 else 32, INK, true)
 	gap(page, 2)
 
 func page_title(page: VBoxContainer) -> void:
-	gap(page, 8)
-	label(page, "SPARKY’S JOURNAL", 13, TEAL)
-	label(page, "The road to\nindependence", 42, INK, true)
-	paragraph(page, "Notes kept by a small bear on a big journey.", 17, MUTED)
-	gap(page, 16)
-	rule(page)
-	gap(page, 2)
-	label(page, "CONTENTS", 12, TEAL)
-	for entry in CONTENTS:
-		var row := HBoxContainer.new()
-		page.add_child(row)
-		var link := text_button(row, entry[0], func(): open_page(entry[1]), INK, 17)
-		link.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var number := label(row, str(JOURNAL_PAGES.find(entry[1]) + 1), 15, MUTED)
-		number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-
-func page_day(page: VBoxContainer) -> void:
 	var chapter: Dictionary = journal_data.chapter
 	var progress: int = journal_data.progress
-	page_heading(page, "CHAPTER ONE  ·  9 AUGUST 1965", chapter.title)
-	# Tuning and watching both finish with the broadcast, the chapter's last checkpoint.
-	var done := [progress >= 1, progress >= 2, progress >= 3, progress >= 3]
-	for i in History.JOURNEY.size():
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 14)
-		page.add_child(row)
-		var mark := PanelContainer.new()
-		mark.custom_minimum_size = Vector2(28, 28)
-		mark.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-		var mark_style := style(TEAL if done[i] else Color.TRANSPARENT, 14, 0 if done[i] else 2, Color(MUTED, 0.45))
-		mark_style.set_content_margin_all(0)
-		mark.add_theme_stylebox_override("panel", mark_style)
-		row.add_child(mark)
-		var tick := label(mark, "✓" if done[i] else str(i + 1), 14, PAPER if done[i] else MUTED)
-		tick.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		tick.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		var words := VBoxContainer.new()
-		words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		words.add_theme_constant_override("separation", 1)
-		row.add_child(words)
-		label(words, History.JOURNEY[i][0], 18, INK if done[i] else MUTED)
-		paragraph(words, History.JOURNEY[i][1] if done[i] else "Not written yet.", 15, MUTED)
-	gap(page, 4)
+	page_heading(page, "SPARKY’S JOURNAL", "Today’s adventure")
+	label(page, "Singapore · 9 August 1965", 18, TEAL)
+	gap(page, 14)
+	label(page, "What’s next?" if progress < 3 else "We did it!", 26, INK, true)
+	paragraph(page, chapter.tasks[progress].name if progress < 3 else "The neighbours watched together.", 24)
+	paragraph(page, "Follow the gold marker." if progress < 3 else "You helped bring the TV to life.", 18, MUTED)
+	gap(page, 18)
+	rule(page)
+	label(page, "Curious?", 22, INK, true)
+	text_button(page, "How did Singapore get here?  →", func(): open_page("before"), TEAL, 18)
+	text_button(page, "What happened next?  →", func(): open_page("after"), TEAL, 18)
+	fill(page)
+	text_button(page, "About the history  →", func(): open_page("real"))
+	text_button(page, "How to play & credits  →", func(): open_page("controls"))
+
+## Decorative drawings always sit beside readable labels, never replace them.
+func journal_illustration(parent: Node, asset: String, size := 76) -> void:
+	var picture := TextureRect.new()
+	picture.texture = load("res://assets/journal/" + asset + ".svg")
+	picture.custom_minimum_size = Vector2(size, size)
+	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	picture.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(picture)
+
+func illustrated_row(parent: Node, asset: String, size := 64) -> VBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 16)
+	parent.add_child(row)
+	journal_illustration(row, asset, size)
+	var words := VBoxContainer.new()
+	words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	words.add_theme_constant_override("separation", 5)
+	row.add_child(words)
+	return words
+
+func page_day(page: VBoxContainer) -> void:
+	var progress: int = journal_data.progress
+	page_heading(page, "MY MEMORIES", "A day to remember")
+	var memories := mini(progress, 3)
+	if memories == 0:
+		gap(page, 18)
+		label(page, "A new page…", 26, INK, true)
+		paragraph(page, "Meet Uncle Tan to start your first memory.", 21, MUTED)
+	for i in memories:
+		gap(page, 8)
+		var words := illustrated_row(page, ["uncle-tan", "antenna", "television"][i])
+		label(words, ["Met Uncle Tan", "Found the antenna", "A picture at last!"][i], 22, INK, true)
+		paragraph(words, ["His TV needed a little help.", "I found the spare antenna.", "We fixed the TV for everyone."][i], 19)
+		if i == 1:
+			optional_note(page, "Why share a TV?", {"tag": "History", "note": "Few families owned a television in 1965, so neighbours often watched together."})
 	if progress >= 3:
-		note_card(page, {"tag": "Entry complete", "note": chapter.fact})
-	else:
-		paragraph(page, "Keep going, Sparky. The rest of this page is still blank.", 15, MUTED)
+		gap(page, 12)
+		note_card(page, {"tag": "This day in history", "note": "Singapore became independent on 9 August 1965."})
+	fill(page)
+	paragraph(page, "Sparky’s memories are part of our imagined story.", 15, MUTED)
 
 func page_before(page: VBoxContainer) -> void:
-	page_heading(page, "BEFORE 9 AUGUST 1965", "How we got here")
-	for item in History.TIMELINE:
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 16)
-		page.add_child(row)
-		var when := label(row, item[0], 17, TEAL, true)
-		when.custom_minimum_size.x = 130
-		when.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-		paragraph(row, item[1], 17).size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gap(page, 6)
-	rule(page)
-	gap(page, 2)
-	paragraph(page, journal_data.chapter.background, 16, MUTED)
+	page_heading(page, "THREE MOMENTS IN HISTORY", "How we got here")
+	for i in History.TIMELINE.size():
+		var item: Array = History.TIMELINE[i]
+		var words := illustrated_row(page, "calendar", 60)
+		label(words, item[0], 20, TEAL, true)
+		paragraph(words, item[1], 19)
+		if i < History.TIMELINE.size() - 1:
+			var connector := ColorRect.new()
+			connector.color = GOLD
+			connector.custom_minimum_size = Vector2(3, 18)
+			connector.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+			connector.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			var margin := MarginContainer.new()
+			margin.add_theme_constant_override("margin_left", 29)
+			page.add_child(margin)
+			margin.add_child(connector)
+	gap(page, 12)
+	optional_note(page, "Why did Singapore separate?", {"tag": "A closer look", "note": journal_data.chapter.background})
+	fill(page)
+	text_button(page, "Read the sources  →", func(): open_page("sources"))
 
 func page_after(page: VBoxContainer) -> void:
 	var unlocked: bool = journal_data.progress >= 3
-	page_heading(page, "UNCLE TAN’S WORRIES", "What came next")
-	paragraph(page, journal_data.chapter.bridge, 16, MUTED)
+	page_heading(page, "AFTER INDEPENDENCE", "What came next?")
+	if journal_page_count == 2 or journal_layout_size.y >= 500:
+		paragraph(page, "A new country. Big questions.", 21, TEAL)
+	paragraph(page, "Choose a topic to explore." if unlocked else "Finish the broadcast to explore these topics.", 18, MUTED)
+	var titles := {"homes": "Homes", "jobs": "Jobs", "future": "Singapore’s future"}
 	for id in History.REFLECTIONS:
 		var topic: Dictionary = History.REFLECTIONS[id]
-		gap(page, 2)
-		label(page, topic.question, 18, INK, true)
+		gap(page, 8)
+		var words := illustrated_row(page, id, 60)
 		if unlocked:
-			paragraph(page, topic.note + "  (" + topic.source + ")", 15)
+			optional_note(words, titles[id], topic)
 		else:
-			paragraph(page, "Ask Uncle Tan after the broadcast to fill this in.", 15, MUTED)
+			label(words, titles[id], 20, MUTED, true)
+		paragraph(words, topic.question, 17, MUTED)
+	fill(page)
+	text_button(page, "Read the sources  →", func(): open_page("sources"))
 
 func page_sources(page: VBoxContainer) -> void:
 	page_heading(page, "SOURCES", "Read the history")

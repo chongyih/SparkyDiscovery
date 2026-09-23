@@ -68,14 +68,14 @@ static func chapter() -> Dictionary:
 	return {
 		"year": "1965", "date": "9 AUGUST 1965", "title": "A nation of our own",
 		"place": "Under the block, in a neighbourhood like many others", "short": "Independence",
-		"intro": "That morning, the radio carried news that changed everything. Singapore had separated from Malaysia. It was now a sovereign, independent nation.\n\nFew families had a television yet. Help the neighbours get the set under the block working, so everyone can watch the Prime Minister speak.",
+		"intro": "Singapore has just become independent.\n\nHelp Sparky fix the neighbours’ TV so everyone can watch the news together.",
 		"fact": "Singapore became a sovereign, independent nation on 9 August 1965. Independence brought urgent questions about jobs, defence and relations with other countries.",
 		"background": "Singapore joined Malaysia in 1963. Political and economic disagreements strained relations, and racial riots in 1964 deepened tensions. Negotiations among leaders led to separation in 1965; the outcome cannot be reduced to a single disagreement.",
 		"bridge": "Independence was the start of a new task. Singapore had to build its economy, make friends abroad and strengthen its defence. Homes and industry, already underway before 1965, stayed priorities.",
 		"tasks": [
 			# Keep recorded dialogue and subtitles in sync; settings are in assets/voice/README.md.
-			{"id": "neighbour", "name": "Talk to Uncle Tan outside the shops", "kind": "person", "at": Vector3(-5, 0, 15.5), "speaker": "Uncle Tan", "voice": "res://assets/voice/neighbour_01.mp3", "text": "Eh, Sparky! Got important news today. Everyone coming to watch, but the TV cannot receive properly.\n\nCan help me bring the spare antenna from the table? We all want to hear the announcement together. Aiyoh... so much happening today. Don't know what comes next."},
-			{"id": "aerial", "name": "Fetch the spare antenna from the table", "kind": "aerial", "at": Vector3(11.5, 0, 1.9), "speaker": "The spare antenna", "text": "Sparky picks up the antenna. Few families owned a television in 1965, so neighbours often squeezed around one set to watch together.\n\nBring it to the TV under the block. Everyone is waiting."},
-			{"id": "television", "name": "Fix the antenna and tune the TV", "kind": "tv", "at": Vector3(0, 0, -5.7), "speaker": "Television"},
+			{"id": "neighbour", "name": "Talk to Uncle Tan", "kind": "person", "at": Vector3(-5, 0, 15.5), "speaker": "Uncle Tan", "voice": "res://assets/voice/neighbour_01.mp3", "text": "Eh, Sparky! Got important news today. Everyone coming to watch, but the TV cannot receive properly.\n\nCan help me bring the spare antenna from the table? We all want to hear the announcement together. Aiyoh... so much happening today. Don't know what comes next."},
+			{"id": "aerial", "name": "Get the antenna", "kind": "aerial", "at": Vector3(11.5, 0, 1.9), "speaker": "The spare antenna", "text": "Found it! Bring the antenna to the TV. Everyone is waiting."},
+			{"id": "television", "name": "Fix the TV", "kind": "tv", "at": Vector3(0, 0, -5.7), "speaker": "Television"},
 		],
 	}

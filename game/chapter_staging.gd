@@ -93,7 +93,7 @@ func arrive() -> void:
 	game.play_voice_cue(load("res://assets/voice/come_sit.mp3"))
 	game.ui.show_sequence("Come, come, sit!", "The neighbours shift up to make space. Sparky squeezes onto the bench.", finish_arrival, "Skip")
 	game.frame_community()
-	var seat: Transform3D = game.world.community.seat_transform(0, -0.8, 0.28)
+	var seat: Transform3D = game.world.community.sparky_seat()
 	var approach := seat.origin + seat.basis.z * 0.85
 	approach.y = 0.1
 	game.player.scripted_motion = true
@@ -109,7 +109,7 @@ func arrive() -> void:
 	sparky.parallel().tween_property(game.player, "sit_blend", 1.0, 0.9).set_trans(Tween.TRANS_SINE)
 	sparky.tween_callback(func(): actor_ready(token))
 	var uncle := sequence()
-	var uncle_seat: Transform3D = game.world.community.seat_transform(1, -0.7)
+	var uncle_seat: Transform3D = game.world.community.seat_transform(0, 0.8)
 	var uncle_approach := uncle_seat.origin + uncle_seat.basis.z * 0.85
 	# The community shot faces away from the street, so the walk from the shops happened off
 	# camera for about five seconds. Start him just outside the frame on the same route instead.

@@ -6,6 +6,7 @@ const BENCH_LAYOUT = [
 	{"at": Vector3(-2.8, 0, 0), "facing": 2.55},
 	{"at": Vector3(2.8, 0, 0), "facing": -2.55},
 ]
+const WAITING_PAIRS := [[0, 1], [2, 3], [4, 6]]
 var builder: Node3D
 var residents: Array[Dictionary] = []
 var playback_time := 0.0
@@ -58,10 +59,10 @@ func build(world: Node3D) -> void:
 	# The reacting pair share the foreground-left bench, clear of Sparky and the TV.
 	resident(seat_transform(2, -0.6), Color("80799c"), Color("c19773"), "wipe", true)
 	resident(seat_transform(2, 0.6), Color("a57b58"), Color("ba8c67"), "comfort", true)
-	resident(seat_transform(0, 0.8), Color("e2d4b4"), Color("8f6248"), "bow", false)
+	resident(seat_transform(1, -0.7), Color("e2d4b4"), Color("8f6248"), "bow", false)
 	resident(seat_transform(1, 0.7), Color("467b79"), Color("b88864"), "still", false)
 	resident(seat_transform(3, -0.7), Color("879779"), Color("d0a483"), "still", false)
-	resident(seat_transform(1, -0.7), Color("b86750"), Color("bf926f"), "arrival", false)
+	resident(seat_transform(0, 0.8), Color("b86750"), Color("bf926f"), "arrival", false)
 	residents[-1].root.visible = false
 	# A child close to an adult gives the group a family scale.
 	resident(seat_transform(3, 0.7, 0.15), Color("d4aa61"), Color("c99d7a"), "child", false)
@@ -90,6 +91,12 @@ func build(world: Node3D) -> void:
 	glow.omni_range = 4.5
 	add_child(glow)
 	builder.bake_static(self, [fan] + residents.map(func(resident_data): return resident_data.root))
+
+## Sparky's plush torso needs more backrest clearance than the human residents.
+func sparky_seat() -> Transform3D:
+	var seat := seat_transform(0, -0.8, 0.28)
+	seat.origin += seat.basis.z * 0.22
+	return seat
 
 func seat_transform(bench_index: int, offset: float, height := 0.0) -> Transform3D:
 	var bench: Dictionary = BENCH_LAYOUT[bench_index]
@@ -213,7 +220,12 @@ func set_broadcast(active: bool) -> void:
 	conversing = false
 	glow.light_energy = 0.65 if active else 0
 	for resident_data in residents:
-		resident_data["starting_gaze"] = resident_data.head.rotation.y
+		resident_data["starting_gaze"] = resident_data.head.rotation.y if active else 0.0
+		resident_data["starting_tilt"] = resident_data.head.rotation if active else Vector3.ZERO
+		for arm in resident_data.arms:
+			var side: int = arm.side
+			arm["starting_elbow"] = arm.get("waiting_elbow", Vector3(side * 0.35, 0.9, 0.15)) if active else Vector3(side * 0.35, 0.9, 0.15)
+			arm["starting_hand"] = arm.hand.position if active else Vector3(side * 0.21, 0.72, 0.38)
 		if resident_data.reaction == "arrival":
 			resident_data.root.visible = active
 	update_reactions()
@@ -247,6 +259,9 @@ func update_reactions() -> void:
 			head.rotation.z = emotion * 0.16
 		elif resident_data.reaction == "arrival" and conversing:
 			head.rotation.y = 0.7
+		var starting_tilt: Vector3 = resident_data.get("starting_tilt", Vector3.ZERO)
+		head.rotation.x += starting_tilt.x * (1.0 - attention)
+		head.rotation.z += starting_tilt.z * (1.0 - attention)
 		for arm in resident_data.arms:
 			var side: int = arm.side
 			var shoulder := Vector3(side * 0.24, 1.23, 0)
@@ -267,9 +282,38 @@ func update_reactions() -> void:
 				contact.y += pat
 				elbow = elbow.lerp((shoulder + contact) * 0.5 + Vector3(0, 0.14, -0.13), emotion)
 				hand = hand.lerp(contact, emotion)
+			elbow = Vector3(arm.get("starting_elbow", elbow)).lerp(elbow, attention)
+			hand = Vector3(arm.get("starting_hand", hand)).lerp(hand, attention)
 			pose_limb(arm.upper, shoulder, elbow)
 			pose_limb(arm.lower, elbow, hand)
 			arm.hand.position = hand
+
+## Quiet exchanges between real seat neighbours, with staggered turns and rests.
+func update_waiting(seconds: float) -> void:
+	for pair_index in WAITING_PAIRS.size():
+		var pair: Array = WAITING_PAIRS[pair_index]
+		var phase := fmod(seconds + pair_index * 2.7, 12.0)
+		var engaged := smoothstep(0.0, 1.2, phase) * (1.0 - smoothstep(9.0, 11.8, phase))
+		for member in 2:
+			var resident_data: Dictionary = residents[pair[member]]
+			var partner: Node3D = residents[pair[1 - member]].root
+			var direction: Vector3 = resident_data.root.to_local(partner.global_position)
+			var yaw := clampf(atan2(direction.x, direction.z), -1.15, 1.15)
+			var turn := phase - member * 4.5
+			var speaking := smoothstep(0.8, 1.6, turn) * (1.0 - smoothstep(3.3, 4.3, turn)) * engaged
+			var nod := maxf(0.0, sin(phase * 2.0 + member)) * 0.065 * engaged * (1.0 - speaking)
+			resident_data.head.rotation = Vector3(nod, yaw * engaged, speaking * 0.025)
+			for arm in resident_data.arms:
+				var side: int = arm.side
+				# Gesture with the inside hand; keep the handkerchief resting in the other.
+				var gesture := speaking * (0.75 + 0.25 * sin(turn * 3.0)) if side == int(signf(direction.x)) else 0.0
+				var shoulder := Vector3(side * 0.24, 1.23, 0)
+				var elbow := Vector3(side * 0.35, 0.9, 0.15).lerp(Vector3(side * 0.42, 0.99, 0.22), gesture)
+				var hand := Vector3(side * 0.21, 0.72, 0.38).lerp(Vector3(side * 0.43, 0.97, 0.48), gesture)
+				arm["waiting_elbow"] = elbow
+				pose_limb(arm.upper, shoulder, elbow)
+				pose_limb(arm.lower, elbow, hand)
+				arm.hand.position = hand
 
 func _process(delta: float) -> void:
 	time += delta
@@ -279,5 +323,4 @@ func _process(delta: float) -> void:
 		attention = minf(1.0, attention + delta * 0.55)
 		update_reactions()
 	elif not broadcasting:
-		for i in residents.size():
-			residents[i].head.rotation.y = sin(time * 0.5 + i * 1.8) * 0.24
+		update_waiting(time)

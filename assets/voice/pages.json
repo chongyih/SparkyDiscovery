@@ -1,0 +1,128 @@
+{
+  "neighbour_01": [
+    {
+      "text": "Eh, Sparky! Got important news today.",
+      "start": 0,
+      "end": 2.55,
+      "audio": "res://assets/voice/pages/neighbour_01/01.mp3"
+    },
+    {
+      "text": "Everyone coming to watch, but the TV cannot receive properly.",
+      "start": 2.55,
+      "end": 6.52,
+      "audio": "res://assets/voice/pages/neighbour_01/02.mp3"
+    },
+    {
+      "text": "Can help me bring the spare antenna from the table? We all want to hear the announcement together.",
+      "start": 6.52,
+      "end": 11.53,
+      "audio": "res://assets/voice/pages/neighbour_01/03.mp3"
+    },
+    {
+      "text": "Aiyoh... so much happening today. Don't know what comes next.",
+      "start": 11.53,
+      "end": 15.725714,
+      "audio": "res://assets/voice/pages/neighbour_01/04.mp3"
+    }
+  ],
+  "after_broadcast": [
+    {
+      "text": "Wah... even Mr Lee also cannot hold back. You saw or not?",
+      "start": 0,
+      "end": 3.35,
+      "audio": "res://assets/voice/pages/after_broadcast/01.mp3"
+    },
+    {
+      "text": "So that's it. From today, Singapore is on our own.",
+      "start": 3.35,
+      "end": 6.71,
+      "audio": "res://assets/voice/pages/after_broadcast/02.mp3"
+    },
+    {
+      "text": "What's on your mind, Sparky?",
+      "start": 6.71,
+      "end": 8.594286,
+      "audio": "res://assets/voice/pages/after_broadcast/03.mp3"
+    }
+  ],
+  "homes": [
+    {
+      "text": "My cousin still staying in an attap house in the kampong. One fire, everything gone, you know.",
+      "start": 0,
+      "end": 5.49,
+      "audio": "res://assets/voice/pages/homes/01.mp3"
+    },
+    {
+      "text": "Now HDB building flats, one block after another.",
+      "start": 5.49,
+      "end": 9.16,
+      "audio": "res://assets/voice/pages/homes/02.mp3"
+    },
+    {
+      "text": "Independent or not, people still need a roof over their heads.",
+      "start": 9.16,
+      "end": 12.982857,
+      "audio": "res://assets/voice/pages/homes/03.mp3"
+    }
+  ],
+  "jobs": [
+    {
+      "text": "They clearing the swamp at Jurong to build factories.",
+      "start": 0,
+      "end": 2.82,
+      "audio": "res://assets/voice/pages/jobs/01.mp3"
+    },
+    {
+      "text": "But so many young people finishing school... where got enough jobs for everybody?",
+      "start": 2.82,
+      "end": 7.66,
+      "audio": "res://assets/voice/pages/jobs/02.mp3"
+    },
+    {
+      "text": "My son also still looking. Everybody needs a rice bowl.",
+      "start": 7.66,
+      "end": 11.049796,
+      "audio": "res://assets/voice/pages/jobs/03.mp3"
+    }
+  ],
+  "future": [
+    {
+      "text": "Such a small island. Even our water comes from Johor.",
+      "start": 0,
+      "end": 3.27,
+      "audio": "res://assets/voice/pages/future/01.mp3"
+    },
+    {
+      "text": "People keep asking, how to survive?",
+      "start": 3.27,
+      "end": 5.76,
+      "audio": "res://assets/voice/pages/future/02.mp3"
+    },
+    {
+      "text": "I also don't know, Sparky.",
+      "start": 5.76,
+      "end": 7.54,
+      "audio": "res://assets/voice/pages/future/03.mp3"
+    },
+    {
+      "text": "But Chinese, Malay, Indian, everybody here is in the same boat. Must jaga each other.",
+      "start": 7.54,
+      "end": 12.852245,
+      "audio": "res://assets/voice/pages/future/04.mp3"
+    }
+  ],
+  "farewell": [
+    {
+      "text": "Okay lah, cannot think so much in one day. Come, have some kopi first.",
+      "start": 0,
+      "end": 4.4,
+      "audio": "res://assets/voice/pages/farewell/01.mp3"
+    },
+    {
+      "text": "Thank you ah, Sparky. Because of you, the whole block could watch together.",
+      "start": 4.4,
+      "end": 9.142857,
+      "audio": "res://assets/voice/pages/farewell/02.mp3"
+    }
+  ]
+}
