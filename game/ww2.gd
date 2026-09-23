@@ -2,9 +2,9 @@ extends "res://game/main.gd"
 ## Shared movement/dialogue/touch controls; WWII owns its scene, tasks and save file.
 const WAR_SAVE := "user://wartime_progress.cfg"
 const WAR_CHAPTER := {
-	"year": "1942", "date": "12 FEBRUARY 1942", "title": "Before the streets fell silent",
+	"year": "1942", "date": "12 FEBRUARY 1942", "title": "Singapore at war",
 	"place": "An imagined Singapore shophouse street",
-	"intro": "Fighting has reached the island. Uncle Tan and his neighbour Mei are preparing a shelter. Help them bring water inside.",
+	"intro": "With fighting on the island, Uncle Tan and Mei are preparing a shelter. Help them bring water inside.",
 	"tasks": [
 		{"name": "Speak to Uncle Tan", "label": "UNCLE TAN", "at": Vector3(0, 0, 7.5)},
 		{"name": "Help Mei prepare the shelter", "label": "MEI", "at": Vector3(-1.8, 0, -1.7)},

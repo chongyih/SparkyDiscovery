@@ -288,55 +288,14 @@ func modal(width := 790.0) -> VBoxContainer:
 	panel.add_child(v)
 	return v
 
-func show_menu(start: Callable, journal: Callable, resume: Callable, can_resume: bool, journey: Callable = Callable(), wartime: Callable = Callable(), has_wartime := false) -> void:
+## A dedicated title scene keeps launch navigation separate from gameplay UI.
+func show_menu(start: Callable, journal: Callable, resume: Callable, can_resume: bool, journey: Callable = Callable(), wartime: Callable = Callable(), has_wartime := false, continue_journey: Callable = Callable(), journey_finished := false) -> void:
 	if is_instance_valid(hud):
 		hud.visible = false
 	new_overlay(false)
-	var panel := PanelContainer.new()
-	panel.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE)
-	panel.offset_right = 500
-	var s := style(PAPER, 0)
-	s.content_margin_left = 48
-	s.content_margin_right = 40
-	s.content_margin_top = 36
-	s.content_margin_bottom = 30
-	panel.add_theme_stylebox_override("panel", s)
-	overlay.add_child(panel)
-	var v := VBoxContainer.new()
-	panel.add_child(v)
-	label(v, "S P A R K Y   D I S C O V E R Y", 15, TEAL)
-	gap(v, 34)
-	label(v, "Small bear.\nBig moment.", 53, INK, true)
-	gap(v, 15)
-	paragraph(v, "A journey through Singapore", 28, TEAL)
-	gap(v, 16)
-	paragraph(v, "Help Uncle Tan and Mei find shelter in 1942, then bring the neighbours together for the news in 1965.", 19, MUTED)
-	gap(v, 19)
-	label(v, "1942 → 1965   /   SINGAPORE", 14, TEAL)
-	gap(v, 22)
-	if journey.is_valid():
-		button(v, "Begin in 1942   →", journey).grab_focus()
-	if has_wartime:
-		button(v, "Continue 1942", wartime, true)
-	if can_resume:
-		button(v, "Continue 1965", resume)
-		button(v, "Restart 1965", start, true)
-	else:
-		button(v, "Step into 1965", start, true)
-	gap(v, 2)
-	button(v, "Sparky’s journal", journal, true)
-	var spacer := Control.new()
-	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	v.add_child(spacer)
-	label(v, "Left thumb  Move    Right thumb  Look    Gold button  Interact  ·  Play in landscape" if TouchControls.available() else "WASD  Move    Mouse  Look    E  Interact", 14, MUTED)
-	label(v, "Two playable chapters · 1967 chapter planned", 13, MUTED)
-	var tag := label(overlay, "SINGAPORE  /  01° N, 103° E", 14, PAPER)
-	tag.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	tag.position = Vector2(-300, 34)
-	var caption := label(overlay, "Meet Sparky. Your companion through time.", 18, INK)
-	caption.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	caption.position = Vector2(-540, -56)
+	var launch := preload("res://game/launch_menu.gd").new()
+	overlay.add_child(launch)
+	launch.setup(self, start, journal, resume, can_resume, journey, wartime, has_wartime, continue_journey, journey_finished)
 
 func build_hud(chapter: Dictionary, on_journal: Callable, on_pause: Callable) -> void:
 	if is_instance_valid(hud):
@@ -352,8 +311,11 @@ func build_hud(chapter: Dictionary, on_journal: Callable, on_pause: Callable) ->
 	# One card holds the chapter, how far along Sparky is and what to do next.
 	var quest := PanelContainer.new()
 	quest.position = Vector2(28, 24)
-	quest.custom_minimum_size.x = 400
-	var quest_style := style(Color(PAPER, 0.96), 16)
+	quest.custom_minimum_size.x = 360
+	quest.name = "ObjectiveCard"
+	var quest_style := style(Color(PAPER, 0.96), 12)
+	quest_style.border_width_left = 4
+	quest_style.border_color = GOLD
 	quest_style.content_margin_top = 18
 	quest_style.content_margin_bottom = 18
 	quest.add_theme_stylebox_override("panel", quest_style)
@@ -374,8 +336,9 @@ func build_hud(chapter: Dictionary, on_journal: Callable, on_pause: Callable) ->
 		segment.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		progress_bar.add_child(segment)
 	gap(qv, 2)
-	objective = paragraph(qv, "", 21)
-	objective.custom_minimum_size.x = 356
+	label(qv, "UP NEXT", 10, MUTED)
+	objective = paragraph(qv, "", 22)
+	objective.custom_minimum_size.x = 316
 	navigation = label(qv, "Follow the gold marker", 15, TEAL)
 	if not TouchControls.available():
 		# Touch builds draw their own round buttons in the same corner.
@@ -486,11 +449,9 @@ func show_intro(chapter: Dictionary, begin: Callable) -> void:
 	var v := modal()
 	label(v, "SINGAPORE    /    %s" % chapter.date, 14, TEAL)
 	label(v, chapter.title, 40, INK, true)
-	label(v, chapter.place, 17, MUTED)
 	gap(v)
 	paragraph(v, chapter.intro, 21)
 	gap(v)
-	label(v, "Left thumb to walk · Right thumb to look · Follow the gold marker · Tap the gold button" if TouchControls.available() else "WASD to walk · Mouse to look · Follow the gold marker · E to interact", 16, MUTED)
 	button(v, "Step into %s   →" % chapter.year, begin).grab_focus()
 
 ## Darkens the bottom of the screen so text cards stand out from the bright scene.

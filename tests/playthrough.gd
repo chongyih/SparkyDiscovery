@@ -258,6 +258,17 @@ func run() -> void:
 	check(game.dialogue_voice.playing and game.dialogue_voice.stream.resource_path.contains("pages/farewell/"), "Farewell is voiced")
 	finish_dialogue()
 	check(game.mode == "complete", "Players can finish without choosing a reflection topic")
+	game.show_menu()
+	var completed_menu = game.ui.overlay.find_child("LaunchMenu", true, false)
+	check(completed_menu.primary.text.begins_with("Begin journey"), "Title offers a new journey after the final chapter")
+	game.save_path = "res://artifacts/test-resume-progress.cfg"
+	game.persistence_enabled = true
+	game.continue_saved()
+	check(game.mode == "complete", "Continuing a finished chapter restores its ending")
+	var resumed := ConfigFile.new()
+	check(resumed.load(game.save_path) == OK and resumed.get_value("progress", "last_played", 0.0) > 0.0, "Continuing records activity without completing another encounter")
+	DirAccess.remove_absolute(game.save_path)
+	game.persistence_enabled = false
 	game.queue_free()
 	await process_frame
 	print("RESULT: %d failures" % failures)
