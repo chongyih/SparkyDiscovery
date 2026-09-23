@@ -59,6 +59,9 @@ jobs:
           mkdir -p artifacts
           timeout 120 godot --headless --path . --script res://tests/playthrough.gd -- --test
           timeout 60 godot --headless --path . --script res://tests/touch_controls.gd -- --test --touch
+          timeout 60 godot --headless --path . --script res://tests/ww2_playthrough.gd -- --test
+          timeout 60 godot --headless --path . --script res://tests/ww2_playthrough.gd -- --test --touch
+          timeout 60 godot --headless --path . --script res://tests/ww2_residents.gd -- --test
 
       - name: Export browser and desktop builds
         run: |

@@ -86,6 +86,11 @@ func _ready() -> void:
 	add_child(touch_controls)
 	read_save()
 	show_menu()
+	if get_tree().has_meta("enter_1965"):
+		get_tree().remove_meta("enter_1965")
+		chapter = chapter.duplicate(true)
+		chapter.intro += "\n\nTwenty-three years after the shelter, Uncle Tan is still bringing his neighbours together."
+		start_new()
 
 func configure_input() -> void:
 	var actions := {
@@ -180,7 +185,7 @@ func show_menu() -> void:
 	player.position = Vector3(10, 0.15, 8)
 	player.visual.rotation.y = 0.35
 	frame_scene(true)
-	ui.show_menu(start_new, show_journal, continue_saved, has_save and checkpoint < 3)
+	ui.show_menu(start_new, show_journal, continue_saved, has_save and checkpoint < 3, start_journey, continue_wartime, FileAccess.file_exists("user://wartime_progress.cfg") and persistence_enabled)
 
 func start_new() -> void:
 	task_index = 0
@@ -499,3 +504,10 @@ func write_save() -> void:
 	var result := config.save(save_path)
 	if result != OK:
 		push_warning("Could not save progress: %s" % error_string(result))
+
+func start_journey() -> void:
+	get_tree().set_meta("restart_1942", true)
+	get_tree().change_scene_to_file("res://scenes/ww2.tscn")
+
+func continue_wartime() -> void:
+	get_tree().change_scene_to_file("res://scenes/ww2.tscn")

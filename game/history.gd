@@ -1,6 +1,6 @@
 extends RefCounted
 ## Historical milestones are factual; Sparky, neighbours and their dialogue are fiction.
-## Only the 1965 chapter is implemented while its gameplay is under review.
+## Historical notes and dialogue for 1965. The WWII chapter lives in ww2.gd.
 
 const SOURCES = [
 	["Original press-conference footage · Wikimedia Commons", "https://commons.wikimedia.org/wiki/File:Lee_Kuan_Yew%27s_press_conference_on_9_Aug_1965.webm"],

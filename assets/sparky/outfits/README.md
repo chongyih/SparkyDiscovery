@@ -2,7 +2,7 @@
 
 Open `scenes/character_studio.tscn` in Godot and press **F6**. Choose **WW2 · Civilian** or **1967 · NS recruit**. Idle, Walk and Wave work for each outfit. The NS outfit also has **Carry rifle**: Idle and Walk use two additional carrying animations. Wave puts the rifle away; changing outfits also removes it.
 
-These are editable, rigged 3D variants of the existing Sparky, not concept-image replacements. His face, plush proportions, seven-bone skeleton and original animations are retained. The 1965 chapter still uses the original navy hoodie. Future-chapter assets are excluded from the current game's export presets; remove `assets/sparky/outfits/*` from those exclusions when connecting a new chapter.
+These are editable, rigged 3D variants of the existing Sparky, not concept-image replacements. His face, plush proportions, seven-bone skeleton and original animations are retained. The 1965 chapter still uses the original navy hoodie. The WWII chapter now uses the civilian GLB through the player controller and includes it in exports. The unused NS outfit, Blender sources and review renders remain excluded.
 
 ## Designs and historical boundaries
 

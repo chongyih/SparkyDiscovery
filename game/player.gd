@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 const SPEED := 4.2
+var model_path := "res://assets/sparky/sparky.glb"
 var enabled := false
 var visual: Node3D
 var animator: AnimationPlayer
@@ -41,7 +42,7 @@ func _ready() -> void:
 	shape.shape = capsule
 	shape.position.y = 0.75
 	add_child(shape)
-	visual = load("res://assets/sparky/sparky.glb").instantiate()
+	visual = load(model_path).instantiate()
 	visual.scale = Vector3.ONE * 0.95
 	add_child(visual)
 	animator = visual.find_child("AnimationPlayer", true, false) as AnimationPlayer

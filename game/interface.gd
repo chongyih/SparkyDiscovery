@@ -279,7 +279,7 @@ func modal(width := 790.0) -> VBoxContainer:
 	panel.add_child(v)
 	return v
 
-func show_menu(start: Callable, journal: Callable, resume: Callable, can_resume: bool) -> void:
+func show_menu(start: Callable, journal: Callable, resume: Callable, can_resume: bool, journey: Callable = Callable(), wartime: Callable = Callable(), has_wartime := false) -> void:
 	if is_instance_valid(hud):
 		hud.visible = false
 	new_overlay(false)
@@ -299,25 +299,29 @@ func show_menu(start: Callable, journal: Callable, resume: Callable, can_resume:
 	gap(v, 34)
 	label(v, "Small bear.\nBig moment.", 53, INK, true)
 	gap(v, 15)
-	paragraph(v, "A nation of our own", 28, TEAL)
+	paragraph(v, "A journey through Singapore", 28, TEAL)
 	gap(v, 16)
-	paragraph(v, "Step into a Singapore neighbourhood on the day everything changed. Help Sparky bring the neighbours together for the news.", 19, MUTED)
+	paragraph(v, "Help Uncle Tan and Mei find shelter in 1942, then bring the neighbours together for the news in 1965.", 19, MUTED)
 	gap(v, 19)
-	label(v, "9 AUGUST 1965   /   SINGAPORE", 14, TEAL)
+	label(v, "1942 → 1965   /   SINGAPORE", 14, TEAL)
 	gap(v, 22)
+	if journey.is_valid():
+		button(v, "Begin in 1942   →", journey).grab_focus()
+	if has_wartime:
+		button(v, "Continue 1942", wartime, true)
 	if can_resume:
-		button(v, "Continue journey   →", resume).grab_focus()
-		button(v, "Restart the chapter", start, true)
+		button(v, "Continue 1965", resume)
+		button(v, "Restart 1965", start, true)
 	else:
-		button(v, "Step into 1965   →", start).grab_focus()
+		button(v, "Step into 1965", start, true)
 	gap(v, 2)
-	button(v, "Historical notes & controls", journal, true)
+	button(v, "1965 journal & controls", journal, true)
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	v.add_child(spacer)
 	label(v, "Left thumb  Move    Right thumb  Look    Gold button  Interact  ·  Play in landscape" if TouchControls.available() else "WASD  Move    Mouse  Look    E  Interact", 14, MUTED)
-	label(v, "The road to independence · First chapter prototype", 13, MUTED)
+	label(v, "Two playable chapters · 1967 chapter planned", 13, MUTED)
 	var tag := label(overlay, "SINGAPORE  /  01° N, 103° E", 14, PAPER)
 	tag.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	tag.position = Vector2(-300, 34)
@@ -616,7 +620,7 @@ func show_reflection(topics: Dictionary, asked: Dictionary, choose: Callable, fi
 
 func show_chapter_end(chapter: Dictionary, replay: Callable, journal: Callable) -> void:
 	var v := modal(760)
-	label(v, "CHAPTER ONE COMPLETE  ·  NEW JOURNAL ENTRY", 13, TEAL)
+	label(v, "1965 COMPLETE  ·  NEW JOURNAL ENTRY", 13, TEAL)
 	label(v, chapter.year + " · " + chapter.short, 40, INK, true)
 	paragraph(v, chapter.fact, 21)
 	gap(v, 4)
@@ -961,7 +965,7 @@ func page_title(page: VBoxContainer) -> void:
 func page_day(page: VBoxContainer) -> void:
 	var chapter: Dictionary = journal_data.chapter
 	var progress: int = journal_data.progress
-	page_heading(page, "CHAPTER ONE  ·  9 AUGUST 1965", chapter.title)
+	page_heading(page, "CHAPTER TWO  ·  9 AUGUST 1965", chapter.title)
 	# Tuning and watching both finish with the broadcast, the chapter's last checkpoint.
 	var done := [progress >= 1, progress >= 2, progress >= 3, progress >= 3]
 	for i in History.JOURNEY.size():
