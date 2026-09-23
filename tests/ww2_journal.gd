@@ -26,7 +26,9 @@ func run() -> void:
 				check(bounds.end.y <= size.y + 1 and bounds.end.x <= size.x + 1, "%s keeps close visible at %s" % [key, size])
 				var text := ""
 				for label in ui.overlay.find_children("*", "Label", true, false): text += label.text
-				check(not "broadcast" in text.to_lower() and not "Kelvin" in text, "%s contains only wartime content" % key)
+				check(not "broadcast" in text.to_lower(), "%s contains only wartime content" % key)
+				if key == "credits":
+					check("Kelvin" in text and "Lilian" in text, "Credits name both wartime voices")
 	ui.queue_free()
 	await process_frame
 	print("JOURNAL FAILURES: ", failures)
