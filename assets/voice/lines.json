@@ -1,0 +1,69 @@
+{
+  "voice": "Kelvin",
+  "model": "eleven_multilingual_v2",
+  "settings": {
+    "speed": 0.99,
+    "stability": 0.78,
+    "similarity": 1,
+    "style": 0,
+    "speaker_boost": true
+  },
+  "lines": [
+    {
+      "file": "neighbour_01.mp3",
+      "text": "Eh, Sparky! Got important news today. Everyone coming to watch, but the TV cannot receive properly.\n\nCan help me bring the spare antenna from the table? We all want to hear the announcement together. Aiyoh... so much happening today. Don't know what comes next.",
+      "duration_seconds": 15.726,
+      "loudness_lufs": -21.73,
+      "true_peak_dbtp": -2.44
+    },
+    {
+      "file": "after_broadcast.mp3",
+      "text": "Wah... even Mr Lee also cannot hold back. You saw or not?\n\nSo that's it. From today, Singapore is on our own. What's on your mind, Sparky?",
+      "duration_seconds": 8.594,
+      "loudness_lufs": -21.95,
+      "true_peak_dbtp": -2.44
+    },
+    {
+      "file": "farewell.mp3",
+      "text": "Okay lah, cannot think so much in one day. Come, have some kopi first.\n\nThank you ah, Sparky. Because of you, the whole block could watch together.",
+      "duration_seconds": 9.143,
+      "loudness_lufs": -21.45,
+      "true_peak_dbtp": -3.2
+    },
+    {
+      "file": "homes.mp3",
+      "text": "My cousin still staying in an attap house in the kampong. One fire, everything gone, you know.\n\nNow HDB building flats, one block after another. Independent or not, people still need a roof over their heads.",
+      "duration_seconds": 12.983,
+      "loudness_lufs": -21.86,
+      "true_peak_dbtp": -2.42
+    },
+    {
+      "file": "jobs.mp3",
+      "text": "They clearing the swamp at Jurong to build factories. But so many young people finishing school... where got enough jobs for everybody?\n\nMy son also still looking. Everybody needs a rice bowl.",
+      "duration_seconds": 11.05,
+      "loudness_lufs": -22.0,
+      "true_peak_dbtp": -2.44
+    },
+    {
+      "file": "future.mp3",
+      "text": "Such a small island. Even our water comes from Johor. People keep asking, how to survive?\n\nI also don't know, Sparky. But Chinese, Malay, Indian, everybody here is in the same boat. Must jaga each other.",
+      "duration_seconds": 12.852,
+      "loudness_lufs": -21.85,
+      "true_peak_dbtp": -2.43
+    },
+    {
+      "file": "signal_found.mp3",
+      "text": "There, that's it!",
+      "duration_seconds": 1.149,
+      "loudness_lufs": -21.4,
+      "true_peak_dbtp": -2.49
+    },
+    {
+      "file": "come_sit.mp3",
+      "text": "Come, come, sit!",
+      "duration_seconds": 1.149,
+      "loudness_lufs": -21.45,
+      "true_peak_dbtp": -6.57
+    }
+  ]
+}

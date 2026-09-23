@@ -19,6 +19,7 @@ const SOURCES = [
 # Uncle Tan speaks everyday Singapore English with a little Hokkien and Malay, kept readable for learners.
 const REFLECTIONS = {
 	"homes": {
+		"voice": "res://assets/voice/homes.mp3",
 		"question": "Will everyone have a home?",
 		"answer": "My cousin still staying in an attap house in the kampong. One fire, everything gone, you know.\n\nNow HDB building flats, one block after another. Independent or not, people still need a roof over their heads.",
 		"tag": "History note",
@@ -26,6 +27,7 @@ const REFLECTIONS = {
 		"source": "National Library Board",
 	},
 	"jobs": {
+		"voice": "res://assets/voice/jobs.mp3",
 		"question": "Where will people find work?",
 		"answer": "They clearing the swamp at Jurong to build factories. But so many young people finishing school... where got enough jobs for everybody?\n\nMy son also still looking. Everybody needs a rice bowl.",
 		"tag": "History note",
@@ -33,6 +35,7 @@ const REFLECTIONS = {
 		"source": "National Library Board",
 	},
 	"future": {
+		"voice": "res://assets/voice/future.mp3",
 		"question": "What happens to Singapore now?",
 		"answer": "Such a small island. Even our water comes from Johor. People keep asking, how to survive?\n\nI also don't know, Sparky. But Chinese, Malay, Indian, everybody here is in the same boat. Must jaga each other.",
 		"tag": "What followed",
@@ -56,7 +59,7 @@ const TIMELINE = [
 ## What Sparky writes in the journal once each step is done, in order.
 const JOURNEY = [
 	["Met Uncle Tan outside the shops", "The TV under the block could not get a clear picture."],
-	["Found the spare aerial", "Few families had their own television, so neighbours often watched together."],
+	["Found the spare antenna", "Few families had their own television, so neighbours often watched together."],
 	["Fixed and tuned the TV", "Snow, then a picture, then the whole block crowding onto the benches."],
 	["Watched the announcement", "Mr Lee Kuan Yew spoke about the separation. Some neighbours cried."],
 ]
@@ -70,9 +73,9 @@ static func chapter() -> Dictionary:
 		"background": "Singapore joined Malaysia in 1963. Political and economic disagreements strained relations, and racial riots in 1964 deepened tensions. Negotiations among leaders led to separation in 1965; the outcome cannot be reduced to a single disagreement.",
 		"bridge": "Independence was the start of a new task. Singapore had to build its economy, make friends abroad and strengthen its defence. Homes and industry, already underway before 1965, stayed priorities.",
 		"tasks": [
-			# Subtitles match assets/voice/neighbour_01.mp3; regenerate the recording before changing this line.
-			{"id": "neighbour", "name": "Talk to Uncle Tan outside the shops", "kind": "person", "at": Vector3(-5, 0, 15.5), "speaker": "Uncle Tan", "voice": "res://assets/voice/neighbour_01.mp3", "text": "Eh, Sparky! Got important news today. Everyone coming to watch, but the TV cannot receive properly.\n\nCan help me bring the spare aerial from the table? We all want to hear the announcement together. Aiyoh... so much happening today. Don't know what comes next."},
-			{"id": "aerial", "name": "Fetch the spare aerial from the table", "kind": "aerial", "at": Vector3(11.5, 0, 1.9), "speaker": "The spare aerial", "text": "Sparky picks up the aerial. Few families owned a television in 1965, so neighbours often squeezed around one set to watch together.\n\nBring it to the TV under the block. Everyone is waiting."},
-			{"id": "television", "name": "Fix the aerial and tune the TV", "kind": "tv", "at": Vector3(0, 0, -5.7), "speaker": "Television"},
+			# Keep recorded dialogue and subtitles in sync; settings are in assets/voice/README.md.
+			{"id": "neighbour", "name": "Talk to Uncle Tan outside the shops", "kind": "person", "at": Vector3(-5, 0, 15.5), "speaker": "Uncle Tan", "voice": "res://assets/voice/neighbour_01.mp3", "text": "Eh, Sparky! Got important news today. Everyone coming to watch, but the TV cannot receive properly.\n\nCan help me bring the spare antenna from the table? We all want to hear the announcement together. Aiyoh... so much happening today. Don't know what comes next."},
+			{"id": "aerial", "name": "Fetch the spare antenna from the table", "kind": "aerial", "at": Vector3(11.5, 0, 1.9), "speaker": "The spare antenna", "text": "Sparky picks up the antenna. Few families owned a television in 1965, so neighbours often squeezed around one set to watch together.\n\nBring it to the TV under the block. Everyone is waiting."},
+			{"id": "television", "name": "Fix the antenna and tune the TV", "kind": "tv", "at": Vector3(0, 0, -5.7), "speaker": "Television"},
 		],
 	}

@@ -1,5 +1,7 @@
 extends Node
 ## Short, interruptible sequences on authored paths through the open aisles.
+## Just behind the community camera on the aisle from the street.
+const UNCLE_ENTRY := Vector3(0.2, 0, 6.0)
 var game: Node
 var tweens: Array[Tween] = []
 var serial := 0
@@ -41,7 +43,7 @@ func fit_aerial() -> void:
 	var token := serial
 	game.set_mode("fitting")
 	game.world.set_active(-1)
-	game.ui.show_sequence("Up it goes", "Sparky fixes the spare aerial on top of the TV set.", func(): finish_fitting(token), "Skip")
+	game.ui.show_sequence("Up it goes", "Sparky fixes the spare antenna on top of the TV set.", func(): finish_fitting(token), "Skip")
 	game.frame_watch(Vector3(3.2, 2.8, -1.6), Vector3(0, 1.8, -5.1), 52)
 	game.player.scripted_motion = true
 	game.player.play_animation("Walk")
@@ -88,6 +90,7 @@ func arrive() -> void:
 	var token := serial
 	pending = 2
 	game.set_mode("arrival")
+	game.play_voice_cue(load("res://assets/voice/come_sit.mp3"))
 	game.ui.show_sequence("Come, come, sit!", "The neighbours shift up to make space. Sparky squeezes onto the bench.", finish_arrival, "Skip")
 	game.frame_community()
 	var seat: Transform3D = game.world.community.seat_transform(0, -0.8, 0.28)
@@ -108,8 +111,11 @@ func arrive() -> void:
 	var uncle := sequence()
 	var uncle_seat: Transform3D = game.world.community.seat_transform(1, -0.7)
 	var uncle_approach := uncle_seat.origin + uncle_seat.basis.z * 0.85
+	# The community shot faces away from the street, so the walk from the shops happened off
+	# camera for about five seconds. Start him just outside the frame on the same route instead.
+	game.world.stations[0].global_position = UNCLE_ENTRY
 	game.world.neighbour_walking = true
-	walk(uncle, game.world.stations[0], game.world.neighbour_visual, [Vector3(-0.5, 0, 13.3), Vector3(0.2, 0, 2.2), Vector3(0.2, 0, -4.6), uncle_approach], 3.0)
+	walk(uncle, game.world.stations[0], game.world.neighbour_visual, [Vector3(0.2, 0, 2.2), Vector3(0.2, 0, -4.6), uncle_approach], 3.0)
 	uncle.tween_callback(func(): game.world.neighbour_walking = false)
 	uncle.tween_property(game.world.neighbour_visual, "rotation:y", uncle_seat.basis.get_euler().y, 0.4)
 	uncle.tween_property(game.world.stations[0], "position", uncle_seat.origin, 0.65).set_trans(Tween.TRANS_SINE)

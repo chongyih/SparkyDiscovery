@@ -122,7 +122,7 @@ func tune(_dial: float, strength: float, clear: bool) -> void:
 		static_tween.kill()
 	if not tv_static.playing:
 		tv_static.play()
-	tv_static.volume_db = -80.0 if clear else linear_to_db(lerpf(0.12, 1.0, 1.0 - strength / 100.0)) - 5.0
+	tv_static.volume_db = -80.0 if clear else linear_to_db(lerpf(0.12, 1.0, 1.0 - strength / 100.0)) - 15.0
 
 ## An occasional koel or myna from a random tree, never over the broadcast.
 func call_bird(delta: float) -> void:

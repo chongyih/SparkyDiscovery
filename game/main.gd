@@ -256,7 +256,7 @@ func _process(_delta: float) -> void:
 	elif relative.x > 2:
 		direction = "To your right"
 	if distance <= INTERACT_DISTANCE:
-		interact_verb = {"person": "Talk", "aerial": "Pick up"}.get(task.kind, "Tune" if aerial_fitted else "Fit aerial")
+		interact_verb = {"person": "Talk", "aerial": "Pick up"}.get(task.kind, "Tune" if aerial_fitted else "Fit antenna")
 	var interact_hint := "Tap the gold button" if TouchControls.available() else "Press E"
 	ui.set_navigation("%s  ·  %d m" % [direction, int(distance)] if distance > INTERACT_DISTANCE else "You’re here  ·  " + interact_hint)
 	ui.set_prompt(task.name if distance <= INTERACT_DISTANCE else "")
@@ -316,7 +316,29 @@ func interact() -> bool:
 
 func show_tuning() -> void:
 	set_mode("puzzle")
-	ui.show_tuner(finish_tuning, resume_play, soundscape.tune)
+	world.set_active(-1)
+	frame_watch(Vector3(2.8, 3.2, -1.0), Vector3(0, 1.65, -5.7), 48)
+	var screen_material := ShaderMaterial.new()
+	screen_material.shader = preload("res://game/tuning_screen.gdshader")
+	world.tv_screen.material_override = screen_material
+	ui.show_tuner(finish_tuning, resume_play, func(value: float, strength: float, clear: bool):
+		for rod in world.tv_aerial.get_children():
+			if rod.position.y > 0.1:
+				# The locked signal (65) is the antenna's centred resting pose.
+				rod.rotation.z = (-0.65 if rod.position.x < 0 else 0.65) + deg_to_rad((value - 65.0) * -0.65)
+		screen_material.set_shader_parameter("clarity", 1.0 if clear else strength / 120.0)
+		soundscape.tune(value, strength, clear)
+	)
+
+	var tuner = ui.overlay.find_child("AntennaTuner", true, false)
+	var cue := load("res://assets/voice/signal_found.mp3") as AudioStream
+	tuner.celebration_duration = maxf(1.1, cue.get_length() + 0.2)
+	tuner.signal_locked.connect(func(): play_voice_cue(cue))
+
+func play_voice_cue(stream: AudioStream) -> void:
+	dialogue_voice.stop()
+	dialogue_voice.stream = stream
+	dialogue_voice.play()
 
 func show_dialogue(speaker: String, text: String, after: Callable, voice_path: String = "", note: Dictionary = {}, narration := false) -> void:
 	dialogue_voice.stop()
@@ -341,9 +363,9 @@ func advance_dialogue() -> void:
 func finish_tuning() -> void:
 	if mode != "puzzle":
 		return
-	# The UI guards its button, and this check also guards programmatic activation.
-	var dial := ui.overlay.find_child("TuningDial", true, false) as HSlider
-	if not dial or absf(dial.value - 65) > 4:
+	# Only a settled signal can start the seating sequence.
+	var tuner = ui.overlay.find_child("AntennaTuner", true, false)
+	if not tuner or not tuner.locked:
 		return
 	world.set_active(-1)
 	ui.set_objective("Watch the original press conference", 3, 3)
@@ -407,7 +429,7 @@ func finish_archive() -> void:
 	closing_conversation = true
 	world.tv_screen.material_override = world.material(Color("d7e9da"), true)
 	frame_watch(Vector3(0.4, 2.2, -4.6), Vector3(2.9, 1.3, -3.5), 56)
-	show_dialogue("Uncle Tan", History.AFTER_BROADCAST, show_reflection)
+	show_dialogue("Uncle Tan", History.AFTER_BROADCAST, show_reflection, "res://assets/voice/after_broadcast.mp3")
 
 func show_reflection() -> void:
 	if not closing_conversation: return
@@ -418,12 +440,12 @@ func ask_reflection(topic_id: String) -> void:
 	if mode != "reflection" or not History.REFLECTIONS.has(topic_id): return
 	var topic: Dictionary = History.REFLECTIONS[topic_id]
 	reflection_topics[topic_id] = true
-	show_dialogue("Uncle Tan", topic.answer, show_reflection, "", topic)
+	show_dialogue("Uncle Tan", topic.answer, show_reflection, topic.voice, topic)
 
 func finish_reflection() -> void:
 	if mode != "reflection" or not closing_conversation: return
 	closing_conversation = false
-	show_dialogue("Uncle Tan", History.FAREWELL, complete_task)
+	show_dialogue("Uncle Tan", History.FAREWELL, complete_task, "res://assets/voice/farewell.mp3")
 
 func complete_task() -> void:
 	task_index += 1

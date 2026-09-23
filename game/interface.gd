@@ -11,7 +11,7 @@ const GOLD := Color("e3ae54")
 const LINE := Color("ded6c1")
 const PAGE := Color("fbf7ec")
 const COVER := Color("1f4744")
-const STEPS := ["Uncle Tan", "The aerial", "The signal", "Independence"]
+const STEPS := ["Uncle Tan", "The antenna", "The signal", "Independence"]
 var root: Control
 var hud: Control
 var overlay: Control
@@ -41,9 +41,8 @@ const ARCHIVE_PATH := "res://assets/video/lky-1965-excerpt.ogv"
 const ARCHIVE_WEB_PATH := "res://assets/video/lky-1965-excerpt-web.ogv"
 ## The archive speech measures about -29 LUFS; this lifts it to the -18 LUFS dialogue level (peaks stay near -3 dBFS).
 const ARCHIVE_VOLUME_DB := 11.0
-## Uncle Tan's clean, close recording measures -15.6 LUFS and sounds far louder than the thin 1965
-## audio at the same level, so it sits about 6 dB under the broadcast (about -24.6 LUFS).
-const VOICE_VOLUME_DB := -9.0
+## Kelvin takes are normalized to -21 LUFS; playback stays about 6 dB under the broadcast.
+const VOICE_VOLUME_DB := -3.6
 
 func _ready() -> void:
 	# Bundled so browsers, which cannot reach system fonts, show the same type as desktop.
@@ -629,63 +628,40 @@ func show_chapter_end(chapter: Dictionary, replay: Callable, journal: Callable) 
 	button(v, "Open Sparky’s journal", journal).grab_focus()
 	button(v, "Return to title", replay, true)
 
-## TV snow from a tiny image. Block glyphs (░▒▓) are missing from the UI fonts
-## and made Godot load ~75 MB of system fallback fonts.
-func static_texture() -> ImageTexture:
-	var image := Image.create(96, 24, false, Image.FORMAT_L8)
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 1965
-	for y in image.get_height():
-		for x in image.get_width():
-			var shade := rng.randf()
-			image.set_pixel(x, y, Color(shade, shade, shade))
-	return ImageTexture.create_from_image(image)
-
 func show_tuner(done: Callable, cancel: Callable, tuned: Callable = Callable()) -> void:
-	var v := modal(690)
-	label(v, "9 AUGUST 1965  /  UNDER THE BLOCK", 14, TEAL)
-	label(v, "Find a clear signal", 36, INK, true)
-	paragraph(v, "Aerial fixed. Now turn the dial slowly until the snow clears.", 20)
-	gap(v)
-	var screen := PanelContainer.new()
-	screen.custom_minimum_size.y = 130
-	screen.add_theme_stylebox_override("panel", style(INK, 12))
-	v.add_child(screen)
-	var snow := TextureRect.new()
-	snow.texture = static_texture()
-	snow.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	snow.stretch_mode = TextureRect.STRETCH_SCALE
-	snow.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	snow.modulate.a = 0.4
-	screen.add_child(snow)
-	var signal_label := label(screen, "NO SIGNAL", 26, PAPER)
-	signal_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	signal_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	var slider := HSlider.new()
-	slider.name = "TuningDial"
-	slider.min_value = 0
-	slider.max_value = 100
-	slider.value = 20
-	slider.step = 1
-	slider.custom_minimum_size.y = 44
-	v.add_child(slider)
-	var strength := label(v, "Signal strength: 10%", 16, TEAL)
-	label(v, "Drag the dial." if TouchControls.available() else "Drag the dial, or use the ← → keys.", 15, MUTED)
-	var watch := button(v, "Watch the announcement   →", done)
-	watch.disabled = true
-	var on_dial := func(value: float):
-		var clear := absf(value - 65) <= 4
-		var signal_strength := clampf(100 - absf(value - 65) * 2, 0, 100)
-		if tuned.is_valid():
-			tuned.call(value, signal_strength, clear)
-		strength.text = "Signal strength: %d%%" % int(signal_strength)
-		signal_label.text = "SINGAPORE\n9 AUGUST 1965" if clear else "TUNING…"
-		snow.modulate.a = 0.0 if clear else 0.4 * (1.0 - signal_strength / 100.0) + 0.1
-		watch.disabled = not clear
-	slider.value_changed.connect(on_dial)
-	on_dial.call(slider.value)
-	button(v, "Back to the street", cancel, true)
-	slider.grab_focus()
+	new_overlay(false)
+	hud.visible = false
+	var gesture := preload("res://game/antenna_tuner.gd").new()
+	gesture.name = "AntennaTuner"
+	gesture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(gesture)
+	if tuned.is_valid():
+		gesture.adjusted.connect(tuned)
+	gesture.settled.connect(done)
+	var touch := TouchControls.available()
+	var v := bottom_card(1160 if touch else 940)
+	v.add_theme_constant_override("separation", 8)
+	label(v, "Find a clear picture", 32 if touch else 28, INK, true)
+	gesture.hint = label(v, "Move the antenna until the snow clears.", 26 if touch else 19, TEAL)
+	label(v, "Swipe across the TV view, or tap the arrows." if touch else "Drag across the TV view, tap the arrows, or use ← →.", 24 if touch else 16, MUTED)
+	gesture.progress = ProgressBar.new()
+	gesture.progress.custom_minimum_size.y = 8
+	gesture.progress.show_percentage = false
+	gesture.progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	v.add_child(gesture.progress)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 14)
+	v.add_child(row)
+	for direction in [-1, 1]:
+		var b := button(row, "←  Left" if direction == -1 else "Right  →", func(): gesture.adjust(direction * 8.0))
+		b.custom_minimum_size = Vector2(230, 104) if touch else Vector2(180, 64)
+		b.add_theme_font_size_override("font_size", 28 if touch else 18)
+		b.focus_mode = Control.FOCUS_NONE
+	fill(row)
+	var back := button(row, "Back to the street", cancel, true)
+	back.add_theme_font_size_override("font_size", 26 if touch else 18)
+	gesture.adjust(0)
+	gesture.grab_focus()
 
 func show_archive(done: Callable, change_view: Callable) -> VideoStreamPlayer:
 	# Only the 3D television displays the decoded texture. No popup video surface.
@@ -1095,7 +1071,7 @@ func page_credits(page: VBoxContainer) -> void:
 	page_heading(page, "CREDITS", "Thank you")
 	for part in [
 		["CHARACTER", "Sparky, from the supplied Blender model."],
-		["VOICE", "Uncle Tan’s first lines use an AI-generated voice made with ElevenLabs."],
+		["VOICE", "Uncle Tan’s dialogue uses the AI-generated Kelvin voice from ElevenLabs."],
 		["SOUND", "Field recordings by Joseph Sardin (BigSoundBank.com, CC0) and footsteps by Kenney (CC0). Asian koel by Yosef Ben Melamed and common myna by James Ray (xeno-canto XC509296), via Wikimedia Commons under CC BY-SA 4.0; trimmed and filtered. These are modern recordings, not archival sound from 1965."],
 		["ENGINE", "Built with Godot Engine (MIT licence). godotengine.org/license"],
 	]:

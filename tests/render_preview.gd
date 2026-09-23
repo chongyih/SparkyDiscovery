@@ -64,8 +64,9 @@ func run() -> void:
 	while game.mode == "fitting":
 		await process_frame
 	await capture("tuning")
-	var dial: HSlider = game.ui.overlay.find_child("TuningDial", true, false)
-	dial.value = 65
+	var dial = game.ui.overlay.find_child("AntennaTuner", true, false)
+	dial.adjust(45)
+	await create_timer(0.9).timeout
 	game.finish_tuning()
 	await create_timer(1.3).timeout
 	await capture("taking-seats")

@@ -330,7 +330,7 @@ func make_station(task: Dictionary) -> void:
 	ring.position.y = 0.12
 	marker.add_child(ring)
 	markers.append(marker)
-	var names := {"person": task.speaker.to_upper(), "aerial": "SPARE AERIAL", "tv": "TELEVISION"}
+	var names := {"person": task.speaker.to_upper(), "aerial": "SPARE ANTENNA", "tv": "TELEVISION"}
 	var label := sign_text(root, Vector3(0, 3.22, 0), names[task.kind], 40, CREAM)
 	label.pixel_size = 0.009
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
