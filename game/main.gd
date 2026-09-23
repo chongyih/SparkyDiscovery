@@ -6,6 +6,8 @@ const Player = preload("res://game/player.gd")
 const Interface = preload("res://game/interface.gd")
 const FollowCamera = preload("res://game/follow_camera.gd")
 const TouchControls = preload("res://game/touch_controls.gd")
+const JourneyProgress = preload("res://game/journey_progress.gd")
+const WAR_SAVE_PATH := "user://wartime_progress.cfg"
 const SAVE_PATH := "user://independence_progress.cfg"
 const INTERACT_DISTANCE := 2.3
 
@@ -201,7 +203,8 @@ func show_menu() -> void:
 	player.position = Vector3(10, 0.15, 8)
 	player.visual.rotation.y = 0.35
 	frame_scene(true)
-	ui.show_menu(start_new, show_journal, continue_saved, has_save and checkpoint < 3, start_journey, continue_wartime, FileAccess.file_exists("user://wartime_progress.cfg") and persistence_enabled)
+	var finished := JourneyProgress.finished(save_path, WAR_SAVE_PATH) if persistence_enabled else has_save and checkpoint == 3
+	ui.show_menu(start_new, show_journal, continue_saved, has_save, start_journey, continue_wartime, persistence_enabled and not JourneyProgress.read(WAR_SAVE_PATH, 4).is_empty(), continue_journey, finished)
 
 func start_new() -> void:
 	task_index = 0
@@ -237,7 +240,17 @@ func prepare_chapter() -> void:
 func continue_saved() -> void:
 	task_index = checkpoint
 	prepare_chapter()
-	resume_play()
+	write_save()
+	if checkpoint >= chapter.tasks.size():
+		show_complete()
+	else:
+		resume_play()
+
+func continue_journey() -> void:
+	if persistence_enabled and JourneyProgress.latest(save_path, WAR_SAVE_PATH) == "1942":
+		continue_wartime()
+	else:
+		continue_saved()
 
 func resume_play() -> void:
 	ui.clear_overlay()
@@ -607,6 +620,7 @@ func write_save() -> void:
 		return
 	var config := ConfigFile.new()
 	config.set_value("progress", "task", checkpoint)
+	config.set_value("progress", "last_played", Time.get_unix_time_from_system())
 	var result := config.save(save_path)
 	if result != OK:
 		push_warning("Could not save progress: %s" % error_string(result))

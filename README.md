@@ -2,9 +2,11 @@
 
 The game now contains **two playable chapters: February 1942 and 9 August 1965**. Begin in 1942 to help Uncle Tan and Mei bring water into a shelter, then continue to the independence chapter. The planned 1967 National Service chapter is not implemented yet. The target for the complete three-chapter game is 5–10 minutes; timing still needs human playtesting.
 
+The title uses a generated photographic montage of old and new Singapore, joined with a torn-paper edge, with a photographic plush portrait of Sparky and a subtle paw wave in the foreground. **Chapters** opens the chapter browser; **Continue journey** resumes the most recently played chapter at its saved checkpoint. After finishing the final chapter, the title offers **Begin journey** to start fresh in 1942; completed chapters remain accessible through **Chapters**. Opening a saved chapter updates its activity time, even before another encounter is completed. Older saves fall back to file modification time. The backdrop is a conceptual blend of eras rather than a historical photograph or exact viewpoint. Artwork prompts are in `assets/menu/BACKGROUND_PROMPT.md`.
+
 ## February 1942
 
-Choose **Begin in 1942** from the title. Follow the gold markers: Uncle Tan → Mei → courtyard water → shelter. Sparky wears the supplied civilian outfit. The imagined shophouse street includes shuttered and taped windows, sandbags, bedding and a handcart. A short siren/blast sequence changes the street, with dust, a loose shutter and character reactions. The blast plays through without a skip control; Pause still offers sound and reduced blast motion/light controls. There is no combat or death timer.
+Choose **Begin journey** from the title, or **Chapters → Begin in 1942**. Follow the gold markers: Uncle Tan → Mei → courtyard water → shelter. Sparky wears the supplied civilian outfit. The imagined shophouse street includes shuttered and taped windows, sandbags, bedding and a handcart. A short siren/blast sequence changes the street, with dust, a loose shutter and character reactions. The blast plays through without a skip control; Pause still offers sound and reduced blast motion/light controls. There is no combat or death timer.
 
 The shelter closes around Sparky, Uncle Tan and Mei. The ending acknowledges the surrender and Japanese Occupation before offering **Continue to 1965**. The WWII journal covers the invasion route, the coastal-gun misconception, shortages and persecution including Sook Ching, sources, and the distinction between documented history and our fictional encounter. WWII dialogue remains text-only. Uncle Tan and Mei now have distinct articulated civilian designs, with listening, speaking, beckoning and flinching poses. Their clothing is plain; the oversized collars and Mei’s rigid apron panel have been removed. Other scenery remains stylised procedural geometry. The pail follows Sparky's mitten during carrying, with short pickup and set-down sequences; these and the quiet shelter ending play through without skip or pause controls. Two neighbours follow explicit routes clear of the cart and through separate doorway lanes, put down luggage, and sit on inward-facing benches with small idle movements. The shelter has bedding, roof beams and a water table holding the pail, jug and cups. Mei fills a cup and takes it to a seated neighbour, while Tan stays beside Sparky. The two former standing background figures have been removed.
 
@@ -19,7 +21,7 @@ WWII files: `game/ww2.gd` (flow/dialogue/journal/staging), `game/ww2_world.gd` (
 ## Play
 
 1. Open this folder's `project.godot` in Godot 4.7.2.
-2. Press **F5**, then choose **Begin in 1942**, or **Step into 1965** to review the independence chapter directly.
+2. Press **F5**, then choose **Begin journey**, or **Chapters → Step into 1965** to review the independence chapter directly.
 3. Follow the gold marker: speak to Uncle Tan on the shophouse pavement, collect and fit the spare antenna, then tune the television.
 
 Desktop builds use the **Mobile renderer**. Browser builds use **Compatibility** rendering and a single-threaded Web export. Phone browsers get a floating thumbstick (touch anywhere on the left half and slide), drag-to-look on the right half (double-tap there to centre the camera), a round Interact button that turns gold and names the action near the marker, and Journal and Pause buttons at the top right. Play in landscape. Phone performance and browser compatibility still need real-device playtesting.
@@ -88,7 +90,10 @@ The 1965 chapter is intended for a short playtest of movement, camera, explorati
 - `game/community.gd`: communal seating, neighbours and broadcast reactions.
 - `game/chapter_staging.gd`: interruptible antenna fitting and walk-to-seat sequences.
 - `game/soundscape.gd`: positional ambience, footsteps and broadcast audio transitions.
-- `game/interface.gd`: title, HUD, dialogue, tuner, journal and pause UI.
+- `game/interface.gd`: HUD, dialogue, tuner, journal and pause UI.
+- `game/launch_menu.gd`: title composition and responsive chapter browser.
+- `game/launch_sparky.gd`: plush portrait and welcome motion; `game/launch_wave.gdshader` animates the raised paw.
+- `tests/launch_ui.gd`: title navigation, saved-game actions, responsive layout and keyboard scrolling.
 - `game/history.gd`: the 1965 story and historical references.
 - `tests/playthrough.gd`: gameplay, collision, puzzle and persistence checks.
 - `tests/render_preview.gd`: actual-renderer screenshots in `artifacts/`.
