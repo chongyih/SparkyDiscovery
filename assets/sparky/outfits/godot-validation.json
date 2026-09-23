@@ -1,0 +1,35 @@
+{
+  "engine": "4.7.2-stable (official)",
+  "outfits": {
+    "ns": {
+      "bones": 7,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Wave",
+        "CarryIdle",
+        "CarryWalk"
+      ],
+      "rifle_meshes": 9
+    },
+    "original": {
+      "bones": 7,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Wave"
+      ],
+      "rifle_meshes": 0
+    },
+    "ww2": {
+      "bones": 7,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Wave"
+      ],
+      "rifle_meshes": 0
+    }
+  },
+  "result": "passed"
+}

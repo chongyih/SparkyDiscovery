@@ -8,26 +8,18 @@ var dragging := false
 var angle := 0.35
 var distance := 5.4
 var caption: Label
+var outfit_note: Label
+var rifle_button: CheckButton
+var wardrobe: Node3D
+var outfit_selector: OptionButton
+const Wardrobe = preload("res://game/sparky_outfit.gd")
 
 func _ready() -> void:
-	character = (load("res://assets/sparky/sparky.glb") as PackedScene).instantiate()
-	add_child(character)
-	for item in character.find_children("*", "MeshInstance3D", true, false):
-		if "Short" in item.name:
-			item.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		for index in range(item.mesh.get_surface_count()):
-			var source_material: Material = item.mesh.surface_get_material(index)
-			if source_material is StandardMaterial3D:
-				var adjusted := source_material.duplicate() as StandardMaterial3D
-				if "plush" in adjusted.resource_name.to_lower():
-					adjusted.normal_scale *= 0.35
-				item.set_surface_override_material(index, adjusted)
-	for item in character.find_children("*", "AnimationPlayer", true, false):
-		player = item
-	assert(player != null, "Missing animations")
-	for clip in ["Idle", "Walk"]:
-		assert(player.has_animation(clip), "Missing " + clip)
-		player.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
+	wardrobe = Wardrobe.new()
+	add_child(wardrobe)
+	wardrobe.set_outfit("original")
+	character = wardrobe.model
+	player = wardrobe.animator
 	var env := WorldEnvironment.new()
 	env.environment = Environment.new()
 	env.environment.background_mode = Environment.BG_COLOR
@@ -92,8 +84,25 @@ func update_camera() -> void:
 	camera.look_at(Vector3(0, 1.02, 0))
 
 func play_clip(clip: String) -> void:
-	player.play(clip, 0.2)
-	caption.text = clip + "   ·   Drag to rotate   ·   Scroll to zoom"
+	wardrobe.play_clip(clip)
+	update_caption()
+
+func update_caption() -> void:
+	rifle_button.set_pressed_no_signal(wardrobe.rifle_visible)
+	caption.text = wardrobe.current_clip + (" · Carrying rifle" if wardrobe.rifle_visible else "") + "   ·   Drag to rotate   ·   Scroll to zoom"
+
+func select_outfit(index: int) -> void:
+	outfit_selector.select(index)
+	wardrobe.set_outfit(["original", "ww2", "ns"][index])
+	character = wardrobe.model
+	player = wardrobe.animator
+	rifle_button.disabled = index != 2
+	outfit_note.text = [
+		"Sparky’s original navy hoodie",
+		"Singapore · 1942–1945\nCivilian concept · signature hood retained as a stylistic choice",
+		"First NS intake · 1967\nTemasek Green inspired uniform · optional early M16-style prop",
+	][index]
+	update_caption()
 
 func build_controls() -> void:
 	var layer := CanvasLayer.new()
@@ -115,6 +124,29 @@ func build_controls() -> void:
 	subtitle.text = "CHARACTER STUDIO"
 	subtitle.modulate = Color("a9c8c5")
 	column.add_child(subtitle)
+	var outfit_row := HBoxContainer.new()
+	column.add_child(outfit_row)
+	var selector := OptionButton.new()
+	outfit_selector = selector
+	selector.name = "OutfitSelector"
+	for label in ["Original · Navy hoodie", "WW2 · Civilian", "1967 · NS recruit"]:
+		selector.add_item(label)
+	selector.custom_minimum_size = Vector2(275, 42)
+	selector.item_selected.connect(select_outfit)
+	outfit_row.add_child(selector)
+	rifle_button = CheckButton.new()
+	rifle_button.name = "RifleToggle"
+	rifle_button.text = "Carry rifle"
+	rifle_button.disabled = true
+	rifle_button.toggled.connect(func(active: bool):
+		wardrobe.set_rifle(active)
+		update_caption())
+	outfit_row.add_child(rifle_button)
+	outfit_note = Label.new()
+	outfit_note.text = "Sparky’s original navy hoodie"
+	outfit_note.add_theme_font_size_override("font_size", 16)
+	outfit_note.modulate = Color("c5cfcc")
+	column.add_child(outfit_note)
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
