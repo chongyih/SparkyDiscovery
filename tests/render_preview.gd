@@ -15,6 +15,13 @@ func capture(file_name: String) -> void:
 	# Leave the render callback before changing mouse capture or scene state.
 	await process_frame
 
+func finish_dialogue() -> void:
+	# Explicitly advance every short page, stopping when its conversation ends.
+	for i in 12:
+		if game.mode != "dialogue":
+			return
+		game.advance_dialogue()
+
 func run() -> void:
 	# Render continuously even if the user is testing another Godot window.
 	var container := SubViewportContainer.new()
@@ -54,10 +61,10 @@ func run() -> void:
 	game.player.position = game.chapter.tasks[0].at + Vector3(0, 0.1, -1.4)
 	game.interact()
 	await capture("neighbour")
-	game.advance_dialogue()
+	finish_dialogue()
 	game.player.position = game.chapter.tasks[1].at + Vector3(0, 0.1, 1.4)
 	game.interact()
-	game.advance_dialogue()
+	finish_dialogue()
 	game.player.position = game.chapter.tasks[2].at + Vector3(0, 0.1, 1.4)
 	game.interact()
 	await capture("fitting-aerial")
@@ -88,14 +95,14 @@ func run() -> void:
 	await capture("sparky-seated-detail")
 	game.finish_archive()
 	await capture("announcement")
-	game.advance_dialogue()
+	finish_dialogue()
 	await capture("closing-choices")
 	game.ask_reflection("homes")
 	await capture("closing-homes")
-	game.advance_dialogue()
+	finish_dialogue()
 	game.finish_reflection()
 	await capture("closing-thanks")
-	game.advance_dialogue()
+	finish_dialogue()
 	await capture("complete")
 	game.show_journal()
 	await capture("journal")

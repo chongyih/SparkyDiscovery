@@ -9,6 +9,48 @@ var camera: Camera3D
 var seated := false
 var skeleton: Skeleton3D
 var scripted_motion := false
+var nod_tween: Tween
+var nod_rest := Quaternion.IDENTITY
+var nod_amount := 0.0:
+	set(value):
+		nod_amount = value
+		if skeleton:
+			var head := skeleton.find_bone("head")
+			if head >= 0:
+				skeleton.set_bone_pose_rotation(head, nod_rest * Quaternion(Vector3.RIGHT, value * 0.18))
+
+func nod() -> void:
+	if seated or not skeleton:
+		return
+	cancel_nod()
+	var head := skeleton.find_bone("head")
+	if head < 0:
+		return
+	animator.pause()
+	nod_rest = skeleton.get_bone_pose_rotation(head)
+	nod_tween = create_tween()
+	nod_tween.tween_property(self, "nod_amount", 1.0, 0.22).set_trans(Tween.TRANS_SINE)
+	nod_tween.tween_property(self, "nod_amount", 0.0, 0.32).set_trans(Tween.TRANS_SINE)
+	nod_tween.tween_callback(func():
+		nod_tween = null
+		resume_idle()
+	)
+
+func cancel_nod() -> void:
+	if nod_tween:
+		nod_tween.kill()
+		nod_tween = null
+		nod_amount = 0.0
+		if not seated:
+			resume_idle()
+
+func look_at_conversation(target: Vector3) -> void:
+	if not seated or not skeleton:
+		return
+	var local_direction := visual.global_basis.inverse() * (target - global_position)
+	var yaw := clampf(atan2(local_direction.x, local_direction.z), -0.95, 0.95)
+	skeleton.set_bone_pose_rotation(skeleton.find_bone("head"), Quaternion(Vector3.UP, yaw))
+
 var sit_blend := 1.0:
 	set(value):
 		sit_blend = value
@@ -168,7 +210,7 @@ func react_to_broadcast(seconds: float) -> void:
 	skeleton.set_bone_pose_rotation(head_bone, Quaternion(Vector3.UP, -0.35 - 0.6 * glance) * Quaternion(Vector3.RIGHT, 0.13 * dip))
 
 func _physics_process(delta: float) -> void:
-	if seated or scripted_motion:
+	if seated or scripted_motion or nod_tween:
 		return
 	var direction := Vector3.ZERO
 	if enabled and camera:

@@ -23,7 +23,13 @@ var checkpoint := 0
 var has_save := false
 var persistence_enabled := true
 var save_path := SAVE_PATH
+var conversation_poses: Array = []
+var nod_delay: Tween
 var dialogue_action: Callable
+var dialogue_pages: Array = []
+var dialogue_page := 0
+var dialogue_context := {}
+var voice_pages: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://assets/voice/pages.json"))
 var dialogue_voice := AudioStreamPlayer.new()
 var carried_aerial: Node3D
 var aerial_fitted := false
@@ -153,7 +159,15 @@ func setup_lighting() -> void:
 	add_child(fill)
 
 func set_mode(value: String) -> void:
+	if value not in ["dialogue", "reflection"]:
+		for pose in conversation_poses:
+			if is_instance_valid(pose.actor):
+				pose.actor.rotation = pose.rotation
+		conversation_poses.clear()
+		if is_instance_valid(player) and player.seated:
+			player.apply_seat_pose(1.0)
 	if value != "dialogue":
+		cancel_dialogue_nod()
 		dialogue_voice.stop()
 	mode = value
 	if is_instance_valid(soundscape):
@@ -171,6 +185,8 @@ func set_mode(value: String) -> void:
 	ui.set_prompt("")
 
 func frame_scene(menu_view: bool) -> void:
+	if watch_tween:
+		watch_tween.kill()
 	if menu_view:
 		menu_camera.make_current()
 	else:
@@ -264,7 +280,7 @@ func _process(_delta: float) -> void:
 		interact_verb = {"person": "Talk", "aerial": "Pick up"}.get(task.kind, "Tune" if aerial_fitted else "Fit antenna")
 	var interact_hint := "Tap the gold button" if TouchControls.available() else "Press E"
 	ui.set_navigation("%s  ·  %d m" % [direction, int(distance)] if distance > INTERACT_DISTANCE else "You’re here  ·  " + interact_hint)
-	ui.set_prompt(task.name if distance <= INTERACT_DISTANCE else "")
+	ui.set_prompt(interact_verb if distance <= INTERACT_DISTANCE else "")
 
 func _input(event: InputEvent) -> void:
 	if mode != "video" or not event is InputEventKey or not event.pressed or event.echo:
@@ -290,7 +306,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			ui.toggle_video_pause()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("journal"):
-		if mode == "play":
+		if mode in ["play", "complete"]:
 			show_journal()
 		elif mode == "journal":
 			close_journal()
@@ -347,19 +363,106 @@ func play_voice_cue(stream: AudioStream) -> void:
 
 func show_dialogue(speaker: String, text: String, after: Callable, voice_path: String = "", note: Dictionary = {}, narration := false) -> void:
 	dialogue_voice.stop()
-	dialogue_voice.stream = null
-	if not voice_path.is_empty() and ResourceLoader.exists(voice_path):
-		dialogue_voice.stream = load(voice_path) as AudioStream
 	set_mode("dialogue")
 	dialogue_action = after
+	dialogue_context = {"speaker": speaker, "note": note, "narration": narration}
+	dialogue_pages = voice_pages.get(voice_path.get_file().get_basename(), []).duplicate(true)
+	if dialogue_pages.is_empty():
+		for part in text.split("\n\n"):
+			dialogue_pages.append({"text": part, "audio": ""})
+	dialogue_page = 0
+	render_dialogue_page()
+	if speaker == "Uncle Tan":
+		frame_conversation.call_deferred()
+
+## Elevated diagonal two-shot; both characters keep looking at each other.
+func frame_conversation() -> void:
+	if mode not in ["dialogue", "reflection"]:
+		return
+	var uncle: Node3D = world.community.residents[5].root if player.seated else world.neighbour_visual
+	var uncle_head: Node3D = world.community.residents[5].head if player.seated else null
+	if conversation_poses.is_empty():
+		for actor in [player.visual, uncle]:
+			conversation_poses.append({"actor": actor, "rotation": actor.rotation})
+		if uncle_head:
+			conversation_poses.append({"actor": uncle_head, "rotation": uncle_head.rotation})
+	var sparky_at := player.global_position
+	var uncle_at := uncle.global_position
+	var middle := (sparky_at + uncle_at) * 0.5
+	var across := uncle_at - sparky_at
+	across.y = 0
+	if across.length() < 0.2:
+		across = Vector3.RIGHT
+	# Prefer Uncle Tan on the left, with a little depth between the two faces.
+	var side: Vector3 = world.community.sparky_seat().basis.z if player.seated else -across.normalized().cross(Vector3.UP)
+	var distance := maxf(5.5, across.length() * 1.1)
+	var offset := side * 3.8 - across.normalized() * 2.5 if player.seated else (side + across.normalized() * 0.22).normalized() * distance
+	var at := middle + offset + Vector3(0, 2.8, 0)
+	# The reverse side can be inside the shops or behind the residential block.
+	# Use the open side when scenery would obscure either conversation partner.
+	for actor_at in [sparky_at, uncle_at]:
+		var ray := PhysicsRayQueryParameters3D.create(at, actor_at + Vector3(0, 1.5, 0))
+		ray.exclude = [player.get_rid()]
+		ray.hit_from_inside = true
+		if not get_world_3d().direct_space_state.intersect_ray(ray).is_empty():
+			offset = side * 3.0 - across.normalized() * 3.0 if player.seated else (-side + across.normalized() * 0.22).normalized() * distance
+			at = middle + offset + Vector3(0, 2.8, 0)
+			break
+	# Leave the lower part of the shot clear for the dialogue panel.
+	var aim := middle + Vector3(0, 0.45, 0)
+	frame_watch(at, aim, 50, 0.7)
+	for actor in [player.visual, uncle]:
+		var other: Vector3 = uncle_at if actor == player.visual else sparky_at
+		var toward_partner: Vector3 = other - actor.global_position
+		toward_partner.y = 0
+		var facing: Vector3 = toward_partner.normalized()
+		if not player.seated:
+			actor.global_rotation.y = atan2(facing.x, facing.z)
+	if uncle_head:
+		# Keep both seated bodies aligned with their benches; only turn their heads.
+		player.look_at_conversation(uncle_at)
+		var local_direction := uncle.global_basis.inverse() * (sparky_at - uncle_at)
+		uncle_head.rotation = Vector3(0, clampf(atan2(local_direction.x, local_direction.z), -0.95, 0.95), 0)
+
+func cancel_dialogue_nod() -> void:
+	if nod_delay:
+		nod_delay.kill()
+		nod_delay = null
+	if is_instance_valid(player):
+		player.cancel_nod()
+
+func render_dialogue_page() -> void:
+	cancel_dialogue_nod()
+	dialogue_voice.stop()
+	var page: Dictionary = dialogue_pages[dialogue_page]
+	dialogue_voice.stream = load(page.audio) if not page.audio.is_empty() else null
 	if dialogue_voice.stream:
 		dialogue_voice.play()
-	ui.show_dialogue(speaker, text, advance_dialogue, dialogue_voice if dialogue_voice.stream else null, note, narration)
+	var last := dialogue_page == dialogue_pages.size() - 1
+	ui.show_dialogue(dialogue_context.speaker, page.text, advance_dialogue,
+		dialogue_voice if dialogue_voice.stream else null,
+		dialogue_context.note if last else {}, dialogue_context.narration,
+		dialogue_page + 1, dialogue_pages.size(), previous_dialogue_page)
+	if task_index == 0 and page.text.begins_with("Can help me bring the spare antenna"):
+		# The request ends 2.44 seconds into this clip; acknowledge it in its pause.
+		nod_delay = create_tween()
+		nod_delay.tween_interval(2.55)
+		nod_delay.tween_callback(player.nod)
+
+func previous_dialogue_page() -> void:
+	if mode == "dialogue" and dialogue_page > 0:
+		dialogue_page -= 1
+		render_dialogue_page()
 
 func advance_dialogue() -> void:
 	if mode != "dialogue":
 		return
+	cancel_dialogue_nod()
 	dialogue_voice.stop()
+	if dialogue_page + 1 < dialogue_pages.size():
+		dialogue_page += 1
+		render_dialogue_page()
+		return
 	var action := dialogue_action
 	dialogue_action = Callable()
 	if action.is_valid():
@@ -394,7 +497,7 @@ func set_broadcast_view(value: String) -> void:
 	broadcast_view = value
 	ui.set_archive_view(value)
 	if value != "walk":
-		var seat: Transform3D = world.community.global_transform * world.community.seat_transform(0, -0.8, 0.28)
+		var seat: Transform3D = world.community.global_transform * world.community.sparky_seat()
 		player.global_position = seat.origin
 		player.visual.global_rotation.y = seat.basis.get_euler().y
 		player.set_seated(true)
@@ -413,7 +516,7 @@ func set_broadcast_view(value: String) -> void:
 func frame_community() -> void:
 	frame_watch(Vector3(5.2, 2.9, 2.4), Vector3(-0.5, 1.3, -2.5), 58)
 
-func frame_watch(at: Vector3, aim: Vector3, fov: float) -> void:
+func frame_watch(at: Vector3, aim: Vector3, fov: float, duration := 1.0) -> void:
 	if watch_tween: watch_tween.kill()
 	var previous_camera: Camera3D = get_viewport().get_camera_3d()
 	watch_camera.global_transform = previous_camera.global_transform
@@ -422,18 +525,20 @@ func frame_watch(at: Vector3, aim: Vector3, fov: float) -> void:
 	var destination := Transform3D(Basis.IDENTITY, at).looking_at(aim)
 	watch_tween = create_tween().set_parallel(true)
 	watch_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	watch_tween.tween_property(watch_camera, "global_transform", destination, 1.0)
-	watch_tween.tween_property(watch_camera, "fov", fov, 1.0)
+	watch_tween.tween_property(watch_camera, "global_transform", destination, duration)
+	watch_tween.tween_property(watch_camera, "fov", fov, duration)
 
 func finish_archive() -> void:
 	if mode != "video":
 		return
+	# A player who explored during the footage rejoins the seated conversation.
+	if broadcast_view == "walk":
+		set_broadcast_view("community")
 	world.community.reaction_paused = true
 	world.community.conversing = true
 	world.community.update_reactions()
 	closing_conversation = true
 	world.tv_screen.material_override = world.material(Color("d7e9da"), true)
-	frame_watch(Vector3(0.4, 2.2, -4.6), Vector3(2.9, 1.3, -3.5), 56)
 	show_dialogue("Uncle Tan", History.AFTER_BROADCAST, show_reflection, "res://assets/voice/after_broadcast.mp3")
 
 func show_reflection() -> void:
@@ -460,6 +565,7 @@ func complete_task() -> void:
 		show_complete()
 	else:
 		resume_play()
+	ui.show_memory_notice(checkpoint)
 
 func show_complete() -> void:
 	set_mode("complete")

@@ -252,7 +252,7 @@ func next_line() -> void:
 		lines_done.call()
 		return
 	var line: Array = lines.pop_front()
-	frame_conversation(line[0])
+	frame_wartime_conversation(line[0])
 	if task_index == 3:
 		world.tan.pose = "speak" if line[0] == "Uncle Tan" else "listen"
 		world.mei.pose = "speak" if line[0] == "Mei" else "listen"
@@ -273,7 +273,7 @@ func start_blast() -> void:
 	blast_time = 0
 	blast_hit = false
 	world.set_active(-1)
-	frame_conversation("Uncle Tan")
+	frame_wartime_conversation("Uncle Tan")
 	war_mix.start_siren()
 	blast_overlay()
 
@@ -439,7 +439,7 @@ func cut_camera(at: Vector3, aim: Vector3, lens := 58.0) -> void:
 	watch_camera.fov = lens
 	watch_camera.make_current()
 
-func frame_conversation(speaker: String) -> void:
+func frame_wartime_conversation(speaker: String) -> void:
 	match task_index:
 		0:
 			player.position = Vector3(-1.2, 0.1, 6.2)
@@ -498,7 +498,7 @@ func begin_stage(kind: String, duration: float) -> void:
 		world.tan.rotation.y = 1.7
 		prop_start = world.pail.global_position
 		stage_target = player.visual.to_global(palm_offset) - Vector3.UP * 0.52
-		frame_conversation("Sparky")
+		frame_wartime_conversation("Sparky")
 	elif kind == "setdown":
 		player.position = Vector3(-1.05, 0.1, -8.55)
 		player.visual.rotation.y = -2.2
@@ -512,7 +512,7 @@ func begin_stage(kind: String, duration: float) -> void:
 		world.pail.visible = true
 		world.pail.global_position = prop_start
 		body_pose.carry = 0
-		frame_conversation("Mei")
+		frame_wartime_conversation("Mei")
 	else:
 		cut_camera(Vector3(0, 2.7, -3.5), Vector3(0, 1, -7.8), 78)
 		var neighbour_direction: Vector3 = world.evacuees[0].position - player.position
@@ -587,3 +587,8 @@ func face_tan() -> void:
 	var towards: Vector3 = world.tan.global_position - player.global_position
 	player.visual.rotation.y = atan2(towards.x, towards.z)
 	world.tan.rotation.y = atan2(-towards.x, -towards.z)
+
+func frame_conversation() -> void:
+	# The 1965 base class requests its own camera after Tan's dialogue.
+	# Wartime conversations are already framed by next_line before rendering.
+	pass
