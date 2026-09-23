@@ -101,7 +101,9 @@ The original version is preserved in `assets/sparky/v1`. The version immediately
 1. Open this folder's `project.godot` in Godot.
 2. Open `scenes/character_studio.tscn` from the FileSystem panel.
 3. Press **F6** (Run Current Scene). F5 continues to run the main game.
-4. Click **Idle**, **Walk**, or **Wave**. Drag the background to rotate the view; scroll to zoom. There is also a pause/resume button.
+4. Choose **Original**, **WW2 · Civilian**, or **1967 · NS recruit** from the outfit selector. Click **Idle**, **Walk**, or **Wave**. The NS version also has **Carry rifle**, with dedicated idle/walk poses. Drag the background to rotate the view; scroll to zoom. There is also a pause/resume button.
+
+The two new outfits are first review models for future chapters, with editable Blender sources and GLBs. The WW2 civilian keeps Sparky's signature hood as a deliberate stylistic choice. The NS recruit wears a Temasek Green inspired uniform and cap, with an optional early M16-style prop. See [wardrobe notes, historical boundaries and integration](assets/sparky/outfits/README.md). These assets are excluded from the current 1965 game's exports until their chapters are connected.
 
 This is a character viewer, not the historical adventure game. It uses the final GLB directly, with studio lighting and animation controls. Its fur avoids tiny per-fibre cast shadows, and the floor uses a soft contact-shadow graphic. Those are preview scene choices rather than baked changes to the character.
 
