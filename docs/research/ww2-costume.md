@@ -209,6 +209,31 @@ These reuse the sources above; the new details are marked **[I]**.
 - Across the crowd, palettes, head shapes, heights (1.54–1.74 m), headwear and hair are all
   varied, so a group of 6–8 reads as different people rather than recolours.
 
+## 10. Present day (2026), "Telok Ayer today" crowd
+
+This is contemporary everyday dress, drawn from observation, so there are no archival sources.
+Colours are deliberately **bright and saturated** so this crowd contrasts with the muted 1942
+townsfolk.
+- **npc-now-office** (Chinese office worker, about 34): a light-blue shirt with sleeves rolled
+  (a CBD/Telok Ayer lunchtime look in the tropics), a red lanyard with an ID card, charcoal slacks,
+  a belt and leather shoes.
+- **npc-now-tourist** (tourist, about 40): a coral T-shirt, khaki shorts, a cream bucket sunhat with
+  a teal band, a teal backpack, a camera on a cross-body strap, white sneakers, and a light-brown
+  ponytail.
+- **npc-now-auntie** (Malay auntie, about 55): a **modern baju kurung** in a magenta floral print
+  with a plum kain, a teal **tudung** that frames the face and drapes over the shoulders (standard
+  everyday wear for many Malay-Muslim women in Singapore today), an orange tote, a gold bangle and
+  hands clasped.
+- **npc-now-teen** (Indian teen, 15): a royal-blue polo, navy shorts, red sneakers, and a phone in
+  his right hand (separate `Phone` node), looking down at it in Idle.
+- **npc-now-barista** (café worker, about 24): a mint T-shirt, a burnt-orange canvas bib apron,
+  jeans, a mustard cap and a ponytail (the specialty-coffee look common around Telok Ayer and
+  Amoy Street).
+- **npc-now-jogger** (Eurasian man, about 26): a neon-lime running singlet, black shorts with a
+  lime stripe, orange running shoes, white earbuds and a sports watch.
+- Faces keep the same plush grammar as the 1942 cast. Skin tones and heights (1.60–1.75 m) vary
+  across the group.
+
 ---
 
 ## Respectful-design checklist (used when reviewing the renders)

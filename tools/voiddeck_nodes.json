@@ -328,6 +328,90 @@
     "color": "#eef4ff"
    }
   },
+  "PLAY_Rider_1": {
+   "three_pos": [
+    -5.6,
+    -0.12,
+    13.1
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "seat_height": 0.774,
+    "spring_height": 0.35
+   }
+  },
+  "PLAY_Rider_2": {
+   "three_pos": [
+    -6.2,
+    -0.12,
+    17.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "seat_height": 0.774,
+    "spring_height": 0.35
+   }
+  },
+  "PLAY_Slide_Top": {
+   "three_pos": [
+    -0.6,
+    1.48,
+    14.65
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "length": 2.6,
+    "drop": 1.6,
+    "exit_height": 0.25,
+    "curve": 1.4,
+    "half_width": 0.3,
+    "note": "surface height at t in 0..1 = base + drop*(1-t)^curve + exit_height*t"
+   }
+  },
+  "PLAY_Slide_Tower": {
+   "three_pos": [
+    -0.6,
+    1.48,
+    15.3
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "half": 0.65,
+    "posts": 0.6
+   }
+  },
+  "PLAY_Area": {
+   "three_pos": [
+    -2.0,
+    -0.12,
+    15.5
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "half_x": 5.5,
+    "half_y": 3.8
+   }
+  },
   "PRO_Camera_Wide": {
    "three_pos": [
     1.0,
@@ -379,20 +463,20 @@
   }
  },
  "stats": {
-  "mobile_tris": 17778,
+  "mobile_tris": 17866,
   "audit_mobile": {
    "same_facing_overlaps": 0,
    "back_to_back": 0,
-   "inside_out_suspects": 15
+   "inside_out_suspects": 17
   },
-  "desktop_tris": 25360,
+  "desktop_tris": 25448,
   "audit": {
    "same_facing_overlaps": 0,
    "back_to_back": 0,
-   "inside_out_suspects": 15
+   "inside_out_suspects": 17
   },
-  "desktop_bytes": 2780436,
-  "mobile_bytes": 1054576,
+  "desktop_bytes": 2784760,
+  "mobile_bytes": 1058692,
   "materials": [
    "M_Paint",
    "M_Floor",

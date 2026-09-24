@@ -1024,7 +1024,7 @@ def build_playground(cx, cy):
     z0 = ZG + 0.03
     YEL, RED_, BLU, GRN = C(0.96, 0.74, 0.18), C(0.86, 0.26, 0.20), C(0.22, 0.46, 0.78), C(0.26, 0.62, 0.40)
     towers = [((cx - 2.2, cy), 1.3, RED_), ((cx + 1.4, cy + 0.2), 1.6, BLU)]
-    for (tx, ty), h, rc in towers:
+    for ti, ((tx, ty), h, rc) in enumerate(towers):
         for sx in (-0.6, 0.6):
             for sy in (-0.6, 0.6):
                 tube("M_Plastic", (tx + sx, ty + sy, z0), (tx + sx, ty + sy, z0 + h + 1.3), 0.05, 8, YEL)
@@ -1036,9 +1036,14 @@ def build_playground(cx, cy):
             a, b = cs[i], cs[(i + 1) % 4]
             poly("M_Plastic", [(a[0], a[1], z0 + h + 1.3), (b[0], b[1], z0 + h + 1.3), top], rc)
         poly("M_Plastic", [(p[0], p[1], z0 + h + 1.3) for p in reversed(cs)], mulc(rc, 0.7))   # roof underside
-        # panel on the tower
-        decal("playpanel", (tx, ty + 0.66, z0 + h + 0.4), (0, 1, 0), 1.0, 0.5, off=0.008)
-        box("M_Plastic", (tx - 0.55, ty + 0.62, z0 + h + 0.15), (tx + 0.55, ty + 0.66, z0 + h + 0.65), YEL)
+        # panel on the tower (the slide tower's goes on its outer side: the slide leaves from the front,
+        # and children climb onto it there)
+        if ti == 1:
+            decal("playpanel", (tx + 0.66, ty, z0 + h + 0.4), (1, 0, 0), 1.0, 0.5, off=0.008)
+            box("M_Plastic", (tx + 0.62, ty - 0.55, z0 + h + 0.15), (tx + 0.66, ty + 0.55, z0 + h + 0.65), YEL)
+        else:
+            decal("playpanel", (tx, ty + 0.66, z0 + h + 0.4), (0, 1, 0), 1.0, 0.5, off=0.008)
+            box("M_Plastic", (tx - 0.55, ty + 0.62, z0 + h + 0.15), (tx + 0.55, ty + 0.66, z0 + h + 0.65), YEL)
     # bridge between towers
     box("M_Plastic", (cx - 1.55, cy - 0.35, z0 + 1.35), (cx + 0.8, cy + 0.35, z0 + 1.42), YEL)
     for sy in (-0.35, 0.35):
@@ -1069,9 +1074,24 @@ def build_playground(cx, cy):
             poly("M_Plastic", wall_in, RED_)
             poly("M_Plastic", wall_out, RED_)
     # spring riders
-    for (x, y, c) in ((cx - 3.6, cy + 2.4, GRN), (cx - 4.2, cy - 2.4, YEL)):
+    for i, (x, y, c) in enumerate(((cx - 3.6, cy + 2.4, GRN), (cx - 4.2, cy - 2.4, YEL))):
+        # body runs front-to-back (the child straddles it facing the deck, +Y), narrow between the knees
         tube("M_Metal", (x, y, z0), (x, y, z0 + 0.35), 0.05, 6, STEEL)
-        blob("M_Plastic", (x, y, z0 + 0.55), 0.28, c, sub=1, squash=(1.3, 0.6, 0.8), noise=0.05)
+        blob("M_Plastic", (x, y, z0 + 0.55), 0.28, c, sub=1, squash=(0.45, 1.3, 0.8), noise=0.05)
+        # head + sideways handles where a seated child's hands are (seat top 0.774; grips 0.79 above
+        # the child's origin = seat top - 0.45, and 0.35 m ahead)
+        blob("M_Plastic", (x, y + 0.36, z0 + 0.98), 0.13, c, sub=1, squash=(0.85, 1.0, 1.0), noise=0.04)
+        tube("M_Plastic", (x, y + 0.2, z0 + 0.7), (x, y + 0.33, z0 + 0.9), 0.06, 6, c)
+        tube("M_Metal", (x - 0.15, y + 0.35, z0 + 1.114), (x + 0.15, y + 0.35, z0 + 1.114), 0.018, 6, C(0.15, 0.15, 0.16))
+        marker("PLAY_Rider_%d" % (i + 1), (x, y, z0), (0, 1), {"seat_height": round(0.55 + 0.28 * 0.8, 3),
+                                                               "spring_height": 0.35})
+    # markers for the children playing here (game code: src/chapters/present-kids.js)
+    stx, sty = towers[1][0]
+    marker("PLAY_Slide_Top", (stx, sty + 0.65, z0 + towers[1][1]), (0, 1),
+           {"length": 2.6, "drop": 1.6, "exit_height": 0.25, "curve": 1.4, "half_width": 0.3,
+            "note": "surface height at t in 0..1 = base + drop*(1-t)^curve + exit_height*t"})
+    marker("PLAY_Slide_Tower", (stx, sty, z0 + towers[1][1]), (0, 1), {"half": 0.65, "posts": 0.6})
+    marker("PLAY_Area", (cx, cy, z0), (0, 1), {"half_x": 5.5, "half_y": 3.8})
     box("M_Metal", (cx + 5.5, cy + 3.99, 0.7), (cx + 6.1, cy + 4.01, 1.3), C(0.2, 0.25, 0.3))
     decal("fitness", (cx + 5.8, cy + 4.01, 1.0), (0, 1, 0), 0.6, 0.6, off=0.008)
     tube("M_Metal", (cx + 5.8, cy + 3.97, ZG), (cx + 5.8, cy + 3.97, 0.7), 0.03, 6, STEEL)

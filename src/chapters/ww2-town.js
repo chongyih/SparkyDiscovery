@@ -87,7 +87,7 @@ export class Town {
     const g = this.c.game;
     this.stroll?.();
     for (const ch of this.people) {
-      if (ch.role === 'street') {
+      if (ch.role === 'street' || ch.role === 'customer') {
         ch.fleeing = true;
         const to = shelterPos.clone().add(V((Math.random() - 0.5) * 2, 0, 0));
         Promise.race([ch.moveTo(to, { speed: 2.4 }), g.wait(12)]).then(() => { ch.stop(); ch.root.visible = false; });

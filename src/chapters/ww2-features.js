@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import T from './ww2-text.js';
 import { markerPose } from '../engine/world.js';
 import { capturePhoto } from '../engine/album.js';
+import { spawnNowPeople } from './ww2-now.js';
 
 // Chapter 1 features agreed with the user: Then & Now opening, the "room for two things" shelter
 // choice, a free "Look closer" camera, and optional kindness tasks. Each takes the WW2Chapter `c`.
@@ -32,7 +33,22 @@ export function setEra(c, era) {
 }
 
 function thenNowPose(c) {
-  if (c.m.THEN_NOW_Camera) return markerPose(c.m.THEN_NOW_Camera);
+  if (c.m.THEN_NOW_Camera) {
+    // Step forward into the middle of the arch bay: the marker sits right beside an arcade
+    // column, which fills the view (and clips) when the player turns toward the road.
+    const pose = markerPose(c.m.THEN_NOW_Camera);
+    const f = V(Math.sin(pose.yaw), 0, Math.cos(pose.yaw));
+    pose.pos.addScaledVector(f, 1.6);
+    // Out from under the arcade to the kerb edge, so no column splits the photograph.
+    const toRoad = V(f.z, 0, -f.x);
+    if (toRoad.dot(pose.pos.clone().setY(0).negate()) < 0) toRoad.negate();
+    const room = c.world.rayDistance(pose.pos, toRoad, 3);
+    pose.pos.addScaledVector(toRoad, Math.min(1.5, Math.max(0, room - 0.4)));
+    const probe = pose.pos.clone();
+    c.world.resolve(probe, 0.45, 2, -1);
+    pose.pos.x = probe.x; pose.pos.z = probe.z;
+    return pose;
+  }
   const sp = c.marker('SPAWN_Sparky');
   return { pos: sp.pos.clone().add(V(0, 1.0, 0)), yaw: sp.yaw };
 }
@@ -63,13 +79,14 @@ export async function thenNow(c) {
   const ghost = capturePhoto(g.canvas, { size: 512 });
   Object.assign(g.renderer.grade, grade);
 
-  // 2) Today's street.
+  // 2) Today's street, with people going about their day.
   setEra(c, 'now');
   c.setLightingPreset('now');
+  const clearNowPeople = await spawnNowPeople(c, pose);
   const amb = g.audio.play('street', { volume: 0.35, loop: true, fadeIn: 2, caption: '[A busy street: chatter, footsteps, a scooter]' });
   // Start turned a little toward the open road (not into a shop front), tilted slightly up.
   const towardRoad = (sgn) => dirAt(pose.yaw + sgn * 0.5, pitch).z * -Math.sign(eye.z || 1);
-  const offYaw = towardRoad(1) >= towardRoad(-1) ? 0.5 : -0.5, offPitch = -0.12;
+  const offYaw = towardRoad(1) >= towardRoad(-1) ? 0.4 : -0.4, offPitch = -0.1;
   g.rig.viewfinder(eye, eye.clone().add(dirAt(pose.yaw + offYaw, pitch + offPitch)), true, 1.3);
   Object.assign(g.renderer.grade, { sepia: 0, saturation: 1.05, vignette: 0.35 });
   await g.ui.fade(false, 1.2);
@@ -127,6 +144,7 @@ export async function thenNow(c) {
   await c.lines(X.locked, { frame: false });
   amb.stop(1.5);
   await g.ui.fade(true, 0.7, 'sepia');
+  clearNowPeople();
   // Cleanup viewfinder UI.
   g.input.aimKeys = false;
   g.input.lookEnabled = true;

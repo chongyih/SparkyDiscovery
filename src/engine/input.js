@@ -28,8 +28,9 @@ export class Input {
 
   bindKeyboard() {
     addEventListener('keydown', (e) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement) return;
       const k = e.code;
+      // Let form controls keep their keys (arrows, space) — but Esc still backs out of menus.
+      if ((e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement) && k !== 'Escape') return;
       if (!e.repeat) {
         if (k === 'KeyE' || k === 'Enter') this.emit('action');
         if (k === 'Space') { this.emit('snap'); this.emit('action-space'); }

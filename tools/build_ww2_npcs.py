@@ -419,6 +419,322 @@ CHARACTERS = {
         props=[],
         headwear=dict(type='straw_hat', sw='straw'),
     ),
+    # ================================================================ PRESENT DAY (2026) - Telok Ayer today
+    'now-office': dict(
+        name='NowOffice', file='npc-now-office', age=34,
+        body=body(height=1.72, head_frac=0.285, head_aspect=(0.95, 0.92), leg_frac=0.47,
+                  torso_w=0.245, torso_depth=0.78, hip_ratio=0.92, belly=0.01, neck_r=0.040,
+                  arm_r=0.034, leg_r=0.043, hand_r=0.042, foot_len=0.15, arm_len=1.02, arm_spread=11),
+        energy=1.0, walk_period=0.95, run_period=0.64, posture=dict(spine=0, chest=-2, head=0),
+        idle_arms='relaxed',
+        palette={
+            'skin': '#ecc39d', 'skin_shade': '#d6a883',
+            'face': dict(kind='face', skin='#ecc39d', blush='#e8927c'),
+            'hair': dict(kind='strands', base='#141212'),
+            'shirt': dict(kind='twill', base='#8cc4ef', amt=0.03),
+            'slacks': dict(kind='twill', base='#3a3f4b', amt=0.04),
+            'belt': '#1e1b1a', 'metal': '#d0d3d8', 'button': '#f2f4f6',
+            'lanyard': '#e2403b', 'card': dict(kind='border', base='#f7f7f5', band='#2f6fd0'),
+            'shoe': '#2a1d17',
+        },
+        hair=dict(style='short', sw='hair', scale=(1.04, 1.05, 1.045),
+                  line=[(0, 38), (12, 40), (30, 34), (60, 14), (86, -8), (100, -10), (140, -28), (180, -36)]),
+        face=dict(eye=0.95, eye_az=20, eye_el=-5, brow=dict(inner=0.3, outer=0.2, arch=1.3, r=1.2),
+                  mouth=dict(w=8.5, smile=4.0, el=-28), nose=0.95, blush=0.4),
+        outfit=dict(
+            top=dict(sw='shirt', hem='waist', ease=0.009, flare=1.0, sleeve=0.62, sleeve_ease=0.008,
+                     sleeve_flare=1.05, cuff=dict(sw='shirt', roll=True), collar='shirt', buttons='button'),
+            lower=dict(type='trousers', sw='slacks', hem=('ankle', 0.015), top='waist', ease=0.005,
+                       leg_ease=0.008, leg_flare=1.04),
+            feet=dict(type='shoes', sw='shoe'),
+        ),
+        props=[dict(type='belt', sw='belt', buckle='metal'), dict(type='lanyard', sw='lanyard', card='card')],
+        headwear=None,
+    ),
+    'now-tourist': dict(
+        name='NowTourist', file='npc-now-tourist', age=40,
+        body=body(height=1.68, head_frac=0.285, head_aspect=(0.95, 0.93), leg_frac=0.47,
+                  torso_w=0.245, torso_depth=0.80, hip_ratio=1.02, belly=0.03, neck_r=0.040,
+                  arm_r=0.034, leg_r=0.044, hand_r=0.042, foot_len=0.15, arm_len=1.02, arm_spread=12),
+        energy=1.1, walk_period=1.0, run_period=0.68, posture=dict(spine=0, chest=-2, head=-2),
+        idle_arms='relaxed',
+        palette={
+            'skin': '#f1cdb4', 'skin_shade': '#e0ae94',
+            'face': dict(kind='face', skin='#f1cdb4', blush='#f08f84'),
+            'hair': dict(kind='strands', base='#9a6f45'),
+            'tee': dict(kind='twill', base='#ff7a5c', amt=0.03), 'trim': '#ffd6c8',
+            'shorts': dict(kind='twill', base='#c9b58a', amt=0.05),
+            'hat': dict(kind='twill', base='#f3e7c7', amt=0.06), 'band': '#2aa7a1',
+            'pack': dict(kind='twill', base='#20b3a8', amt=0.05), 'pack2': '#f5c542', 'strap': '#1c5f5a',
+            'cam': '#232427', 'lens': '#3a3d44', 'camstrap': '#2b2b2e',
+            'sneaker': '#ffffff', 'sole': '#d9dde2', 'lace': '#20b3a8',
+        },
+        hair=dict(style='short', sw='hair', scale=(1.05, 1.06, 1.045),
+                  line=[(0, 30), (20, 26), (45, 6), (70, -18), (95, -30), (140, -44), (180, -50)],
+                  ponytail=dict(el=-0.35, len=0.42, tie='band')),
+        face=dict(eye=0.98, eye_az=21, eye_el=-5, brow=dict(inner=1.2, outer=-0.2, arch=1.8, r=0.9),
+                  mouth=dict(w=9.5, smile=5.5, el=-28, open=True), nose=0.95, blush=0.75, lashes=True),
+        outfit=dict(
+            top=dict(sw='tee', hem=('hip', -0.005), ease=0.010, flare=1.04, sleeve=0.34, sleeve_ease=0.011,
+                     sleeve_flare=1.15, collar='round_trim', trim='trim'),
+            lower=dict(type='shorts', sw='shorts', hem=('knee', 0.06), top='waist', ease=0.007,
+                       leg_ease=0.014, leg_flare=1.2),
+            feet=dict(type='sneakers', sw='sneaker', sole='sole', lace='lace'),
+        ),
+        props=[dict(type='backpack', sw='pack', pocket='pack2', strap='strap'),
+               dict(type='camera', side='R', sw='cam', lens='lens', strap='camstrap')],
+        headwear=dict(type='bucket_hat', sw='hat', band='band'),
+    ),
+    'now-auntie': dict(
+        name='NowAuntie', file='npc-now-auntie', age=55,
+        body=body(height=1.56, head_frac=0.29, head_aspect=(0.98, 0.94), leg_frac=0.43,
+                  torso_w=0.255, torso_depth=0.84, hip_ratio=1.06, belly=0.05, neck_r=0.040,
+                  arm_r=0.035, leg_r=0.044, hand_r=0.042, foot_len=0.135, arm_len=1.0, arm_spread=12),
+        energy=0.9, walk_period=1.05, run_period=0.74, posture=dict(spine=2, chest=1, head=-2),
+        idle_arms='clasp',
+        palette={
+            'skin': '#b5805a', 'skin_shade': '#9f6c49',
+            'face': dict(kind='face', skin='#b5805a', blush='#bf6c58'),
+            'hair': dict(kind='strands', base='#221a16'),
+            'baju': dict(kind='floral', base='#a4389c', flower='#f3b9e6', centre='#ffe07a', n=6),
+            'trim': '#f7d36a',
+            'kain': dict(kind='twill', base='#6a1f63', amt=0.04),
+            'tudung': dict(kind='twill', base='#3fbfb8', amt=0.025),
+            'tote': dict(kind='twill', base='#f4a23b', amt=0.06), 'strap': '#b36a16',
+            'sandal': '#6e4a36', 'metal': '#e2c36a',
+        },
+        hair=dict(style='none', sw='hair', scale=(1.0, 1.0, 1.0), line=[(0, 90), (180, 90)]),
+        face=dict(eye=0.92, eye_az=21, eye_el=-5, brow=dict(inner=1.5, outer=-1.0, arch=1.6, r=1.0),
+                  mouth=dict(w=9.0, smile=5.0, el=-28), nose=1.0, blush=0.6, smile_lines=True),
+        outfit=dict(
+            top=dict(sw='baju', hem=('knee', 0.05), ease=0.016, flare=1.3,
+                     sleeve=1.0, sleeve_ease=0.006, sleeve_flare=1.1, collar=None),
+            lower=dict(type='skirt', sw='kain', hem=('ankle', 0.03), top='waist', ease=0.008, flare=1.1),
+            feet=dict(type='sandals', sw='sandal'),
+        ),
+        props=[dict(type='news_bag', side='R', sw='tote', strap='strap'), dict(type='bangle', side='L', sw='metal')],
+        headwear=dict(type='tudung', sw='tudung'),
+    ),
+    'now-teen': dict(
+        name='NowTeen', file='npc-now-teen', age=15,
+        body=body(height=1.60, head_frac=0.30, head_aspect=(0.95, 0.92), leg_frac=0.46,
+                  torso_w=0.232, torso_depth=0.76, hip_ratio=0.90, belly=0.0, neck_r=0.038,
+                  arm_r=0.033, leg_r=0.041, hand_r=0.042, foot_len=0.15, arm_len=1.03, arm_spread=11),
+        energy=1.2, walk_period=0.9, run_period=0.58, posture=dict(spine=2, chest=1, head=2),
+        idle_arms='phone',
+        palette={
+            'skin': '#8a5a3c', 'skin_shade': '#77492f',
+            'face': dict(kind='face', skin='#8a5a3c', blush='#96533f'),
+            'hair': dict(kind='strands', base='#141110'),
+            'polo': dict(kind='twill', base='#2f6fe0', amt=0.03), 'button': '#e9eef7',
+            'shorts': dict(kind='twill', base='#2b3240', amt=0.05),
+            'sneaker': '#ff5a4e', 'sole': '#f4f4f2', 'lace': '#ffffff',
+            'phone': '#1d1f24', 'screen': '#6fd3ff',
+        },
+        hair=dict(style='crop', sw='hair', scale=(1.05, 1.06, 1.05),
+                  line=[(0, 26), (12, 22), (26, 28), (50, 20), (80, 6), (100, 0), (140, -18), (180, -28)]),
+        face=dict(eye=1.02, eye_az=21, eye_el=-5, brow=dict(inner=1.5, outer=0.5, arch=1.2, r=1.15),
+                  mouth=dict(w=8.0, smile=4.0, el=-28), nose=1.0, blush=0.3),
+        outfit=dict(
+            top=dict(sw='polo', hem=('hip', -0.01), ease=0.010, flare=1.03, sleeve=0.36, sleeve_ease=0.011,
+                     sleeve_flare=1.15, collar='shirt', buttons='button'),
+            lower=dict(type='shorts', sw='shorts', hem=('knee', 0.03), top='waist', ease=0.007,
+                       leg_ease=0.013, leg_flare=1.18),
+            feet=dict(type='sneakers', sw='sneaker', sole='sole', lace='lace'),
+        ),
+        props=[],
+        extras=[dict(type='phone', name='Phone', side='R', sw='phone', screen='screen')],
+        headwear=None,
+    ),
+    'now-barista': dict(
+        name='NowBarista', file='npc-now-barista', age=24,
+        body=body(height=1.60, head_frac=0.29, head_aspect=(0.96, 0.93), leg_frac=0.46,
+                  torso_w=0.232, torso_depth=0.78, hip_ratio=1.0, belly=0.0, neck_r=0.037,
+                  arm_r=0.032, leg_r=0.041, hand_r=0.040, foot_len=0.14, arm_len=1.02, arm_spread=11),
+        energy=1.1, walk_period=0.92, run_period=0.62, posture=dict(spine=0, chest=-2, head=0),
+        idle_arms='relaxed',
+        palette={
+            'skin': '#f0c9a5', 'skin_shade': '#dbad88',
+            'face': dict(kind='face', skin='#f0c9a5', blush='#f0917e'),
+            'hair': dict(kind='strands', base='#3a2418'),
+            'tee': dict(kind='twill', base='#7fcf9f', amt=0.03), 'trim': '#e6f7ec',
+            'jeans': dict(kind='twill', base='#3b5f9a', amt=0.07),
+            'apron': dict(kind='twill', base='#e2733a', amt=0.06), 'strap': '#8a3f18',
+            'cap': dict(kind='twill', base='#f2c14e', amt=0.05), 'brim': '#e8b23a', 'tie': '#e2733a',
+            'sneaker': '#f5f1e8', 'sole': '#ffffff', 'lace': '#e2733a',
+        },
+        hair=dict(style='short', sw='hair', scale=(1.05, 1.06, 1.045),
+                  line=[(0, 26), (20, 22), (45, 2), (70, -18), (95, -26), (140, -40), (180, -46)],
+                  ponytail=dict(el=0.05, len=0.55, tie='tie')),
+        face=dict(eye=1.0, eye_az=21, eye_el=-5, brow=dict(inner=1.0, outer=-0.3, arch=1.8, r=0.95),
+                  mouth=dict(w=9.0, smile=5.0, el=-28), nose=0.92, blush=0.65, lashes=True),
+        outfit=dict(
+            top=dict(sw='tee', hem=('hip', -0.01), ease=0.009, flare=1.03, sleeve=0.34, sleeve_ease=0.011,
+                     sleeve_flare=1.15, collar='round_trim', trim='trim'),
+            lower=dict(type='trousers', sw='jeans', hem=('ankle', 0.03), top='waist', ease=0.005,
+                       leg_ease=0.006, leg_flare=1.0),
+            feet=dict(type='sneakers', sw='sneaker', sole='sole', lace='lace'),
+        ),
+        props=[dict(type='apron', sw='apron', strap='strap', bib=True)],
+        headwear=dict(type='cap', sw='cap', brim='brim'),
+    ),
+    'now-jogger': dict(
+        name='NowJogger', file='npc-now-jogger', age=26,
+        body=body(height=1.75, head_frac=0.28, head_aspect=(0.94, 0.92), leg_frac=0.48,
+                  torso_w=0.245, torso_depth=0.76, hip_ratio=0.86, belly=0.0, neck_r=0.040,
+                  arm_r=0.035, leg_r=0.043, hand_r=0.042, foot_len=0.155, arm_len=1.03, arm_spread=12),
+        energy=1.3, walk_period=0.88, run_period=0.56, posture=dict(spine=0, chest=-3, head=0),
+        idle_arms='relaxed',
+        palette={
+            'skin': '#c99368', 'skin_shade': '#b37d55',
+            'face': dict(kind='face', skin='#c99368', blush='#cc7b62'),
+            'hair': dict(kind='strands', base='#3b2a1f'),
+            'singlet': dict(kind='rib', base='#b9f23f', amt=0.03),
+            'shorts': dict(kind='hstripes', base='#1f2228', stripe='#b9f23f', n=1, w=0.08),
+            'sneaker': '#ff7a1a', 'sole': '#ffffff', 'lace': '#1f2228',
+            'buds': '#fbfbfb', 'watch': '#1f2228',
+        },
+        hair=dict(style='short', sw='hair', scale=(1.05, 1.065, 1.06),
+                  line=[(0, 34), (15, 30), (35, 32), (60, 16), (86, -6), (100, -10), (140, -28), (180, -36)],
+                  wisps=[(-10, -26, 72, 58), (8, 24, 74, 60)]),
+        face=dict(eye=0.95, eye_az=20, eye_el=-5, brow=dict(inner=0.0, outer=0.5, arch=1.1, r=1.2),
+                  mouth=dict(w=9.5, smile=5.5, el=-28, open=True), nose=1.05, blush=0.4),
+        outfit=dict(
+            top=dict(sw='singlet', hem=('hip', -0.01), ease=0.006, flare=1.02, sleeve=0.0,
+                     collar='singlet', top_z='armpit'),
+            lower=dict(type='shorts', sw='shorts', hem=('thigh_mid', 0.01), top='waist', ease=0.007,
+                       leg_ease=0.010, leg_flare=1.12),
+            feet=dict(type='sneakers', sw='sneaker', sole='sole', lace='lace'),
+        ),
+        props=[dict(type='earbuds', sw='buds'), dict(type='bangle', side='L', sw='watch')],
+        headwear=None,
+    ),
+    # ================================================================ PRESENT DAY (2026) - Queenstown void-deck playground kids
+    # Child proportions: big round heads (head_frac 0.32-0.36), short legs, small mitten hands, big eyes
+    # set low on the face. Energetic (energy 1.3-1.5, short walk/run periods). Shorts, not skirts, so
+    # Sit / Ride / Jump deform cleanly.
+    'kid-girl': dict(                 # Chinese girl, ~7: bright tee, skort, pigtails, sneakers
+        name='KidGirl', file='npc-kid-girl', age=7,
+        body=body(height=1.20, head_frac=0.345, head_aspect=(1.0, 0.95), leg_frac=0.42,
+                  torso_w=0.25, torso_depth=0.84, hip_ratio=0.98, belly=0.05, neck_r=0.042,
+                  arm_r=0.037, leg_r=0.046, hand_r=0.045, foot_len=0.15, arm_len=1.0, arm_spread=14),
+        energy=1.45, walk_period=0.76, run_period=0.52, posture=dict(spine=0, chest=-2, head=0),
+        idle_arms='relaxed',
+        palette={
+            'skin': '#f0caa6', 'skin_shade': '#dcae88',
+            'face': dict(kind='face', skin='#f0caa6', blush='#f28f86'),
+            'hair': dict(kind='strands', base='#1a1512'),
+            'tee': dict(kind='twill', base='#ff6fae', amt=0.03), 'trim': '#fff0f6',
+            'skort': dict(kind='twill', base='#4a86e0', amt=0.04),
+            'tie': '#ffd23f',
+            'sneaker': '#ffffff', 'sole': '#ff8fc2', 'lace': '#ff6fae',
+        },
+        hair=dict(style='short', sw='hair', scale=(1.05, 1.06, 1.05),
+                  line=[(0, 24), (14, 22), (30, 20), (55, 6), (80, -8), (100, -14), (140, -30), (180, -38)],
+                  pigtails=dict(az=104, el=24, len=0.40, tie='tie')),
+        face=dict(eye=1.18, eye_az=22, eye_el=-8, brow=dict(inner=1.5, outer=-0.5, arch=1.8, r=0.9),
+                  mouth=dict(w=10.0, smile=6.0, el=-30, open=True), nose=0.8, blush=0.8, lashes=True),
+        outfit=dict(
+            top=dict(sw='tee', hem=('hip', -0.005), ease=0.010, flare=1.06, sleeve=0.30, sleeve_ease=0.011,
+                     sleeve_flare=1.18, collar='round_trim', trim='trim'),
+            lower=dict(type='shorts', sw='skort', hem=('thigh_mid', 0.004), top='waist', ease=0.009,
+                       leg_ease=0.016, leg_flare=1.30),
+            feet=dict(type='sneakers', sw='sneaker', sole='sole', lace='lace'),
+        ),
+        props=[],
+        headwear=None,
+    ),
+    'kid-boy': dict(                  # Malay boy, ~9: football jersey (No. 10 on the back), shorts, sneakers
+        name='KidBoy', file='npc-kid-boy', age=9,
+        body=body(height=1.32, head_frac=0.33, head_aspect=(0.98, 0.94), leg_frac=0.43,
+                  torso_w=0.245, torso_depth=0.82, hip_ratio=0.96, belly=0.03, neck_r=0.041,
+                  arm_r=0.036, leg_r=0.045, hand_r=0.045, foot_len=0.15, arm_len=1.02, arm_spread=13),
+        energy=1.4, walk_period=0.80, run_period=0.54, posture=dict(spine=0, chest=-2, head=0),
+        idle_arms='relaxed',
+        palette={
+            'skin': '#b27b55', 'skin_shade': '#9c6744',
+            'face': dict(kind='face', skin='#b27b55', blush='#b9644f'),
+            'hair': dict(kind='strands', base='#15110f'),
+            'jersey': dict(kind='twill', base='#e0343c', amt=0.03), 'trim': '#ffffff', 'num': '#ffffff',
+            'badge': '#f5c542',
+            'shorts': dict(kind='twill', base='#1d2438', amt=0.05),
+            'sneaker': '#1f2330', 'sole': '#ffffff', 'lace': '#e0343c',
+        },
+        hair=dict(style='short', sw='hair', scale=(1.045, 1.055, 1.045),
+                  line=[(0, 34), (15, 32), (35, 30), (60, 14), (86, -4), (100, -8), (140, -24), (180, -32)],
+                  wisps=[(-8, -22, 70, 56), (6, 18, 72, 58)]),
+        face=dict(eye=1.10, eye_az=21, eye_el=-7, brow=dict(inner=1.0, outer=0.5, arch=1.4, r=1.05),
+                  mouth=dict(w=10.5, smile=6.0, el=-29, open=True), nose=0.88, blush=0.45),
+        outfit=dict(
+            top=dict(sw='jersey', hem=('hip', 0.0), ease=0.012, flare=1.06, sleeve=0.34, sleeve_ease=0.012,
+                     sleeve_flare=1.15, cuff=dict(sw='trim', roll=True), collar='round_trim', trim='trim'),
+            lower=dict(type='shorts', sw='shorts', hem=('knee', 0.045), top='waist', ease=0.008,
+                       leg_ease=0.016, leg_flare=1.25),
+            feet=dict(type='sneakers', sw='sneaker', sole='sole', lace='lace'),
+        ),
+        props=[dict(type='jersey_number', text='10', sw='num'), dict(type='badge', side='L', sw='badge')],
+        headwear=None,
+    ),
+    'kid-small': dict(                # Indian boy, ~5: striped top, shorts, velcro sandals
+        name='KidSmall', file='npc-kid-small', age=5,
+        body=body(height=1.08, head_frac=0.36, head_aspect=(1.0, 0.96), leg_frac=0.40,
+                  torso_w=0.27, torso_depth=0.88, hip_ratio=1.0, belly=0.08, neck_r=0.044,
+                  arm_r=0.040, leg_r=0.050, hand_r=0.046, foot_len=0.155, arm_len=1.0, arm_spread=15),
+        energy=1.5, walk_period=0.72, run_period=0.50, posture=dict(spine=0, chest=-3, head=0),
+        idle_arms='relaxed',
+        palette={
+            'skin': '#8d5a3b', 'skin_shade': '#794a2f',
+            'face': dict(kind='face', skin='#8d5a3b', blush='#9d5443'),
+            'hair': dict(kind='strands', base='#120e0c'),
+            'top': dict(kind='hstripes', base='#ffc12e', stripe='#23a6c9', n=6, w=0.36), 'trim': '#23a6c9',
+            'shorts': dict(kind='twill', base='#e2553f', amt=0.05),
+            'sandal': '#2f6fe0', 'sstrap': '#ffd23f',
+        },
+        hair=dict(style='crop', sw='hair', scale=(1.045, 1.055, 1.045),
+                  line=[(0, 30), (10, 26), (22, 32), (45, 26), (75, 12), (95, 4), (130, -14), (180, -26)]),
+        face=dict(eye=1.22, eye_az=22, eye_el=-8, brow=dict(inner=2.0, outer=0.3, arch=2.0, r=0.95),
+                  mouth=dict(w=10.5, smile=6.5, el=-30, open=True), nose=0.8, blush=0.5),
+        outfit=dict(
+            top=dict(sw='top', hem=('hip', -0.005), ease=0.010, flare=1.05, sleeve=0.30, sleeve_ease=0.011,
+                     sleeve_flare=1.15, collar='round_trim', trim='trim'),
+            lower=dict(type='shorts', sw='shorts', hem=('knee', 0.035), top='waist', ease=0.009,
+                       leg_ease=0.016, leg_flare=1.25),
+            feet=dict(type='sandals', sw='sandal', strap='sstrap'),
+        ),
+        props=[],
+        headwear=None,
+    ),
+    'kid-tween': dict(                # Eurasian/Chinese girl, ~10: school PE tee (house colour), shorts, cap
+        name='KidTween', file='npc-kid-tween', age=10,
+        body=body(height=1.40, head_frac=0.32, head_aspect=(0.97, 0.93), leg_frac=0.44,
+                  torso_w=0.235, torso_depth=0.80, hip_ratio=0.96, belly=0.0, neck_r=0.040,
+                  arm_r=0.035, leg_r=0.044, hand_r=0.044, foot_len=0.148, arm_len=1.02, arm_spread=12),
+        energy=1.3, walk_period=0.82, run_period=0.55, posture=dict(spine=0, chest=-2, head=0),
+        idle_arms='relaxed',
+        palette={
+            'skin': '#e9c09b', 'skin_shade': '#d4a37f',
+            'face': dict(kind='face', skin='#e9c09b', blush='#ec9384'),
+            'hair': dict(kind='strands', base='#3a2519'),
+            'pe': dict(kind='twill', base='#f5f7f8', amt=0.025), 'house': '#2f9e5b', 'badge': '#1f4f9a',
+            'shorts': dict(kind='twill', base='#1f2a4a', amt=0.05),
+            'cap': dict(kind='twill', base='#2f9e5b', amt=0.05), 'brim': '#27864c', 'tie': '#2f9e5b',
+            'sneaker': '#f4f4f2', 'sole': '#ffffff', 'lace': '#1f2a4a',
+        },
+        hair=dict(style='short', sw='hair', scale=(1.05, 1.06, 1.045),
+                  line=[(0, 26), (20, 22), (45, 2), (70, -18), (95, -26), (140, -40), (180, -46)],
+                  ponytail=dict(el=0.05, len=0.55, tie='tie', smooth=True)),
+        face=dict(eye=1.06, eye_az=21, eye_el=-7, brow=dict(inner=1.2, outer=-0.3, arch=1.7, r=0.92),
+                  mouth=dict(w=9.5, smile=5.5, el=-29), nose=0.88, blush=0.6, lashes=True),
+        outfit=dict(
+            top=dict(sw='pe', hem=('hip', -0.005), ease=0.010, flare=1.04, sleeve=0.34, sleeve_ease=0.011,
+                     sleeve_flare=1.15, cuff=dict(sw='house', roll=True), collar='round_trim', trim='house'),
+            lower=dict(type='shorts', sw='shorts', hem=('knee', 0.05), top='waist', ease=0.007,
+                       leg_ease=0.014, leg_flare=1.2),
+            feet=dict(type='sneakers', sw='sneaker', sole='sole', lace='lace'),
+        ),
+        props=[dict(type='badge', side='L', sw='badge')],
+        headwear=dict(type='cap', sw='cap', brim='brim', scale=(1.09, 1.10, 1.09), lip=1.0),   # lip: no hair poking out
+    ),
     # ---------------------------------------------------------------- Soldier, 22
     # A tired Malay Regiment private who lost his unit after Pasir Panjang / Bukit Chandu
     # (13-14 Feb 1942). KD shirt + shorts, hose tops + puttees, boots, 1937-pattern webbing,
@@ -1064,10 +1380,18 @@ def build_foot(mb, S, C, q, side):
     fl = S.foot_len; fw = S.foot_w; fh = S.foot_h
     if typ == 'shoes': fw *= 1.12; fh *= 1.12; fl *= 1.04
     if typ == 'boots': fw *= 1.16; fh *= 1.22; fl *= 1.05
+    if typ == 'sneakers': fw *= 1.14; fh *= 1.0; fl *= 1.06; sole_t = 0.014 * H
     if typ == 'slippers': fw *= 1.04; fh *= 0.92
     c = Vector((x + s * fw * 0.08, -fl * 0.2, fh + sole_t))
-    sw = ft['sw'] if typ in ('shoes', 'slippers', 'boots') else 'skin'
+    sw = ft['sw'] if typ in ('shoes', 'slippers', 'boots', 'sneakers') else 'skin'
     ell(mb, c, (fw, fl * 0.5, fh), qs_even(12, q, 8), qs(7, q, 5), sw, 'foot.' + side, 0)
+    if typ == 'sneakers':
+        ell(mb, Vector((c.x, c.y - fl * 0.02, sole_t * 0.6)), (fw * 1.04, fl * 0.52, sole_t * 0.75),
+            qs_even(12, q, 8), qs(4, q, 3), ft['sole'], 'foot.' + side, 0)
+        # laces stripe
+        pts = [Vector((c.x - fw * 0.5, c.y - fl * 0.18, sole_t + fh * 1.72)), Vector((c.x, c.y - fl * 0.2, sole_t + fh * 1.95)),
+               Vector((c.x + fw * 0.5, c.y - fl * 0.18, sole_t + fh * 1.72))]
+        tube(mb, pts, 0.005 * H, 4, ft.get('lace', ft['sole']), 'foot.' + side, 0)
     if typ == 'flipflops':
         ell(mb, Vector((c.x, c.y - fl * 0.02, sole_t * 0.55)), (fw * 1.06, fl * 0.53, sole_t * 0.6),
             qs_even(12, q, 8), qs(4, q, 3), ft['sw'], 'foot.' + side, 0)
@@ -1234,6 +1558,46 @@ def build_hair(mb, S, C, q):
     hs = C['hair']; H = S.H; hh = S.hh; R = S.head_r; st = hs['style']; sw = hs['sw']
     if st != 'none':
         hair_cap(mb, S, hs['line'], hs['scale'], qs_even(26, q, 14), qs(9, q, 6), sw, top_el=hs.get('top_el', 90.0))
+    pt = hs.get('ponytail')
+    if pt:
+        base = S.head_c + Vector((0, R.y * 1.0, R.z * pt.get('el', 0.1)))
+        tie = pt.get('tie', sw)
+        ell(mb, base, (0.06 * hh, 0.05 * hh, 0.06 * hh), 8, 5, tie, 'head', 0)
+        nb = qs(6, q, 4)
+        if pt.get('smooth'):
+            # one smooth tapered tail (head-weighted at the root, blending to chest lower down)
+            pts = [base + Vector((0, 0.02 * hh, 0.01 * hh))]; rads = [0.06 * hh]
+            for k in range(nb):
+                t = (k + 1) / nb
+                pts.append(base + Vector((0, 0.07 * hh * sin(t * 1.4) + 0.03 * hh, -pt.get('len', 0.45) * hh * t)))
+                rads.append(0.078 * hh * (1 - 0.5 * t ** 1.5) * (1 + 0.12 * sin(pi * t)))
+            zc = S.H - S.hh * 0.95
+            tail_w = lambda co: (lambda k: {'head': k, 'chest': 1 - k} if 0 < k < 1 else ({'head': 1.0} if k >= 1 else {'chest': 1.0}))(
+                smooth(zc - 0.12 * hh, zc + 0.06 * hh, co.z))
+            tube(mb, pts, rads, qs_even(10, q, 6), sw, tail_w, 0)
+        else:
+            for k in range(nb):
+                t = (k + 1) / nb
+                pp = base + Vector((0, 0.07 * hh * sin(t * 1.4) + 0.03 * hh, -pt.get('len', 0.45) * hh * t))
+                rr = 0.075 * hh * (1 - 0.55 * t)
+                wt = {'head': 1.0} if pp.z > S.H - S.hh * 0.95 else {'chest': 1.0}
+                ell(mb, pp, (rr, rr, rr * 1.35), qs_even(8, q, 6), qs(5, q, 4), sw, wt, 0)
+    pg = hs.get('pigtails')
+    if pg:
+        # two short bunches high on the sides of the head: hair tie, then lobes that kick out and droop
+        tie = pg.get('tie', sw); ln = pg.get('len', 0.4) * hh
+        for s in (1, -1):
+            base, nb = head_pt(S, s * pg.get('az', 104), pg.get('el', 24), 0.035 * hh)
+            outw = Vector((nb.x, nb.y, 0)).normalized()
+            ell(mb, base, (0.058 * hh, 0.058 * hh, 0.052 * hh), qs_even(8, q, 6), qs(5, q, 4), tie, 'head', 0)
+            # one smooth tapered bunch: kicks out from the tie, then droops (soft carrot shape)
+            nl = qs(7, q, 5); pts = []; rads = []
+            for k in range(nl):
+                t = k / (nl - 1)
+                pts.append(base + outw * (0.03 * hh + 0.11 * hh * sin(min(1.0, t * 1.6) * pi / 2))
+                           + Vector((0, 0.012 * hh * t, 0.03 * hh - (ln + 0.03 * hh) * t ** 1.4)))
+                rads.append(hh * (0.05 + 0.045 * sin(pi * min(1.0, t * 1.25) * 0.85)) * (1 - 0.55 * t ** 2))
+            tube(mb, pts, rads, qs_even(10, q, 6), sw, 'head', 0)
     for (az0, az1, el0, el1) in hs.get('wisps', []):
         pts = []
         for k in range(5):
@@ -1337,6 +1701,40 @@ def build_headwear(mb, S, C, q):
         ell(mb, kc, (0.07 * hh, 0.05 * hh, 0.06 * hh), qs_even(10, q, 6), qs(6, q, 4), hw['sw'], 'head', 0)
         tube(mb, [kc, kc + Vector((0.03 * hh, 0.04 * hh, -0.08 * hh)), kc + Vector((0.05 * hh, 0.05 * hh, -0.16 * hh))],
              [0.03 * hh, 0.026 * hh, 0.018 * hh], qs(6, q, 4), hw['sw'], 'head', 0)
+    elif hw['type'] == 'cap':
+        hair_cap(mb, S, [(0, 12), (90, 2), (180, -8)], hw.get('scale', (1.07, 1.08, 1.07)), qs_even(22, q, 12), qs(7, q, 5),
+                 hw['sw'], lip=hw.get('lip', 0.955))
+        cz = S.head_c.z + R.z * 0.2
+        c = Vector((0, -R.y * 1.35, cz))
+        M = Matrix.Translation(c) @ Matrix.Rotation(radians(-18), 4, 'X')
+        rbox(mb, M, (R.x * 1.25, R.y * 0.75, 0.012 * H), 0.006 * H, hw.get('brim', hw['sw']), 'head', 0, n=qs(3, q, 2))
+        ell(mb, S.head_c + Vector((0, 0, R.z * 1.07)), (0.03 * hh, 0.03 * hh, 0.018 * hh), 8, 4, hw.get('brim', hw['sw']), 'head', 0)
+    elif hw['type'] == 'bucket_hat':
+        base = S.head_c + Vector((0, 0, R.z * 0.22))
+        F = Matrix.Translation(base) @ Matrix.Rotation(radians(-4), 4, 'X')
+        prof = [(-0.08 * R.z, 0.0, 0.0), (-0.07 * R.z, R.x * 1.0, R.y * 1.0), (-0.06 * R.z, R.x * 1.62, R.y * 1.6),
+                (-0.045 * R.z, R.x * 1.64, R.y * 1.62), (0.14 * R.z, R.x * 1.1, R.y * 1.08), (0.55 * R.z, R.x * 1.05, R.y * 1.03),
+                (0.8 * R.z, R.x * 0.9, R.y * 0.88), (0.9 * R.z, 0.0, 0.0)]
+        lathe(mb, prof, qs_even(24, q, 12), F, hw['sw'], 'head', 0)
+        prof2 = [(0.13 * R.z, R.x * 1.115, R.y * 1.095), (0.24 * R.z, R.x * 1.1, R.y * 1.08)]
+        prof2 = [(0.125 * R.z, R.x * 1.0, R.y * 1.0)] + prof2 + [(0.245 * R.z, R.x * 1.0, R.y * 1.0)]
+        lathe(mb, prof2, qs_even(24, q, 12), F, hw.get('band', hw['sw']), 'head', 0)
+    elif hw['type'] == 'tudung':
+        # head covering framing the face + a soft drape over neck and shoulders
+        hair_cap(mb, S, [(0, 40), (25, 30), (42, 0), (55, -40), (70, -66), (100, -80), (180, -84)],
+                 (1.075, 1.08, 1.07), qs_even(26, q, 14), qs(10, q, 6), hw['sw'])
+        zc = S.head_c.z - R.z * 0.8
+        ring_top = (zc, R.x * 0.74, R.y * 0.78)
+        zs = [S.chest_z - 0.035 * H, S.chest_z + 0.02 * H, S.z_sh, S.z_sh + 0.03 * H, S.z_nb + 0.01 * H]
+        rings = [(zs[0] - 0.002 * H, 0.0, 0.0)]
+        for i, z in enumerate(zs):
+            rx, ry = torso_r(S, z)
+            e = 0.02 * H if i < 2 else 0.028 * H
+            rx = max(rx + e, R.x * 0.72 if i >= 3 else 0.0); ry = max(ry + e, R.y * 0.76 if i >= 3 else 0.0)
+            rings.append((z, rx, ry))
+        rings.append(ring_top)
+        rings.append((zc + 0.004 * H, R.x * 0.5, R.y * 0.5))
+        lathe(mb, rings, qs_even(24, q, 12), Matrix.Identity(4), hw['sw'], chain_w_fn(S), 0)
     elif hw['type'] == 'straw_hat':
         # wide conical labourer's straw hat
         cc = S.head_c + Vector((0, R.y * 0.02, R.z * 0.58))
@@ -1626,6 +2024,9 @@ def build_props(mb, S, C, q):
             tube(mb, front + over + back, 0.009 * H, qs(6, q, 4), sw_strap, wt, 0)
         elif typ == 'apron':
             z1 = S.anchors['waist'] + 0.005 * H; z0 = S.knee_z + 0.03 * H
+            z_tie = z1
+            if pr.get('bib'):
+                z1 = S.chest_z + 0.075 * H; z0 = S.knee_z + 0.05 * H
             zc = 0.5 * (z0 + z1)
             rx, ry = torso_r(S, S.top_hem + 0.002 * H)
             ry_max = max(torso_r(S, z)[1] for z in np.linspace(z0, z1, 12) if z >= S.top_hem - 0.001) if True else ry
@@ -1638,12 +2039,90 @@ def build_props(mb, S, C, q):
             # pocket on the apron
             Mp = M @ Matrix.Translation(Vector((w * 0.18, -(z1 - z0) * 0.12, 0.009 * H - 0.5 / rx * (w * 0.18) ** 2)))
             rbox(mb, Mp, (w * 0.3, (z1 - z0) * 0.22, 0.008 * H), 0.004 * H, pr['sw'], wt, 0, n=2)
+            if pr.get('bib'):
+                for sd in (1, -1):   # neck strap from the bib corners around the back of the neck
+                    a0, _ = surf(S, z1 - 0.005 * H, sd * 26, 0.012 * H)
+                    a1, _ = surf(S, S.z_nb + 0.004 * H, sd * 60, 0.01 * H)
+                    a2, _ = surf(S, S.z_nb + 0.01 * H, sd * 120, 0.01 * H)
+                    a3, _ = surf(S, S.z_nb + 0.012 * H, 180, 0.01 * H)
+                    tube(mb, [a0, a1, a2, a3], 0.006 * H, 4, pr.get('strap', pr['sw']), wt, 0)
             # waist tie
             prof = []
             for dz, g in ((-0.009 * H, 0), (-0.008 * H, 1), (0.008 * H, 1), (0.009 * H, 0)):
-                rxx, ryy = torso_r(S, z1 + dz)
-                prof.append((z1 + dz, rxx + 0.005 * H * g, ryy + 0.005 * H * g))
-            lathe(mb, prof, qs_even(22, q, 12), Matrix.Identity(4), pr['sw'], wt, 0)
+                rxx, ryy = torso_r(S, z_tie + dz)
+                prof.append((z_tie + dz, rxx + 0.005 * H * g, ryy + 0.005 * H * g))
+            lathe(mb, prof, qs_even(22, q, 12), Matrix.Identity(4), pr.get('strap', pr['sw']), wt, 0)
+        elif typ == 'lanyard':
+            zc = S.chest_z - 0.01 * H
+            wp = [(zc + 0.05 * H, 6), (S.z_nb - 0.01 * H, 34), (S.z_nb + 0.006 * H, 90), (S.z_nb + 0.008 * H, 180),
+                  (S.z_nb + 0.006 * H, 270), (S.z_nb - 0.01 * H, 326), (zc + 0.05 * H, 354)]
+            pts, _ = drape(S, wp, qs(14, q, 8), 0.007 * H)
+            tube(mb, pts, 0.0045 * H, 4, pr['sw'], wt, 0)
+            p_, n_ = surf(S, zc, 0, 0.012 * H)
+            rbox(mb, feature_frame(p_, n_), (0.06 * H, 0.08 * H, 0.006 * H), 0.004 * H, pr['card'], wt, 0, n=2, bend=2.0)
+        elif typ == 'backpack':
+            zc = S.chest_z - 0.03 * H
+            rx, ry = torso_r(S, zc)
+            d = 0.085 * H
+            c = Vector((0, ry + d * 0.5 + 0.004 * H, zc))
+            xloc = Vector((1, 0, 0)); zloc = Vector((0, 1, 0)); yloc = zloc.cross(xloc)
+            M = Matrix((xloc, yloc, zloc)).transposed().to_4x4(); M.translation = c
+            ph = 0.21 * H
+            rbox(mb, M, (rx * 1.45, ph, d), d * 0.4, pr['sw'], wt, 0, n=qs(4, q, 3), bend=0.6 / rx)
+            Mp = M @ Matrix.Translation(Vector((0, -ph * 0.18, d * 0.5)))
+            rbox(mb, Mp, (rx * 1.0, ph * 0.4, d * 0.4), d * 0.18, pr.get('pocket', pr['sw']), wt, 0, n=2)
+            for sd in (1, -1):
+                front = strap_path(S, (S.chest_z - 0.06 * H, sd * 40), (S.z_sh + 0.01 * H, sd * 52), qs(5, q, 3), 0.008 * H)
+                over = [surf(S, S.z_sh + 0.035 * H, sd * 88, 0.022 * H)[0]]
+                back = [surf(S, zc + ph * 0.4, sd * 150, 0.012 * H)[0]]
+                tube(mb, front + over + back, 0.011 * H, 4, pr.get('strap', pr['sw']), wt, 0)
+        elif typ == 'camera':
+            sd = sgn(pr.get('side', 'R'))
+            zc = S.anchors['waist'] + 0.04 * H
+            p_, n_ = surf(S, zc, sd * 30, 0.03 * H)
+            F = feature_frame(p_, n_)
+            rbox(mb, F, (0.075 * H, 0.05 * H, 0.04 * H), 0.008 * H, pr['sw'], wt, 0, n=2)
+            L_ = F @ Matrix.Translation(Vector((0, -0.002 * H, 0.02 * H)))
+            prof = [(0, 0.017 * H, 0.017 * H), (0.028 * H, 0.016 * H, 0.016 * H), (0.03 * H, 0.0, 0.0)]
+            prof.insert(0, (-0.001, 0.0, 0.0))
+            lathe(mb, prof, qs_even(10, q, 8), L_, pr.get('lens', pr['sw']), wt, GLOSS)
+            front = strap_path(S, (zc + 0.02 * H, sd * 36), (S.z_sh + 0.01 * H, -sd * 58), qs(8, q, 5), 0.006 * H)
+            over = [surf(S, S.z_sh + 0.03 * H, -sd * 80, 0.018 * H)[0]]
+            back = strap_path(S, (S.z_sh + 0.01 * H, -sd * 100), (zc + 0.02 * H, sd * 36 - sd * 360 + sd * 180 if False else -sd * 200), qs(8, q, 5), 0.006 * H)
+            tube(mb, front + over + back, 0.0045 * H, 4, pr.get('strap', pr['sw']), wt, 0)
+        elif typ == 'jersey_number':
+            # blocky 7-segment shirt number on the back (reads left->right from behind)
+            SEG = {'a': ((0, 1), (1, 1)), 'b': ((1, 1), (1, 0.5)), 'c': ((1, 0.5), (1, 0)), 'd': ((0, 0), (1, 0)),
+                   'e': ((0, 0.5), (0, 0)), 'f': ((0, 1), (0, 0.5)), 'g': ((0, 0.5), (1, 0.5))}
+            DIG = {'0': 'abcdef', '2': 'abged', '3': 'abgcd', '4': 'fgbc', '5': 'afgcd', '6': 'afgedc',
+                   '7': 'abc', '8': 'abcdefg', '9': 'abcdfg'}
+            zw = S.anchors['waist']; zc = 0.5 * (zw + S.z_sh) - 0.005 * H
+            dh = 0.42 * (S.z_sh - zw); dw = 0.56 * dh; gap = 0.42 * dw
+            text = pr.get('text', '10'); total = len(text) * dw + (len(text) - 1) * gap
+            rr = 0.085 * dw
+            for li, ch in enumerate(text):
+                strokes = ([((0.55, 0), (0.55, 1)), ((0.55, 1), (0.22, 0.8))] if ch == '1'
+                           else [SEG[c] for c in DIG.get(ch, '')])
+                for (x0, y0), (x1, y1) in strokes:
+                    pts = []
+                    for k in range(4):
+                        f = k / 3
+                        gx = lerp(x0, x1, f); gy = lerp(y0, y1, f)
+                        sarc = -total / 2 + li * (dw + gap) + gx * dw
+                        z = zc - dh / 2 + gy * dh
+                        rx, _ = torso_r(S, z)
+                        pts.append(surf(S, z, 180 + degrees(sarc / max(rx, 1e-4)), 0.002 * H)[0])
+                    tube(mb, pts, rr, 4, pr['sw'], wt, 0)
+        elif typ == 'badge':
+            # small crest on the chest
+            sd = sgn(pr.get('side', 'L'))
+            p_, n_ = surf(S, S.chest_z + pr.get('dz', 0.035) * H, sd * 30, 0.003 * H)
+            sz = pr.get('size', 0.042) * H
+            rbox(mb, feature_frame(p_, n_), (sz, sz * 1.12, 0.007 * H), 0.0034 * H, pr['sw'], wt, 0, n=2, bend=2.0)
+        elif typ == 'earbuds':
+            for sd in (1, -1):
+                p_, n_ = head_pt(S, sd * 86, -8, 0.01 * S.hh)
+                ell(mb, p_, (0.028 * S.hh, 0.028 * S.hh, 0.024 * S.hh), 8, 5, pr['sw'], 'head', GLOSS)
         elif typ == 'bangle':
             side = pr['side']; J = S.joints[side]
             c = J['wr'] - J['dir'] * 0.012 * H
@@ -1676,6 +2155,17 @@ def build_extras(S, C, q):
             tube(mb, pts, r, qs(8, q, 6), ex['sw'], 'hand.' + side, 0)
             ell(mb, tip + Vector((0, 0, 0.006 * H)), (r * 1.25, r * 1.25, r * 1.1), 8, 4, ex.get('tip_sw', ex['sw']), 'hand.' + side, 0)
             out.append((ex.get('name', 'Cane'), mb, 'hand.' + side))
+        elif ex['type'] == 'phone':
+            side = ex.get('side', 'R'); J = S.joints[side]; H = S.H
+            mb = MB()
+            hc = J['wr'] + J['dir'] * S.hand_r * 1.0
+            c = hc + Vector((0, -S.hand_r * 0.95, 0)) + J['dir'] * S.hand_r * 0.35
+            F = frame_z(c, Vector((0, -1, 0)), Vector((1, 0, 0)))
+            F = F @ Matrix.Rotation(radians(sgn(side) * -S.arm_spread), 4, 'Z')
+            rbox(mb, F, (0.05 * H, 0.095 * H, 0.008 * H), 0.004 * H, ex['sw'], 'hand.' + side, 0, n=2)
+            Fs = F @ Matrix.Translation(Vector((0, 0, 0.0042 * H)))
+            rbox(mb, Fs, (0.042 * H, 0.085 * H, 0.0015 * H), 0.0007 * H, ex['screen'], 'hand.' + side, 0, n=1)
+            out.append((ex.get('name', 'Phone'), mb, 'hand.' + side))
     return out
 
 # --------------------------------------------------------------------------------------
@@ -1706,6 +2196,11 @@ def paint_swatch(spec, U, V):
             blot = np.sin(U * 9.1 + 1.3) * np.sin(V * 7.3 + 0.4) + 0.6 * np.sin(U * 17.0 - V * 13.0 + 2.0)
             img *= (1 - spec['grime'] * np.clip(blot, 0, 1.5))[..., None]
         return img
+    if k == 'hstripes':
+        st = hexrgb(spec['stripe'])
+        img = np.broadcast_to(base, shp).copy()
+        m = (((V * spec.get('n', 8)) % 1.0) < spec.get('w', 0.3)).astype(float)[..., None]
+        return img * (1 - m) + st * m
     if k == 'border':
         bd = hexrgb(spec['band']); ln = hexrgb(spec.get('line', spec['band']))
         img = np.broadcast_to(base, shp).copy()
@@ -1851,6 +2346,10 @@ def idle_arms(p, C, side, k=1.0):
         limb(p, 'upperarm', side, flex=-16 * k, ab=-7 * k)
         limb(p, 'forearm', side, flex=-68 * k, tw=-38 * k)
         limb(p, 'hand', side, flex=-10 * k)
+    elif st == 'phone' and side == 'R':
+        limb(p, 'upperarm', side, flex=-14 * k, ab=-2 * k)
+        limb(p, 'forearm', side, flex=-78 * k, tw=-28 * k)
+        limb(p, 'hand', side, flex=-6 * k)
     elif st == 'cane' and side == C.get('cane_side', 'L'):
         limb(p, 'upperarm', side, flex=-14 * k, ab=3 * k)
         limb(p, 'forearm', side, flex=-4 * k)
@@ -1900,6 +2399,7 @@ def c_idle(t, S, C):
         idle_arms(p, C, side)
         limb(p, 'upperarm', side, flex=1.6 * sin(ph + o) * e)
     rot(p, 'head', rx=2.0 * sin(2 * ph + 1) * e, rz=7 * sin(ph + 0.7) * e, ry=1.5 * sin(ph))
+    if C.get('idle_arms') == 'phone': rot(p, 'head', rx=13, rz=-7 * sin(ph + 0.7) * e * 0.7)
     return p
 
 def walk_pose(p, S, C, ph, A, Aarm, kneeA, lean, injured=None, t_phase=None):
@@ -2096,14 +2596,9 @@ def Emat(p, b, extra=0.0):
 
 def rest_hand_on_thigh(p, S, C, side, frac=0.62):
     po = C.get('posture', {})
-    s_ = sgn(side); J = S.joints[side]; H = S.H
+    s_ = sgn(side); H = S.H
     Wh = Emat(p, 'hips')
-    Ws = Wh @ Emat(p, 'spine', po.get('spine', 0))
-    Wc = Ws @ Emat(p, 'chest', po.get('chest', 0))
     hips_h = Vector((0, 0, S.hip_z)) + p['hips']
-    spine_h = hips_h + Wh @ Vector((0, 0, S.spine_z - S.hip_z))
-    chest_h = spine_h + Ws @ Vector((0, 0, S.chest_z - S.spine_z))
-    sh = chest_h + Wc @ (J['sh'] - Vector((0, 0, S.chest_z)))
     # thigh top surface
     Wt = Wh @ Emat(p, 'thigh.' + side)
     th_h = hips_h + Wh @ Vector((s_ * S.leg_x, 0, 0))
@@ -2113,13 +2608,30 @@ def rest_hand_on_thigh(p, S, C, side, frac=0.62):
     top_off = S.leg_r + extra
     hand_c = th_h + tdir * (S.l1 * frac) + Vector((-s_ * 0.15 * S.leg_r, 0, top_off + S.hand_r * 0.62))
     hdir = Vector((s_ * -0.15, -0.93, -0.33)).normalized()
+    arm_ik(p, S, C, side, hand_c, hdir, Vector((s_ * 0.75, 0.35, -0.2)))
+
+def shoulder_world(p, S, C, side):
+    """world (root-space) shoulder joint + chest world rotation for the pose so far (incl. posture)."""
+    po = C.get('posture', {}); J = S.joints[side]
+    Wh = Emat(p, 'hips')
+    Ws = Wh @ Emat(p, 'spine', po.get('spine', 0))
+    Wc = Ws @ Emat(p, 'chest', po.get('chest', 0))
+    hips_h = Vector((0, 0, S.hip_z)) + p['hips']
+    spine_h = hips_h + Wh @ Vector((0, 0, S.spine_z - S.hip_z))
+    chest_h = spine_h + Ws @ Vector((0, 0, S.chest_z - S.spine_z))
+    return chest_h + Wc @ (J['sh'] - Vector((0, 0, S.chest_z))), Wc
+
+def arm_ik(p, S, C, side, hand_c, hdir, pole):
+    """2-bone arm IK: mitten centre at hand_c (root space), mitten axis along hdir (unit), elbow bent
+       towards `pole`. Call after the torso (hips/spine/chest) of the pose is final."""
+    J = S.joints[side]
+    sh, Wc = shoulder_world(p, S, C, side)
     wr = hand_c - hdir * S.hand_r * 1.0
     lu, lf = S.up_len, S.fore_len
     d = wr - sh; dist = min(d.length, (lu + lf) * 0.995)
     dn = d.normalized()
     a = (lu * lu + dist * dist - lf * lf) / (2 * dist)
     hgt = sqrt(max(0.0, lu * lu - a * a))
-    pole = Vector((s_ * 0.75, 0.35, -0.2))
     pole = (pole - dn * pole.dot(dn)).normalized()
     el = sh + dn * a + pole * hgt
     wr = sh + dn * dist
@@ -2159,6 +2671,133 @@ def c_nod(t, S, C):
     for side in 'LR': idle_arms(p, C, side)
     return p
 
+JUMP_APEX = 0.10          # m: on-the-spot hop apex (0.29 s airtime at g -> physically consistent)
+
+def c_jump(t, S, C):
+    """happy on-the-spot hop, arms thrown up in a V at the top. Loop: land/absorb -> crouch -> push -> fly."""
+    p = P(); ph = 2 * pi * t
+    ta, tb = 0.40, 0.76                     # airborne window
+    D = 0.20 * S.leg_len                    # deepest crouch
+    air = 0.0; crouch = 0.0; u = None
+    if ta < t < tb:
+        u = (t - ta) / (tb - ta)
+        air = JUMP_APEX * 4 * u * (1 - u)
+    else:
+        v = ((t - tb) % 1.0) / (1.0 - (tb - ta))
+        crouch = D * sin(pi * v) ** 1.3
+    c = crouch / D
+    hrx = 14 * c; hy = 0.25 * crouch
+    rot(p, 'hips', rx=hrx)
+    rot(p, 'spine', rx=-0.35 * hrx)
+    if u is None:
+        th, kn, ft = leg_ik(S, hy, -crouch, hips_rx=hrx); pf = 0.0
+    else:
+        tuck = 0.16 * S.leg_len * sin(pi * u)
+        th, kn, ft = leg_ik(S, 0, air, 0.25 * tuck, air + tuck); pf = 24 * sin(pi * u) ** 0.5
+    for side in 'LR':
+        limb(p, 'thigh', side, flex=th, ab=2); limb(p, 'shin', side, flex=kn); limb(p, 'foot', side, flex=ft + pf, ab=-2)
+    p['hips'] += Vector((0, hy, -crouch + air))
+    r = 0.5 + 0.5 * cos(2 * pi * (t - 0.58))  # 0 = arms swung down/back (crouch), 1 = up in a V (apex)
+    for side, o in (('L', 0.0), ('R', 0.6)):
+        limb(p, 'upperarm', side, ab=lerp(10, 136, r), flex=lerp(24, -16, r))
+        limb(p, 'forearm', side, flex=lerp(-36, -14, r) + 6 * sin(2 * ph + o), tw=-10 * r)
+        limb(p, 'hand', side, flex=lerp(-6, -14, r))
+    rot(p, 'chest', rx=-4 * r - 0.25 * hrx)
+    rot(p, 'head', rx=-7 * r + 3 * c, rz=5 * sin(ph))
+    return p
+
+RIDE_SEAT = 0.45          # m above the origin (same convention as Sit): top of the spring-rider seat
+
+def ride_rig(S, C):
+    """static targets for Ride: hips joint, hand-grip (handle) centres, rest foot positions."""
+    new_hip = RIDE_SEAT + S.leg_r * 0.95
+    p0 = P(); p0['hips'] += Vector((0, 0, new_hip - S.hip_z))
+    rot(p0, 'hips', rx=4); rot(p0, 'spine', rx=7); rot(p0, 'chest', rx=2)
+    reach = S.up_len + S.fore_len + S.hand_r
+    hz = new_hip + (S.chest_z - S.hip_z) * 0.92       # handles at about (seated) chest height
+    grips = {}
+    for side in 'LR':
+        s_ = sgn(side)
+        sh, _ = shoulder_world(p0, S, C, side)
+        hx = s_ * S.sh_x * 0.78
+        dz = hz - sh.z; dx = hx - sh.x
+        dy = sqrt(max(0.0, (0.80 * reach) ** 2 - dz * dz - dx * dx))
+        grips[side] = Vector((hx, sh.y - dy, hz))
+    return new_hip, grips
+
+RIDE_THIGH = (0.62, -0.70, -0.36)   # (outward, fwd(-Y), down) astride the rider's body
+RIDE_SHIN = (0.13, 0.08, -1.0)      # hanging just behind the knee, onto the footrests
+
+def c_ride(t, S, C):
+    """astride a playground spring rider: legs apart and forward, hands on the handles, rocking."""
+    p = P(); e = C['energy']; ph = 2 * pi * t
+    new_hip, grips = ride_rig(S, C)
+    rock = sin(ph)
+    p['hips'] += Vector((0, 0, new_hip - S.hip_z))
+    rot(p, 'hips', rx=4 + 5 * rock)
+    rot(p, 'spine', rx=7 + 4 * rock, ry=1.5 * sin(ph + 0.8)); rot(p, 'chest', rx=2 + 3 * rock)
+    breathe(p, 2 * ph, 0.5)
+    rot(p, 'head', rx=-9 * rock, rz=6 * sin(ph * 0.5 + 0.4) * min(e, 1.2))
+    # legs: fixed in root space (the rider's seat and footrests don't move with the child's torso)
+    Wh = Emat(p, 'hips')
+    for side in 'LR':
+        s_ = sgn(side)
+        d1 = Vector((s_ * RIDE_THIGH[0], RIDE_THIGH[1], RIDE_THIGH[2])).normalized()
+        d2 = Vector((s_ * RIDE_SHIN[0], RIDE_SHIN[1], RIDE_SHIN[2])).normalized()
+        Wt = Vector((0, 0, -1)).rotation_difference(d1).to_matrix()
+        Wsh = Vector((0, 0, -1)).rotation_difference(d2).to_matrix()
+        Wf = Euler((radians(8), 0, radians(s_ * 12)), 'XYZ').to_matrix()
+        p['mat']['thigh.' + side] = Wh.inverted() @ Wt
+        p['mat']['shin.' + side] = Wt.inverted() @ Wsh
+        p['mat']['foot.' + side] = Wsh.inverted() @ Wf
+    # hands: fixed on the handles, thumbs up, elbows out and down -> arms push/pull as the torso rocks
+    for side in 'LR':
+        s_ = sgn(side)
+        arm_ik(p, S, C, side, grips[side], Vector((-s_ * 0.15, -0.97, -0.12)).normalized(),
+               Vector((s_ * 0.8, 0.25, -0.55)))
+    return p
+
+def ride_feet(S, C):
+    new_hip, _ = ride_rig(S, C)
+    out = {}
+    for side in 'LR':
+        s_ = sgn(side)
+        hipj = Vector((s_ * S.leg_x, 0, new_hip))
+        d1 = Vector((s_ * RIDE_THIGH[0], RIDE_THIGH[1], RIDE_THIGH[2])).normalized()
+        d2 = Vector((s_ * RIDE_SHIN[0], RIDE_SHIN[1], RIDE_SHIN[2])).normalized()
+        out[side] = hipj + d1 * S.l1 + d2 * S.l2
+    return out
+
+SLIDE_SEAT = 0.45         # m above the origin (same convention as Sit/Ride): buttocks contact on a FLAT seat
+
+def c_slide(t, S, C):
+    """going down a playground slide, posed for a flat seat (the game pitches the model nose-down by the
+       slope about the hip joint): legs straight out together, heels forward, torso ~15 deg back,
+       hands low at the sides skimming the side walls. Origin stays directly below the hips."""
+    p = P(); e = C['energy']; ph = 2 * pi * t
+    new_hip = SLIDE_SEAT + S.leg_r * 0.95
+    p['hips'] += Vector((0, 0, new_hip - S.hip_z))
+    po = C.get('posture', {})
+    lean = -15.0 - po.get('spine', 0) - po.get('chest', 0)          # total trunk tilt back = 15 deg
+    hrx = lean * 0.62
+    rot(p, 'hips', rx=hrx); rot(p, 'spine', rx=lean * 0.28); rot(p, 'chest', rx=lean * 0.10)
+    breathe(p, 2 * ph, 0.5)
+    rot(p, 'head', rx=9 + 2.5 * sin(2 * ph + 0.6), rz=7 * sin(ph) * min(e, 1.3), ry=2 * sin(ph + 1.0))
+    for side in 'LR':
+        # thigh just above horizontal, knee bent ~7 deg, shin just below horizontal, toes up (heels forward)
+        limb(p, 'thigh', side, flex=-93.5 - hrx, tw=3.5)
+        limb(p, 'shin', side, flex=7.0)
+        limb(p, 'foot', side, flex=12 + 3 * sin(2 * ph + (0 if side == 'L' else pi)))
+    # hands low beside the hips, a little out and forward; small out-of-phase flutter
+    reach = S.up_len + S.fore_len + S.hand_r
+    for side, o in (('L', 0.0), ('R', 2.1)):
+        s_ = sgn(side)
+        sh, _ = shoulder_world(p, S, C, side)
+        hc = sh + Vector((s_ * 0.45, -0.10, -1.0)).normalized() * (0.88 * reach)
+        hc += Vector((s_ * 0.006 * S.H * sin(2 * ph + o), 0, 0.012 * S.H * sin(2 * ph + o)))
+        arm_ik(p, S, C, side, hc, Vector((s_ * 0.35, -0.45, -0.82)).normalized(), Vector((s_ * 0.8, 0.5, 0.1)))
+    return p
+
 CLIPS = [  # name, duration(s), loop, fn
     ('Idle', 3.0, True, c_idle),
     ('Walk', None, True, c_walk),       # None -> character walk_period
@@ -2171,6 +2810,10 @@ CLIPS = [  # name, duration(s), loop, fn
     ('Limp', 1.4, True, c_limp),
     ('Cheer', 1.2, False, c_cheer),
     ('Nod', 1.0, False, c_nod),
+    # appended later (playground kids) - baked after the originals, so the clips above are unchanged
+    ('Jump', 0.8, True, c_jump),        # on-the-spot hop, arms up; hips rise JUMP_APEX m at the top
+    ('Ride', 1.2, True, c_ride),        # astride a spring rider, seat top RIDE_SEAT m above the origin
+    ('Slide', 1.0, True, c_slide),      # going down a slide (flat-seat pose), buttocks at SLIDE_SEAT m
 ]
 
 def apply_posture(p, C, clip):
@@ -2406,6 +3049,12 @@ def build_character(cid, tier_name):
                 bones=[b.name for b in arm_ob.data.bones], clips=clips,
                 walk_speed_mps=round(walk_speed(S, C), 3), run_speed_mps=round(run_speed(S, C), 3),
                 sit_seat_height=0.45, thigh_len=round(S.l1, 3),
+                ride_seat_height=RIDE_SEAT, ride_hip_height=round(ride_rig(S, C)[0], 3),
+                ride_grips={k: [round(x, 3) for x in v] for k, v in ride_rig(S, C)[1].items()},
+                ride_ankles={k: [round(x, 3) for x in v] for k, v in ride_feet(S, C).items()},
+                jump_apex=JUMP_APEX, slide_seat_height=SLIDE_SEAT,
+                slide_hip_height=round(SLIDE_SEAT + S.leg_r * 0.95, 4),
+                slide_hips_offset_z=round(SLIDE_SEAT + S.leg_r * 0.95 - S.hip_z, 4), rest_hip_height=round(S.hip_z, 4),
                 hand_R_world=[round(x, 3) for x in S.joints['R']['wr']],
                 extra_nodes=[e[0] for e in extras])
     over = tris > tier['tri_budget']

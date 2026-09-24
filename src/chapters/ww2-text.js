@@ -207,7 +207,7 @@ export default {
   // 12 Feb: blasts, candle out. Card. 14 Feb: Boon has slipped out to find his papa; Sparky goes after him.
   shelterTransition: {
     before: [
-      { who: 'Rajan', text: 'Everybody down! Backs to the wall, hands over your heads!' },
+      { who: 'Rajan', text: 'Stay on the bench! Heads down, hands over your heads!' },
       { who: 'Boon', text: 'Ah Ma, the walls are shaking! Make it stop!' },
       { who: 'Hassan', text: 'The candle! Somebody hold on to the matches—' },
     ],
@@ -317,7 +317,7 @@ export default {
       { who: 'Siti', text: 'They even changed our name. We’re not Singapore any more. Now it’s “{Syonan-to|Light of the South Island}”.' },
       { who: 'Hassan', text: 'See the sentry at the corner? Always bow when you pass. People who forget get slapped. Or worse.' },
       { who: 'Siti', text: 'Bapak’s papers are banned. Only the Japanese newspaper is allowed now.' },
-      { who: 'Rajan', text: 'No more armband for me. Now I queue for rice like everyone else. Head down, mouth shut.' },
+      { who: 'Rajan', text: 'My warden days are over. Now I queue for rice like everyone else. Head down, mouth shut.' },
     ],
     // Sook Ching, shown through absence. Chinese men aged 18–50 were ordered to report for "screening";
     // Hong Lim Green in Chinatown was a screening centre. Many never returned.

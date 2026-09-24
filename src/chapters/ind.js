@@ -85,6 +85,7 @@ export class IndependenceChapter extends ChapterKit {
     this.kindness = new Set(load('sparky.kindness.ww2', []));
     this.cups = [];
     this.lamps = [];
+    this.fans = []; // the engine may tick update() while the level is still loading
   }
 
   // ------------------------------------------------------------------ loading

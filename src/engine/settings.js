@@ -46,6 +46,8 @@ export function saveSettings(patch) {
   listeners.forEach((fn) => fn(settings, patch));
 }
 
+export function resetSettings() { saveSettings(defaults()); }
+
 export function onSettings(fn) { listeners.add(fn); return () => listeners.delete(fn); }
 
 export const tier = () => TIERS[settings.quality] || TIERS.medium;
