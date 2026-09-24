@@ -5,6 +5,7 @@ import { Character } from '../engine/character.js';
 import { createBrownie } from '../engine/brownie.js';
 import { tier } from '../engine/settings.js';
 import { Playground, loadKids } from './present-kids.js';
+import { createKopi } from './present-kopi.js';
 
 // Present-day framing scenes (2026): a Queenstown HDB void deck where 91-year-old Mr. Boon shows
 // Sparky the Brownie camera. Used for every chapter's prologue and closing, so it lives on its own.
@@ -66,6 +67,12 @@ export class PresentDay {
     const close = this.pose('PRO_Camera_Close', tablePos.clone().add(V(0.7, 0.4, 0.8))).pos;
     this.camera.lookAt(close.x, this.camera.position.y, close.z);
     this.camera.rotateY(0.25); // a slight three-quarter angle reads better than dead-on
+    // Mr. Boon's bag of kopi beside it, its carrying loop towards the close-up camera.
+    this.kopi = createKopi();
+    this.kopi.position.copy(this.pose('PRO_Kopi', V(tablePos.x - 0.27, boardTop + 0.006, tablePos.z + 0.24)).pos);
+    this.kopi.lookAt(close.x, this.kopi.position.y, close.z);
+    this.kopi.rotateY(-Math.PI / 2 - 0.4);
+    s.add(this.kopi);
 
     // Mr. Boon and Sparky on opposite stools (only when the real set provides seats).
     if (set) {
@@ -158,18 +165,54 @@ export class PresentDay {
     g.rig.cut(c.pos, this.tablePos.clone().add(V(0, 0.08, 0)), 0.35);
   }
 
-  /** Push into the Brownie's viewfinder: sepia bleed + fade. */
+  /**
+   * Push into the Brownie's lens in one continuous move: swing onto the lens axis while closing in
+   * on a log scale (so the lens grows at a steady rate), narrowing the field of view and bleeding to
+   * sepia, until the dark glass fills the frame; then the iris closes on the lens. The next scene
+   * opens the iris again (`ui.irisClosed`), so it reads as looking through the old camera.
+   */
   async pushIn() {
-    const g = this.game;
-    // Glide toward the lens along its own axis, stopping just outside it.
-    const p = this.camera.position;
-    const lensDir = new THREE.Vector3(0, 0, 1).applyQuaternion(this.camera.quaternion).setY(0).normalize();
-    // Line up on the lens axis first (from the close-up side), then glide in.
-    g.rig.cut(p.clone().addScaledVector(lensDir, 0.8).add(V(0, 0.18, 0)), p.clone(), 2.5);
-    await g.wait(0.6);
-    const lens = p.clone().add(V(0, -0.012, 0));
-    g.rig.cut(lens.clone().addScaledVector(lensDir, 0.22).add(V(0, 0.01, 0)), lens, 1.3);
-    await g.tween(g.renderer.grade, { sepia: 1, saturation: 0.3, vignette: 0.9 }, 2.2);
-    await g.ui.fade(true, 0.6, 'sepia');
+    const g = this.game, cam = g.camera, rig = g.rig;
+    const b = this.camera;
+    b.updateMatrixWorld();
+    const lens = b.localToWorld(V(0, -0.1, 0.5725)); // front of the taking lens's glass
+    const axis = V(0, 0, 1).transformDirection(b.matrixWorld).add(V(0, 0.04, 0)).normalize();
+    const from = cam.position.clone().sub(lens);
+    const d0 = from.length(), d1 = 0.012;
+    from.normalize();
+    const look0 = rig.lookAt.clone(), fov0 = cam.fov, near0 = cam.near, far0 = cam.far;
+    // Millimetres from the glass: a much closer near plane (and a nearer far one, for depth precision).
+    cam.near = 0.004; cam.far = 200;
+    rig.mode = 'scripted';
+    const secs = 4.2, t0 = g.time;
+    const smooth = (a, c, x) => { const t = Math.min(1, Math.max(0, (x - a) / (c - a))); return t * t * (3 - 2 * t); };
+    const dir = V(), look = V();
+    // Up close the glass would only mirror the synthetic environment: fade its reflections so the
+    // last stretch looks into a dark lens.
+    const glass = b.userData.lensGlass, boost0 = glass.userData.envBoost, coat0 = glass.clearcoat;
+    g.tween(g.renderer.grade, { sepia: 0.85, saturation: 0.35, vignette: 0.95 }, secs);
+    await new Promise((resolve) => {
+      const stop = g.every(() => {
+        const k = Math.min(1, (g.time - t0) / secs);
+        const e = 0.5 - 0.5 * Math.cos(Math.PI * k);
+        dir.lerpVectors(from, axis, smooth(0, 0.6, e)).normalize();
+        cam.position.copy(lens).addScaledVector(dir, d0 * Math.pow(d1 / d0, e));
+        look.lerpVectors(look0, lens, smooth(0, 0.35, e));
+        rig.lookAt.copy(look);
+        cam.lookAt(look);
+        cam.fov = rig.targetFov = fov0 + (34 - fov0) * smooth(0.4, 1, e);
+        cam.updateProjectionMatrix();
+        const dark = smooth(0.5, 0.92, e);
+        glass.userData.envBoost = boost0 * (1 - dark);
+        glass.clearcoat = coat0 * (1 - 0.85 * dark);
+        if (k >= 1) { stop(); resolve(); }
+      });
+    });
+    await g.ui.iris(true, 0.45, { y: 50, soft: 3 });
+    cam.near = near0; cam.far = far0; cam.fov = rig.targetFov = fov0;
+    glass.userData.envBoost = boost0; glass.clearcoat = coat0;
+    cam.updateProjectionMatrix();
+    rig.shot.pos.copy(cam.position); rig.shot.look.copy(look);
+    rig.mode = 'shot';
   }
 }

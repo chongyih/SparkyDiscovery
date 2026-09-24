@@ -73,6 +73,19 @@
    ],
    "props": {}
   },
+  "PRO_Kopi": {
+   "three_pos": [
+    -0.27,
+    0.756,
+    0.24
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
   "PRO_Lamp_1": {
    "three_pos": [
     -2.0,
@@ -463,20 +476,20 @@
   }
  },
  "stats": {
-  "mobile_tris": 17866,
+  "mobile_tris": 17696,
   "audit_mobile": {
    "same_facing_overlaps": 0,
    "back_to_back": 0,
    "inside_out_suspects": 17
   },
-  "desktop_tris": 25448,
+  "desktop_tris": 25278,
   "audit": {
    "same_facing_overlaps": 0,
    "back_to_back": 0,
    "inside_out_suspects": 17
   },
-  "desktop_bytes": 2784760,
-  "mobile_bytes": 1058692,
+  "desktop_bytes": 2777632,
+  "mobile_bytes": 1051780,
   "materials": [
    "M_Paint",
    "M_Floor",

@@ -463,7 +463,7 @@ export class WW2Chapter {
     await g.ui.fade(false, 1.5);
     g.audio.music('theme-1942', { fade: 3, volume: 0.7 });
     g.audio.play('myna', { caption: '' });
-    await g.ui.card('Present day', 'A void deck in Queenstown', '', 2.6);
+    await g.ui.card('Queenstown, Singapore', 'Today', '', 2.6);
     const lines = T.prologue.filter((l) => l.who !== 'Sparky');
     await this.lines(lines.slice(0, 2), { frame: false });
     P.closeShot();

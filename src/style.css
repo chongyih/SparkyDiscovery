@@ -387,7 +387,7 @@ body.calm .backdrop.on { animation: none; }
 @keyframes alertPulse { to { transform: translateX(50%) scale(1.08); } }
 
 /* Camera iris: closes to black around the viewfinder centre, used to cut in/out of the viewfinder. */
-.iris { position: fixed; inset: 0; z-index: 39; pointer-events: none; --r: 150vmax; background: radial-gradient(circle at 50% 46%, transparent var(--r), #0a0806 calc(var(--r) + 2px)); opacity: 0; }
+.iris { position: fixed; inset: 0; z-index: 39; pointer-events: none; --r: 150vmax; --cy: 46%; --soft: 0vmax; background: radial-gradient(circle at 50% var(--cy), transparent var(--r), #0a0806 calc(var(--r) + var(--soft) + 2px)); opacity: 0; }
 .iris.on { opacity: 1; }
 body.aiming #hud .top-right, body.aiming #hud .counter, body.aiming #hud .objective, body.aiming #hud .compass { visibility: hidden; }
 

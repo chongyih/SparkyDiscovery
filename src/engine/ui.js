@@ -222,9 +222,15 @@ export class UI {
     c.classList.add('hidden');
   }
 
-  /** Animate the camera iris: close=true shrinks to black, false opens back up. */
-  iris(close, secs = 0.28) {
+  /**
+   * Animate the camera iris: close=true shrinks to black, false opens back up. `y` is the centre
+   * (% of the viewport height; the viewfinder's is 46) and `soft` the edge blur (vmax).
+   */
+  iris(close, secs = 0.28, { y = 46, soft = 0 } = {}) {
     const el = document.getElementById('iris');
+    el.style.setProperty('--cy', `${y}%`);
+    el.style.setProperty('--soft', `${soft}vmax`);
+    this.irisClosed = close;
     if (document.hidden) { el.classList.toggle('on', close); el.style.setProperty('--r', close ? '0vmax' : '150vmax'); return Promise.resolve(); }
     el.classList.add('on');
     const from = close ? 150 : 0, to = close ? 0 : 150;
