@@ -4,6 +4,7 @@ import { collectMarkers, markerPose } from '../engine/world.js';
 import { Character } from '../engine/character.js';
 import { createBrownie } from '../engine/brownie.js';
 import { tier } from '../engine/settings.js';
+import { Playground, loadKids } from './present-kids.js';
 
 // Present-day framing scenes (2026): a Queenstown HDB void deck where 91-year-old Mr. Boon shows
 // Sparky the Brownie camera. Used for every chapter's prologue and closing, so it lives on its own.
@@ -16,7 +17,7 @@ export class PresentDay {
   }
 
   async load(envMap) {
-    const [set, boon, sparky] = await Promise.all([loadModel('voiddeck'), loadModel('npc-oldboon'), loadModel('sparky')]);
+    const [set, boon, sparky, kids] = await Promise.all([loadModel('voiddeck'), loadModel('npc-oldboon'), loadModel('sparky'), loadKids()]);
     const s = new THREE.Scene();
     this.scene = s;
     const t = tier();
@@ -43,8 +44,8 @@ export class PresentDay {
         sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.06;
       }
       s.add(sun, sun.target);
-      // Fluorescent tubes: a few cool fills.
-      Object.keys(this.m).filter((k) => k.startsWith('PRO_Lamp')).slice(0, Math.max(0, t.maxLights - 2)).forEach((k) => {
+      // Fluorescent tubes: a few cool fills (the sun and Sparky's face fill take the rest).
+      Object.keys(this.m).filter((k) => k.startsWith('PRO_Lamp')).slice(0, Math.max(0, t.maxLights - 3)).forEach((k) => {
         const l = new THREE.PointLight('#e8f2ff', 1.2, 6, 2);
         l.position.copy(markerPose(this.m[k]).pos);
         s.add(l);
@@ -68,13 +69,30 @@ export class PresentDay {
 
     // Mr. Boon and Sparky on opposite stools (only when the real set provides seats).
     if (set) {
-      // NPC Sit clips expect the origin on the seat's centre line; Sparky's Sit expects the seat's
-      // front edge (his seat is 0.40 m, the stools are 0.45 m, so he's lifted a little).
+      // NPC Sit clips expect the origin on the seat's centre line. Sparky's Sit has his bottom just
+      // behind the origin and his thighs dipping to 0.375 m under it, so he goes a little short of
+      // the centre (knees at the front edge) and is lifted until that low point meets the seat.
       const bs = this.pose('PRO_Stool_Boon', tablePos.clone().add(V(0, -0.75, 0.9)));
       const off = this.m.PRO_Stool_Boon?.userData?.seat_centre_offset ?? 0.17;
       bs.pos.add(V(-Math.sin(bs.yaw) * off, 0, -Math.cos(bs.yaw) * off));
       const ss = this.pose('PRO_Stool_Sparky', tablePos.clone().add(V(0, -0.75, -0.9)));
-      ss.pos.y += 0.05;
+      const sud = this.m.PRO_Stool_Sparky?.userData ?? {};
+      const f = V(Math.sin(ss.yaw), 0, Math.cos(ss.yaw)); // Sparky faces the table
+      ss.pos.addScaledVector(f, -((sud.seat_centre_offset ?? 0.17) - 0.05));
+      ss.pos.y += (sud.seat_height ?? 0.45) - 0.375;
+      // Wide two-shot favouring Sparky: past Mr. Boon's shoulder, on the open side the set's wide
+      // camera uses, ~35° off Sparky's facing so his face and the DSTA lettering read clearly.
+      const side = V(f.z, 0, -f.x);
+      const wideM = this.pose('PRO_Camera_Wide', tablePos.clone().add(V(2.4, 1.4, 3))).pos;
+      const turn = side.dot(wideM.clone().sub(tablePos)) < 0 ? -1 : 1;
+      side.multiplyScalar(turn);
+      this.wide = tablePos.clone().addScaledVector(f, 1.5).addScaledVector(side, 2.7).setY(tablePos.y + 1);
+      this.wideLook = tablePos.clone().addScaledVector(f, -0.15).add(V(0, 0.05, 0));
+      ss.yaw += 0.35 * turn; // swivel a little toward that camera on the round stool
+      // Soft warm fill on his face: the low sun is behind him from the wide camera.
+      const fill = new THREE.PointLight('#ffe2c0', 1.6, 3.2, 2);
+      fill.position.copy(ss.pos).addScaledVector(f, 0.95).addScaledVector(side, 0.9).setY(1.3);
+      s.add(fill);
       this.boon = new Character('OldBoon', boon, { height: 1.55, placeholder: { shirt: '#f4f1ea', pants: '#6b6b6b', skin: '#d2a47c', hair: '#e8e6e0' } });
       this.boon.place(bs.pos, bs.yaw);
       this.boon.play('Sit');
@@ -82,6 +100,8 @@ export class PresentDay {
       this.sparky.place(ss.pos, ss.yaw);
       this.sparky.play('Sit');
       s.add(this.boon.root, this.sparky.root);
+      // Children playing in the playground behind them.
+      this.playground = new Playground(s, this.m, kids);
     }
     this.hasSet = !!set;
     this.tablePos = tablePos;
@@ -115,6 +135,7 @@ export class PresentDay {
   update(dt) {
     this.boon?.update(dt);
     this.sparky?.update(dt);
+    this.playground?.update(dt);
   }
 
   show() {
@@ -126,8 +147,9 @@ export class PresentDay {
 
   wideShot(instant = false) {
     const g = this.game;
-    const w = this.pose('PRO_Camera_Wide', this.tablePos.clone().add(V(2.4, 1.4, 3)));
-    g.rig.cut(w.pos, this.tablePos.clone().add(V(0, 0.2, 0)), instant ? 1 : 0.5, instant);
+    const pos = this.wide ?? this.pose('PRO_Camera_Wide', this.tablePos.clone().add(V(2.4, 1.4, 3))).pos;
+    const look = this.wideLook ?? this.tablePos.clone().add(V(0, 0.2, 0));
+    g.rig.cut(pos, look, instant ? 1 : 0.5, instant);
   }
 
   closeShot() {

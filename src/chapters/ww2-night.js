@@ -109,6 +109,14 @@ export function spawnExtra(c, baseKey, { tint = 0xb0a890, name = 'Extra', height
 }
 
 const _from = new THREE.Vector3();
+/** NIGHT_Spawn sits tucked behind the ARP post; step out toward the road so the way is open. */
+function openSpawn(c, pose) {
+  const p = { pos: pose.pos.clone(), yaw: pose.yaw };
+  p.pos.z += -Math.sign(p.pos.z || 1) * 2.4;
+  c.world.resolve(p.pos, 0.35, 1.2);
+  return p;
+}
+
 function isCovered(c, pos) {
   _from.copy(pos).setY(pos.y + 1.0);
   return c.world.rayDistance(_from, UP, 7) < 6;
@@ -133,11 +141,13 @@ export async function shelterTransition(c) {
     ch.play('Sit');
   };
   [Hassan, AhMa, Boon, Siti].forEach((ch, i) => sitAt(ch, seats[i]));
-  // Mr. Rajan keeps watch by the door; Sparky sits on the bench opposite.
+  // Mr. Rajan sits by the wireless at the far end (he dozes off later, so Boon can slip out);
+  // Sparky sits on the bench opposite.
   const door = c.marker('INT_Spawn', V(196.8, 0, -0.3));
+  const radio = c.marker('INT_Radio', V(202.5, 0.56, -1.35));
   Rajan.stop();
-  Rajan.place(door.pos.clone().add(V(0.9, 0, 0.9)), door.yaw);
-  Rajan.play('Idle');
+  Rajan.place(V(radio.pos.x - 0.2, 0, radio.pos.z + 0.55), -Math.PI / 2);
+  Rajan.play('Sit');
   const s5 = seats[4];
   const p = c.player;
   p.scripted = true;
@@ -159,7 +169,8 @@ export async function shelterTransition(c) {
   await g.ui.fade(false, 1);
   for (let i = 0; i < 2; i++) { g.audio.play('distant-explosion', { volume: 0.7, rate: 0.7 }); g.rig.addShake(0.4); c.dust?.kick(0.5); await g.wait(1.1); }
   await c.lines(X.before, { frame: false });
-  // The big one: the candle goes out.
+  // The big one: the candle goes out. Everyone ducks on the bench.
+  for (const ch of [Hassan, AhMa, Siti]) ch.play('Cower');
   g.audio.play('impact', { volume: 0.6, rate: 0.6 });
   g.rig.addShake(0.9);
   c.dust?.kick(1);
@@ -167,9 +178,11 @@ export async function shelterTransition(c) {
   await g.wait(1.6);
   c.siren?.stop(1);
   await g.ui.fade(true, 0.6);
+  drift(); // stop the idle camera drift: the night shots below are composed precisely
   await c.cardLine(X.card.text);
   // Two nights later: a low candle; everyone asleep except Boon.
   level = 0.45;
+  for (const ch of [Hassan, AhMa, Siti, Rajan]) ch.play('Sit');
   Boon.stop();
   Boon.place(seats[2].pos.clone().setY(0).add(V(0, 0, -0.6)));
   Boon.faceTowards(p.root.position, true);
@@ -177,13 +190,16 @@ export async function shelterTransition(c) {
   g.audio.play('rumble', { volume: 0.35, caption: '[Far-off guns thud]' });
   // Wide shot of the sleeping shelter, centred between Boon and Sparky (the room is too small
   // for a tight two-shot).
-  const pair = Boon.root.position.clone().lerp(p.root.position, 0.5).setY(0.85);
-  g.rig.cut(cam.pos.clone().add(V(0, 0.15, 0)), pair, 1, true);
+  // Along the room from the door end at eye height: Boon and Sparky in profile across the room,
+  // the sleepers on the benches beyond.
+  const pair = Boon.root.position.clone().lerp(p.root.position, 0.5).setY(0.8);
+  g.rig.cut(V(door.pos.x + 1.0, 1.35, pair.z), pair, 1, true);
   await g.ui.fade(false, 1.2);
   if (X.boonLeaves?.length) await c.lines(X.boonLeaves, { frame: false });
   // He tiptoes to the door and slips out.
   const out = door.pos.clone().add(V(-1.2, 0, 0));
-  g.rig.cut(cam.pos.clone().add(V(-1.2, 0.1, 0)), door.pos.clone().setY(0.9), 1.2);
+  // From the far end: watch him tiptoe away past the sleepers to the door.
+  g.rig.cut(V(radio.pos.x - 0.9, 1.4, door.pos.z + 0.2), door.pos.clone().setY(0.9), 1.2, true);
   await Promise.race([Boon.moveTo([door.pos.clone().add(V(0.4, 0, 0)), out], { speed: 0.6 }), g.wait(7)]);
   Boon.stop();
   Boon.root.visible = false;
@@ -201,7 +217,7 @@ export async function shelterTransition(c) {
   await g.wait(0.8);
   await c.lines(X.after, { frame: false });
   await g.ui.fade(true, 0.8);
-  flicker(); drift();
+  flicker();
   room.stop(0.8);
   if (candle.isLight) c.pool.release(candle);
   c.setInterior(false);
@@ -227,7 +243,7 @@ export async function blackoutBeat(c) {
   for (const p of firePts.slice(0, 4)) { const f = houseFire(p, c.pool.claim()); c.scene.add(f); nightFires.push(f); c.fires.push(f); }
 
   Boon.root.visible = false;
-  const spawn = c.marker('NIGHT_Spawn', c.marker('SHELTER_Entrance').pos.clone().add(V(-1.5, 0, 0)));
+  const spawn = openSpawn(c, c.marker('NIGHT_Spawn', c.marker('SHELTER_Entrance').pos.clone().add(V(-1.5, 0, 0))));
   c.player.place(spawn.pos, spawn.yaw);
   AhMa.place(c.marker('SHELTER_Entrance').pos.clone().add(V(0.8, 0, 0.4)));
   AhMa.root.visible = false;
@@ -325,9 +341,12 @@ export async function blackoutBeat(c) {
   }
   g.objective('Ah Boon is close. Find him.', Boon);
   Boon.root.visible = true;
+  Boon.stop();
+  Boon.play('Cower');
   Boon.indicator('important');
   await c.interactOnce(Boon, 'Reach Ah Boon');
   Boon.indicator(null);
+  Boon.play('Idle');
   await c.lines(X.found);
   Boon.follow(c.player, { gap: 0.9, speed: 2.4 });
   g.rig.follow();
@@ -343,9 +362,14 @@ export async function blackoutBeat(c) {
   g.objective(null);
   g.mode = 'cutscene';
   AhMa.root.visible = true;
-  AhMa.faceTowards(Boon.root.position, true);
   Boon.stop();
-  await c.lines(X.return);
+  const beside = AhMa.root.position.clone().add(V(0.75, 0, 0.35));
+  c.world.resolve(beside, 0.3, 1.2);
+  Boon.place(beside);
+  Boon.faceTowards(AhMa.root.position, true);
+  AhMa.faceTowards(Boon.root.position, true);
+  g.rig.frameTwo(AhMa, Boon);
+  await c.lines(X.return, { frame: false });
   followFill();
   c.pool.release(fill);
   amb.stop(1.5); heart.stop(1);
@@ -417,7 +441,7 @@ export async function rumoursBeat(c) {
   Rajan.root.visible = false;
   const { Boon, AhMa } = c.cast;
   // Everyone steps out of the shelter together, just outside the door, facing up the street.
-  const out = c.marker('NIGHT_Spawn', c.marker('SHELTER_Entrance').pos.clone().add(V(-1.5, 0, -1.5)));
+  const out = openSpawn(c, c.marker('NIGHT_Spawn', c.marker('SHELTER_Entrance').pos.clone().add(V(-1.5, 0, -1.5))));
   const fwd = V(Math.sin(out.yaw), 0, Math.cos(out.yaw));
   const side = V(fwd.z, 0, -fwd.x);
   c.player.place(out.pos, out.yaw);
@@ -467,6 +491,12 @@ export async function rumoursBeat(c) {
   g.rig.cut(g.rig.shot.pos, g.rig.shot.look, 1, true);
   await g.ui.fade(false, 1.5);
   await c.lines(X.start);
+  // Ah Ma and Boon step back by the shelter wall so Sparky's way up the street is clear.
+  Boon.stop();
+  const by = out.pos.clone().addScaledVector(fwd, -1.2).addScaledVector(side, roadSide * 0.4);
+  c.world.resolve(by, 0.3, 1.4);
+  AhMa.place(by, out.yaw);
+  Boon.place(by.clone().addScaledVector(side, roadSide * 0.6), out.yaw);
   // The neighbours drift off along the silent street to talk in little groups.
   speakers.forEach((ch) => { if (ch.name !== 'Soldier') Promise.race([ch.moveTo(ch.spot.pos, { speed: 1.1 }), g.wait(14)]).then(() => ch.faceTowards(c.player.root.position)); });
   g.rig.follow();
@@ -523,18 +553,21 @@ export async function rumoursBeat(c) {
   offAssist?.();
   g.input.lookEnabled = true;
   g.audio.play('pickup-chime');
-  g.ui.toast(X.headline.source, `“${X.headline.text}”`, 8);
+  g.ui.toast('The Straits Times, 15 Feb 1942', `“${X.headline.text}” — the Governor’s message that morning.`, 5);
   // Reveal: Rajan comes back up the street with the truth.
   const siti = c.cast.Siti;
   const group = speakers.filter((s) => s !== siti);
   const meet = siti.root.position.clone();
-  group.filter((s) => s.name !== 'Soldier').forEach((s, i) => {
-    s.moveTo(meet.clone().add(V(Math.cos(i * 2.1 + 0.6) * 1.5, 0, Math.sin(i * 2.1 + 0.6) * 1.2)), { speed: 1.4 });
-  });
+  // A loose arc on the far side of Siti from Sparky, everyone at least a metre apart.
+  const toP = c.player.root.position.clone().sub(meet).setY(0).normalize();
+  const arc = (k) => { const a = Math.atan2(toP.x, toP.z) + Math.PI + k; const q = meet.clone().add(V(Math.sin(a) * 1.6, 0, Math.cos(a) * 1.6)); c.world.resolve(q, 0.3, 1.4); return q; };
+  group.filter((s) => s.name !== 'Soldier').forEach((s, i) => { s.moveTo(arc(-0.9 + i * 0.6), { speed: 1.4 }); });
   AhMa.stop();
-  AhMa.place(meet.clone().add(V(-1.2, 0, 1.0)));
+  AhMa.place(arc(0.75));
   AhMa.faceTowards(meet, true);
-  Boon.place(AhMa.root.position.clone().add(V(0.5, 0, 0.3)), AhMa.yaw);
+  Boon.stop();
+  Boon.place(arc(1.35), AhMa.yaw);
+  Boon.faceTowards(meet, true);
   c.player.scripted = true;
   c.player.moveTo(meet.clone().add(V(1.1, 0, 0.6)), { speed: 2 });
   const revealLines = X.reveal;

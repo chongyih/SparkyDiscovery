@@ -5,7 +5,7 @@ import { UI } from './ui.js';
 import { Audio } from './audio.js';
 import { Album, capturePhoto } from './album.js';
 import { CameraRig } from './camera.js';
-import { settings, saveSettings, isTouch } from './settings.js';
+import { settings, saveSettings, resetSettings, onSettings, isTouch, TIERS } from './settings.js';
 import { radialTexture } from './assets.js';
 import { Character } from './character.js';
 
@@ -210,9 +210,15 @@ export class Game {
       await this.ui.iris(true, 0.22);
       onCovered?.();
       this.rig.viewfinder(eye, aim, true, limit);
-      this.input.aimKeys = true;
+      // WASD / the left stick walk Sparky (toward where the lens points); the eye rides along at
+      // the same offset from him, so the player can step in closer or round an obstacle.
+      this._vfWalk = this.player ? eye.clone().sub(this.player.root.position) : null;
+      this.input.moveEnabled = true;
       this.snapHotspot = null;
       if (this.player) this.player.root.visible = false;
+      $('vf-hint').innerHTML = this.input.isTouch
+        ? 'Drag to aim · Left thumb to walk · Tap the shutter to snap'
+        : 'Mouse to aim · <kbd>WASD</kbd> to walk · <kbd>Space</kbd> or <kbd>Click</kbd> to snap';
       document.body.classList.add('aiming');
       const vf = $('viewfinder');
       $('vf-label').textContent = label;
@@ -245,7 +251,8 @@ export class Game {
       }
       const finish = async (img) => {
         offs.forEach((f) => f());
-        this.input.aimKeys = false;
+        this._vfWalk = null;
+        this.input.moveEnabled = false;
         vf.classList.add('hidden');
         document.body.classList.remove('aiming');
         if (img) await this.wait(0.35); // let the shutter flash read before cutting back
@@ -297,6 +304,7 @@ export class Game {
     this.input.on('tap', () => { if (this.ui.dialogueActive && !this.paused) this.ui.advance(); });
     this.input.on('album', () => this.toggleAlbum());
     this.input.on('pause', () => {
+      if (this.titleSettings) { this.showTitleSettings(false); return; }
       if (this.album.isOpen) { this.album.close(); return; }
       if (this.mode === 'viewfinder' && this._vfCancel) { this._vfCancel(); return; }
       if (this.mode !== 'menu') this.setPaused(!this.paused);
@@ -308,7 +316,10 @@ export class Game {
     $('btn-album').onclick = () => this.toggleAlbum();
     $('btn-cam-hud').onclick = () => this.input.emit('camera');
     $('btn-pause').onclick = () => this.setPaused(true);
-    $('btn-resume').onclick = () => this.setPaused(false);
+    const closePanel = () => { if (this.titleSettings) this.showTitleSettings(false); else this.setPaused(false); };
+    $('btn-resume').onclick = closePanel;
+    $('btn-settings-close').onclick = closePanel;
+    $('pause').addEventListener('pointerdown', (e) => { if (e.target === e.currentTarget) closePanel(); });
     $('btn-restart').onclick = () => { this.setPaused(false); this.onRestart?.(); };
     $('btn-quit').onclick = () => { this.setPaused(false); this.onQuit?.(); };
     this.album.onToggle = (open) => {
@@ -317,18 +328,81 @@ export class Game {
       this.audio.pauseAll(open);
     };
 
-    const q = $('set-quality'), vol = $('set-volume'), mus = $('set-music'), sub = $('set-subtitles'), mot = $('set-motion'), inv = $('set-invert');
-    const sync = () => { q.value = settings.quality; vol.value = settings.volume; mus.value = settings.music; sub.checked = settings.subtitles; mot.checked = settings.reduceMotion; inv.checked = settings.invertY; };
+    this.bindSettings();
+  }
+
+  bindSettings() {
+    const radios = [...document.querySelectorAll('input[name=quality]')];
+    const vol = $('set-volume'), mus = $('set-music'), sub = $('set-subtitles'), mot = $('set-motion'), inv = $('set-invert');
+    const loadedVariant = TIERS[settings.quality]?.assetVariant;
+    const notes = {
+      low: 'No shadows and fewer particles — smoothest on phones.',
+      medium: 'Soft shadows and film grading, lighter effects.',
+      high: 'Sharp shadows, bloom and high-detail textures.',
+    };
+    const pct = (el, out) => { el.style.setProperty('--fill', `${el.value * 100}%`); $(out).textContent = `${Math.round(el.value * 100)}%`; };
+    const sync = () => {
+      radios.forEach((r) => { r.checked = r.value === settings.quality; });
+      const reload = TIERS[settings.quality]?.assetVariant !== loadedVariant;
+      $('quality-note').textContent = notes[settings.quality] + (reload ? ' Texture detail updates next time the game loads.' : '');
+      vol.value = settings.volume; mus.value = settings.music;
+      pct(vol, 'out-volume'); pct(mus, 'out-music');
+      sub.checked = settings.subtitles; mot.checked = settings.reduceMotion; inv.checked = settings.invertY;
+    };
     sync();
-    q.onchange = () => saveSettings({ quality: q.value });
+    onSettings(sync);
+    radios.forEach((r) => { r.onchange = () => saveSettings({ quality: r.value }); });
     vol.oninput = () => saveSettings({ volume: +vol.value });
     mus.oninput = () => saveSettings({ music: +mus.value });
     sub.onchange = () => saveSettings({ subtitles: sub.checked });
     mot.onchange = () => saveSettings({ reduceMotion: mot.checked });
     inv.onchange = () => saveSettings({ invertY: inv.checked });
+    $('btn-settings-reset').onclick = () => resetSettings();
+
+    const tabs = [...document.querySelectorAll('.sp-tabs [data-tab]')];
+    this.showSettingsTab = (name) => tabs.forEach((t) => {
+      const on = t.dataset.tab === name;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on);
+      $(`sp-${t.dataset.tab}`).classList.toggle('hidden', !on);
+    });
+    tabs.forEach((t) => { t.onclick = () => this.showSettingsTab(t.dataset.tab); });
+
+    const row = (keys, what) => `<div class="ctl"><span class="ctl-keys">${keys}</span><span>${what}</span></div>`;
+    const k = (...ks) => ks.map((x) => `<kbd>${x}</kbd>`).join('');
     $('controls-help').innerHTML = isTouch
-      ? 'Left thumb: move · Drag right side: look · Double-tap: recentre camera<br>Gold button: talk / use · Run toggle · Camera button: look closer / take a photo · Album: top right'
-      : '<kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move · <kbd>Shift</kbd> run · Mouse: look · <kbd>E</kbd> talk / use<br><kbd>C</kbd> or right-click: raise camera · <kbd>Space</kbd> snap / continue · <kbd>J</kbd> album · <kbd>R</kbd> recentre · <kbd>Esc</kbd> pause · Gamepad supported';
+      ? [row('Left thumb', 'Move'), row('Drag right side', 'Look around'), row('Double-tap', 'Recentre camera'), row('Gold button', 'Talk / use'), row('Run', 'Toggle running'), row('Camera button', 'Look closer / take a photo'), row('Album button', 'Open Sparky’s album')].join('')
+      : [row(k('W', 'A', 'S', 'D'), 'Move'), row(k('Shift'), 'Run'), row('Mouse', 'Look around'), row(k('E'), 'Talk / use'), row(`${k('C')} or right-click`, 'Raise camera'), row(k('Space'), 'Snap photo / continue'), row(k('J'), 'Photo album'), row(k('R'), 'Recentre camera'), row(k('Esc'), 'Pause / back')].join('')
+        + '<p class="sp-note">Gamepads are supported too.</p>';
+  }
+
+  /** Shared panel in two modes: in-game pause menu, or plain settings over the title screen. */
+  setPanelMode(fromTitle) {
+    $('pause').classList.toggle('from-title', fromTitle);
+    $('pause-kicker').textContent = fromTitle ? 'Sparky Discovery' : 'Game paused';
+    $('pause-title').textContent = fromTitle ? 'Settings' : 'Paused';
+    $('btn-resume').textContent = fromTitle ? 'Done' : 'Resume';
+    this.showSettingsTab('settings');
+  }
+
+  showTitleSettings(open) {
+    this.titleSettings = open;
+    this.setPanelMode(true);
+    $('pause').classList.toggle('hidden', !open);
+    (open ? $('btn-settings-close') : $('btn-settings-title')).focus();
+  }
+
+  /** Keep the viewfinder eye at its offset from the walking player, pulled in short of walls. */
+  followViewfinder(p) {
+    const off = this._vfWalk;
+    const base = tmp.copy(p.root.position); base.y += off.y;
+    const flatLen = Math.hypot(off.x, off.z);
+    let k = 1;
+    if (flatLen > 0.05 && this.world) {
+      const dirFlat = new THREE.Vector3(off.x / flatLen, 0, off.z / flatLen);
+      k = Math.max(0, Math.min(flatLen, this.world.rayDistance(base, dirFlat, flatLen + 0.25) - 0.25)) / flatLen;
+    }
+    this.rig.vf.pos.set(base.x + off.x * k, base.y, base.z + off.z * k);
   }
 
   toggleAlbum() {
@@ -339,6 +413,7 @@ export class Game {
   setPaused(p) {
     if (this.mode === 'menu') p = false;
     this.paused = p;
+    if (p) this.setPanelMode(false);
     $('pause').classList.toggle('hidden', !p);
     this.audio.pauseAll(p);
     if (p) this.input.releaseLock(); else if (this.mode === 'play') this.input.requestLock();
@@ -384,11 +459,23 @@ export class Game {
 
     const p = this.player;
     if (p) {
-      p.controlled = this.mode === 'play' && !p.scripted;
-      p.update(dt, this.world, this.mode === 'play' ? this.input : null, this.rig.yaw);
+      const walkingVf = this.mode === 'viewfinder' && this._vfWalk && this.rig.mode === 'viewfinder';
+      p.controlled = (this.mode === 'play' || walkingVf) && !p.scripted;
+      p.update(dt, this.world, this.mode === 'play' || walkingVf ? this.input : null, walkingVf ? this.rig.vf.yaw : this.rig.yaw);
+      if (walkingVf) this.followViewfinder(p);
     }
     Character.showIndicators = this.mode === 'play' && !this.ui.dialogueActive;
+    document.body.classList.toggle('in-play', this.mode === 'play');
     for (const n of this.npcs) n.update(dt, this.world);
+    // Anyone within half a metre of the lens is hidden so they never fill the frame.
+    const cam = this.camera.position;
+    for (const n of this.npcs) {
+      if (n.fadeHidden !== undefined && n.fadeHidden) n.model.visible = true;
+      const near = this.mode !== 'viewfinder' && n.root.visible && tmp.copy(n.root.position).setY(n.root.position.y + n.height * 0.6).distanceTo(cam) < n.height * 0.3 + 0.3;
+      n.model.visible = !near;
+      n.fadeHidden = near;
+    }
+    if (p && this.mode !== 'viewfinder') p.model.visible = p.root.position.distanceTo(cam) > 0.55 || this.rig.mode === 'follow';
     this.chapter?.update?.(dt);
     this.rig.world = this.renderer.scene === this.chapter?.scene ? this.world : null;
     // Whenever the player has control, the camera must be the follow camera (WASD is camera-relative).

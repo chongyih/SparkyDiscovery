@@ -10,11 +10,60 @@ window.__game = game; // handy for debugging in the console
 let chapter = null;
 let titleSpin = null;
 
-function setLoading(p) { $('loading-bar').style.width = `${Math.round(p * 100)}%`; }
+// Loading screen: the print in the tray develops with progress (CSS reads --p). The shown value
+// eases toward the real one so the image comes up smoothly rather than in jumps.
+const LOAD_STEPS = [[0, 'Winding on the film'], [0.25, 'Mixing the developer'], [0.5, 'Rocking the tray'], [0.8, 'Fixing the print'], [0.98, 'Hanging it up to dry']];
+const load = { target: 0, shown: 0, raf: 0, step: '' };
+function drawLoading() {
+  load.shown += (load.target - load.shown) * 0.12;
+  if (load.target - load.shown < 0.002) load.shown = load.target;
+  const el = $('loading');
+  el.style.setProperty('--p', load.shown.toFixed(4));
+  const pct = Math.round(load.shown * 100);
+  $('loading-pct').textContent = `${pct}%`;
+  $('loading-progress').setAttribute('aria-valuenow', pct);
+  const step = LOAD_STEPS.filter(([at]) => load.shown >= at).pop()[1];
+  if (step !== load.step) {
+    load.step = step;
+    const s = $('loading-step');
+    s.textContent = step;
+    s.style.animation = 'none'; void s.offsetWidth; s.style.animation = ''; // replay the fade-in
+  }
+  load.raf = load.shown < load.target || load.target < 1 ? requestAnimationFrame(drawLoading) : 0;
+}
+function setLoading(p) {
+  load.target = Math.max(load.target, Math.min(1, p));
+  if (!load.raf) load.raf = requestAnimationFrame(drawLoading);
+}
+// A different Singapore scene develops each time (never the same one twice running).
+function pickPhoto() {
+  const scenes = [...document.querySelectorAll('.dv-scene')];
+  let last = -1;
+  try { last = +(localStorage.getItem('sparky.loadingPhoto') ?? -1); } catch { /* storage unavailable */ }
+  let i = Math.floor(Math.random() * (scenes.length - 1));
+  if (i >= last && last >= 0) i++;
+  scenes.forEach((g, k) => g.classList.toggle('on', k === i));
+  $('loading-caption').textContent = scenes[i].dataset.caption;
+  try { localStorage.setItem('sparky.loadingPhoto', i); } catch { /* ignore */ }
+}
+function showLoading() {
+  const el = $('loading');
+  clearTimeout(load.hideT);
+  pickPhoto();
+  el.classList.remove('hidden', 'done');
+  load.target = load.shown = 0;
+  setLoading(0);
+}
+function hideLoading() {
+  const el = $('loading');
+  if (el.classList.contains('hidden')) return;
+  setLoading(1); // the print finishes developing as the screen fades
+  el.classList.add('done');
+  load.hideT = setTimeout(() => { el.classList.add('hidden'); cancelAnimationFrame(load.raf); load.raf = 0; }, 700);
+}
 
 async function loadChapter(opts = {}) {
-  $('loading').classList.remove('hidden');
-  setLoading(0);
+  showLoading();
   if (chapter) { await game.endChapter(); }
   chapter = new WW2Chapter(game, opts);
   game.chapter = chapter;
@@ -44,7 +93,7 @@ function showTitle() {
     const x = sp.pos.x + fwd.x * (4 + Math.sin(t * 0.05) * 3);
     game.rig.cut(new THREE.Vector3(x, 2.8 + Math.sin(t * 0.07) * 0.3, Math.sin(t * 0.04) * 0.8), new THREE.Vector3(x + fwd.x * 14, 2.6, 0), 0.6);
   });
-  $('loading').classList.add('hidden');
+  hideLoading();
   $('title').classList.remove('hidden');
   $('title-hint').textContent = `${T.contentNote} Best played with sound.`;
   $('btn-begin').focus();
@@ -59,7 +108,7 @@ async function begin(opts = {}) {
     game.album.clearChapter('ww2');
     await game.ui.fade(true, 0.6);
     await loadChapter(opts);
-    $('loading').classList.add('hidden');
+    hideLoading();
   } else await game.ui.fade(true, 0.6);
   game.ui.showHUD(true);
   game.mode = 'cutscene';
@@ -68,11 +117,7 @@ async function begin(opts = {}) {
 
 $('btn-begin').onclick = () => { game.album.clearChapter('ww2'); begin(); };
 $('btn-chapters').onclick = () => $('chapter-list').classList.toggle('hidden');
-$('btn-settings-title').onclick = () => { $('pause').classList.remove('hidden'); $('pause-title').textContent = 'Settings'; $('btn-restart').classList.add('hidden'); $('btn-quit').classList.add('hidden'); $('btn-resume').textContent = 'Back'; };
-$('btn-resume').addEventListener('click', () => {
-  $('pause').classList.add('hidden');
-  $('pause-title').textContent = 'Paused'; $('btn-restart').classList.remove('hidden'); $('btn-quit').classList.remove('hidden'); $('btn-resume').textContent = 'Resume';
-});
+$('btn-settings-title').onclick = () => game.showTitleSettings(true);
 document.querySelectorAll('.chapter-card[data-chapter]').forEach((b) => { b.onclick = () => { game.album.clearChapter('ww2'); begin({ skipPrologue: true, fresh: true }); }; });
 
 game.onRestart = () => begin({ skipPrologue: true, fresh: true });
@@ -92,4 +137,11 @@ game.onChapterComplete = async () => {
 (async () => {
   await loadChapter();
   showTitle();
+  // Dev-only playthrough audit: ?autoplay (see src/debug/autoplay.js).
+  if (new URLSearchParams(location.search).has('autoplay')) {
+    const { installAutoplay } = await import('./debug/autoplay.js');
+    installAutoplay(game);
+    game.album.clearChapter('ww2');
+    setTimeout(() => $('btn-begin').click(), 500);
+  }
 })();

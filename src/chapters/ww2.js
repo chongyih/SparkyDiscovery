@@ -13,6 +13,7 @@ import { shelterTransition, blackoutBeat, rumoursBeat, setLighting } from './ww2
 import { PresentDay } from './present-day.js';
 import { Town } from './ww2-town.js';
 import { thenNow, shelterChoice, freeCamera, setupKindness } from './ww2-features.js';
+import { preloadNowPeople } from './ww2-now.js';
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -114,7 +115,7 @@ export class WW2Chapter {
 
     this.present = new PresentDay(g);
     this.town = new Town(this);
-    await Promise.all([this.present.load(this.envMap), this.town.load()]);
+    await Promise.all([this.present.load(this.envMap), this.town.load(), preloadNowPeople()]);
     await audioLoad;
     onProgress?.(1);
   }
@@ -215,7 +216,8 @@ export class WW2Chapter {
     root.traverse((o) => {
       if (!o.isMesh || o.name.startsWith('COL_')) return;
       let p = o, skip = false;
-      while (p && p !== root) { if (/^(PRE_|OCC_|DMG_|NOW_|WAR_|WIRES_|LAUNDRY_)/.test(p.name || '')) { skip = true; break; } p = p.parent; }
+      // Toggle groups are included (hidden ones are ignored at hit time); thin wires/laundry are not.
+      while (p && p !== root) { if (/^(WIRES_|LAUNDRY_)/.test(p.name || '')) { skip = true; break; } p = p.parent; }
       if (!skip) this.world.addRayMesh(o);
     });
     // Smoke columns on the horizon.
@@ -306,6 +308,7 @@ export class WW2Chapter {
   async _lines(list, { frame = true, following = null } = {}) {
     const g = this.game;
     this.framing = frame;
+    let framedFor = null;
     for (const line of list) {
       if (this.aborted) throw new Error('aborted');
       if (line.requires && following && !following.has(line.requires)) continue;
@@ -314,8 +317,10 @@ export class WW2Chapter {
       const style = line.who === 'Radio' ? 'radio' : (line.who === 'Narrator' ? 'narrator' : '');
       const ch = this.cast[line.who];
       if (ch) this.lastSpeaker = line.who;
-      if (frame && ch) this.frameSpeaker(line.who);
-      if (ch) { ch.faceTowards(this.player.root.position); if (ch.has('Talk') && !['Cower', 'Sit'].includes(ch.currentName)) ch.play('Talk'); }
+      if (frame && ch && framedFor !== line.who) { this.frameSpeaker(line.who); framedFor = line.who; }
+      // Seated/cowering characters keep their pose (turning them would lift them off their seat).
+      const posed = ['Cower', 'Sit'].includes(ch?.currentName);
+      if (ch && !posed) { ch.faceTowards(this.player.root.position); if (ch.has('Talk')) ch.play('Talk'); }
       g.input.moveEnabled = false;
       await g.ui.say(NAMES[line.who] ?? line.who, line.text, { style });
       if (ch && ch.currentName === 'Talk') ch.play(ch.idleClip);
@@ -339,8 +344,7 @@ export class WW2Chapter {
       // No walking (it could pull Sparky through props): turn to each other and hold the moment.
       if (who) {
         this.player.faceTowards(who.root.position, true);
-        who.faceTowards(this.player.root.position);
-        if (this.player.clips.Wave) this.player.play('Talk');
+        if (!['Sit', 'Cower'].includes(who.currentName)) who.faceTowards(this.player.root.position);
       }
       await this.game.wait(1.4);
       this.player.play('Idle');
@@ -365,7 +369,12 @@ export class WW2Chapter {
     const prevMode = g.mode;
     g.mode = 'cutscene';
     p.faceTowards(aim, true);
-    g.rig.frameOne(p, { dist: 1.9, height: -0.1, angle: 0.55, lambda: 5 });
+    // Side-on, on whichever side has room — never between Sparky and what he's photographing.
+    const head = p.headPosition();
+    const sideDir = (s) => V(Math.sin(p.yaw + s * 1.25), 0, Math.cos(p.yaw + s * 1.25));
+    const roomL = this.world.rayDistance(head, sideDir(1), 2.5), roomR = this.world.rayDistance(head, sideDir(-1), 2.5);
+    const sd = roomL >= roomR ? 1 : -1;
+    g.rig.cut(head.clone().addScaledVector(sideDir(sd), Math.min(1.9, Math.max(roomL, roomR) - 0.3)).add(V(0, -0.05, 0)), head.clone().add(V(0, -0.15, 0)), 5, true);
     p.play('Snap', { loop: false });
     await g.wait(0.38); // paws meet in front of the chest at ~0.4 s
     this.brownie.visible = true;
@@ -475,70 +484,64 @@ export class WW2Chapter {
     const tn = this.cameFromThenNow;
     let flat = null, streetYaw = 0;
     if (tn) {
-      // We've stepped into Mr. Boon's photograph. Sparky stands just ahead, turned toward us,
-      // taking in 1942 — we see his face first, then the camera swings round behind him.
+      // We've stepped into Mr. Boon's photograph. Sparky stands just ahead, facing forward down the
+      // street; the camera is in front of him (we see his face) until the narration ends.
       flat = tn.dir.clone().setY(0).normalize();
       streetYaw = Math.atan2(flat.x, flat.z);
-      const at = tn.eye.clone().addScaledVector(flat, 2.0);
+      const at = tn.eye.clone().addScaledVector(flat, 1.2);
       if (Math.abs(flat.x) > Math.abs(flat.z)) at.z = sp.pos.z; else at.x = sp.pos.x;
       at.y = sp.pos.y;
       this.world.resolve(at, 0.3, 1);
       const gy = this.world.groundHeight(at.x, at.y + 0.5, at.z, 0.2, 3);
       if (gy !== null) at.y = Math.max(0, gy);
-      p.place(at, streetYaw + Math.PI);
+      p.place(at, streetYaw);
       const head = p.headPosition();
-      g.rig.cut(head.clone().addScaledVector(flat, -2.1).add(V(0, 0.05, 0)), head.clone().add(V(0, -0.12, 0)), 1, true);
+      g.rig.cut(head.clone().addScaledVector(flat, 2.1).add(V(0, 0.05, 0)), head.clone().add(V(0, -0.12, 0)), 1, true);
     } else {
       // High over the middle of the road (never inside the upper floors), looking along the street.
       g.rig.cut(V(sp.pos.x + fwd.x * 12, 7.5, 0), V(sp.pos.x - fwd.x * 4, 2.5, sp.pos.z * 0.6), 1, true);
     }
     await g.ui.fade(false, 1.2, 'sepia');
-    const card = this.cardLine(T.intro[0].text);
     const bleed = g.tween(g.renderer.grade, { sepia: 0, saturation: 0.92, vignette: 0.4 }, 4.5);
+    await this.cardLine(T.intro[0].text);
+    g.audio.play('rumble', { volume: 0.8 });
+    g.rig.addShake(0.25);
+    await this.lines(T.intro.slice(1), { frame: false });
+    await bleed;
     if (tn) {
-      // Hold on his face while the colour comes back…
-      await g.wait(2.2);
-      // …then an eased arc round him (rising a little over his shoulder at the side, so it never
-      // passes through him or the pillars) as he turns to face down the street.
+      // After the narration: an eased orbit from his face round to his back. It swings out on
+      // whichever side has more room and lifts over his shoulder, so it clears the pillars.
       const head0 = p.headPosition();
-      const side = Math.sign(-(head0.z) * Math.cos(streetYaw)) || 1; // swing out toward the road
-      const T0 = g.time, dur = 3.2;
+      const perp = V(flat.z, 0, -flat.x);
+      const room = (sgn) => this.world.rayDistance(head0, perp.clone().multiplyScalar(sgn), 3);
+      const side = room(1) >= room(-1) ? 1 : -1;
+      const lateral = Math.min(1.6, Math.max(0.6, room(side) - 0.35));
+      const T0 = g.time, dur = 2.8;
       const ease = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
       g.rig.mode = 'shot';
-      g.rig.shot.lambda = 18;
+      g.rig.shot.lambda = 20;
       await new Promise((resolve) => {
         const off = g.every(() => {
           const k = Math.min(1, (g.time - T0) / dur);
           const e = ease(k);
-          // Sparky turns from facing us to facing the street, a beat after the camera starts.
-          const tk = ease(Math.min(1, Math.max(0, (k - 0.15) / 0.7)));
-          const yaw = streetYaw + Math.PI * (1 - tk) * side;
-          p.yaw = yaw; p.root.rotation.y = yaw; p.targetYaw = null;
+          const ang = Math.PI * e; // 0 = in front, π = behind
           const head = p.headPosition();
-          // The camera stays on the same side (it's already where "behind him" ends up): it eases
-          // back and up to over-the-shoulder, with a gentle swing out and back for motion.
-          const ang = streetYaw + Math.PI + side * 0.55 * Math.sin(Math.PI * e);
-          const r = THREE.MathUtils.lerp(2.1, 2.7, e);
-          const h = THREE.MathUtils.lerp(0.05, 0.6, e);
-          const pos = head.clone().add(V(Math.sin(ang) * r, h, Math.cos(ang) * r));
-          const look = head.clone().add(V(0, -0.05, 0)).addScaledVector(flat, 2.5 * e);
+          const along = Math.cos(ang) * THREE.MathUtils.lerp(2.1, 2.7, e); // + ahead of him, − behind
+          const across = Math.sin(ang) * lateral * side;
+          const h = 0.05 + 0.55 * e + 0.45 * Math.sin(ang);
+          const pos = head.clone().addScaledVector(flat, along).addScaledVector(perp, across).add(V(0, h, 0));
+          const look = head.clone().add(V(0, -0.12 + 0.1 * e, 0)).addScaledVector(flat, 3 * e);
           g.rig.safePos(pos, look);
           g.rig.shot.pos.copy(pos);
           g.rig.shot.look.copy(look);
           if (k >= 1) { off(); resolve(); }
         });
       });
-      g.rig.yaw = streetYaw;
-      g.rig.pitch = 0.3;
     } else {
       // Settle on Sparky from along the five-foot way (not through the pillars or beams).
       g.rig.cut(sp.pos.clone().addScaledVector(fwd, 2.6).add(V(0, 1.05, 0)), p.headPosition().add(V(0, -0.1, 0)), 0.6);
+      await g.wait(1);
     }
-    await bleed;
-    await card;
-    g.audio.play('rumble', { volume: 0.8 });
-    g.rig.addShake(0.25);
-    await this.lines(T.intro.slice(1), { frame: false });
     g.audio.music(null, { fade: 4 });
     g.rig.subject = p;
     g.rig.follow(); // continue smoothly from the intro shot
@@ -847,7 +850,7 @@ export class WW2Chapter {
     g.objective(null);
     g.mode = 'cutscene';
     this.stopBombing?.();
-    await this.lines(T.raid.arrive, { frame: false });
+    await this.lines(T.raid.arrive);
     await shelterChoice(this);
     g.audio.play('door');
   }
@@ -861,7 +864,7 @@ export class WW2Chapter {
     // From across the road, a little down the street, with Sparky in the foreground.
     const side = Math.sign(pos.z) || -1;
     const camPos = V(pos.x - 6, 1.7, -side * 3.2);
-    g.rig.cut(camPos, pos.clone().add(V(0, 3.2, 0)), 3);
+    g.rig.cut(camPos, pos.clone().add(V(0, 3.2, 0)), 3, true);
     await g.wait(1.1);
     this.explode(pos.clone().setY(2), 2.2, true, { caption: '[A bomb hits a shophouse across the road!]' });
     this.show('PRE_Intact_House', false);
@@ -976,9 +979,14 @@ export class WW2Chapter {
     await this.lines(T.epilogue.absence);
     await this.lines(T.epilogue.bananaGift);
     g.objective(T.epilogue.snapHint);
+    // Step back a pace so Ah Ma (and the note she holds up) fits the frame.
+    const away = this.player.root.position.clone().sub(AhMa.root.position).setY(0).normalize();
+    const back = AhMa.root.position.clone().addScaledVector(away, 2.3);
+    this.world.resolve(back, 0.3, 1);
+    this.player.place(back, this.player.yaw);
     const eye = this.player.headPosition().add(V(0, -0.05, 0));
-    AhMa.faceTowards(this.player.root.position, true);
-    const aim = AhMa.headPosition().add(V(0, -0.35, 0));
+    if (AhMa.currentName !== 'Sit') AhMa.faceTowards(this.player.root.position, true);
+    const aim = AhMa.headPosition().add(V(0, AhMa.currentName === 'Sit' ? -0.5 : -0.25, 0));
     g.mode = 'play';
     await this.takePhoto('Banana', eye, aim, { allowCancel: false });
     g.objective(null);

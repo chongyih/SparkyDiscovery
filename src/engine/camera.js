@@ -47,6 +47,13 @@ export class CameraRig {
       this.yaw = Math.atan2(f.x, f.z);
       this.pitch = THREE.MathUtils.clamp(-Math.asin(THREE.MathUtils.clamp(f.y, -1, 1)) + 0.1, 0.05, 0.8);
       this.subject.headPosition(this.target).y -= 0.15;
+      // No room behind Sparky from this angle (e.g. just talked across a counter)? Swing round
+      // behind the way he's facing instead.
+      if (this.world) {
+        const cp = Math.cos(this.pitch);
+        dirV.set(-Math.sin(this.yaw) * cp, Math.sin(this.pitch), -Math.cos(this.yaw) * cp);
+        if (this.world.rayDistance(this.target, dirV, 3) < 1.6) { this.yaw = this.subject.yaw; this.pitch = 0.35; }
+      }
       this.currentDist = Math.max(0.6, this.camera.position.distanceTo(this.target));
     }
     this.mode = 'follow';
@@ -88,7 +95,7 @@ export class CameraRig {
   }
 
   /** Frame two characters in an over-the-shoulder two-shot, from the side the camera is already on. */
-  frameTwo(a, b, { side = 0, dist = null, height = 0.2, lambda = 3 } = {}) {
+  frameTwo(a, b, { side = 0, dist = null, height = 0.2, lambda = 3, instant = true } = {}) {
     const pa = a.headPosition(new THREE.Vector3());
     const pb = b.headPosition(new THREE.Vector3());
     const mid = pa.clone().lerp(pb, 0.5);
@@ -104,19 +111,31 @@ export class CameraRig {
     const current = perp.dot(tmp.copy(this.camera.position).sub(mid)) >= 0 ? 1 : -1;
     const sides = side ? [side] : [current, -current];
     let best = null;
+    const consider = (pos, bonus = 0) => {
+      this.safePos(pos, look);
+      const seesA = this.clear(pos, pa), seesB = this.clear(pos, pb);
+      const room = Math.min(pos.distanceTo(look), d);
+      const score = (seesA && seesB ? 3 : (seesA || seesB ? 1 : 0)) + room / (d * 4) + bonus;
+      if (!best || score > best.score) best = { pos, score };
+    };
+    // Side-on two-shots (good in the open road)…
     for (const sd of sides) {
       for (const [dk, hk] of [[1, 0], [0.8, 0.5], [0.6, 1.0]]) {
         const pos = mid.clone().addScaledVector(perp, sd * d * dk).addScaledVector(abn, -0.35 * sep);
         pos.y = Math.min(pa.y, pb.y) + height + hk;
-        this.safePos(pos, look);
-        const seesA = this.clear(pos, pa), seesB = this.clear(pos, pb);
-        const room = pos.distanceTo(look);
-        const score = (seesA ? 1 : 0) + (seesB ? 1 : 0) + Math.min(room, d) / (d * 4) + (sd === current ? 0.05 : 0);
-        if (!best || score > best.score) best = { pos, score };
+        consider(pos, sd === current ? 0.05 : 0);
       }
-      if (best && best.score >= 2.2) break;
     }
-    this.cut(best.pos, look, lambda);
+    // …and over-the-shoulder shots along the line between them (good in narrow five-foot ways,
+    // where side-on shots hit pillars or shop walls). Behind `a`, looking at `b`'s face, first.
+    for (const [from, to, bonus] of [[pa, pb, 0.08], [pb, pa, 0.02]]) {
+      const back = from.clone().sub(to).setY(0).normalize();
+      for (const [lat, up, dist] of [[0.45, 0.35, 1.5], [-0.45, 0.35, 1.5], [0.35, 0.9, 1.3], [-0.35, 0.9, 1.3]]) {
+        const pos = from.clone().addScaledVector(back, dist).addScaledVector(perp, lat).add(new THREE.Vector3(0, up + height, 0));
+        consider(pos, bonus);
+      }
+    }
+    this.cut(best.pos, look, lambda, instant);
   }
 
   /** Close shot of one character from the front. */
@@ -150,7 +169,15 @@ export class CameraRig {
     dirV.set(-Math.sin(this.yaw) * cp, Math.sin(this.pitch), -Math.cos(this.yaw) * cp);
     let d = this.distance;
     if (world) {
-      const hit = world.rayDistance(this.target, dirV, d + 0.3);
+      let hit = world.rayDistance(this.target, dirV, d + 0.3);
+      // Boxed in (sandbags, counters, walls)? Lift the camera and look down over the obstacle.
+      if (hit < 1.4) {
+        const lift = Math.min(1.0, this.pitch + 0.55);
+        const cl = Math.cos(lift);
+        tmp2.set(-Math.sin(this.yaw) * cl, Math.sin(lift), -Math.cos(this.yaw) * cl);
+        const hit2 = world.rayDistance(this.target, tmp2, d + 0.3);
+        if (hit2 > hit + 0.4) { dirV.copy(tmp2); hit = hit2; this.pitch += (lift - this.pitch) * Math.min(1, (this._dt || 0.016) * 3); }
+      }
       d = Math.max(0.6, Math.min(d, hit - 0.3));
     }
     this.currentDist = instant ? d : THREE.MathUtils.damp(this.currentDist ?? d, d, d < (this.currentDist ?? d) ? 30 : 4, this._dt || 0.016);

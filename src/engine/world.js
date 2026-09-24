@@ -127,7 +127,7 @@ export class World {
     this.raycaster.far = reach + maxDrop;
     const hits = this.raycaster.intersectObjects(this.rayMeshes, false);
     for (const h of hits) {
-      if (!h.face) continue;
+      if (!h.face || !visibleChain(h.object)) continue;
       const n = _n.copy(h.face.normal).transformDirection(h.object.matrixWorld);
       if (n.y > 0.55) return h.point.y;
     }
@@ -140,8 +140,15 @@ export class World {
     this.raycaster.set(from, dir);
     this.raycaster.far = max;
     const hits = this.raycaster.intersectObjects(this.rayMeshes, false);
-    return hits.length ? hits[0].distance : max;
+    for (const h of hits) if (visibleChain(h.object)) return h.distance;
+    return max;
   }
+}
+
+/** Is this object (and every parent) visible? Toggle groups (WAR_/OCC_/DMG_/NOW_) hide/show. */
+function visibleChain(o) {
+  for (let p = o; p; p = p.parent) if (!p.visible) return false;
+  return true;
 }
 
 /** Collect named nodes from a level scene. */
