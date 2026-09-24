@@ -41,20 +41,85 @@ Brief: open / creative. Balance: **balanced** gameplay and story (tighten walk-a
    child) are remembered: helped characters reappear later (e.g. at the 1965 TV, the 1967 send-off).
 3. **Heirlooms & choices.** One key choice per chapter, no wrong answer. 1942: *"There's room for two
    things in the shelter"*: family photo / rice / Siti's newspaper / Papa's tiffin carrier. Each pays off
-   later (photo on the 1965 kopitiam wall; newspaper framed in Siti's classroom; rice feeds the shelter
-   and neighbours remember; tiffin carrier returns in 1967). Unchosen items get a lighter fallback so no
-   later scene breaks.
+   later (photo on the 1965 kopitiam wall; Siti still carries the newspaper in 1965; rice feeds the
+   shelter and neighbours remember; tiffin carrier returns in 1967). Unchosen items get a lighter
+   fallback so no later scene breaks. 1965: *"Something for the wall"* (newspaper / flag / four-language
+   sign / calendar page), paying off in 1967.
 
 ### Chapter 1 — "The Fortress Falls" (12–15 Feb 1942, then March) ~4.5 min, trim every beat
 0. Prologue 30 s → 1. Then & Now 20 s → 2. Morning papers **2 deliveries** + Look-closer hotspots 45 s →
 3. Air raid escort + shophouse hit 60 s → 4. **Shelter choice** (room for two things) 15 s →
 5. Blackout search 60 s → 6. Rumours **3 fragments** + newspaper puzzle 40 s → 7. Syonan-to 40 s.
 
-### Chapter 2 — "A Nation Is Born" (9 Aug 1965) ~2.5 min — *proposed, not yet brainstormed*
-Queenstown early block, kopitiam in a ground-floor shop unit run by Boon (30). Noon: news of
-separation on radio/TV. "Language bridge": Siti (35, teacher) and Sparky help Hokkien-, Malay- and
-Tamil-speaking neighbours understand the news; everyone gathers at Boon's TV for the real LKY clip.
-Heirloom + resilience payoffs appear.
+### Chapter 2 — "A Nation Is Born" (Mon 9 Aug 1965) ~2.5 min — agreed with the user, 24 Sep 2026
+**Tone: anxiety → resolve.** Independence was unwanted: shock and worry all day (water, jobs,
+Konfrontasi still on, family across the Causeway, fear of the 1964 riots returning), turning to quiet
+determination at the TV. Not a celebration.
+
+**Siti's arc:** in 1942 she read "It SHALL stand" to the street and was wrong. Now 35 (a teacher on the
+afternoon session, so home in the morning), she's asked to explain the news again and is afraid to
+promise anything: "Last time I read the news out, I told everyone we'd be safe." She explains anyway,
+carefully: "I don't know. But we'll find out together."
+
+**Set (compact):** Boon's kopitiam, a ground-floor shop unit in an early Queenstown block: counter +
+kopi urn, ~6 marble tables, Rediffusion/radio, the block's only TV on a high shelf, and **the wall**
+(Ah Ma's portrait already hangs there). Plus a short shop-corridor exterior for one errand. (No void
+decks yet in 1965.)
+
+**Core mechanic: kopi orders (the "language bridge").** Build a drink in 3 taps: kopi / teh ·
+milk (default condensed, **O** none, **C** evaporated) · sugar (normal, *kosong*, *siew dai*,
+*ga dai*) · *peng* (iced). A chalk order board teaches the lingo. Kopitiam lingo mixes Hokkien, Malay
+and English: proof people already shared a language before they were a nation. Sparky walks drinks to
+tables with the normal third-person controls; dialogue happens while serving. **What orders mean
+changes each rush:** routine → orders carrying worries → customers ordering *for each other*.
+
+**Beats (~160 s):**
+0. Void deck bridge 10 s. Mr. Boon: "1965. I had my own kopitiam by then. And the only television on
+   the block!"
+1. Then & Now 20 s. Queenstown today → the block, 9 Aug 1965. The block with ground-floor shops is invented;
+   the research found no shops in the Stirling Road blocks, so no real block is named.
+2. Morning rush 25 s: **2 orders** (tutorial). Everyday 1965 chatter (prices, Konfrontasi, Malaysian
+   dollars). Customers sit apart by community.
+3. 10 a.m. 15 s: the counter radio (on Radio Singapura's Malay service, for Makcik Rohani's songs) breaks in
+   with the Proclamation. It's the real Malay recording, the only 1965 one known to survive. Makcik understands first. Cups stop mid-sip. Boon freezes:
+   "Every time the news changes, someone disappears." (His papa, 1942.)
+4. Errand 15 s: Boon sends Sparky along the shop corridor to fetch Siti. On the way, ambient rumours
+   echo Ch1 ("No more water from tomorrow!", "The army from KL is coming!"). Siti hesitates, then comes.
+5. Worries rush 30 s: **3 orders, each with a worry** half-heard in another language. Siti answers
+   from her corner table; Sparky delivers drink + answer; chairs start turning towards each other.
+   Fact cards: water (the Separation Agreement kept the water deals), the British bases, the riots/jobs.
+6. Evening + TV 30 s: the whole block crowds in. One quick **cross-order** (a Hokkien uncle orders
+   teh-C for the Tamil auntie). Then the press conference: the "moment of anguish" and "This is not a
+   Malay nation, this is not a Chinese nation, this is not an Indian nation." Hold on faces.
+7. **Choice: something for the wall** 10 s. Boon: "Today needs to go on the wall, bear."
+   - the next day's newspaper (Siti's newspaper thread; ST 10 Aug 1965 headline "Singapore is out", confirmed)
+   - the state flag (Farid's thread; fact: flag and *Majulah Singapura* already existed since 1959)
+   - a new shop sign in four languages (Boon's gesture)
+   - the 9 August calendar page, torn off and kept
+   Each pays off in 1967 (details in the Ch3 brainstorm).
+8. Coda 5 s. Mr. Rajan: "No water of our own. No army. Two battalions." Farid is listening → Ch3.
+
+**Payoffs from Ch1.** Heirlooms: *family photo* → Papa's photo hangs beside Ah Ma's (fallback: Ah Ma's
+alone). *Newspaper* → Siti keeps the 1942 front page in her book bag and shows it when she hesitates
+(fallback: she mentions it). *Rice* → the Geylang family insists Boon's kopi is on them today
+(fallback: a warm nod). *Tiffin carrier* → on Boon's shelf, saved for 1967. Kindnesses: helped
+characters appear in the evening crowd with a line.
+
+**Ch3 seeds:** only **Farid (16, helps at the counter)** and **Ravi (Mr. Rajan's son)** are planted:
+separate tables all day, side by side on the bench at the TV, not speaking. Ah Hock and the Eurasian
+boy are introduced fresh in Ch3.
+
+**LKY footage: use the real clip (user decision; internal, non-profit build).** Source: NAS "Prime
+Minister Meets The Press" (accession 1997002660), with subtitles verbatim from transcript lky19650809b.
+Credit on screen while it plays and in the album: "Courtesy of Mediacorp Pte Ltd / National Archives of
+Singapore". NAS says reuse needs Mediacorp's written permission, so ask them before any public
+release (itch.io, competition pages).
+
+**Research:** done, in `docs/research/1965-history.md` (press conference recorded at noon and shown
+on TV the same day; ST 10 Aug headline "Singapore is out"; firecrackers in Chinatown confirmed).
+Script: `docs/ch2-script.md`. **Still open:** the Tamil lines (placeholders) and a native-speaker
+review of all Hokkien, Malay and Tamil; the exact time the press conference aired on TV; clip
+timecodes.
 
 ### Chapter 3 — "The First Intake" (17 Aug 1967) ~2.5 min — family story + section of strangers
 - **Family frame ("good iron isn't made into nails", 好铁不打钉，好男不当兵):** many families were uneasy

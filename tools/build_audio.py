@@ -635,6 +635,179 @@ def synth_theme():
          note='original music-box theme, A minor pentatonic, 80 bpm, 24 bars')
 
 
+# ---------------------------------------------------------------- Chapter 2 (1965 kopitiam)
+def build_conversions_1965():
+    # Both are already seamless loops in the Godot project (tools/build_soundscape.py there).
+    convert('ceiling-fan.ogg', 'ceiling-fan', 22050, 48, loop=True)
+    convert('tv-static.ogg', 'tv-static', 22050, 48, loop=True)
+
+
+def synth_kopi_pour():
+    """Kopi poured from a long-spouted pot into a thick cup: a hissing stream whose resonance rises as the cup fills."""
+    r = 44100; rng = random.Random(1965)
+    n = int(1.5 * r)
+    nz = noise(n, rng)
+    wob = smooth_noise(n, r, 18, rng)
+    buf = [0.0] * n
+    # Filter in short blocks so the resonant (cup cavity) frequency can glide upwards.
+    blk = 512
+    for b0 in range(0, n, blk):
+        t = b0 / n
+        f = 380 + 900 * t ** 0.8
+        seg = biquad(nz[b0:b0 + blk + 64], 'bp', f * (1 + 0.06 * wob[b0]), 5.0, r)[:blk]
+        for i, v in enumerate(seg):
+            if b0 + i < n:
+                buf[b0 + i] += v * 1.2
+    hiss = biquad(noise(n, rng), 'hp', 2500, 0.7, r)
+    for i in range(n):
+        t = i / r
+        env = min(1, t / 0.06) * min(1, (1.5 - t) / 0.18)
+        buf[i] = (buf[i] + 0.08 * hiss[i]) * env
+    # A few bubbly "blips" near the end.
+    for k in range(6):
+        at = int((0.7 + 0.12 * k + 0.05 * rng.random()) * r)
+        f = 900 + 500 * rng.random()
+        m = int(0.03 * r)
+        add(buf, [math.sin(TAU * (f + 4000 * i / r) * i / r) * math.exp(-120 * i / r) for i in range(m)], at, 0.12)
+    emit('kopi-pour', norm_peak(fade(buf, r, 0.01, 0.1), -5), r, 64)
+
+
+def synth_cup_clink():
+    """Thick porcelain kopi cup set down on its saucer on a marble table."""
+    r = 44100; rng = random.Random(1966)
+    n = int(0.7 * r); buf = [0.0] * n
+    add(buf, bell(2240, 0.6, r, ((1, 1, 26), (2.31, 0.5, 38), (3.9, 0.25, 55), (6.2, 0.1, 80))), 0, 0.55)
+    add(buf, bell(1580, 0.5, r, ((1, 1, 30), (2.6, 0.3, 45))), int(0.018 * r), 0.3)   # small rattle back
+    m = int(0.05 * r)
+    thunk = biquad(noise(m, rng), 'lp', 600, 0.8, r)
+    add(buf, [v * math.exp(-90 * i / r) for i, v in enumerate(thunk)], 0, 0.9)
+    emit('cup-clink', norm_peak(fade(buf, r, 0.0005, 0.1), -4), r, 64)
+
+
+def synth_spoon_stir():
+    """A teaspoon stirring kopi: soft liquid swish with small metallic tinks against the rim."""
+    r = 44100; rng = random.Random(1967)
+    n = int(1.3 * r); buf = [0.0] * n
+    sw = biquad(noise(n, rng), 'bp', 700, 1.2, r)
+    for i in range(n):
+        buf[i] += sw[i] * 0.08 * (0.5 + 0.5 * math.sin(TAU * 3.2 * i / r)) ** 2
+    t = 0.05
+    while t < 1.15:
+        f = 3300 + 900 * rng.random()
+        add(buf, bell(f, 0.2, r, ((1, 1, 45), (2.4, 0.4, 70), (4.1, 0.15, 90))), int(t * r), 0.25 + 0.2 * rng.random())
+        t += 0.28 + 0.06 * rng.random()
+    emit('spoon-stir', norm_peak(fade(buf, r, 0.01, 0.12), -6), r, 64)
+
+
+def synth_firecrackers():
+    """A string of firecrackers going off a few streets away (heard through the kopitiam door)."""
+    r = 22050; rng = random.Random(1968)
+    n = int(4.5 * r); buf = [0.0] * n
+    t = 0.1
+    while t < 3.8:
+        m = int(0.06 * r)
+        pop = biquad(noise(m, rng), 'bp', 900 + 1400 * rng.random(), 0.9, r)
+        amp = 0.4 + 0.6 * rng.random()
+        add(buf, [v * math.exp(-70 * i / r) * min(1, i / 20) for i, v in enumerate(pop)], int(t * r), amp)
+        t += rng.expovariate(18) + 0.012
+    far = biquad(biquad(buf, 'lp', 2600, 0.7, r), 'hp', 180, 0.7, r)
+    wet = convolve(far, room_ir(r, 1.4, 1.1, rng, 3000, 0.03), r)[:n]
+    mix = [d + 0.5 * w for d, w in zip(far, wet)]
+    emit('firecrackers', norm_peak(fade(mix, r, 0.005, 0.8), -8), r, 64)
+
+
+def pluck(f, dur, r, rng, bright=0.5):
+    """Karplus-Strong plucked string (guitar / gambus-ish)."""
+    n = int(dur * r)
+    p = max(2, int(r / f))
+    ring = [rng.uniform(-1, 1) for _ in range(p)]
+    out = [0.0] * n
+    for i in range(n):
+        a = ring[i % p]
+        b = ring[(i + 1) % p]
+        v = (bright * a + (1 - bright) * b) * 0.996
+        ring[i % p] = v
+        out[i] = a
+    return fade(out, r, 0.001, 0.05)
+
+
+# Original tune in the style of 1960s Malay pop (joget rhythm, D major), 16 bars of 4/4 at 126 bpm.
+RADIO_MELODY = """
+A4 .5 B4 .5 D5 1 D5 .5 E5 .5 F#5 1 | E5 .5 D5 .5 B4 1 A4 2 | B4 .5 D5 .5 E5 1 E5 .5 F#5 .5 A5 1 | F#5 3 - 1 |
+A5 .5 F#5 .5 E5 1 D5 .5 E5 .5 F#5 1 | E5 .5 D5 .5 B4 1 D5 2 | B4 .5 A4 .5 F#4 1 A4 .5 B4 .5 D5 1 | E5 3 - 1 |
+D5 .5 E5 .5 F#5 1 A5 .5 F#5 .5 E5 1 | D5 .5 B4 .5 A4 1 B4 2 | D5 .5 E5 .5 F#5 1 E5 .5 D5 .5 B4 1 | A4 3 - 1 |
+B4 .5 D5 .5 E5 1 F#5 .5 E5 .5 D5 1 | B4 .5 A4 .5 F#4 1 A4 2 | B4 .5 D5 .5 E5 1 D5 .5 C#5 .5 E5 1 | D5 3 - 1 |
+"""
+RADIO_CHORDS = ('D G D A D G D A '
+                'D Bm G A D Bm G A '
+                'D G D A G D Em A '
+                'G D Bm A G D A D').split()   # two chords per bar
+CHORD_TONES = {'D': ('D3', 'F#3', 'A3'), 'G': ('G2', 'B2', 'D3'), 'A': ('A2', 'C#3', 'E3'),
+               'Bm': ('B2', 'D3', 'F#3'), 'Em': ('E3', 'G3', 'B3')}
+
+
+def note_midi(name):
+    base = NOTE[name[0]]
+    acc = 1 if '#' in name else 0
+    return 12 * (int(name[-1]) + 1) + base + acc
+
+
+def synth_radio_song():
+    """An original lo-fi pop tune as heard through a 1960s valve radio (band-limited, slightly driven)."""
+    r = 22050; rng = random.Random(1969)
+    beat = 60 / 126
+    L = int(16 * 4 * beat * r)
+    buf = [0.0] * L
+    t = 0.0
+    toks = RADIO_MELODY.replace('|', ' ').split()
+    for name, length in zip(toks[::2], toks[1::2]):
+        dur = float(length) * beat
+        if name != '-':
+            f = hz(note_midi(name))
+            m = int(min(dur * 1.1, 1.8) * r)
+            vib = [math.sin(TAU * 5.5 * i / r) for i in range(m)]
+            ph = 0.0
+            tone = []
+            for i in range(m):
+                ph += TAU * f * (1 + 0.006 * vib[i] * min(1, i / (0.25 * r))) / r
+                env = min(1, i / (0.03 * r)) * math.exp(-0.9 * i / r) * min(1, (m - i) / (0.05 * r))
+                tone.append(env * (math.sin(ph) + 0.35 * math.sin(2 * ph) + 0.12 * math.sin(3 * ph)))  # violin-ish
+            add(buf, tone, int(t * r), 0.22, wrap=True)
+        t += dur
+    assert abs(t - 16 * 4 * beat) < 1e-6, t
+    # Rhythm guitar (off-beat strums) + bass (joget: dotted, pushing feel) + tambourine / hand drum.
+    cache = {}
+    def pl(nm, dur, bright=0.5):
+        k = (nm, dur, bright)
+        if k not in cache:
+            cache[k] = pluck(hz(note_midi(nm)), dur, r, rng, bright)
+        return cache[k]
+    for half, ch in enumerate(RADIO_CHORDS):
+        t0 = half * 2 * beat
+        tones = CHORD_TONES[ch]
+        add(buf, pl(tones[0], 0.5, 0.6), int(t0 * r), 0.45, wrap=True)                       # bass on 1
+        add(buf, pl(tones[0], 0.35, 0.6), int((t0 + 1.5 * beat) * r), 0.3, wrap=True)        # push on 2-and
+        for k, off in enumerate((0.5, 1.0)):                                                 # off-beat strums
+            for j, nm in enumerate(tones):
+                up = note_midi(nm) + 12
+                add(buf, pluck(hz(up), 0.3, r, rng, 0.8), int((t0 + off * beat + j * 0.008) * r), 0.10, wrap=True)
+        for k in range(4):                                                                   # tambourine 8ths
+            m = int(0.07 * r)
+            jing = biquad(noise(m, rng), 'hp', 6000, 0.7, r)
+            add(buf, [v * math.exp(-60 * i / r) for i, v in enumerate(jing)], int((t0 + k * 0.5 * beat) * r), 0.10 if k % 2 else 0.05, wrap=True)
+        m = int(0.12 * r)                                                                    # hand drum on 1
+        add(buf, [math.sin(TAU * (140 - 60 * i / m) * i / r) * math.exp(-30 * i / r) for i in range(m)], int(t0 * r), 0.35, wrap=True)
+    # Through the radio: band-pass, gentle valve saturation, a little hiss and hum.
+    y = biquad(biquad(buf, 'hp', 320, 0.7, r), 'lp', 3200, 0.7, r)
+    y = biquad(y, 'peak', 1400, 0.9, r, 4)
+    y = norm_peak(y, -3)
+    y = [math.tanh(1.8 * v) / math.tanh(1.8) for v in y]
+    hiss = biquad(noise(L, rng), 'bp', 2500, 0.5, r)
+    y = [v + 0.015 * h + 0.006 * math.sin(TAU * 100 * i / r) for i, (v, h) in enumerate(zip(y, hiss))]
+    emit('radio-song', norm_rms(y, -20), r, 48, loop=True,
+         note='original tune in the style of 1960s Malay pop (joget), D major, 126 bpm, 16 bars; radio-filtered')
+
+
 # ---------------------------------------------------------------- main
 def verify_loops():
     """Decode each loop, splice [loopEnd-50ms .. loopEnd] + [loopStart .. +50ms] as Web Audio would play it,
@@ -666,10 +839,12 @@ def main():
     if not SRC.exists():
         sys.exit(f'source folder not found: {SRC}')
     build_conversions()
+    build_conversions_1965()
     for fn in (synth_camera_shutter, synth_radio_static, synth_paper, synth_whistle, synth_shelter_room,
                synth_distant_explosion, synth_ui_click, synth_pickup_chime, synth_theme,
                synth_shell_whistle, synth_ear_ring, synth_fire_crackle, synth_night_ambience, synth_heartbeat,
-               synth_paper_piece):
+               synth_paper_piece, synth_kopi_pour, synth_cup_clink, synth_spoon_stir, synth_firecrackers,
+               synth_radio_song):
         fn()
     verify_loops()
     old = {}
