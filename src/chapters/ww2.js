@@ -50,6 +50,7 @@ export const SLOTS = [
 export class WW2Chapter {
   constructor(game, { skipPrologue = false } = {}) {
     this.game = game;
+    this.meta = T.meta;              // chapter number + title (pause menu)
     this.skipPrologue = skipPrologue;
     this.cast = {};
     this.fx = [];

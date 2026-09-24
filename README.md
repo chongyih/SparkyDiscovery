@@ -41,5 +41,6 @@ reduced camera shake & flashes, invert Y.
   runtime signage; `chapter-kit.js` shared helpers).
 - `public/assets/` — models (Blender-built, meshopt-compressed, desktop + `-mobile` variants),
   audio (with licences in `audio/README.md`), fonts (OFL).
-- `tools/` — reproducible Blender / audio build scripts.
+- `tools/` — reproducible Blender / audio build scripts (Chapter 2: `build_kopitiam.py` set, `build_1965_npcs.py` cast,
+  `build_sparky_1965.py` + `OUTFITS=ind tools/optimize_sparky.sh` Sparky's 1965 outfit).
 - `docs/research/` — historical, architectural and costume research with sources.

@@ -51,6 +51,8 @@ A wrong drink never fails you. The customer just laughs and corrects you, and yo
 
 > **[Title card]** Queenstown. Today.
 
+**MR. BOON (91):** See those towers? Forty-seven storeys, with gardens in the sky. In 1965 our tall one was Forfar House. Fourteen!
+
 **MR. BOON (91):** My old shop is a minimart now. Same corner, same pillars. Everything else changed.
 
 *Objective: Raise the camera. Line up the old photo with the road.*
@@ -75,7 +77,7 @@ A wrong drink never fails you. The customer just laughs and corrects you, and yo
 
 **FARID (16):** Abang [big brother] Boon, who’s this?
 
-**BOON (30):** Old friend. Farid, show him the board. Sparky, two orders waiting. Go!
+**BOON (30):** Old friend. Farid, show him the board. Sparky, Ah Pek’s waiting. Go!
 
 *Objective: Make the drinks. Check the order board if you forget.*
 
@@ -87,15 +89,7 @@ A wrong drink never fails you. The customer just laughs and corrects you, and yo
 
 → wrong: **AH PEK TAN:** Aiyoh, got milk inside! O means black lah, bear. Again.
 
-*Order 2 — Makcik Rohani (Malay):*
-
-**MAKCIK ROHANI:** *Teh-C,* [tea with evaporated milk] *kurang manis* [less sweet], ya?
-
-**FARID (16):** *Kurang manis* is Malay. Here we say *siew dai.* Same thing, different word!
-
-→ correct: **MAKCIK ROHANI:** *Terima kasih* [thank you], adik. You learn faster than Boon did.
-
-→ wrong: **MAKCIK ROHANI:** So sweet! You want my teeth to fall out?
+*(After the one order, the player has a moment to chat with the regulars before ten o’clock.)*
 
 *Optional chats (morning):*
 
@@ -160,8 +154,6 @@ A wrong drink never fails you. The customer just laughs and corrects you, and yo
 
 **SITI (35):** Sparky? *(she stares, then laughs)* You look exactly the same. Exactly!
 
-**SITI (35):** You heard? This morning’s paper doesn’t say a single word about it. First time the paper’s behind.
-
 **SITI (35):** Boon wants me to explain it to everyone? Sparky… no.
 
 **SITI (35):** Last time I read the news out, I told the whole street we’d be safe. Remember?
@@ -176,59 +168,55 @@ A wrong drink never fails you. The customer just laughs and corrects you, and yo
 
 **SITI (35):** I think about that headline every time I open a newspaper.
 
-*(Sparky tugs her sleeve towards the kopitiam)*
+*(Sparky nods)*
 
 **SITI (35):** Okay. Okay! No promises. I’ll just tell them the truth.
 
-## 5 · Worries rush
+## 5 · Worries
 
 *(Back in the kopitiam. The room is louder now, but nobody’s drinking.)*
 
-**BOON (30):** Siti! Good. Sparky, keep the drinks coming. Everyone’s asking. Nobody’s ordering properly.
+**BOON (30):** Siti! Good. Sparky, everyone’s asking questions. Nobody’s ordering properly. Go and listen.
 
-*Objective: Take each order. Bring Siti’s answer with the drink.*
+*Objective: Listen to the regulars’ worries (any order), then ask Siti.*
 
-*Each order: the customer orders and asks a worried question. Sparky makes the drink, walks to Siti’s corner table, she answers, and Sparky carries the drink and the answer back.*
+**AH PEK TAN:** Johor turns off the tap, then how? We drink seawater? Tell me, bear. Somebody tell me!
 
-*Worry 1 — Ah Pek Tan (water):*
+**AUNTIE LETCHUMI:** *(in Tamil)* And the naval base? My son works there. What happens to his job? **[native review]**
 
-**AH PEK TAN:** *Kopi peng* [iced coffee]! More ice. Drink ice now, tomorrow maybe no water!
+**RAVI (16):** *(looking up from his comic)* She’s asking about the naval base. Her son works there. Is his job gone?
 
-**SITI (35):** Tell him: the water agreements with Johor stay. It’s written into the separation deal.
+**MAKCIK ROHANI:** *Teh-C,* [tea with evaporated milk] *kurang manis* [less sweet], ya? And… ask Siti. Will the riots come back?
 
-→ **AH PEK TAN:** Written down, ah? Hm. Okay. Ice still very nice.
+**FARID (16):** *Kurang manis* is Malay. Here we say *siew dai.* Same thing, different word!
+
+*Siti answers what she can, out loud, and admits what she can’t:*
+
+**SITI (35):** Ah Pek! The water deals with Johor stay. They’re written into the separation agreement.
+
+**AH PEK TAN:** Written down, ah? Hm. Okay.
 
 *Fact card — **Water from across the Causeway**: Much of Singapore’s water came from Johor. The Separation Agreement promised that the 1961 and 1962 water deals would carry on. Even so, Singapore spent decades learning to make more of its own water.*
 
-*Worry 2 — Makcik Rohani (the riots):*
+**SITI (35):** Ravi, tell Auntie: the British bases are still here. Nothing closes today.
 
-**MAKCIK ROHANI:** *Teh-C siew dai.* *(she says the Hokkien words carefully)* Ask Siti: will the riots come back?
-
-**SITI (35):** I don’t know. I won’t pretend I do. Last year I was scared of people I’d known all my life.
-
-**SITI (35):** But look who’s making her tea. A bear, for a Malay makcik, in a Chinese kopitiam. Tell her that.
-
-→ **MAKCIK ROHANI:** *(looks at Ah Pek, then at Sparky, then laughs a little)* A bear. Okay. A bear I can trust.
-
-*Fact card — **The 1964 riots**: In July and September 1964, fights broke out between Chinese and Malay people in Singapore. 36 people were killed and hundreds were hurt. Families had to stay indoors during curfews. A year later, many still feared it could happen again.*
-
-*Worry 3 — Auntie Letchumi (jobs):*
-
-**AUNTIE LETCHUMI:** *Teh-O* **[native review: short Tamil line asking “what will happen to the naval base jobs?”]**
-
-**RAVI (16):** *(looks up from his comic)* She’s asking about the naval base. Her son works there. Is his job gone?
-
-**SITI (35):** The British bases are still here. Nothing closes today. Tell her: nothing closes today.
-
-**RAVI (16):** *(in Tamil to Auntie Letchumi)* **[native review]**
-
-→ **AUNTIE LETCHUMI:** *Nandri* [thank you]. **[native review]** *(she pats the stool beside her again; this time Makcik Rohani sits)*
+**RAVI (16):** *(in Tamil)* *Amma*, nothing closes today. The base is still there. **[native review]**
 
 *Fact card — **The British bases**: Thousands of Singaporeans worked at the British military bases. The bases stayed after 1965. In 1968 Britain announced it would leave, and its forces were gone by the end of 1971.*
 
-*(Visual payoff: over the rush, chairs turn. By the last worry, the tables have been dragged into one long row.)*
+**SITI (35):** *(quietly, to Sparky)* Makcik’s question, I can’t answer. I won’t pretend I can.
 
-**SITI (35):** *(to Sparky, quietly)* That wasn’t so bad. No promises. Just the truth.
+**SITI (35):** But look who’s making her tea. A bear, for a Malay makcik, in a Chinese kopitiam. Tell her that.
+
+*Boon has already poured Makcik Rohani’s teh-C siew dai; Sparky collects it from the counter and takes it over.*
+
+→ **MAKCIK ROHANI:** *(looks at Ah Pek, then at Sparky, and laughs a little)* A bear. Okay. A bear I can trust.
+
+**AUNTIE LETCHUMI:** *(catches Makcik Rohani’s eye and pats the stool beside her; Makcik smiles and lifts her cup)*
+
+**SITI (35):** *(quietly)* That wasn’t so bad. No promises. Just the truth.
+
+*Fact card — **The 1964 riots**: In July and September 1964, fights broke out between Chinese and Malay people in Singapore. 36 people were killed and hundreds were hurt. Families had to stay indoors during curfews. A year later, many still feared it could happen again.*
 
 ## 6 · The evening crowd
 
@@ -254,11 +242,11 @@ A wrong drink never fails you. The customer just laughs and corrects you, and yo
 
 **SITI (35):** Pak Hassan used to talk about you. “That bear brought me water, better than satay.” He’d have loved tonight.
 
-*One last order — the cross-order:*
+*The cross-order (Boon pours it; Sparky collects it from the counter and takes it to Auntie Letchumi):*
 
-**AH PEK TAN:** Bear! *Teh-C* for the Tamil auntie. *Siew dai.* I asked her already. *(waves at Auntie Letchumi)*
+**AH PEK TAN:** Bear! *Teh-O* for the Tamil auntie. *Ga dai,* she likes it sweet. I asked her already. *(waves at Auntie Letchumi)*
 
-**AUNTIE LETCHUMI:** *(nods, smiling)* Siew dai!
+**AUNTIE LETCHUMI:** *(nods, smiling)* Ga dai!
 
 → **BOON (30):** Wah. Now even Ah Pek is taking orders. Maybe I should pay him in kaya toast too.
 

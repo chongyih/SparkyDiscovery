@@ -153,10 +153,10 @@
   },
   "kopi-pour": {
     "file": "kopi-pour.mp3",
-    "duration": 1.5,
+    "duration": 1.75,
     "rate": 44100,
-    "kbps": 64,
-    "bytes": 12581
+    "kbps": 80,
+    "bytes": 18069
   },
   "murmur": {
     "loop": true,

@@ -1792,17 +1792,17 @@ def build_collar(mb, S, C, q):
         p0, _ = surf(S, z - 0.012 * H, 0, 0.002 * H); p1, _ = surf(S, z - 0.06 * H, 0, 0.002 * H)
         tube(mb, [p0, p1], 0.004 * H, 4, top.get('trim', top['sw']), chain_w_fn(S), 0)
     elif kind == 'singlet':
-        # shoulder straps
+        # shoulder straps: flat ribbed bands lying on the skin, from the front neckline over to the back
+        zA = anchor(S, top['top_z']) if top.get('top_z') else anchor(S, 'armpit')
         for s in (1, -1):
-            pts = []
-            zA = anchor(S, 'armpit')
-            for k in range(7):
-                t = k / 6
-                az = s * lerp(30, 150, t)
-                z = lerp(zA + 0.01 * H, S.z_nb + 0.004 * H, sin(pi * t) ** 0.7)
-                p, _ = surf(S, z, az, 0.004 * H)
-                pts.append(p)
-            tube(mb, pts, 0.011 * H, qs(6, q, 4), top['sw'], chain_w_fn(S), 0)
+            pts = []; nrm = []
+            for k in range(9):
+                t = k / 8
+                az = s * lerp(34, 146, t)
+                z = lerp(zA - 0.004 * H, S.z_nb - 0.006 * H, sin(pi * t) ** 0.6)
+                p, n_ = surf(S, z, az, 0.0035 * H)
+                pts.append(p); nrm.append(n_ if z < S.z_nb - 0.015 * H else (n_ + Vector((0, 0, 1))).normalized())
+            ribbon(mb, pts, nrm, 0.03 * H, 0.005 * H, top['sw'], chain_w_fn(S), 0)
 
 def chain_w_fn(S):
     return lambda co: chain_w(co.z, S)
@@ -1908,12 +1908,16 @@ def build_props(mb, S, C, q):
             ell(mb, p, (0.045 * H, 0.062 * H, 0.028 * H), qs_even(12, q, 8), qs(7, q, 5), pr['sw'], wt, 0, rot=F.to_3x3())
             ell(mb, p + Vector((0, 0, 0.066 * H)), (0.013 * H, 0.013 * H, 0.012 * H), 8, 5, 'boot', wt, 0)
         elif typ == 'towel':
-            # small cotton towel folded over one shoulder, hanging front and back
+            # small cotton towel folded lengthwise over one shoulder, lying on the cloth underneath:
+            # it crosses close to the neck (on the trapezius, clear of the deltoid) and hangs front and back
             sd = sgn(pr['side'])
-            wp = [(S.anchors['waist'] + 0.03 * H, sd * 26), (S.chest_z, sd * 34), (S.z_sh, sd * 50),
-                  (S.z_sh + 0.04 * H, sd * 82, 0.035 * H), (S.z_sh, sd * 125), (S.chest_z - 0.03 * H, sd * 150)]
-            pts, nrm = drape(S, wp, qs(12, q, 7), 0.013 * H)
-            ribbon(mb, pts, nrm, 0.105 * H, 0.013 * H, pr['sw'], wt, 0)
+            th = 0.006 * H
+            out = C['outfit']['top'].get('ease', 0.008) * H + th * 0.5 + 0.002 * H
+            wp = [(S.anchors['waist'] + 0.05 * H, sd * 24), (S.chest_z, sd * 30), (S.z_sh - 0.01 * H, sd * 42),
+                  (S.z_nb - 0.004 * H, sd * 62, out + 0.008 * H), (S.z_nb - 0.004 * H, sd * 112, out + 0.008 * H),
+                  (S.z_sh - 0.01 * H, sd * 136), (S.chest_z - 0.02 * H, sd * 150)]
+            pts, nrm = drape(S, wp, qs(18, q, 10), out)
+            ribbon(mb, pts, nrm, 0.078 * H, th, pr['sw'], wt, 0)
         elif typ == 'shawl':
             # selendang: draped around the back of the neck, over both shoulders, ends hanging in front
             wp = [(S.anchors['waist'] + 0.02 * H, 22), (S.chest_z, 40), (S.z_sh + 0.02 * H, 68, 0.022 * H),

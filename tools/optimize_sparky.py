@@ -9,6 +9,7 @@ Run (normally via tools/optimize_sparky.sh, which also post-processes with gltf-
 For every outfit x tier it writes <out>/<stem><suffix>.glb (uncompressed, JPEG textures):
     sparky-ww2.glb / sparky-ww2-mobile.glb      (WW2 civilian, SparkyDiscovery outfits/sparky-ww2-civilian.blend)
     sparky-ns.glb  / sparky-ns-mobile.glb       (NS 1967 recruit + "Rifle" prop mesh)
+    sparky-ind.glb / sparky-ind-mobile.glb      (1965 kopitiam helper, tools/build_sparky_1965.py)
     sparky.glb     / sparky-mobile.glb          (original navy hoodie)
 
 What it does (sources are opened read-only, never saved):
@@ -36,6 +37,7 @@ SRC = os.environ.get('SPARKY_SRC', '/Users/cy/Code/Games/SparkyDiscovery/assets/
 OUTFITS = {
     'ww2': (os.path.join(SRC, 'outfits', 'sparky-ww2-civilian.blend'), 'sparky-ww2'),
     'ns': (os.path.join(SRC, 'outfits', 'sparky-ns-1967.blend'), 'sparky-ns'),
+    'ind': (os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sparky_outfits', 'sparky-1965-helper.blend'), 'sparky-ind'),
     'original': (os.path.join(SRC, 'sparky.blend'), 'sparky'),
 }
 TIERS = {

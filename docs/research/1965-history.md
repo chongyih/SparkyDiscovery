@@ -191,6 +191,23 @@ local time. Where I could not confirm something from a primary source, it says *
 | வணக்கம் *vanakkam* | Tamil | hello (respectful greeting) |
 | நன்றி *nandri* | Tamil | thank you |
 
+## 14. Queenstown today (for the Then & Now)
+
+Consulted 25 September 2026. Used for the present-day view of Boon's (invented) block.
+- Queenstown was **Singapore's first satellite town**. The SIT began it in the 1950s, and Blocks 45, 48 and 49 Stirling Road were completed in
+  **October 1960**, months after the HDB was formed that February. They are still there: seven-storey rental blocks with **pipe sockets for
+  laundry poles**, old latched letterboxes and small rubbish chutes. They are on the heritage trail but **not** gazetted for conservation ([Roots][roots-hdb], [Wikipedia][wiki-stirling]).
+- **SkyVille@Dawson**: three linked **47-storey** HDB towers with sky gardens on the 3rd, 14th, 25th and 36th storeys and a rooftop garden
+  (completed 2015). **SkyTerrace@Dawson**: five towers of **40–43 storeys** on a car-park podium, designed by SCDA ([HDB][hdb-skyville], [Smart Local][tsl-qt]).
+- **Queenstown MRT station** is elevated and opened on **12 March 1988** on the East-West Line ([Wikipedia][wiki-qtmrt]).
+- **Forfar House** (SIT, 14 storeys, opened 24 Oct 1956) was once Singapore's tallest public residential building. It was later demolished ([Roots][roots-forfar]).
+- The **My Queenstown Heritage Trail** (by the civic group My Community, launched 2010) covers these landmarks, plus the first point blocks
+  (Mei Ling Street, 1970), Queenstown Public Library (the first branch library, 1970) and the old Malayan railway line ([Wikipedia][wiki-mqht]).
+- **In the game:** the block keeps its 1960s shape but is repainted, with air-con condensers and steel laundry racks in the old pole sockets.
+  Its shops are a minimart, an eating house, a TCM clinic and a hair salon, all invented. There are parked cars and a covered linkway. Past the
+  east end of the block are Dawson-style towers (our own models, not replicas), modern HDB slabs, and an East-West Line train on its viaduct.
+  The plaque in the car park is our own design and carries only the verified Stirling Road fact. The block number (21) is invented.
+
 ## Sources
 
 [nas-proc]: https://www.nas.gov.sg/archivesonline/speeches/record-details/740ab5e6-115d-11e3-83d5-0050568939ad
@@ -230,6 +247,18 @@ local time. Where I could not confirm something from a primary source, it says *
 [roots-hdb]: https://www.roots.gov.sg/places/places-landing/Places/landmarks/my-queenstown-heritage-trail/the-first-hdb-blocks-the-hdb-terraces
 [nlb-qt4]: https://www.nlb.gov.sg/main/image-detail?cmsuuid=99da8d80-7be3-459e-8c18-ed10098f5e1b
 [roots-qt]: https://www.roots.gov.sg/stories-landing/stories/queenstown-the-queen-of-housing-estates/story
+[wiki-stirling]: https://en.wikipedia.org/wiki/45,_48_and_49_Stirling_Road
+[hdb-skyville]: https://www.facebook.com/SingaporeHDB/posts/do-you-see-what-we-see-skyvilledawson-has-5-sky-gardens-across-3-47-storey-tower/4274874039206116/
+[tsl-qt]: https://thesmartlocal.com/read/queenstown-heritage-trail/
+[wiki-qtmrt]: https://en.wikipedia.org/wiki/Queenstown_MRT_station
+[roots-forfar]: https://www.roots.gov.sg/places/places-landing/Places/landmarks/my-queenstown-heritage-trail/former-forfar-house
+[wiki-mqht]: https://en.wikipedia.org/wiki/My_Queenstown_Heritage_Trail
+
+**The Malay radio broadcast** (checked 25 September 2026): NAS holds "Malay Broadcast Of The Proclamation Of Singapore" (9 Aug 1965,
+accession 1997021116, 5-inch open reel, recorded duration 12:44). It can be streamed online and is marked "Courtesy of Mediacorp Pte Ltd". Its
+rights statement: "Use and reproduction require written permission from depositing agency/donor." So the game links to it from the album and
+does not include it. It can be added to the radio scene if Mediacorp gives written permission (request a copy through NAS).
+[NAS record](https://www.nas.gov.sg/archivesonline/audiovisual_records/record-details/4d2cc138-1164-11e3-83d5-0050568939ad)
 
 Not verified first-hand: the full text of NewspaperSG articles. Article pages sit behind a terms-of-use click, so the newspaper
 claims above come from the issue-page summaries, which show each article's headline and opening lines. Also unverified: the exact TV

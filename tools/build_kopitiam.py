@@ -102,7 +102,7 @@ TUBE = C(0.95, 0.97, 1.0)
 # Geometry builder (same scheme as build_ww2_street.py)
 # ======================================================================================
 MATS = ["M_Plaster", "M_Timber", "M_Floor", "M_Road", "M_Cloth", "M_Windows", "M_Details", "M_NowSigns",
-        "M_Glass", "M_Metal", "M_Emissive", "M_Decal", "M_Screen"]
+        "M_Glass", "M_Metal", "M_Emissive", "M_Decal", "M_Screen", "M_Lacquer", "M_NowShop", "M_Far"]
 
 
 class MB:
@@ -472,6 +472,9 @@ def build_outside():
     # open drain + kerb along the far side, then a grass verge with rain trees
     box("M_Plaster", (-40, -16.6, -0.3), (40, -16.0, 0.0), C(0.45, 0.47, 0.42), skip=("-z", "-y", "+y"))
     grid_floor("M_Road", -40, 40, -40, -16.6, 0.02, GRASS, s=6.0, cell=8.0)
+    # distant ground out to the skyline (seen past the east end of the block)
+    for (xa, xb, ya, yb) in ((40, 700, -500, 500), (-700, -40, -500, 500), (-40, 40, -500, -40), (-40, 40, 12, 500)):
+        face("M_Road", [(xa, ya, -0.02), (xb, ya, -0.02), (xb, yb, -0.02), (xa, yb, -0.02)], mul(GRASS, 0.9), s=6.0)
     for i, x in enumerate((-24, -13, -3, 8, 19, 30)):
         tree(x + R.uniform(-1.5, 1.5), -19 - R.uniform(0, 2), 1.0 + R.uniform(-0.15, 0.2), seed=i)
     for x in (-18, -6, 6, 18):
@@ -528,7 +531,16 @@ DET = {k: (i % 4 * 256 + 2, i // 4 * 256 + 2, i % 4 * 256 + 254, i // 4 * 256 + 
      "crate", "checked", "suitcase", "menu", "clock", "pawnscreen"])}
 
 
+def shop_piers():
+    """Masonry piers where the party walls meet the shopfront (no paper-thin seams between units)."""
+    for x in (-13.5, -9.0, -4.5, 4.5, 9.0, 13.5):
+        box("M_Plaster", (x - 0.13, YF - 0.03, ZF), (x + 0.13, YF + 0.3, ZS), CREAM, s=2.0, skip=("-z", "+z"))
+        box("M_Plaster", (x - 0.14, YF - 0.04, ZF), (x + 0.14, YF + 0.31, ZF + 0.9), JADE, s=1.5, skip=("-z",))
+        collider("COL_Pier", (x - 0.14, YF - 0.04, 0), (x + 0.14, YF + 0.31, 3.0), unique=False)
+
+
 def build_shops():
+    shop_piers()
     # party walls between units (interior faces), back walls, shop floors/ceilings
     for (x0, x1, kind) in SHOPS:
         grid_floor("M_Floor", x0, x1, YF, YN, ZF, jitter(TERRAZZO, 0.04), s=0.6, cell=1.5)
@@ -547,11 +559,10 @@ def build_shops():
             quad("M_Decal", (x0 + 0.4, YF - 0.02, ZF + 2.55), (x1 - 0.4, YF - 0.02, ZF + 2.55),
                  (x1 - 0.4, YF - 0.02, ZS - 0.05), (x0 + 0.4, YF - 0.02, ZS - 0.05))
         with GROUP("NOW_Shops"):
-            box("M_Metal", (x0, YF - 0.05, ZF), (x1, YF + 0.02, ZF + 0.12), STEEL)
-            wall_quad_y("M_Glass", x0 + 0.1, x1 - 0.1, ZF + 0.12, ZF + 2.5, YF - 0.02, C(0.85, 0.9, 0.95), s=1.25)
-            for xs in (x0 + 0.05, (x0 + x1) / 2, x1 - 0.1):
-                box("M_Metal", (xs, YF - 0.06, ZF), (xs + 0.06, YF, ZF + 2.55), STEEL)
-            box("M_Metal", (x0, YF - 0.3, ZF + 2.5), (x1, YF, ZS - 0.02), C(0.25, 0.3, 0.36))
+            now_shopfront(x0, x1, kind)
+        with GROUP("DECAL_NowSign_" + kind.capitalize()):
+            quad("M_Decal", (x0 + 0.3, YF - 0.355, ZF + 2.62), (x1 - 0.3, YF - 0.355, ZF + 2.62),
+                 (x1 - 0.3, YF - 0.355, ZS - 0.06), (x0 + 0.3, YF - 0.355, ZS - 0.06))
         collider("COL_Shopfront", (x0, YF, 0), (x1, YF + 0.3, 3.0), unique=False)
 
 
@@ -601,8 +612,25 @@ def build_kopitiam():
         wall_quad_y("M_Plaster", xa, xb, ZF + 1.3, ZS, YB - 0.01, CREAM, facing="-y", s=2.0)
         box("M_Timber", (xa, YB - 0.03, ZF + 1.28), (xb, YB, ZF + 1.34), TIMBER_DARK)
     wall_quad_y("M_Plaster", -0.15, 0.85, ZF + 2.2, ZS, YB - 0.01, CREAM, facing="-y", s=2.0)
-    # dark kitchen behind the doorway + a cloth curtain half drawn
-    box("M_Plaster", (-0.15, YB, ZF), (0.85, YB + 1.2, ZF + 2.2), C(0.18, 0.16, 0.14), skip=("-y",))
+    # dim kitchen behind the doorway (faces point inwards, so it reads as a room from the shop)
+    kd = C(0.24, 0.21, 0.18)
+    kx0, kx1, ky1 = -0.9, 1.6, YB + 1.6
+    grid_floor("M_Floor", kx0, kx1, YB, ky1, ZF, mul(TERRAZZO, 0.45), s=0.5, cell=1.0)
+    wall_quad_y("M_Plaster", kx0, kx1, ZF, ZS, ky1, kd, facing="-y", s=2.0)
+    wall_quad_x("M_Plaster", YB, ky1, ZF, ZS, kx0, kd, facing="+x", s=2.0)
+    wall_quad_x("M_Plaster", YB, ky1, ZF, ZS, kx1, kd, facing="-x", s=2.0)
+    grid_floor("M_Plaster", kx0, kx1, YB, ky1, ZS - 0.001, mul(kd, 0.8), s=2.0, cell=1.0, down=True)
+    for (xa, xb) in ((kx0, -0.15), (0.85, kx1)):                      # back of the shop wall, seen from inside
+        wall_quad_y("M_Plaster", xa, xb, ZF, ZS, YB + 0.01, kd, facing="+y", s=2.0)
+    wall_quad_y("M_Plaster", -0.15, 0.85, ZF + 2.2, ZS, YB + 0.01, kd, facing="+y", s=2.0)
+    # a charcoal stove, a sink and a shelf of tins, just visible past the curtain
+    box("M_Plaster", (0.9, ky1 - 0.6, ZF), (1.55, ky1 - 0.02, ZF + 0.85), C(0.32, 0.3, 0.28))
+    cyl("M_Metal", (1.22, ky1 - 0.31, ZF + 0.85), 0.2, 0.25, 12, C(0.3, 0.3, 0.3))
+    box("M_Plaster", (-0.85, ky1 - 0.5, ZF), (-0.2, ky1 - 0.02, ZF + 0.8), C(0.55, 0.55, 0.52))
+    box("M_Timber", (-0.6, ky1 - 0.3, ZF + 1.6), (1.4, ky1 - 0.02, ZF + 1.64), TIMBER_DARK)
+    for k in range(6):
+        cyl("M_Metal", (-0.45 + k * 0.32, ky1 - 0.16, ZF + 1.64), 0.07, 0.18, 8, C(0.55, 0.5, 0.4))
+    collider("COL_Kitchen", (-0.15, YB, 0), (0.85, YB + 0.3, 3.0))
     with GROUP("THEN_Kopitiam"):
         face("M_Cloth", [(-0.12, YB - 0.04, ZF + 0.9), (0.4, YB - 0.04, ZF + 0.9), (0.4, YB - 0.04, ZF + 2.15), (-0.12, YB - 0.04, ZF + 2.15)],
              C(0.35, 0.5, 0.62), s=0.5)
@@ -613,10 +641,10 @@ def build_kopitiam():
         quad("M_Decal", (KX0 + 0.5, YF - 0.07, ZF + 2.62), (KX1 - 0.5, YF - 0.07, ZF + 2.62),
              (KX1 - 0.5, YF - 0.07, ZS - 0.04), (KX0 + 0.5, YF - 0.07, ZS - 0.04))
     with GROUP("THEN_Kopitiam"):
-        for (xa, sgn) in ((KX0 + 0.05, 1), (KX1 - 0.45, -1)):
+        for (xa, sgn) in ((KX0 + 0.15, 1), (KX1 - 0.55, -1)):
             for k in range(3):
                 x = xa + sgn * k * 0.04 if sgn > 0 else xa - k * 0.04
-                wall_quad_y("M_Windows", x, x + 0.4, ZF, ZF + 2.55, YF + 0.05 + k * 0.03, WHITE, uv=arect(WIN_ATLAS["pintu"]))
+                wall_quad_y("M_Windows", x, x + 0.4, ZF, ZF + 2.5, YF + 0.05 + k * 0.03, WHITE, uv=arect(WIN_ATLAS["door"]))
     collider("COL_Kopi_WallW", (KX0 - 0.3, YF, 0), (KX0, YB, 3.0))
     collider("COL_Kopi_WallE", (KX1, YF, 0), (KX1 + 0.3, YB, 3.0))
     collider("COL_Kopi_Back", (KX0, YB, 0), (KX1, YB + 0.3, 3.0))
@@ -627,18 +655,11 @@ def build_kopitiam():
         kopitiam_ceiling()
         kopitiam_tv()
     with GROUP("NOW_Kopitiam"):
-        # present day: the unit is a minimart behind a glass front
-        box("M_Metal", (KX0, YF - 0.05, ZF), (KX1, YF + 0.02, ZF + 0.12), STEEL)
-        wall_quad_y("M_Glass", KX0 + 0.1, KX1 - 0.1, ZF + 0.12, ZF + 2.55, YF - 0.02, C(0.85, 0.9, 0.95), s=1.25)
-        for xs in (KX0 + 0.05, -1.5, 1.5, KX1 - 0.1):
-            box("M_Metal", (xs, YF - 0.06, ZF), (xs + 0.06, YF, ZF + 2.6), STEEL)
-        for k in range(3):
-            y = 5.0 + k * 2.2
-            box("M_Metal", (-3.5, y, ZF), (3.5, y + 0.5, ZF + 1.6), C(0.85, 0.86, 0.88))
-            wall_quad_y("M_NowSigns", -3.4, 3.4, ZF + 0.2, ZF + 1.5, y - 0.01, WHITE, uv=arect((0, 640, 512, 896)))
+        # present day: an open-fronted minimart, roller shutters up, goods spilling into the corridor
+        now_minimart()
     with GROUP("DECAL_NowSign"):
-        quad("M_Decal", (KX0 + 0.5, YF - 0.09, ZF + 2.62), (KX1 - 0.5, YF - 0.09, ZF + 2.62),
-             (KX1 - 0.5, YF - 0.09, ZS - 0.04), (KX0 + 0.5, YF - 0.09, ZS - 0.04))
+        quad("M_Decal", (KX0 + 0.5, YF - 0.355, ZF + 2.62), (KX1 - 0.5, YF - 0.355, ZF + 2.62),
+             (KX1 - 0.5, YF - 0.355, ZS - 0.06), (KX0 + 0.5, YF - 0.355, ZS - 0.06))
 
 
 def kopitiam_counter():
@@ -744,6 +765,19 @@ def kopitiam_walls():
         with GROUP(name):
             quad("M_Decal", (x0, YB - 0.06, ZF + z0), (x1, YB - 0.06, ZF + z0), (x1, YB - 0.06, ZF + z1), (x0, YB - 0.06, ZF + z1))
     marker("WALL_Focus", (1.9, YB - 0.1, ZF + 1.8), (0, -1))
+    # right of the family wall, under the TV shelf: a congratulations mirror from the shop's opening
+    # (gold lettering, red cloth) and a coffee supplier's 1965 calendar poster (runtime text)
+    mx0, mx1, mz0, mz1 = 2.92, 3.78, ZF + 1.42, ZF + 1.97
+    box("M_Metal", (mx0 - 0.05, YB - 0.05, mz0 - 0.05), (mx1 + 0.05, YB - 0.02, mz1 + 0.05), C(0.72, 0.58, 0.3), skip=("+y",))
+    with GROUP("DECAL_Mirror"):
+        quad("M_Decal", (mx0, YB - 0.055, mz0), (mx1, YB - 0.055, mz0), (mx1, YB - 0.055, mz1), (mx0, YB - 0.055, mz1))
+    box("M_Cloth", (mx0 - 0.02, YB - 0.075, mz1 - 0.06), (mx1 + 0.02, YB - 0.06, mz1 + 0.02), RED)
+    for sx in (mx0 + 0.02, mx1 - 0.02):
+        sphere("M_Cloth", (sx, YB - 0.085, mz1 - 0.02), 0.035, RED, nu=6, nv=4)
+    with GROUP("DECAL_Poster"):
+        px0, px1, pz0, pz1 = 4.0, 4.42, ZF + 1.38, ZF + 1.97
+        quad("M_Decal", (px0, YB - 0.04, pz0), (px1, YB - 0.04, pz0), (px1, YB - 0.04, pz1), (px0, YB - 0.04, pz1))
+    tube("M_Timber", (4.0, YB - 0.045, ZF + 1.975), (4.42, YB - 0.045, ZF + 1.975), 0.008, 4, TIMBER_DARK, caps=True)
     # the 1965 calendar near the counter
     with GROUP("DECAL_Calendar"):
         quad("M_Decal", (-3.95, YB - 0.04, ZF + 1.75), (-3.45, YB - 0.04, ZF + 1.75), (-3.45, YB - 0.04, ZF + 2.45), (-3.95, YB - 0.04, ZF + 2.45))
@@ -770,33 +804,425 @@ def kopitiam_ceiling():
         marker("LAMP", (lx, ly, ZS - 0.1), None)
 
 
+def rrect(cx, cz, w, h, r, seg=4):
+    """Rounded rectangle in a local (x, z) plane, counter-clockwise seen from -y (the front)."""
+    out = []
+    for sx, sz, a0 in ((1, -1, -90), (1, 1, 0), (-1, 1, 90), (-1, -1, 180)):
+        for k in range(seg + 1):
+            a = math.radians(a0 + 90 * k / seg)
+            out.append((cx + sx * (w / 2 - r) + r * math.cos(a), cz + sz * (h / 2 - r) + r * math.sin(a)))
+    return out
+
+
+def extrude(M, mat, loop, y0, y1, col, front=True, back=True, inward=False, loop1=None, s=0.5):
+    """Prism along local +y from y0 (front) to y1, smooth-shaded sides; loop1 tapers the back."""
+    n = len(loop)
+    loop1 = loop1 or loop
+    verts = [tuple(M @ Vector((x, y0, z))) for x, z in loop] + [tuple(M @ Vector((x, y1, z))) for x, z in loop1]
+    faces, uvs = [], []
+    for i in range(n):
+        j = (i + 1) % n
+        f = (i, j, n + j, n + i) if inward else (j, i, n + i, n + j)
+        faces.append(f)
+        uvs.append(boxuv([verts[k] for k in f], s))
+    emit_indexed(mat, verts, faces, uvs, col, smooth=True)
+    if front:
+        pts = verts[:n]
+        emit(mat, pts, boxuv(pts, s), col)
+    if back:
+        pts = verts[n:][::-1]
+        emit(mat, pts, boxuv(pts, s), col)
+
+
+def ring(M, mat, outer, inner, y, col):
+    """Flat frame between two loops of equal length (facing -y)."""
+    n = len(outer)
+    for i in range(n):
+        j = (i + 1) % n
+        pts = [tuple(M @ Vector((x, y, z))) for x, z in (outer[i], outer[j], inner[j], inner[i])]
+        emit(mat, pts, boxuv(pts, 0.5), col)
+
+
+TV_WALNUT = C(0.42, 0.25, 0.14)
+TV_BAKELITE = C(0.16, 0.11, 0.08)
+TV_GOLD = C(0.80, 0.68, 0.44)
+TV_GRILLE = C(0.78, 0.70, 0.55)
+
+
 def kopitiam_tv():
+    """A 1960s table television (walnut cabinet, curved screen behind a gold mask, speaker grille,
+    two bakelite knobs, rabbit-ear aerial on a lace doily) on a corner shelf with wooden brackets."""
     x, y, z = TV
-    # corner shelf on two brackets
-    box("M_Timber", (x - 0.75, y - 0.7, z - 0.05), (KX1 - 0.02, YB - 0.02, z), TIMBER_DARK)
-    for (bx, by) in ((x - 0.4, YB - 0.05), (KX1 - 0.05, y - 0.35)):
-        tube("M_Metal", (bx, by, z - 0.05), (bx, by, z - 0.45), 0.012, 4, IRON)
-    yaw = math.atan2(-1.0, -0.72)        # the screen faces the room (towards the front-west)
-    rz = yaw + math.pi / 2               # box local -y -> screen direction
-    Mt = M_at(x, y, z + 0.27, rz)
-    mbox(Mt, "M_Timber", (0.66, 0.46, 0.52), TIMBER)                        # wooden cabinet
-    mbox(Mt @ Matrix.Translation((0, 0.02, -0.29)), "M_Timber", (0.6, 0.4, 0.06), TIMBER_DARK)
-    # screen (runtime video texture): a quad just proud of the cabinet front
-    sw, sh = 0.46, 0.35
-    pts = [Mt @ Vector(p) for p in ((-sw / 2, -0.236, -sh / 2 + 0.03), (sw / 2, -0.236, -sh / 2 + 0.03), (sw / 2, -0.236, sh / 2 + 0.03), (-sw / 2, -0.236, sh / 2 + 0.03))]
+    d = Vector((-0.72, -1.0, 0.0)).normalized()       # the screen faces the room (front-west)
+    t = Vector((-d.y, d.x, 0.0))
+    # corner shelf: front edge square to the set, ends clipped so it stays in the corner
+    tx, ty = x + 0.2, y + 0.2                         # the set is tucked towards the corner
+    F = Vector((tx, ty, 0)) + d * 0.26
+    wall_y, wall_x = YB - 0.02, KX1 - 0.02
+    xa, yb_ = 3.2, 10.9
+    a = F + t * ((xa - F.x) / t.x)                    # front edge meets the clip at x = 3.2
+    b = F + t * ((yb_ - F.y) / t.y)                   # ... and at y = 10.9
+    poly = [(xa, wall_y), (xa, a.y), (b.x, b.y), (wall_x, yb_), (wall_x, wall_y)]
+    cx_ = sum(p_[0] for p_ in poly) / len(poly)
+    cy_ = sum(p_[1] for p_ in poly) / len(poly)
+    top = [(px, py, z) for px, py in poly]
+    bot = [(px, py, z - 0.045) for px, py in poly]
+    face("M_Timber", top if newell(top)[2] > 0 else top[::-1], TIMBER_DARK)
+    face("M_Timber", bot if newell(bot)[2] < 0 else bot[::-1], TIMBER_DARK)
+    for i in range(len(poly)):
+        p0, p1 = top[i], top[(i + 1) % len(poly)]
+        q0, q1 = bot[i], bot[(i + 1) % len(poly)]
+        side = [q0, q1, p1, p0]
+        nrm = newell(side)
+        out = ((p0[0] + p1[0]) / 2 - cx_, (p0[1] + p1[1]) / 2 - cy_)
+        face("M_Timber", side if nrm[0] * out[0] + nrm[1] * out[1] > 0 else side[::-1], TIMBER_DARK)
+    tube("M_Timber", (a.x + d.x * 0.012, a.y + d.y * 0.012, z - 0.012), (b.x + d.x * 0.012, b.y + d.y * 0.012, z - 0.012),
+         0.022, 6, TIMBER, caps=True)
+    # two wooden knee brackets under the shelf, one on each wall
+    for (p, q) in (((wall_x - 0.55, wall_y), (wall_x - 0.55, wall_y - 0.42)), ((wall_x, wall_y - 0.7), (wall_x - 0.42, wall_y - 0.7))):
+        pts = [(p[0], p[1], z - 0.045), (q[0], q[1], z - 0.045), (p[0], p[1], z - 0.5)]
+        for off in (-0.018, 0.018):
+            dx, dy = (off, 0) if p[1] != q[1] else (0, off)
+            tri3 = [(px + dx, py + dy, pz) for px, py, pz in pts]
+            face("M_Timber", tri3 if (newell(tri3)[0] * dx + newell(tri3)[1] * dy) > 0 else tri3[::-1], TIMBER)
+        box("M_Timber", (min(p[0], q[0]) - 0.018, min(p[1], q[1]) - 0.018, z - 0.06), (max(p[0], q[0]) + 0.018, max(p[1], q[1]) + 0.018, z - 0.045), TIMBER)
+    # the set, in its own frame: local x = across the screen, -y = the front, z = up
+    W, H, D = 0.72, 0.5, 0.34
+    feet = 0.035
+    rz = math.atan2(d.y, d.x) + math.pi / 2
+    Mt = M_at(tx, ty, z + feet + H / 2, rz)
+    y0 = -D / 2
+    extrude(Mt, "M_Lacquer", rrect(0, 0, W, H, 0.055, 5), y0, D / 2, TV_WALNUT)
+    # the tube's bakelite back, tapering towards the wall
+    extrude(Mt, "M_Lacquer", rrect(0, 0.01, W - 0.12, H - 0.1, 0.05, 3), D / 2, D / 2 + 0.2, TV_BAKELITE, front=False,
+            loop1=rrect(0, 0.03, 0.3, 0.24, 0.04, 3))
+    # stub feet with brass caps
+    for fx in (-W / 2 + 0.07, W / 2 - 0.07):
+        for fy in (y0 + 0.06, D / 2 - 0.06):
+            p = Mt @ Vector((fx, fy, -H / 2))
+            cyl("M_Lacquer", (p.x, p.y, z), 0.02, feet, 8, TV_BAKELITE, r_top=0.026)
+    # screen: curved glass behind a gold mask (screen centre offset to the left, speaker on the right)
+    scx, scz = -0.1, 0.01
+    SW, SH = 0.44, 0.33
+    mask_out = rrect(scx, scz, SW + 0.06, SH + 0.06, 0.05, 5)
+    mask_in = rrect(scx, scz, SW, SH, 0.045, 5)
+    ym = y0 - 0.014
+    ring(Mt, "M_Metal", mask_out, mask_in, ym, TV_GOLD)
+    extrude(Mt, "M_Metal", mask_out, ym, y0, TV_GOLD, front=False, back=False)
+    extrude(Mt, "M_Lacquer", mask_in, ym, y0 + 0.002, TV_BAKELITE, front=False, back=False, inward=True)
+    NX, NZ = 12, 9
+    sv, sf, suv = [], [], []
+    for j in range(NZ + 1):
+        for i in range(NX + 1):
+            u, v = i / NX, j / NZ
+            bulge = 0.016 * (1 - (2 * u - 1) ** 2) * (1 - (2 * v - 1) ** 2)
+            sv.append(tuple(Mt @ Vector((scx - SW / 2 + SW * u, y0 - 0.002 - bulge, scz - SH / 2 + SH * v))))
+    for j in range(NZ):
+        for i in range(NX):
+            k = j * (NX + 1) + i
+            sf.append((k, k + 1, k + NX + 2, k + NX + 1))
+            suv.append([(i / NX, j / NZ), ((i + 1) / NX, j / NZ), ((i + 1) / NX, (j + 1) / NZ), (i / NX, (j + 1) / NZ)])
     with GROUP("TV_Screen"):
-        quad("M_Screen", *pts)
-    # knobs + rabbit-ear aerial
-    for k in range(2):
-        p = Mt @ Vector((0.27, -0.24, -0.1 + k * 0.1))
-        sphere("M_Metal", tuple(p), 0.018, IRON, nu=6, nv=4)
-    top = Mt @ Vector((0, 0.05, 0.26))
+        emit_indexed("M_Screen", sv, sf, suv, WHITE, smooth=True)
+    # speaker panel: woven grille behind gold slats, channel + volume knobs above it
+    px_ = W / 2 - 0.1
+    grille = rrect(px_, -0.07, 0.13, 0.26, 0.02, 2)
+    extrude(Mt, "M_Cloth", grille, y0 - 0.004, y0, TV_GRILLE, back=False, s=0.08)
+    for k in range(5):
+        gz = -0.18 + k * 0.055
+        p0, p1 = Mt @ Vector((px_ - 0.06, y0 - 0.009, gz)), Mt @ Vector((px_ + 0.06, y0 - 0.009, gz))
+        tube("M_Metal", tuple(p0), tuple(p1), 0.004, 4, TV_GOLD, caps=True)
+    for kz, kr in ((0.16, 0.034), (0.08, 0.024)):
+        c0 = Mt @ Vector((px_, y0, kz))
+        c1 = Mt @ Vector((px_, y0 - 0.03, kz))
+        ax = (c1 - c0).normalized()
+        tube("M_Lacquer", tuple(c0), tuple(c1), kr, 12, TV_BAKELITE, caps=False)
+        cap = [tuple(c1 + (Mt.to_3x3() @ Vector((math.cos(math.tau * i / 12), 0, math.sin(math.tau * i / 12)))) * kr * 0.72) for i in range(12)]
+        emit("M_Metal", cap if Vector(newell(cap)).dot(-ax) < 0 else cap[::-1], [(0, 0)] * 12, TV_GOLD)
+        tick = [c1 + Mt.to_3x3() @ Vector(v_) for v_ in ((-0.003, -0.001, 0.0), (0.003, -0.001, 0.0), (0.003, -0.001, kr * 0.9), (-0.003, -0.001, kr * 0.9))]
+        quad("M_Metal", *[tuple(p) for p in tick], col=TV_GOLD)
+    # maker's badge under the screen
+    mbox(Mt @ Matrix.Translation((scx, y0 - 0.004, scz - SH / 2 - 0.055)), "M_Metal", (0.11, 0.008, 0.018), TV_GOLD)
+    # lace doily + rabbit ears on top
+    topc = Mt @ Vector((0.02, 0.02, H / 2))
+    cyl("M_Cloth", (topc.x, topc.y, topc.z), 0.15, 0.003, 16, C(0.96, 0.95, 0.9), s=0.1)
+    cyl("M_Lacquer", (topc.x, topc.y, topc.z + 0.003), 0.055, 0.03, 12, TV_BAKELITE, r_top=0.045)
+    base = Vector((topc.x, topc.y, topc.z + 0.033))
     for s_ in (-1, 1):
-        tube("M_Metal", tuple(top), tuple(top + Vector((0.25 * s_, 0.1, 0.45))), 0.005, 3, STEEL, smooth=False)
-    front = Mt @ Vector((0, -0.25, 0.03))
-    d = (front - Mt @ Vector((0, 0, 0.03)))
-    marker("TV", tuple(front), (d.x, d.y, 0.0))
-    marker("SNAP_TV", tuple(front), (d.x, d.y, 0.0))
+        dirv = (Mt.to_3x3() @ Vector((0.42 * s_, 0.12, 0.9))).normalized()
+        mid = base + dirv * 0.26
+        tip = base + dirv * 0.5
+        tube("M_Metal", tuple(base), tuple(mid), 0.006, 5, STEEL)
+        tube("M_Metal", tuple(mid), tuple(tip), 0.0035, 4, STEEL)
+        sphere("M_Metal", tuple(tip), 0.011, STEEL, nu=6, nv=4)
+    front = Mt @ Vector((scx, y0 - 0.02, scz))
+    fd = (front - Mt @ Vector((scx, 0, scz)))
+    marker("TV", tuple(front), (fd.x, fd.y, 0.0))
+    marker("SNAP_TV", tuple(front), (fd.x, fd.y, 0.0))
+
+
+# ---------------------------------------------------------------- Queenstown today (Then & Now)
+# What the same corner looks like now (docs/research/1965-history.md §14): the early blocks are still
+# lived in (Stirling Road's first HDB blocks of 1960 are 7-storey rental blocks with laundry-pole
+# sockets), repainted, with air-con condensers, open-fronted neighbourhood shops and parked cars;
+# over the rooftops, SkyVille@Dawson (3 linked 47-storey towers, sky gardens) and SkyTerrace@Dawson
+# (5 towers of 40-43 storeys on a car-park podium), and the East-West Line on its viaduct (1988).
+NOW_ACCENT = C(0.66, 0.52, 0.45)      # repainted terracotta piers (the era shader saturates plaster)
+PLASTIC = [C(0.20, 0.42, 0.75), C(0.85, 0.45, 0.12), C(0.75, 0.16, 0.14), C(0.25, 0.6, 0.35)]
+NOW_R = random.Random(2026)
+
+
+def shutter_box(x0, x1):
+    """Roller shutter rolled up under the fascia, with its side guides."""
+    box("M_Metal", (x0, YF - 0.28, ZF + 2.48), (x1, YF - 0.02, ZF + 2.62), C(0.62, 0.64, 0.66))
+    for xs in (x0 + 0.02, x1 - 0.08):
+        box("M_Metal", (xs, YF - 0.08, ZF), (xs + 0.06, YF - 0.02, ZF + 2.5), C(0.55, 0.57, 0.6))
+
+
+def plastic_table(x, y, rz=0.0):
+    """Round marble-topped coffee-shop table with plastic stools, as in today's eating houses."""
+    cyl("M_Metal", (x, y, ZF), 0.2, 0.03, 10, IRON)
+    tube("M_Metal", (x, y, ZF), (x, y, ZF + 0.72), 0.035, 6, IRON)
+    cyl("M_Plaster", (x, y, ZF + 0.72), 0.42, 0.03, 16, C(0.95, 0.94, 0.9))
+    for k in range(4):
+        a = rz + k * math.tau / 4
+        sx, sy = x + math.cos(a) * 0.62, y + math.sin(a) * 0.62
+        cyl("M_Lacquer", (sx, sy, ZF), 0.17, 0.44, 10, NOW_R.choice(PLASTIC), r_top=0.14)
+
+
+def now_shopfront(x0, x1, kind):
+    box("M_Metal", (x0, YF - 0.05, ZF), (x1, YF + 0.02, ZF + 0.12), STEEL)
+    box("M_Metal", (x0, YF - 0.34, ZF + 2.6), (x1, YF - 0.02, ZS - 0.02), C(0.93, 0.93, 0.9))        # lit fascia box
+    if kind == "provision":
+        # an eating house: open front, drinks stall at the back, tables out into the corridor
+        shutter_box(x0, x1)
+        wall_quad_y("M_Details", x0 + 0.2, x1 - 0.2, ZF, ZF + 1.3, YN - 0.03, WHITE, uv=arect(DET["tiles"]))
+        box("M_Metal", (x0 + 0.5, YN - 1.2, ZF), (x1 - 0.5, YN - 0.55, ZF + 0.95), C(0.7, 0.72, 0.74))
+        wall_quad_y("M_NowSigns", x0 + 1.2, x1 - 1.2, ZF + 1.6, ZF + 2.5, YN - 0.03, WHITE, uv=arect((512, 384, 768, 640)))
+        box("M_Emissive", (x0 + 0.6, YN - 0.9, ZF + 0.95), (x0 + 1.3, YN - 0.55, ZF + 2.1), C(0.9, 0.95, 1.0))   # drinks fridge
+        for (tx, ty) in ((x0 + 1.3, 4.6), (x1 - 1.3, 4.4), (x0 + 2.4, 1.7), (x1 - 1.1, 1.6)):
+            plastic_table(tx, ty, NOW_R.uniform(0, 1))
+    else:
+        # glass shopfront, lit inside
+        atlas = {"tailor": (512, 384, 1024, 768), "bookshop": (0, 384, 512, 768), "barber": (512, 0, 1024, 384)}[kind]
+        wall_quad_y("M_NowShop", x0 + 0.1, x1 - 0.1, ZF + 0.12, ZF + 2.55, YF - 0.02, WHITE, uv=arect(atlas))
+        for xs in (x0 + 0.05, (x0 + x1) / 2, x1 - 0.1):
+            box("M_Metal", (xs, YF - 0.06, ZF), (xs + 0.06, YF, ZF + 2.6), C(0.2, 0.2, 0.22))
+    for xx in (x0 + 0.8, x1 - 0.8):
+        tube("M_Emissive", (xx - 0.55, 4.5, ZS - 0.06), (xx + 0.55, 4.5, ZS - 0.06), 0.02, 6, TUBE, caps=True)
+
+
+def now_minimart():
+    shutter_box(KX0, KX1)
+    box("M_Metal", (KX0, YF - 0.34, ZF + 2.6), (KX1, YF - 0.02, ZS - 0.02), C(0.93, 0.93, 0.9))
+    # aisles of shelves inside, bright ceiling panels
+    for k in range(3):
+        y = 5.0 + k * 2.2
+        box("M_Metal", (-3.5, y, ZF), (3.5, y + 0.5, ZF + 1.6), C(0.85, 0.86, 0.88))
+        for fy, face_ in ((y - 0.01, "-y"), (y + 0.51, "+y")):
+            wall_quad_y("M_Details", -3.4, 3.4, ZF + 0.15, ZF + 1.55, fy, WHITE, facing=face_, uv=arect(DET["provisions"]))
+        tube("M_Emissive", (-2.5, y + 0.25, ZS - 0.06), (2.5, y + 0.25, ZS - 0.06), 0.025, 6, TUBE, caps=True)
+    # out front: tiered display racks, bottled water, a drinks chiller, buckets and brooms
+    for (ra, rb) in ((-3.9, -1.9), (1.3, 2.9)):
+        for t_ in range(3):
+            y0 = 2.35 + t_ * 0.18
+            box("M_Details", (ra, y0, ZF), (rb, 2.95, ZF + 0.35 + t_ * 0.28), WHITE,
+                uvs={"-y": arect(DET["provisions"])}, mats={k: "M_Metal" for k in ("+y", "-x", "+x", "-z", "+z")},
+                cols={k: C(0.75, 0.2, 0.18) for k in ("+z", "-x", "+x")})
+    for (wx, wy) in ((-1.5, 2.55), (-1.5, 2.25), (-1.05, 2.55)):
+        for k in range(2):
+            box("M_Plaster", (wx - 0.2, wy - 0.14, ZF + k * 0.3), (wx + 0.2, wy + 0.14, ZF + 0.3 + k * 0.3), C(0.55, 0.75, 0.92))
+    box("M_Metal", (3.2, 2.35, ZF), (3.95, 2.95, ZF + 1.95), C(0.78, 0.16, 0.14))
+    wall_quad_y("M_NowShop", 3.27, 3.88, ZF + 0.2, ZF + 1.75, 2.34, WHITE, uv=arect((0, 440, 240, 740)))
+    for k, col in enumerate(PLASTIC[:3]):
+        cyl("M_Lacquer", (-4.05 + k * 0.05, 2.1 - k * 0.32, ZF), 0.16, 0.3, 10, col, r_top=0.19)
+    for k in range(2):
+        tube("M_Timber", (-4.2, 2.8 - k * 0.12, ZF + 0.05), (-4.25, 2.85 - k * 0.12, ZF + 1.3), 0.015, 4, C(0.8, 0.7, 0.4))
+        box("M_Cloth", (-4.32, 2.72 - k * 0.12, ZF), (-4.12, 2.88 - k * 0.12, ZF + 0.25), C(0.3, 0.55, 0.3))
+
+
+def now_facade():
+    with GROUP("NOW_Facade"):
+        for k in range(STOREYS - 1):
+            z = ZS + k * STOREY
+            for i in range(10):
+                xa = X0 + i * 3.0
+                wall_quad_y("M_Plaster", xa, xa + 0.5, z + 1.0, z + 2.4, YE - 0.47, NOW_ACCENT, s=2.0)
+                if NOW_R.random() < 0.5:                                  # air-con condenser under the window
+                    cx = xa + 0.5 + NOW_R.uniform(0.5, 2.0)
+                    box("M_Metal", (cx - 0.38, YE - 0.8, z + 0.45), (cx + 0.38, YE - 0.47, z + 0.95), C(0.88, 0.89, 0.87),
+                        mats={"-y": "M_NowSigns"}, uvs={"-y": arect((262, 390, 506, 634))})
+                    for bx in (cx - 0.3, cx + 0.3):
+                        tube("M_Metal", (bx, YE - 0.47, z + 0.43), (bx, YE - 0.8, z + 0.43), 0.012, 4, IRON)
+                if NOW_R.random() < 0.35:                                 # steel laundry rack in the old pole sockets
+                    lx = xa + 0.5 + NOW_R.uniform(0.3, 1.9)
+                    for j in range(3):
+                        tube("M_Metal", (lx + j * 0.3, YE - 0.47, z + 1.0), (lx + j * 0.3, YE - 1.35, z + 1.0), 0.013, 4, STEEL)
+                    for g_ in range(NOW_R.randint(1, 4)):
+                        gx = lx + NOW_R.randint(0, 2) * 0.3
+                        gy = YE - 0.7 - g_ * 0.18
+                        w, dz = NOW_R.uniform(0.3, 0.5), NOW_R.uniform(0.35, 0.65)
+                        c = C(*[NOW_R.uniform(0.3, 0.95) for _ in range(3)])
+                        for fa in (-1, 1):
+                            face("M_Cloth", [(gx - w / 2 * fa, gy, z + 1.0 - dz), (gx + w / 2 * fa, gy, z + 1.0 - dz),
+                                             (gx + w / 2 * fa, gy, z + 1.0), (gx - w / 2 * fa, gy, z + 1.0)], c, s=0.5)
+        # fire hose reel on a corridor pillar, a CCTV dome under the soffit
+        box("M_Metal", (4.28, YE - 0.1, ZF + 0.95), (4.72, YE, ZF + 1.6), C(0.8, 0.12, 0.1))
+        box("M_Metal", (4.3, YE - 0.105, ZF + 1.42), (4.7, YE - 0.1, ZF + 1.52), WHITE)
+        sphere("M_Metal", (2.2, 0.4, ZS - 0.05), 0.07, C(0.15, 0.15, 0.17), nu=8, nv=4, sz=0.7)
+    # block number, on the pillars and big on the parapet
+    with GROUP("DECAL_NowBlockNo"):
+        for px in (-4.5, 4.5):
+            quad("M_Decal", (px - 0.2, YE - 0.004, ZF + 2.1), (px + 0.2, YE - 0.004, ZF + 2.1),
+                 (px + 0.2, YE - 0.004, ZF + 2.5), (px - 0.2, YE - 0.004, ZF + 2.5))
+        quad("M_Decal", (-1.2, YE - 0.52, Z_ROOF - 1.4), (1.2, YE - 0.52, Z_ROOF - 1.4), (1.2, YE - 0.52, Z_ROOF), (-1.2, YE - 0.52, Z_ROOF))
+    # heritage-trail style marker at the edge of the corridor
+    with GROUP("NOW_Street"):
+        tube("M_Metal", (-2.25, -0.75, 0), (-2.25, -0.75, 1.0), 0.03, 6, C(0.3, 0.32, 0.3))
+        mbox(M_at(-2.25, -0.78, 1.15, 0, rx=-0.35), "M_Metal", (0.62, 0.05, 0.42), C(0.3, 0.32, 0.3))
+    with GROUP("DECAL_NowMarker"):
+        Mm = M_at(-2.25, -0.78, 1.15, 0, rx=-0.35)
+        quad("M_Decal", *[tuple(Mm @ Vector(p)) for p in ((-0.29, -0.03, -0.19), (0.29, -0.03, -0.19), (0.29, -0.03, 0.19), (-0.29, -0.03, 0.19))])
+
+
+def car(x, y, rz, col):
+    """A modern hatchback/sedan, ~4.4 m long (local x = length, y = width, z = up)."""
+    M = M_at(x, y, 0, rz)
+    prof = [(-2.2, 0.28), (2.2, 0.28), (2.22, 0.72), (1.95, 0.92), (0.95, 1.0), (0.35, 1.42), (-1.35, 1.44), (-1.95, 1.05), (-2.22, 0.95)]
+    extrude(M, "M_Metal", prof, -0.87, 0.87, col)
+    glass = C(0.12, 0.15, 0.18)
+    for sgn in (-1, 1):
+        yy = sgn * 0.875
+        pts = [(-1.3, 1.02), (0.85, 1.02), (0.4, 1.36), (-1.25, 1.38)]
+        w = [tuple(M @ Vector((px, yy, pz))) for px, pz in pts]
+        face("M_Glass", w if sgn < 0 else w[::-1], glass)
+        for wx in (-1.45, 1.45):
+            c0 = M @ Vector((wx, yy * 0.98, 0.3))
+            tube("M_Metal", tuple(c0), tuple(M @ Vector((wx, yy * 0.98 + sgn * 0.08, 0.3))), 0.3, 10, IRON, caps=True)
+    for (pa, pb, out) in (((0.95, 1.0), (0.35, 1.42), (0.6, 0, 0.8)), ((-1.35, 1.44), (-1.95, 1.05), (-0.55, 0, 0.83))):
+        o = Vector(out)
+        w = [M @ (Vector((pa[0], -0.8, pa[1])) + o * 0.012), M @ (Vector((pa[0], 0.8, pa[1])) + o * 0.012),
+             M @ (Vector((pb[0], 0.8, pb[1])) + o * 0.012), M @ (Vector((pb[0], -0.8, pb[1])) + o * 0.012)]
+        w = [tuple(p) for p in w]
+        face("M_Glass", w if Vector(newell(w)).dot(M.to_3x3() @ o) > 0 else w[::-1], glass)
+    for sgn in (-1, 1):
+        mbox(M @ Matrix.Translation((2.21, sgn * 0.62, 0.66)), "M_Emissive", (0.03, 0.26, 0.09), C(1, 0.98, 0.9))
+        mbox(M @ Matrix.Translation((-2.21, sgn * 0.62, 0.8)), "M_Metal", (0.03, 0.3, 0.1), C(0.7, 0.05, 0.05))
+
+
+def now_carpark():
+    with GROUP("NOW_Street"):
+        cols = [C(0.92, 0.92, 0.9), C(0.6, 0.62, 0.64), C(0.08, 0.08, 0.09), C(0.62, 0.1, 0.1), C(0.15, 0.22, 0.4), C(0.85, 0.85, 0.83)]
+        for i, bx in enumerate((-12.0, -9.4, -3.9, 6.5, 9.1, 11.7)):
+            car(bx + NOW_R.uniform(-0.1, 0.1), -4.0 + NOW_R.uniform(-0.2, 0.2), math.pi / 2 + NOW_R.uniform(-0.03, 0.03), cols[i])
+        # covered linkway from the block across the car park: slim posts, curved roof, concrete path
+        lx0, lx1, ly0, ly1 = -7.4, -5.8, -15.6, -0.5
+        box("M_Plaster", (lx0, ly0, 0), (lx1, ly1, 0.1), C(0.74, 0.73, 0.7))
+        for yy in [ly1 - 0.3 - k * 3.0 for k in range(6)]:
+            tube("M_Metal", (lx0 + 0.1, yy, 0.1), (lx0 + 0.1, yy, 2.75), 0.06, 8, C(0.3, 0.42, 0.4))
+        n = 8
+        roof = [(lx0 - 0.2 + (lx1 - lx0 + 0.4) * k / n, 2.75 + 0.22 * math.sin(math.pi * k / n)) for k in range(n + 1)]
+        for k in range(n):
+            (xa, za), (xb, zb) = roof[k], roof[k + 1]
+            for pts in ([(xa, ly0, za), (xb, ly0, zb), (xb, ly1, zb), (xa, ly1, za)],):
+                face("M_Metal", pts[::-1], C(0.55, 0.62, 0.6))     # top
+                face("M_Metal", pts, C(0.8, 0.82, 0.8))            # underside
+        box("M_Metal", (lx0, ly0, 2.62), (lx0 + 0.2, ly1, 2.76), C(0.3, 0.42, 0.4))
+
+
+def now_block(cx, cy, length, storeys, tint, accent, rz=0.0):
+    """A present-day HDB slab (long facade on local -y): window bands, two lift/stair cores in colour."""
+    M = M_at(cx, cy, 0, rz)
+    h = storeys * 2.8 + 2.0
+    dep = 11.0
+    mbox(M @ Matrix.Translation((0, 0, h / 2)), "M_Far", (length, dep, h), tint, s=4.0, skip=("-z",))
+    for k in range(storeys):
+        z = 2.5 + k * 2.8
+        for sgn in (-1, 1):
+            pts = [M @ Vector((-length / 2 + 0.8, sgn * (dep / 2 + 0.03), z + 0.8)), M @ Vector((length / 2 - 0.8, sgn * (dep / 2 + 0.03), z + 0.8)),
+                   M @ Vector((length / 2 - 0.8, sgn * (dep / 2 + 0.03), z + 1.9)), M @ Vector((-length / 2 + 0.8, sgn * (dep / 2 + 0.03), z + 1.9))]
+            face("M_Glass", [tuple(p) for p in (pts if sgn < 0 else pts[::-1])], mul(WHITE, 0.85), s=1.25)
+        mbox(M @ Matrix.Translation((0, -dep / 2 - 0.4, z + 0.3)), "M_Far", (length, 0.8, 0.18), mul(tint, 0.93), s=4.0)
+    for fx in (-length / 4, length / 4):
+        mbox(M @ Matrix.Translation((fx, -dep / 2 - 0.9, (h + 3) / 2)), "M_Far", (3.2, 1.8, h + 3), accent, s=4.0, skip=("-z",))
+    mbox(M @ Matrix.Translation((0, 0, h + 0.4)), "M_Far", (length + 0.3, dep + 0.3, 0.8), accent, s=4.0)
+
+
+def sky_tower(cx, cy, w, d, storeys, rz, gardens, col=C(0.93, 0.93, 0.91)):
+    """A Dawson-style 40+ storey HDB tower: fins and window bands, open sky-garden floors, a green roof."""
+    M = M_at(cx, cy, 0, rz)
+    fh = 2.9
+    cuts = sorted(set([0] + gardens + [storeys]))
+    for a, b in zip(cuts, cuts[1:]):
+        za = a * fh + (2 * fh if a in gardens else 0)
+        zb = b * fh
+        if zb <= za:
+            continue
+        mbox(M @ Matrix.Translation((0, 0, (za + zb) / 2)), "M_Far", (w, d, zb - za), col, s=4.0)
+        for k in range(int((zb - za) / fh)):
+            z = za + k * fh + 1.0
+            for sgn, ww in ((-1, w), (1, w)):
+                pts = [M @ Vector((-ww / 2 + 0.6, sgn * (d / 2 + 0.03), z)), M @ Vector((ww / 2 - 0.6, sgn * (d / 2 + 0.03), z)),
+                       M @ Vector((ww / 2 - 0.6, sgn * (d / 2 + 0.03), z + 1.2)), M @ Vector((-ww / 2 + 0.6, sgn * (d / 2 + 0.03), z + 1.2))]
+                face("M_Glass", [tuple(p) for p in (pts if sgn < 0 else pts[::-1])], mul(WHITE, 0.8), s=1.25)
+        for fx in [(-w / 2 + 0.4 + i * (w - 0.8) / 6) for i in range(7)]:
+            mbox(M @ Matrix.Translation((fx, -d / 2 - 0.35, (za + zb) / 2)), "M_Far", (0.35, 0.7, zb - za), mul(col, 0.97), s=4.0)
+    for g_ in gardens:
+        z = g_ * fh
+        mbox(M @ Matrix.Translation((0, 0, z + fh)), "M_Far", (w * 0.35, d * 0.5, 2 * fh), mul(col, 0.9), s=4.0)
+        for gx in (-w / 3, 0, w / 3):
+            sphere("M_Cloth", tuple(M @ Vector((gx, -d / 4, z + 1.2))), 1.8, LEAF, nu=8, nv=4, sz=0.6)
+    mbox(M @ Matrix.Translation((0, 0, storeys * fh + 0.6)), "M_Far", (w + 0.4, d + 0.4, 1.2), mul(col, 0.95), s=4.0)
+    for gx in (-w / 3, 0, w / 3):
+        sphere("M_Cloth", tuple(M @ Vector((gx, 0, storeys * fh + 1.6))), 2.0, LEAF, nu=8, nv=4, sz=0.5)
+    return M
+
+
+def now_skyline():
+    """Beyond the east end of the block (seen as the photo is lined up): Dawson's towers and the MRT."""
+    with GROUP("NOW_Skyline"):
+        cam = Vector((0.8, -8.5, 0))
+        def at(bearing_deg, dist):
+            a = math.radians(bearing_deg)
+            return cam + Vector((math.sin(a), math.cos(a), 0)) * dist
+        # SkyVille@Dawson-style: three 47-storey towers joined by sky bridges at the garden floors
+        gardens = [3, 14, 25, 36]
+        pts = [at(b, 250) for b in (66, 71, 76)]
+        for p in pts:
+            sky_tower(p.x, p.y, 20, 14, 47, math.radians(-71), gardens)
+        for p, q in zip(pts, pts[1:]):
+            for g_ in gardens[1:]:
+                z = g_ * 2.9 + 1.5
+                tube("M_Far", (p.x, p.y, z), (q.x, q.y, z), 1.6, 4, C(0.9, 0.9, 0.88), caps=True)
+        # SkyTerrace@Dawson-style: five 40-43 storey towers on a car-park podium
+        pod = at(92, 300)
+        box("M_Far", (pod.x - 40, pod.y - 45, 0), (pod.x + 25, pod.y + 45, 12), C(0.8, 0.8, 0.78), s=4.0, skip=("-z",))
+        for i, st in enumerate((40, 43, 41, 43, 40)):
+            sky_tower(pod.x - 10 + (i % 2) * 14, pod.y - 36 + i * 18, 16, 13, st, math.radians(-92), [], C(0.9, 0.89, 0.86))
+        # older and newer HDB slabs in between
+        for (b, dist, st, tint, acc) in ((63, 190, 16, C(0.9, 0.87, 0.8), C(0.7, 0.5, 0.42)),
+                                        (82, 175, 24, C(0.9, 0.9, 0.88), C(0.45, 0.6, 0.66)),
+                                        (97, 160, 12, C(0.92, 0.9, 0.85), C(0.62, 0.66, 0.5)),
+                                        (110, 210, 20, C(0.88, 0.88, 0.86), C(0.72, 0.62, 0.45))):
+            p = at(b, dist)
+            now_block(p.x, p.y, 48, st, tint, acc, math.radians(-b))    # long facade towards the camera
+        # the East-West Line viaduct on its piers
+        vx = 70.0
+        box("M_Far", (vx - 4.5, -420, 11.0), (vx + 4.5, 420, 12.4), C(0.74, 0.74, 0.72), s=4.0)
+        for sgn in (-1, 1):
+            box("M_Far", (vx + sgn * 4.5 - 0.25, -420, 12.4), (vx + sgn * 4.5 + 0.25, 420, 13.4), C(0.78, 0.78, 0.76), s=4.0)
+        for yy in range(-405, 420, 30):
+            box("M_Far", (vx - 1.1, yy - 1.1, 0), (vx + 1.1, yy + 1.1, 11.0), C(0.72, 0.72, 0.7), s=4.0, skip=("-z",))
+            box("M_Far", (vx - 4.0, yy - 1.3, 9.8), (vx + 4.0, yy + 1.3, 11.0), C(0.72, 0.72, 0.7), s=4.0)
+    with GROUP("NOW_Train"):
+        # six cars (runtime slides the group along the viaduct)
+        for k in range(6):
+            y0 = -70 + k * 23.2
+            box("M_Metal", (vx - 1.6, y0, 12.6), (vx + 1.6, y0 + 22.6, 16.2), C(0.9, 0.91, 0.92))
+            for sgn in (-1, 1):
+                xx = vx + sgn * 1.605
+                wall_quad_x("M_Glass", y0 + 1.2, y0 + 21.4, 14.2, 15.4, xx, C(0.2, 0.24, 0.28), facing="+x" if sgn > 0 else "-x", s=1.25)
+                wall_quad_x("M_Far", y0, y0 + 22.6, 13.2, 13.6, xx + sgn * 0.005, C(0.1, 0.55, 0.3), facing="+x" if sgn > 0 else "-x")
 
 
 # ---------------------------------------------------------------- corridor dressing
@@ -859,7 +1285,7 @@ def contract_markers():
     marker("NPC_Rajan", (-12.5, 1.5, ZF), (1, 0))              # arrives from the west end of the corridor
     marker("RAJAN_Door", (-3.4, 3.6, ZF), (1, 1))
     # corridor rumour-mongers (errand beat)
-    for i, (x, y, fx) in enumerate(((10.9, 1.6, -1), (4.2, 0.9, 1), (-6.6, 1.8, 1), (8.2, 2.0, -1), (12.2, 2.2, -1))):
+    for i, (x, y, fx) in enumerate(((10.9, 1.6, -1), (3.5, 1.7, 1), (-6.6, 1.8, 1), (8.2, 2.0, -1), (12.2, 2.2, -1))):   # clear of the pillars
         marker(f"RUMOUR_{i + 1}", (x, y, ZF), (fx, 0))
     # evening crowd: standing spots facing the TV (inside and in the doorway)
     spots = [(-3.6, 4.0), (-3.2, 3.5), (-1.8, 3.4), (-0.9, 3.9), (-1.3, 6.2), (1.3, 6.2), (-3.9, 6.2), (3.9, 6.6),
@@ -881,6 +1307,9 @@ def build_level():
     build_shops()
     build_kopitiam()
     build_corridor_props()
+    now_facade()
+    now_carpark()
+    now_skyline()
     contract_markers()
 
 
@@ -902,6 +1331,9 @@ MAT_DEF = {
     "M_Emissive": (None, 0.5, 0.0, False),
     "M_Decal": (None, 0.7, 0.0, False),
     "M_Screen": (None, 0.25, 0.0, False),
+    "M_Lacquer": (None, 0.3, 0.0, False),
+    "M_NowShop": ("nowshop", 0.25, 0.0, False),
+    "M_Far": (None, 0.9, 0.0, False),          # present-day skyline (not saturated by the era shader)
 }
 IMAGES = {}
 TILING = {"M_Plaster", "M_Timber", "M_Floor", "M_Road", "M_Cloth", "M_Glass"}
@@ -950,6 +1382,9 @@ def make_materials(res):
         if name == "M_Emissive":
             bsdf.inputs["Emission Color"].default_value = (0.95, 0.97, 1.0, 1.0)
             bsdf.inputs["Emission Strength"].default_value = 2.0
+        if name == "M_NowShop" and tex:                       # lit shop interiors behind glass
+            nt.links.new(it.outputs["Color"], bsdf.inputs["Emission Color"])
+            bsdf.inputs["Emission Strength"].default_value = 0.55
         if name == "M_Screen":
             bsdf.inputs["Base Color"].default_value = (0.08, 0.09, 0.09, 1.0)
         mats[name] = m

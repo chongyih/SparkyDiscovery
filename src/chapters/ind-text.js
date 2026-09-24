@@ -40,6 +40,7 @@ export default {
   thenNow: {
     card: { who: 'Card', text: 'Queenstown. Today.' },
     before: [
+      { who: 'OldBoon', text: 'See those towers? Forty-seven storeys, with gardens in the sky. In 1965 our tall one was Forfar House. Fourteen!' },
       { who: 'OldBoon', text: 'My old shop is a minimart now. Same corner, same pillars. Everything else changed.' },
     ],
     hint: 'Raise the camera. Line up the old photo with the shops.',
@@ -61,14 +62,15 @@ export default {
       { who: 'Boon', text: 'Come, come. I said I’d make kopi better than Ah Ma’s, right? Now you can help me prove it.' },
       { who: 'Sparky', react: 'nod' },
       { who: 'Farid', text: '{Abang|big brother} Boon, who’s this?' },
-      { who: 'Boon', text: 'Old friend. Farid, show him the board. Sparky, two orders waiting. Go!' },
+      { who: 'Boon', text: 'Old friend. Farid, show him the board. Sparky, Ah Pek’s waiting. Go!' },
     ],
     board: [
       { who: 'Farid', text: 'Easy one. Kopi is coffee, teh is tea. Both come with sweet condensed milk, unless they say.' },
       { who: 'Farid', text: '“O” means no milk. “C” means evaporated milk. {Kosong|“zero” in Malay} means no sugar.' },
       { who: 'Farid', text: '{Siew dai|less sweet} is less sugar, {ga dai|more sweet} is more. {Peng|ice} means ice. Got it?' },
     ],
-    hint: 'Make the drinks. Check the order board if you forget.',
+    hint: 'Make the drink. Check the order board if you forget.',
+    lookAround: 'Say hello to the regulars.',
   },
 
   // Kopi orders. order: { drink: 'kopi'|'teh', milk: 'condensed'|'O'|'C', sugar: 'normal'|'kosong'|'siew dai'|'ga dai', ice }
@@ -79,16 +81,6 @@ export default {
       ask: [{ who: 'AhPek', text: '{Kopi-O kosong|black coffee, no sugar}! Like always. Thirty years, same order!' }],
       correct: [{ who: 'AhPek', text: 'Hmm. Not bad. Not as good as your Ah Ma’s. Not bad.' }],
       wrong: [{ who: 'AhPek', text: '{Aiyoh|oh dear}, wrong one lah, bear. O means black. Kosong means no sugar. Again.' }],
-    },
-    rohani1: {
-      who: 'Rohani', seat: 'Rohani',
-      order: { drink: 'teh', milk: 'C', sugar: 'siew dai', ice: false },
-      ask: [
-        { who: 'Rohani', text: '{Teh-C|tea with evaporated milk}, {kurang manis|less sweet}, ya?' }, // review (Malay)
-        { who: 'Farid', text: 'Kurang manis is Malay. Here we say siew dai. Same thing, different word!' },
-      ],
-      correct: [{ who: 'Rohani', text: '{Terima kasih|thank you}, {adik|little one}. You learn faster than Boon did.' }],
-      wrong: [{ who: 'Rohani', text: 'Adik, that’s not what I asked. Teh-C, less sweet. You want my teeth to fall out?' }],
     },
   },
 
@@ -154,7 +146,6 @@ export default {
     ],
     siti: [
       { who: 'Siti', text: 'Sparky? (She stares, then laughs.) You look exactly the same. Exactly!' },
-      { who: 'Siti', text: 'You heard? This morning’s paper doesn’t say a word about it. First time the paper’s behind.' },
       { who: 'Siti', text: 'Boon wants me to explain it to everyone? Sparky… no.' },
       { who: 'Siti', text: 'Last time I read the news out, I told the whole street we’d be safe. Remember?' },
     ],
@@ -171,55 +162,65 @@ export default {
     ],
   },
 
+  // The worries: listen to all three, Siti answers them together, then one drink carries the last answer.
   worries: {
     start: [
-      { who: 'Boon', text: 'Siti! Good. Sparky, keep the drinks coming. Everyone’s asking. Nobody’s ordering properly.' },
+      { who: 'Boon', text: 'Siti! Good. Sparky, everyone’s asking questions. Nobody’s ordering properly. Go and listen.' },
     ],
-    hint: 'Take each order, ask Siti, then bring the drink and her answer.',
+    hint: 'Listen to the regulars’ worries.',
     askSiti: 'Ask Siti',
-    list: [
+    sitiHint: 'Ask Siti what to tell them.',
+    listen: [
       {
-        id: 'water', who: 'AhPek', seat: 'AhPek',
-        order: { drink: 'kopi', milk: 'condensed', sugar: 'normal', ice: true },
-        ask: [{ who: 'AhPek', text: 'Kopi peng! More ice. Drink ice now, tomorrow maybe no water!' }],
-        siti: [{ who: 'Siti', text: 'Tell him: the water agreements with Johor stay. It’s written into the separation deal.' }],
-        after: [{ who: 'AhPek', text: 'Written down, ah? Hm. Okay. Ice still very nice.' }],
-        fact: {
-          title: 'Water from across the Causeway',
-          text: 'Much of Singapore’s water came from Johor. The Separation Agreement promised that the 1961 and 1962 water deals would carry on. Even so, Singapore spent decades learning to make more of its own water.',
-        },
+        id: 'water', who: 'AhPek',
+        lines: [{ who: 'AhPek', text: 'Johor turns off the tap, then how? We drink seawater? Tell me, bear. Somebody tell me!' }],
       },
       {
-        id: 'riots', who: 'Rohani', seat: 'Rohani',
-        order: { drink: 'teh', milk: 'C', sugar: 'siew dai', ice: false },
-        ask: [{ who: 'Rohani', text: 'Teh-C siew dai. (She says the Hokkien words carefully.) Ask Siti: will the riots come back?' }],
-        siti: [
-          { who: 'Siti', text: 'I don’t know. I won’t pretend I do. Last year I was scared of people I’d known all my life.' },
-          { who: 'Siti', text: 'But look who’s making her tea. A bear, for a Malay makcik, in a Chinese kopitiam. Tell her that.' },
-        ],
-        after: [{ who: 'Rohani', text: '(She looks at Ah Pek, then at Sparky, and laughs a little.) A bear. Okay. A bear I can trust.' }],
-        fact: {
-          title: 'The 1964 riots',
-          text: 'In July and September 1964, fights broke out between Chinese and Malay people in Singapore. 36 people were killed and hundreds were hurt. Families had to stay indoors during curfews. A year later, many still feared it could happen again.',
-        },
-      },
-      {
-        id: 'jobs', who: 'Letchumi', seat: 'Letchumi',
-        order: { drink: 'teh', milk: 'O', sugar: 'normal', ice: false },
-        ask: [
-          { who: 'Letchumi', text: 'Teh-O. (in Tamil) And the naval base? My son works there. What happens to his job?' },
+        id: 'jobs', who: 'Letchumi',
+        lines: [
+          { who: 'Letchumi', text: '(in Tamil) And the naval base? My son works there. What happens to his job?' },
           { who: 'Ravi', text: '(looking up from his comic) She’s asking about the naval base. Her son works there. Is his job gone?' },
         ],
-        siti: [{ who: 'Siti', text: 'The British bases are still here. Nothing closes today. Tell her: nothing closes today.' }],
-        after: [
-          { who: 'Ravi', text: '(in Tamil) {Amma|a respectful way to address a woman}, nothing closes today. The base is still there.' }, // review (Tamil)
-          { who: 'Letchumi', text: '{Nandri|thank you, in Tamil}. (She pats the stool beside her again. This time, Makcik Rohani sits down.)' }, // review
-        ],
-        fact: {
-          title: 'The British bases',
-          text: 'Thousands of Singaporeans worked at the British military bases. The bases stayed after 1965. In 1968 Britain announced it would leave, and its forces were gone by the end of 1971.',
-        },
       },
+      {
+        id: 'riots', who: 'Rohani',
+        lines: [
+          { who: 'Rohani', text: '{Teh-C|tea with evaporated milk}, {kurang manis|less sweet}, ya? And… ask Siti. Will the riots come back?' }, // review (Malay)
+          { who: 'Farid', text: 'Kurang manis is Malay. Here we say siew dai. Same thing, different word!' },
+        ],
+      },
+    ],
+    siti: [
+      { who: 'Siti', text: 'Ah Pek! The water deals with Johor stay. They’re written into the separation agreement.' },
+      { who: 'AhPek', text: 'Written down, ah? Hm. Okay.' },
+      { fact: 'water' },
+      { who: 'Siti', text: 'Ravi, tell Auntie: the British bases are still here. Nothing closes today.' },
+      { who: 'Ravi', text: '(in Tamil) {Amma|a respectful way to address a woman}, nothing closes today. The base is still there.' }, // review (Tamil)
+      { fact: 'bases' },
+      { who: 'Siti', text: '(quietly, to Sparky) Makcik’s question, I can’t answer. I won’t pretend I can.' },
+      { who: 'Siti', text: 'But look who’s making her tea. A bear, for a Malay makcik, in a Chinese kopitiam. Tell her that.' },
+    ],
+    facts: {
+      water: {
+        title: 'Water from across the Causeway',
+        text: 'Much of Singapore’s water came from Johor. The Separation Agreement promised that the 1961 and 1962 water deals would carry on. Even so, Singapore spent decades learning to make more of its own water.',
+      },
+      bases: {
+        title: 'The British bases',
+        text: 'Thousands of Singaporeans worked at the British military bases. The bases stayed after 1965. In 1968 Britain announced it would leave, and its forces were gone by the end of 1971.',
+      },
+    },
+    order: {
+      who: 'Rohani', seat: 'Rohani',
+      order: { drink: 'teh', milk: 'C', sugar: 'siew dai', ice: false },
+      correct: [{ who: 'Rohani', text: '(She looks at Ah Pek, then at Sparky, and laughs a little.) A bear. Okay. A bear I can trust.' }],
+      fact: {
+        title: 'The 1964 riots',
+        text: 'In July and September 1964, fights broke out between Chinese and Malay people in Singapore. 36 people were killed and hundreds were hurt. Families had to stay indoors during curfews. A year later, many still feared it could happen again.',
+      },
+    },
+    pat: [
+      { who: 'Letchumi', text: '(She catches Makcik Rohani’s eye and pats the stool beside her. Makcik smiles and lifts her cup.)' },
     ],
     done: [
       { who: 'Siti', text: '(quietly) That wasn’t so bad. No promises. Just the truth.' },
@@ -248,15 +249,13 @@ export default {
     ],
     crossOrder: {
       who: 'AhPek', seat: 'Letchumi',
-      order: { drink: 'teh', milk: 'C', sugar: 'siew dai', ice: false },
+      order: { drink: 'teh', milk: 'O', sugar: 'ga dai', ice: false },
       ask: [
-        { who: 'AhPek', text: 'Bear! Teh-C for the Tamil auntie. Siew dai. I asked her already. (He waves at Auntie Letchumi.)' },
-        { who: 'Letchumi', text: '(nodding, smiling) Siew dai!' },
+        { who: 'AhPek', text: 'Bear! Teh-O for the Tamil auntie. Ga dai, she likes it sweet. I asked her already. (He waves at Auntie Letchumi.)' },
+        { who: 'Letchumi', text: '(nodding, smiling) Ga dai!' },
       ],
       correct: [{ who: 'Boon', text: 'Wah. Now even Ah Pek is taking orders. Maybe I should pay him in kaya toast too.' }],
-      wrong: [{ who: 'AhPek', text: 'No lah! Teh-C, siew dai. I asked her properly, you know.' }],
     },
-    hint: 'One last order before the news.',
     tvCall: [
       { who: 'Boon', text: 'Quiet, everybody! It’s starting! Farid, turn it up!' },
     ],
@@ -364,9 +363,19 @@ export default {
 
   shopSign: { zh: '文记咖啡店', en: 'BOON KEE COFFEE SHOP' },
   nowSign: 'CORNER MINIMART',
+  // Queenstown today (Then & Now): the same shops, new trades. The block and its number are invented.
+  nowNeighbourSigns: { Tailor: ['ALTERATIONS', '改衣'], Provision: ['HAPPY EATING HOUSE', '快乐美食'], Bookshop: ['TCM CLINIC', '中医诊所'], Barber: ['HAIR SALON', '发廊'] },
+  blockNumber: 21,
+  heritageMarker: {
+    title: 'QUEENSTOWN',
+    lines: ['Singapore’s first satellite town.', 'Its first HDB flats were finished at Stirling Road in October 1960, months after the HDB was formed.'],
+  },
   neighbourSigns: { Tailor: ['裁缝', 'TAILOR'], Provision: ['杂货', 'PROVISIONS'], Bookshop: ['书局', 'BOOKSHOP'], Barber: ['理发', 'BARBER'] },
   newSign: ['BOON KEE COFFEE SHOP', '文记咖啡店', 'KEDAI KOPI BOON KEE', 'பூன் கீ காப்பிக் கடை'], // review (Malay, Tamil)
   notice: ['NO SPITTING', '请勿随地吐痰', 'DILARANG MELUDAH'], // review (Malay)
+  // A congratulations mirror from the shop's opening (a kopitiam custom) and a supplier's calendar poster (invented firm).
+  mirror: { main: '生意兴隆', to: '文记咖啡店 开张志庆', from: '友人敬贺' },
+  poster: { zh: '鸿发咖啡', en: 'HONG FATT COFFEE POWDER', year: '1965', tag: 'Kopi-O · Kopi · Teh' },
 
   captions: {
     'ceiling-fan': '[A ceiling fan whirs]',
@@ -416,6 +425,7 @@ export default {
     { title: 'Lee Kuan Yew’s press conference on 9 Aug 1965 (video)', publisher: 'Wikimedia Commons', url: 'https://commons.wikimedia.org/wiki/File:Lee_Kuan_Yew%27s_press_conference_on_9_Aug_1965.webm' },
     { title: 'Singapore separates from Malaysia and becomes independent', publisher: 'National Library Board, Infopedia', url: 'https://www.nlb.gov.sg/main/article-detail?cmsuuid=dc1efe7a-8159-40b2-9244-cdb078755013' },
     { title: 'Proclamation of Singapore', publisher: 'National Archives of Singapore', url: 'https://www.nas.gov.sg/archivesonline/speeches/record-details/740ab5e6-115d-11e3-83d5-0050568939ad' },
+    { title: 'Malay Broadcast of the Proclamation of Singapore, Radio Singapura, 9 August 1965 (listen; courtesy of Mediacorp)', publisher: 'National Archives of Singapore', url: 'https://www.nas.gov.sg/archivesonline/audiovisual_records/record-details/4d2cc138-1164-11e3-83d5-0050568939ad' },
     { title: 'The Straits Times, 10 August 1965', publisher: 'NewspaperSG, National Library Board', url: 'https://eresources.nlb.gov.sg/newspapers/digitised/issue/straitstimes19650810-1' },
     { title: 'Communal riots of 1964', publisher: 'National Library Board, Infopedia', url: 'https://www.nlb.gov.sg/main/article-detail?cmsuuid=3cb72867-1eec-4caa-96b2-365e1301cbb1' },
     { title: 'Water agreements', publisher: 'Ministry of Foreign Affairs, Singapore', url: 'https://www.mfa.gov.sg/about-mfa/key-issues/water-agreements/' },

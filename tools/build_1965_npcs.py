@@ -206,8 +206,8 @@ CAST_1965 = {
         face=dict(eye=0.82, eye_az=21, eye_el=-6, brow=dict(inner=-1.0, outer=-2.5, arch=0.8, r=1.2, sw='brow'),
                   mouth=dict(w=8.0, smile=1.5, el=-29), nose=1.05, blush=0.3, smile_lines=True, lids=True),
         outfit=dict(
-            top=dict(sw='singlet', hem=('hip', -0.02), ease=0.010, flare=1.04, sleeve=0.0,
-                     collar='singlet', top_z='armpit'),
+            top=dict(sw='singlet', hem=('hip', 0.035), ease=0.006, flare=1.0, sleeve=0.0,   # short: he sits all day
+                     collar='singlet', top_z=('armpit', 0.012)),
             lower=dict(type='trousers', sw='trousers', hem=('shin_mid', 0.0), top='waist', ease=0.008,
                        leg_ease=0.016, leg_flare=1.28),
             feet=dict(type='flipflops', sw='slipper', strap='sstrap'),

@@ -54,6 +54,7 @@ export class ChapterKit {
     let framedFor = null;
     for (const line of list) {
       if (this.aborted) throw new Error('aborted');
+      if (line.fact) { g.ui.toast(line.fact.title, line.fact.text, 11); continue; }
       if (line.who === 'Card') { g.ui.endDialogue(); await this.cardLine(line.text); continue; }
       if (line.who === 'Sparky') { await this.react(line.react); continue; }
       const style = line.who === 'Radio' ? 'radio' : (line.who === 'Narrator' ? 'narrator' : '');
@@ -107,6 +108,37 @@ export class ChapterKit {
   resume() {
     const g = this.game;
     g.rig.follow();
+    // Right next to someone (just served or talked)? Put the camera behind Sparky, looking past him
+    // towards them, so their body doesn't block the view and push the camera overhead.
+    const p = this.player?.root.position;
+    let near = null, best = 1.8;
+    if (p) for (const ch of Object.values(this.cast)) {
+      if (!ch.root.visible) continue;
+      const d = Math.hypot(ch.root.position.x - p.x, ch.root.position.z - p.z);
+      if (d < best) { best = d; near = ch; }
+    }
+    if (near && g.world) {
+      // Try angles around "looking past Sparky towards them"; keep the first with room behind him
+      // (no counter or wall) and nobody between the camera and Sparky.
+      const base = Math.atan2(near.root.position.x - p.x, near.root.position.z - p.z);
+      const head = this.player.headPosition(new THREE.Vector3());
+      const dir = new THREE.Vector3(), cam = new THREE.Vector3();
+      const pitch = 0.3, dist = g.rig.distance;
+      for (const off of [0, 0.6, -0.6, 1.1, -1.1, 1.6, -1.6, Math.PI]) {
+        const yaw = base + off;
+        dir.set(-Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), -Math.cos(yaw) * Math.cos(pitch));
+        if (g.world.rayDistance(head, dir, dist + 0.3) < dist) continue;
+        cam.copy(head).addScaledVector(dir, dist);
+        if (g.rig.blocked?.(cam, head, [this.player]) || g.rig.crowded?.(cam, [this.player])) continue;
+        // ...and Sparky's body (not just his head) is visible, e.g. not hidden behind the counter
+        const body = p.clone().setY(p.y + 0.5), toBody = body.sub(cam), len = toBody.length();
+        if (g.world.rayDistance(cam, toBody.normalize(), len) < len - 0.15) continue;
+        g.rig.yaw = yaw;
+        g.rig.pitch = pitch;
+        g.rig.placeFollow(true, g.world);
+        break;
+      }
+    }
     g.mode = 'play';
     g.input.requestLock();
   }
@@ -126,6 +158,7 @@ export class ChapterKit {
           g.ui.prompt(null);
           const line = list[this.barkIndex[key] % list.length];
           this.barkIndex[key]++;
+          this.chats = (this.chats || 0) + 1;
           if (ch.indicatorKind === 'chat') ch.indicator(null);
           g.mode = 'cutscene';
           await this.lines([line]);

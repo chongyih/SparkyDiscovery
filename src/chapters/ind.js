@@ -19,6 +19,8 @@ import * as D from './ind-decals.js';
 // Set: tools/build_kopitiam.py (kopitiam.glb). Cast: tools/build_1965_npcs.py.
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const _lv1 = new THREE.Vector3(), _lv2 = new THREE.Vector3();
+const _lq1 = new THREE.Quaternion(), _lq2 = new THREE.Quaternion(), _lq3 = new THREE.Quaternion(), _lq4 = new THREE.Quaternion(), _lqI = new THREE.Quaternion();
 const load = (k, fb) => { try { return JSON.parse(localStorage.getItem(k)) ?? fb; } catch { return fb; } };
 const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* ignore */ } };
 
@@ -69,7 +71,7 @@ const LIGHTING = {
   day: { bg: '#cfe0ea', fog: '#d9dfe0', near: 40, far: 220, top: '#7fa8c9', horizon: '#e6e2d2', bottom: '#a39d8f',
     hemi: ['#f4f1e6', '#7b7466', 1.25], sun: ['#fff0d6', 2.4], env: 0.35, lamps: 0.6,
     grade: { saturation: 0.95, sepia: 0, contrast: 1.05, vignette: 0.38 }, tint: [1, 1, 1] },
-  now: { bg: '#d5e6f2', fog: '#dde6ea', near: 40, far: 240, top: '#6fa3d6', horizon: '#eef0ea', bottom: '#a8a296',
+  now: { bg: '#d5e6f2', fog: '#dde6ea', near: 60, far: 620, top: '#6fa3d6', horizon: '#eef0ea', bottom: '#a8a296',
     hemi: ['#f6f7f2', '#7b7466', 1.3], sun: ['#fff6e6', 2.6], env: 0.4, lamps: 0.4,
     grade: { saturation: 1.05, sepia: 0, contrast: 1.05, vignette: 0.35 }, tint: [1, 1, 1] },
   evening: { bg: '#3e4660', fog: '#4a4a58', near: 25, far: 150, top: '#27324f', horizon: '#d98a5a', bottom: '#3a3530',
@@ -96,7 +98,7 @@ export class IndependenceChapter extends ChapterKit {
     const total = files.length + CROWD.length + 2;
     const prog = (i) => (p) => { steps[i] = p; onProgress?.(steps.reduce((a, b) => a + (b || 0), 0) / total); };
     const [level, sparky, ...rest] = await Promise.all([
-      loadModel('kopitiam', prog(0)), loadModel('sparky-ww2', prog(1)),
+      loadModel('kopitiam', prog(0)), loadModel('sparky-ind', prog(1)),
       ...files.map((f, i) => loadModel(f, prog(2 + i))),
       ...CROWD.map((c, i) => loadModel(c.file, prog(2 + files.length + i))),
     ]);
@@ -176,6 +178,7 @@ export class IndependenceChapter extends ChapterKit {
     root.updateMatrixWorld(true);
     this.nodes = {};
     root.traverse((o) => {
+      if (o.name === 'NOW_Train') this.trainBaseZ = o.position.z;
       const n = o.name || '';
       if (/^(DECAL_|WALL_|TV_Screen|FAN_\d$|THEN_|NOW_)/.test(n)) this.nodes[n] = o;
       if (n.startsWith('COL_')) {
@@ -220,11 +223,18 @@ export class IndependenceChapter extends ChapterKit {
     setTex('DECAL_ShopSign', D.shopSign(T.shopSign));
     setTex('DECAL_NowSign', D.nowSign(T.nowSign), true);
     Object.entries(T.neighbourSigns).forEach(([k, v], i) => setTex(`DECAL_Sign_${k}`, D.neighbourSign(v, i)));
+    Object.entries(T.nowNeighbourSigns).forEach(([k, v], i) => setTex(`DECAL_NowSign_${k}`, D.nowShopSign(v, i), true));
+    setTex('DECAL_NowBlockNo', D.blockNumber(T.blockNumber));
+    setTex('DECAL_NowMarker', D.heritageMarker(T.heritageMarker));
+    // Distant skyline and train: no shadows (the sun's shadow box only covers the block).
+    for (const k of ['NOW_Skyline', 'NOW_Train']) this.nodes[k]?.traverse((o) => { if (o.isMesh) { o.castShadow = false; o.receiveShadow = false; } });
     setTex('DECAL_OrderBoard', D.orderBoard(T.orderBoard));
     setTex('DECAL_Calendar', D.calendarPage());
     setTex('DECAL_Notice', D.notice(T.notice));
     setTex('DECAL_Portrait_AhMa', D.portrait('ahma'));
     setTex('DECAL_Portrait_Papa', this.heirlooms.includes('photo') ? D.portrait('papa') : D.fuDiamond());
+    setTex('DECAL_Mirror', D.congratsMirror(T.mirror));
+    setTex('DECAL_Poster', D.calendarPoster(T.poster));
     setTex('WALL_Newspaper', D.newspaper());
     setTex('WALL_Flag', D.flag());
     setTex('WALL_Sign', D.fourLanguageSign(T.newSign));
@@ -328,8 +338,13 @@ export class IndependenceChapter extends ChapterKit {
   setEra(era) {
     const now = era === 'now';
     for (const [n, o] of Object.entries(this.nodes)) {
-      if (n.startsWith('NOW_') || n === 'DECAL_NowSign') o.visible = now;
+      if (n.startsWith('NOW_') || n.startsWith('DECAL_Now')) o.visible = now;
       else if (n.startsWith('THEN_') || n === 'DECAL_ShopSign' || n.startsWith('DECAL_Sign_')) o.visible = !now;
+    }
+    // The 1965 kopitiam's own decals (inside the now open-fronted minimart) belong to the past.
+    for (const [n, o] of Object.entries(this.nodes)) {
+      if (!/^(DECAL_(OrderBoard|Calendar|Portrait|Notice|Mirror|Poster)|WALL_|TV_Screen)/.test(n)) continue;
+      if (now) { o.userData.thenVisible ??= o.visible; o.visible = false; } else if (o.userData.thenVisible !== undefined) { o.visible = o.userData.thenVisible; delete o.userData.thenVisible; }
     }
     this.world.applyStates(now ? ['now'] : ['then']);
     this.eraUniform.value = now ? 1 : 0;
@@ -486,7 +501,9 @@ export class IndependenceChapter extends ChapterKit {
     this.setEra('now');
     this.setLighting('now');
     const amb = g.audio.play('street', { volume: 0.35, loop: true, fadeIn: 2, caption: '[Traffic, voices, a scooter passing]' });
-    g.rig.viewfinder(eye, eye.clone().add(dirAt(pose.yaw + 0.45, pitch - 0.1)), true, 1.3);
+    // Start looking past the east end of the block (Dawson's towers, the MRT), then pan back to the shops.
+    this.trainT = 110;
+    g.rig.viewfinder(eye, eye.clone().add(dirAt(pose.yaw - 1.05, pitch - 0.16)), true, 1.3);
     await g.ui.fade(false, 1.2);
     await this.cardLine(X.card.text);
     await this.lines(X.before, { frame: false });
@@ -592,28 +609,35 @@ export class IndependenceChapter extends ChapterKit {
     await this.lines(T.morning.board, { frame: false });
     Farid.play('Idle');
     this.endBarks = this.setupBarks(T.barks);
-    g.ui.toast('Your camera', g.input.isTouch ? 'Tap the camera button (top right) any time to look closer and take photos.' : 'Press C (or right-click) any time to raise your camera, look closer and take photos.', 7);
     this.resume();
-    await this.serveOrder(T.orders.ahpek1, { first: true });
-    await this.serveOrder(T.orders.rohani1);
+    await this.serveOrder(T.orders.ahpek1);
+    g.objective(null);
+    g.ui.toast('Your camera', g.input.isTouch ? 'Tap the camera button (top right) any time to look closer and take photos.' : 'Press C (or right-click) any time to raise your camera, look closer and take photos.', 7);
+    // A breather before ten o'clock: a chat with a regular (or a few seconds of looking around).
+    g.objective(T.morning.lookAround);
+    this.resume();
+    const chats = this.chats || 0, t0 = g.time;
+    await g.waitUntil(() => g.mode === 'play' && ((this.chats || 0) > chats || g.time - t0 > 16));
     g.objective(null);
   }
 
   /** Take an order, (optionally ask Siti), make the drink at the counter, carry it over, serve. */
-  async serveOrder(spec, { first = false } = {}) {
+  async serveOrder(spec, { taken = false, ready = false } = {}) {
     const g = this.game;
     const who = this.cast[spec.who];
     const target = this.cast[spec.seat] || who;
     const name = this.nameOf(spec.who);
     const forName = this.nameOf(spec.seat || spec.who);   // who drinks it (the cross-order is for someone else)
     const words = spec.words || drinkName(spec.order);
-    // 1) Take the order.
-    who.indicator('important');
-    g.objective(`Take ${name}’s order.`, who);
-    this.resume();
-    await this.interactOnce(who, `Take ${name}’s order`);
-    who.indicator(null);
-    await this.lines(spec.ask);
+    // 1) Take the order (unless the customer already gave it).
+    if (!taken) {
+      who.indicator('important');
+      g.objective(`Take ${name}’s order.`, who);
+      this.resume();
+      await this.interactOnce(who, `Take ${name}’s order`);
+      who.indicator(null);
+      await this.lines(spec.ask);
+    }
     // 2) Worries: Siti has the answer.
     if (spec.siti) {
       const siti = this.cast.Siti;
@@ -624,13 +648,34 @@ export class IndependenceChapter extends ChapterKit {
       siti.indicator(null);
       await this.lines(spec.siti);
     }
+    // 3a) Boon has already poured it: collect it from the counter and take it over.
+    if (ready) {
+      const serve = this.marker('COUNTER_Serve');
+      g.objective(`Collect ${forName}’s ${words} from Boon.`, serve.pos);
+      this.resume();
+      await this.interactOnce(serve.pos, `Take the ${words}`, { radius: 1.6 });
+      this.cast.Boon.faceTowards(this.player.root.position);
+      g.audio.play('cup-clink', { volume: 0.6 });
+      this.carry(spec.order);
+      g.objective(`Bring the ${words} to ${forName}.`, target);
+      target.indicator('important');
+      this.resume();
+      await this.interactOnce(target, `Serve ${forName}`);
+      target.indicator(null);
+      this.putDown(target);
+      g.audio.play('pickup-chime', { volume: 0.5 });
+      g.objective(null);
+      await this.lines(spec.correct || spec.after || []);
+      if (spec.fact) g.ui.toast(spec.fact.title, spec.fact.text, 11);
+      return;
+    }
     // 3) Make it (again if needed) and serve.
     let attempts = 0;
     for (;;) {
       g.objective(`Make ${name}’s ${words} at the counter.`, this.marker('COUNTER_Serve').pos);
       this.resume();
       await this.interactOnce(this.marker('COUNTER_Serve').pos, 'Make the drink', { radius: 1.6 });
-      const d = await this.counter({ who: name, words }, spec.order, attempts > 0 || (first && false));
+      const d = await this.counter({ who: name, words }, spec.order, attempts > 0);
       this.carry(d);
       g.objective(`Bring the ${drinkName(d)} to ${forName}.`, target);
       target.indicator('important');
@@ -640,6 +685,7 @@ export class IndependenceChapter extends ChapterKit {
       this.putDown(target);
       if (sameDrink(d, spec.order)) {
         g.audio.play('pickup-chime', { volume: 0.5 });
+        g.objective(null);
         await this.lines(spec.correct || spec.after || []);
         if (spec.fact) g.ui.toast(spec.fact.title, spec.fact.text, 11);
         return;
@@ -659,12 +705,13 @@ export class IndependenceChapter extends ChapterKit {
     p.place(serve.pos, serve.yaw);
     p.play('Idle');
     const cup = this.marker('COUNTER_Cup').pos;
-    g.rig.cut(serve.pos.clone().add(V(-0.9, 1.35, 1.25)), cup.clone().add(V(0.3, 0.15, 0)), 5);
+    // From the aisle between tables T1 and T2 (Ah Pek sits at T1, right behind Sparky's left shoulder).
+    g.rig.cut(serve.pos.clone().add(V(0.8, 1.3, 1.15)), cup.clone().add(V(-0.1, 0.1, 0)), 5);
     this.cast.Boon.faceTowards(p.root.position);
     g.input.releaseLock();
     const d = await makeDrink({ ticket, target: want, hint, onTap: () => g.audio.play('ui-click', { caption: '' }) });
     g.audio.play('kopi-pour');
-    await g.wait(1.2);
+    await g.wait(1.6);
     g.audio.play('spoon-stir', { caption: '' });
     await g.wait(0.8);
     return d;
@@ -683,15 +730,19 @@ export class IndependenceChapter extends ChapterKit {
     if (!cup) return;
     this.player.root.remove(cup);
     this.carrying = null;
-    // Put it on the table in front of the customer.
+    this.placeCup(cup, ch);
+    this.cups.push(cup);
+    this.game.audio.play('cup-clink');
+  }
+
+  /** Put a cup on the table in front of a seated customer. */
+  placeCup(cup, ch) {
     const tableName = ch.seatName ? ch.seatName.replace(/^SEAT_(T\d)_.*/, 'TABLE_$1') : null;
     const top = tableName && this.m[tableName] ? this.marker(tableName).pos : ch.root.position.clone().add(V(0, 0.75, 0));
     const toward = ch.root.position.clone().sub(top).setY(0).normalize().multiplyScalar(0.2);
     cup.position.copy(top).add(toward).add(V(0, 0.005, 0));
     cup.scale.setScalar(1.25);
     this.scene.add(cup);
-    this.cups.push(cup);
-    this.game.audio.play('cup-clink');
   }
 
   removeLastCup() { const c = this.cups.pop(); if (c) this.scene.remove(c); }
@@ -712,8 +763,19 @@ export class IndependenceChapter extends ChapterKit {
     await g.wait(0.8);
     await this.lines(T.tenOClock.radio, { frame: false });
     st.stop(1);
-    g.rig.frameTwo(this.player, Rohani, { lambda: 2 });
-    await this.lines(T.tenOClock.react);
+    // While the camera was on the radio, Sparky comes to the middle of the room (wherever he was),
+    // so the reactions are framed the same way every time.
+    const mid = this.marker('COUNTER_Serve').pos.clone().add(V(1.0, 0, 1.3));
+    this.player.place(mid, Math.atan2(Rohani.root.position.x - mid.x, Rohani.root.position.z - mid.z));
+    this.player.play('Idle');
+    const R = T.tenOClock.react;
+    // Makcik understands first: close on her face. Then the room. Then Boon, to Sparky.
+    g.rig.frameOne(Rohani, { dist: 1.6, height: 0.02, angle: 0.4, lambda: 3 });
+    await this.lines(R.slice(0, 1), { frame: false });
+    const wide = this.marker('CAM_Wide');
+    g.rig.cut(wide.pos, wide.pos.clone().add(V(Math.sin(wide.yaw), -0.35, Math.cos(wide.yaw)).multiplyScalar(4)), 2.5, true);
+    await this.lines(R.slice(1, 3), { frame: false });
+    await this.lines(R.slice(3));
     Boon.play('Idle');
     this.ambMurmur && (this.ambMurmur.volume = 0.55);
   }
@@ -761,22 +823,53 @@ export class IndependenceChapter extends ChapterKit {
 
   async worriesBeat() {
     const g = this.game;
+    const X = T.worries;
     g.mode = 'cutscene';
-    await this.lines(T.worries.start);
-    for (const w of T.worries.list) await this.serveOrder(w);
-    // The payoff: Makcik Rohani goes to sit with Auntie Letchumi.
-    const { Rohani, Letchumi } = this.cast;
+    await this.lines(X.start);
+    // 1) Hear all three worries, in any order.
+    const left = X.listen.slice();
+    await new Promise((resolve) => {
+      const point = () => g.objective(`${X.hint} (${X.listen.length - left.length}/${X.listen.length})`, this.cast[left[0].who]);
+      for (const w of X.listen) {
+        const ch = this.cast[w.who];
+        ch.indicator('important');
+        const it = g.addInteract({
+          pos: () => ch.root.position, radius: 1.9, priority: 10, label: `Listen to ${this.nameOf(w.who)}`,
+          onUse: async () => {
+            g.removeInteract(it);
+            g.mode = 'cutscene';
+            g.ui.prompt(null);
+            ch.indicator(null);
+            await this.lines(w.lines);
+            left.splice(left.indexOf(w), 1);
+            if (!left.length) { resolve(); return; }
+            point();
+            this.resume();
+          },
+        });
+      }
+      point();
+      this.resume();
+    });
+    // 2) Siti answers what she can, out loud, and admits what she can't.
+    const siti = this.cast.Siti;
+    siti.indicator('important');
+    g.objective(X.sitiHint, siti);
+    this.resume();
+    await this.interactOnce(siti, X.askSiti);
+    siti.indicator(null);
+    g.objective(null);
+    await this.lines(X.siti.map((l) => (l.fact ? { fact: X.facts[l.fact] } : l)));
+    // 3) The one drink of the rush: Makcik Rohani's tea, and Siti's honest answer with it.
+    await this.serveOrder({ ...X.order, fact: null }, { taken: true, ready: true });
     g.mode = 'cutscene';
-    const seatB = this.marker('SEAT_T6_b');
-    Rohani.stop();
-    g.rig.frameTwo(Rohani, Letchumi, { lambda: 2 });
-    await Rohani.moveTo([V(-1.35, seatB.pos.y, -5.9), V(1.35, seatB.pos.y, -4.2), seatB.pos], { speed: Rohani.walkSpeed * 1.2 });
-    this.seat(Rohani, 'SEAT_T6_b');
-    await g.wait(0.6);
-    // A wide shot of the room: the regulars now sit together.
-    const wide = this.marker('CAM_Wide');
-    g.rig.cut(wide.pos, wide.pos.clone().add(V(Math.sin(wide.yaw), -0.35, Math.cos(wide.yaw)).multiplyScalar(4)), 2);
+    // The payoff: across the room, Auntie Letchumi pats the stool beside her; Makcik Rohani smiles back.
+    // (Nobody moves now; in the evening they sit together.)
+    g.ui.el.toast.classList.add('hidden');       // nothing over the payoff
+    g.rig.cut(V(1.0, 2.1, -9.6), V(0, 0.8, -4.7), 2, true);
+    await this.lines(X.pat, { frame: false });
     await this.lines(T.worries.done, { frame: false });
+    g.ui.toast(X.order.fact.title, X.order.fact.text, 11);
     g.objective(null);
   }
 
@@ -807,8 +900,12 @@ export class IndependenceChapter extends ChapterKit {
     await this.cardLine(T.evening.card.text);
     this.ambMurmur && (this.ambMurmur.volume = 0.8);
     await g.ui.fade(false, 1.0);
-    // Mr. Rajan arrives from the corridor and sits with his son.
+    // Mr. Rajan arrives from the corridor (the east side of the doorway, clear of the crowd) and sits with his son.
+    const fy = this.marker('RAJAN_Door').pos.y;
     this.stand(Rajan, 'RAJAN_Door');
+    Rajan.place(V(2.5, fy, -2.5));
+    this.player.place(V(1.35, fy, -3.25));
+    this.player.faceTowards(Rajan.root.position, true);
     Rajan.faceTowards(this.player.root.position, true);
     g.rig.frameTwo(this.player, Rajan, { lambda: 2 });
     await this.lines(T.evening.rajan);
@@ -825,12 +922,21 @@ export class IndependenceChapter extends ChapterKit {
     }
     if (this.kindness.has('water')) await this.lines(T.evening.water);
     // The last order of the day: Ah Pek orders for Auntie Letchumi.
+    // Boon pours it (no counter this time); Sparky takes it over.
     const x = T.evening.crossOrder;
-    await this.serveOrder({ ...x, words: 'Teh-C siew dai (for Auntie Letchumi)' });
+    g.mode = 'cutscene';
+    g.rig.frameTwo(AhPek, Letchumi, { lambda: 2.5 });
+    await this.lines(x.ask, { frame: false });
+    g.audio.play('kopi-pour');
+    await this.serveOrder({ ...x, words: 'Teh-O ga dai' }, { taken: true, ready: true });
     g.mode = 'cutscene';
     // Farid squeezes onto the bench next to Ravi.
     this.seat(Ravi, 'BENCH_2');
     this.seat(Farid, 'BENCH_1');
+    // The boys turn on the bench and look up at the set.
+    const tvp = this.marker('TV').pos;
+    for (const ch of [Ravi, Farid]) ch.place(ch.root.position, Math.atan2(tvp.x - ch.root.position.x, tvp.z - ch.root.position.z));
+    this.lookAt([Ravi, Farid], tvp);
     await this.lines(T.evening.tvCall);
     g.objective(null);
   }
@@ -844,9 +950,10 @@ export class IndependenceChapter extends ChapterKit {
     const tvM = this.marker('TV');
     const screenPos = tvM.pos;
     const f = V(Math.sin(tvM.yaw), 0, Math.cos(tvM.yaw));
-    const close = screenPos.clone().addScaledVector(f, 0.62).add(V(0, -0.03, 0));
-    const crowdCam = this.marker('CAM_TVCrowd');
-    const crowdLook = crowdCam.pos.clone().add(V(Math.sin(crowdCam.yaw), -0.3, Math.cos(crowdCam.yaw)).multiplyScalar(3));
+    const close = screenPos.clone().addScaledVector(f, 0.82).add(V(0, 0.04, 0));
+    // Reactions from the television's point of view: just under the set, looking back at the room.
+    const crowdCam = { pos: screenPos.clone().addScaledVector(f, 0.45).add(V(0, -0.6, 0)) };
+    const crowdLook = V(0.9, 1.05, -7.0);
     if (this.tvStatic) { g.audio.removeEmitter(this.tvStatic, 0.3); this.tvStatic = null; }
     this.ambience(false);
     this.lamps.forEach((l) => { l.intensity *= 0.6; });
@@ -864,15 +971,20 @@ export class IndependenceChapter extends ChapterKit {
       }
       if (crowdUntil && t > crowdUntil) { crowdUntil = 0; g.rig.cut(close, screenPos, 1.2); }
     };
+    // Every face in the room turns to the screen.
+    this.lookAt([...Object.values(this.cast), ...(this.crowd || [])].filter((c) => c.root.visible), screenPos);
     await this.tv.play({ label: X.label, credit: X.credit, skipLabel: X.skip, onTime });
     this.tv.standby(false);
     // His words later in the same press conference, over the silent room.
     g.rig.cut(crowdCam.pos, crowdLook, 1.2);
     await this.lines(X.after, { frame: false });
     // Sparky takes the photograph: everyone in front of the television.
-    const pos = this.marker('SEAT_T3_b').pos.clone().add(V(0.5, 0, 0.3));
+    // From the corner under the set, so the photo catches the faces turned to the screen.
+    // From the far corner under the set: the boys on the bench (still looking up at it) in the
+    // foreground, the room behind them.
+    const pos = V(4.1, this.marker('SEAT_T3_b').pos.y, -10.8);
     this.player.place(pos, 0);
-    const aim = V(0, 1.1, -4.5);
+    const aim = V(-0.4, 1.0, -6.0);
     g.objective(X.snapHint);
     const eye = this.player.headPosition().add(V(0, 0.1, 0));
     this.player.faceTowards(aim, true);
@@ -885,6 +997,7 @@ export class IndependenceChapter extends ChapterKit {
 
   async wallBeat() {
     const g = this.game;
+    this.lookAt([]);
     const X = T.wallChoice;
     const { Boon, Siti, Farid } = this.cast;
     g.mode = 'cutscene';
@@ -927,15 +1040,19 @@ export class IndependenceChapter extends ChapterKit {
     const g = this.game;
     const { Rajan, Farid } = this.cast;
     g.mode = 'cutscene';
-    const door = this.marker('RAJAN_Door');
+    // Mr. Rajan at the doorway, talking back to Boon; Farid and Sparky listening in the foreground.
+    const fy = this.marker('RAJAN_Door').pos.y;
     this.stand(Rajan, 'RAJAN_Door');
+    Rajan.place(V(-2.2, fy, -2.9));
     Rajan.faceTowards(this.cast.Boon.root.position, true);
     this.stand(Farid, 'CROWD_5');
-    Farid.faceTowards(door.pos, true);
-    this.player.place(this.marker('CROWD_6').pos, 0);
-    this.player.faceTowards(Farid.root.position, true);
-    g.rig.frameTwo(Farid, Rajan, { lambda: 2 });
-    await this.lines(T.coda);
+    Farid.place(V(-1.55, fy, -5.0));
+    Farid.faceTowards(Rajan.root.position, true);
+    this.player.place(V(-0.75, fy, -4.85), 0);
+    this.player.faceTowards(Rajan.root.position, true);
+    g.rig.cut(V(0.2, 1.5, -6.6), V(-2.2, 1.25, -2.9), 2, true);
+    await this.lines(T.coda.slice(0, 2), { frame: false });
+    await this.lines(T.coda.slice(2));
     // Back to the present.
     await g.tween(g.renderer.grade, { sepia: 1, saturation: 0 }, 2.5);
     this.ambience(false);
@@ -984,10 +1101,88 @@ export class IndependenceChapter extends ChapterKit {
   }
 
   // ------------------------------------------------------------------ per-frame
+  /** Turn these characters' heads towards a point (on top of their animation); lookAt([]) clears. */
+  lookAt(list, target = null) {
+    for (const L of this.looks || []) if (!list.includes(L.ch)) L.out = true;
+    const keep = (this.looks || []).filter((L) => !L.out || L.w > 0);
+    for (const ch of list) {
+      const L = keep.find((k) => k.ch === ch);
+      if (L) { L.target = target.clone(); L.out = false; } else keep.push({ ch, target: target.clone(), w: 0 });
+    }
+    this.looks = keep;
+  }
+
+  updateLooks(dt) {
+    if (!this.looks?.length) return;
+    for (const L of this.looks) {
+      L.w = THREE.MathUtils.clamp(L.w + (L.out ? -dt : dt) * 1.5, 0, 1);
+      if (!L.head) {
+        // The head bone's own forward axis, from the bind pose (models face +Z at bind).
+        L.ch.model?.traverse((o) => {
+          if (L.head || !o.isSkinnedMesh) return;
+          const i = o.skeleton.bones.findIndex((b) => b.name === 'head');
+          if (i < 0) return;
+          L.head = o.skeleton.bones[i];
+          const q = new THREE.Quaternion();
+          o.skeleton.boneInverses[i].clone().invert().decompose(new THREE.Vector3(), q, new THREE.Vector3());
+          L.fwd = new THREE.Vector3(0, 0, 1).applyQuaternion(q.invert());
+        });
+      }
+      const head = L.head;
+      if (!head || !L.w || !L.ch.root.visible) continue;
+      head.updateWorldMatrix(true, false);
+      const hp = head.getWorldPosition(_lv1);
+      const d = _lv2.copy(L.target).sub(hp).normalize();
+      // Limit the turn to what a neck can do, relative to the way the body faces.
+      let a = Math.atan2(d.x, d.z) - L.ch.yaw;
+      a = Math.atan2(Math.sin(a), Math.cos(a));
+      a = THREE.MathUtils.clamp(a, -1.1, 1.1);
+      const pitch = THREE.MathUtils.clamp(Math.asin(THREE.MathUtils.clamp(d.y, -1, 1)), -0.3, 0.6);
+      const y = L.ch.yaw + a;
+      d.set(Math.sin(y) * Math.cos(pitch), Math.sin(pitch), Math.cos(y) * Math.cos(pitch));
+      head.getWorldQuaternion(_lq2);
+      _lq1.setFromUnitVectors(_lv1.copy(L.fwd).applyQuaternion(_lq2).normalize(), d);
+      _lq1.copy(_lq4.copy(_lqI).slerp(_lq1, L.w * L.w * (3 - 2 * L.w)));
+      head.parent.getWorldQuaternion(_lq3).invert();
+      head.quaternion.copy(_lq3.multiply(_lq1).multiply(_lq2));
+    }
+    this.looks = this.looks.filter((L) => !(L.out && L.w <= 0));
+  }
+
+  /** While carrying a cup, Sparky's arms reach forward and his paws hold the saucer (on top of Walk/Idle). */
+  updateCarryArms(dt) {
+    const p = this.player;
+    if (!p) return;
+    this.carryW = THREE.MathUtils.clamp((this.carryW || 0) + (this.carrying ? dt : -dt) * 5, 0, 1);
+    if (!this.carryW) return;
+    this.carryArms ||= ['L', 'R'].map((sd) => ({ sd, bone: p.model.getObjectByName(`arm_${sd}`) })).filter((a) => a.bone);
+    const k = this.carryW * this.carryW * (3 - 2 * this.carryW);
+    p.root.updateMatrixWorld(true);
+    for (const a of this.carryArms) {
+      const b = a.bone;
+      b.updateWorldMatrix(true, false);
+      const sh = b.getWorldPosition(_lv1);
+      // paw target: under the saucer's rim, a little in front of the chest
+      const tgt = _lv2.set(a.sd === 'L' ? 0.1 : -0.1, 0.47, 0.25);
+      p.root.localToWorld(tgt);
+      b.getWorldQuaternion(_lq2);
+      const along = new THREE.Vector3(0, 1, 0).applyQuaternion(_lq2).normalize();
+      _lq1.setFromUnitVectors(along, tgt.sub(sh).normalize());
+      _lq1.copy(_lq4.copy(_lqI).slerp(_lq1, k));
+      b.parent.getWorldQuaternion(_lq3).invert();
+      b.quaternion.copy(_lq3.multiply(_lq1).multiply(_lq2));
+    }
+  }
+
   update(dt) {
+    this.updateLooks(dt);
+    this.updateCarryArms(dt);
     if (this.present?.active) this.present.update(dt);
     for (const f of this.fans) f.rotation.y += dt * (this.lighting === 'evening' ? 5 : 4.2);
     this.tv?.tickStatic();
+    // Today: an East-West Line train glides along the viaduct beyond the block.
+    const train = this.nodes?.NOW_Train;
+    if (train && this.era === 'now') { this.trainT = ((this.trainT || 0) + dt * 16) % 320; train.position.z = this.trainBaseZ + this.trainT - 150; }
     if (this.carrying) this.carrying.position.y = 0.52 + Math.sin(performance.now() / 180) * 0.006 * Math.min(1, this.player.speedNow);
   }
 

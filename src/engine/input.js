@@ -54,7 +54,9 @@ export class Input {
       if (isTouch) return;
       if (e.button === 2) { this.emit('camera'); return; }
       dragging = true;
-      if (this.lockWanted && !this.pointerLocked) { c.requestPointerLock?.()?.catch?.(() => {}); return; }
+      // The click that (re)captures the mouse also counts as a click, so a refused or slow pointer
+      // lock can never leave dialogue / the shutter unresponsive.
+      if (this.lockWanted && !this.pointerLocked) c.requestPointerLock?.()?.catch?.(() => {});
       this.emit('click');
     });
     addEventListener('mouseup', () => { dragging = false; });

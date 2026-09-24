@@ -665,9 +665,9 @@
   },
   "TV": {
    "three_pos": [
-    3.604,
-    2.5,
-    -11.047
+    3.758,
+    2.495,
+    -11.354
    ],
    "three_facing": [
     -0.584,
@@ -678,9 +678,9 @@
   },
   "SNAP_TV": {
    "three_pos": [
-    3.604,
-    2.5,
-    -11.047
+    3.758,
+    2.495,
+    -11.354
    ],
    "three_facing": [
     -0.584,
@@ -846,9 +846,9 @@
   },
   "RUMOUR_2": {
    "three_pos": [
-    4.2,
+    3.5,
     0.15,
-    -0.9
+    -1.7
    ],
    "three_facing": [
     1.0,
@@ -1236,6 +1236,48 @@
     -3.15
    ]
   },
+  "COL_Pier_1": {
+   "three_center": [
+    -13.5,
+    1.5,
+    -3.135
+   ]
+  },
+  "COL_Pier_2": {
+   "three_center": [
+    -9.0,
+    1.5,
+    -3.135
+   ]
+  },
+  "COL_Pier_3": {
+   "three_center": [
+    -4.5,
+    1.5,
+    -3.135
+   ]
+  },
+  "COL_Pier_4": {
+   "three_center": [
+    4.5,
+    1.5,
+    -3.135
+   ]
+  },
+  "COL_Pier_5": {
+   "three_center": [
+    9.0,
+    1.5,
+    -3.135
+   ]
+  },
+  "COL_Pier_6": {
+   "three_center": [
+    13.5,
+    1.5,
+    -3.135
+   ]
+  },
   "COL_Shopfront_1": {
    "three_center": [
     -11.25,
@@ -1262,6 +1304,13 @@
     11.25,
     1.5,
     -3.15
+   ]
+  },
+  "COL_Kitchen": {
+   "three_center": [
+    0.35,
+    1.5,
+    -12.15
    ]
   },
   "COL_Kopi_WallW": {
@@ -1349,13 +1398,55 @@
     "M_Decal"
    ]
   },
+  "DECAL_Mirror": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
   "DECAL_Notice": {
    "tris": 2,
    "materials": [
     "M_Decal"
    ]
   },
+  "DECAL_NowBlockNo": {
+   "tris": 6,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_NowMarker": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
   "DECAL_NowSign": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_NowSign_Barber": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_NowSign_Bookshop": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_NowSign_Provision": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_NowSign_Tailor": {
    "tris": 2,
    "materials": [
     "M_Decal"
@@ -1374,6 +1465,12 @@
    ]
   },
   "DECAL_Portrait_Papa": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_Poster": {
    "tris": 2,
    "materials": [
     "M_Decal"
@@ -1421,31 +1518,68 @@
     "M_Metal"
    ]
   },
-  "NOW_Kopitiam": {
-   "tris": 104,
-   "materials": [
-    "M_NowSigns",
-    "M_Glass",
-    "M_Metal"
-   ]
-  },
-  "NOW_Shops": {
-   "tris": 248,
-   "materials": [
-    "M_Glass",
-    "M_Metal"
-   ]
-  },
-  "NOW_Street": {
-   "tris": 1140,
+  "NOW_Facade": {
+   "tris": 1580,
    "materials": [
     "M_Plaster",
     "M_Cloth",
+    "M_NowSigns",
     "M_Metal"
    ]
   },
+  "NOW_Kopitiam": {
+   "tris": 462,
+   "materials": [
+    "M_Plaster",
+    "M_Timber",
+    "M_Cloth",
+    "M_Details",
+    "M_Metal",
+    "M_Emissive",
+    "M_Lacquer",
+    "M_NowShop"
+   ]
+  },
+  "NOW_Shops": {
+   "tris": 1442,
+   "materials": [
+    "M_Plaster",
+    "M_Details",
+    "M_NowSigns",
+    "M_Metal",
+    "M_Emissive",
+    "M_Lacquer",
+    "M_NowShop"
+   ]
+  },
+  "NOW_Skyline": {
+   "tris": 8366,
+   "materials": [
+    "M_Cloth",
+    "M_Glass",
+    "M_Far"
+   ]
+  },
+  "NOW_Street": {
+   "tris": 2708,
+   "materials": [
+    "M_Plaster",
+    "M_Cloth",
+    "M_Glass",
+    "M_Metal",
+    "M_Emissive"
+   ]
+  },
+  "NOW_Train": {
+   "tris": 120,
+   "materials": [
+    "M_Glass",
+    "M_Metal",
+    "M_Far"
+   ]
+  },
   "Kopitiam_Static": {
-   "tris": 5178,
+   "tris": 5560,
    "materials": [
     "M_Plaster",
     "M_Timber",
@@ -1457,7 +1591,7 @@
    ]
   },
   "THEN_Kopitiam": {
-   "tris": 3524,
+   "tris": 4342,
    "materials": [
     "M_Plaster",
     "M_Timber",
@@ -1466,7 +1600,8 @@
     "M_Details",
     "M_Glass",
     "M_Metal",
-    "M_Emissive"
+    "M_Emissive",
+    "M_Lacquer"
    ]
   },
   "THEN_Laundry": {
@@ -1496,7 +1631,7 @@
    ]
   },
   "TV_Screen": {
-   "tris": 2,
+   "tris": 216,
    "materials": [
     "M_Screen"
    ]
@@ -1527,7 +1662,7 @@
   }
  },
  "tris": {
-  "mobile": 12020,
-  "desktop": 12318
+  "mobile": 26640,
+  "desktop": 26938
  }
 }

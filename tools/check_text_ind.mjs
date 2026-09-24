@@ -17,7 +17,7 @@ const words = (s) => plain(s).trim().split(/\s+/).length;
 })(text, 'text');
 
 for (const [k, c] of Object.entries(text.snaps)) words(c.text) > 40 && problems.push(`snaps.${k}: ${words(c.text)} words`);
-text.worries.list.forEach((w) => words(w.fact.text) > 45 && problems.push(`worries.${w.id}.fact: ${words(w.fact.text)} words`));
+[...Object.entries(text.worries.facts), ['order', text.worries.order.fact]].forEach(([id, f]) => words(f.text) > 45 && problems.push(`worries.${id}.fact: ${words(f.text)} words`));
 
 console.log(problems.length ? problems.join('\n') : 'ind-text.js OK');
 console.log('snap words:', Object.fromEntries(Object.entries(text.snaps).map(([k, c]) => [k, words(c.text)])));

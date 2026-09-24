@@ -62,6 +62,7 @@ export class Game {
     // near/far kept tight for depth precision (a huge far/near ratio causes z-fighting flicker).
     this.camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.12, 1500);
     this.rig = new CameraRig(this.camera);
+    this.rig.blockers = () => (this.player ? [...this.npcs, this.player] : this.npcs); // people who can block a framed shot
     this.time = 0;
     this.timers = [];
     this.waiters = [];
@@ -379,7 +380,8 @@ export class Game {
   /** Shared panel in two modes: in-game pause menu, or plain settings over the title screen. */
   setPanelMode(fromTitle) {
     $('pause').classList.toggle('from-title', fromTitle);
-    $('pause-kicker').textContent = fromTitle ? 'Sparky Discovery' : 'Game paused';
+    const meta = this.chapter?.T?.meta || this.chapter?.meta;
+    $('pause-kicker').textContent = fromTitle ? 'Sparky Discovery' : (meta ? `Chapter ${meta.chapter} · ${meta.title}` : 'Sparky Discovery');
     $('pause-title').textContent = fromTitle ? 'Settings' : 'Paused';
     $('btn-resume').textContent = fromTitle ? 'Done' : 'Resume';
     this.showSettingsTab('settings');

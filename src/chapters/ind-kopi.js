@@ -11,6 +11,12 @@ export const OPTIONS = {
   ice: [[false, 'hot', 'hot'], [true, 'peng', 'iced']],
 };
 const ROW_LABEL = { drink: 'Drink', milk: 'Milk', sugar: 'Sugar', ice: 'Ice' };
+// Little visual for each choice (colour swatch / sugar cubes / steam or ice).
+const SWATCH = {
+  drink: { kopi: '#4a2a17', teh: '#a4562a' },
+  milk: { condensed: '#f1e2bf', O: null, C: '#fbf6ea' },
+  sugar: { kosong: 0, 'siew dai': 1, normal: 2, 'ga dai': 3 },
+};
 
 /** Kopitiam name of a drink: e.g. { kopi, O, kosong } → "Kopi-O kosong". */
 export function drinkName(d) {
@@ -28,28 +34,99 @@ export function sameDrink(a, b) {
 
 const CSS = `
 body.kopi-open #objective,body.kopi-open #prompt,body.kopi-open #compass,body.kopi-open #toast{visibility:hidden}
-.kopi{position:fixed;inset:0;z-index:36;display:flex;align-items:flex-end;justify-content:center;padding:0 12px calc(12px + var(--safe-b));pointer-events:none}
-.kopi-panel{pointer-events:auto;width:min(760px,100%);background:rgba(24,19,13,.92);border:1px solid rgba(255,248,234,.22);border-radius:18px;padding:14px 16px 16px;color:#fff8ea;box-shadow:0 14px 40px rgba(0,0,0,.5);font-family:Inter,system-ui,sans-serif}
-.kopi-top{display:flex;gap:12px;align-items:stretch;margin-bottom:10px}
-.kopi-ticket{flex:1;background:#f3e9d6;color:#2a1d08;border-radius:10px;padding:8px 12px;font:600 14px/1.3 Inter,system-ui,sans-serif;position:relative}
-.kopi-ticket b{display:block;font:700 22px/1.2 Gelasio,Georgia,serif;margin-top:2px}
-.kopi-ticket small{color:#6a5840;font-weight:600}
-.kopi-now{min-width:190px;text-align:center;border:1px dashed rgba(232,182,76,.6);border-radius:10px;padding:8px 10px}
-.kopi-now small{display:block;color:rgba(255,248,234,.65);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.kopi-now b{display:block;font:700 22px/1.25 Gelasio,Georgia,serif;color:#f4cf7a}
-.kopi-row{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:8px;margin:6px 0}
-.kopi-row>span{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,248,234,.7)}
-.kopi-opts{display:flex;flex-wrap:wrap;gap:6px}
-.kopi-opt{border:1px solid rgba(255,248,234,.3);background:rgba(255,248,234,.06);color:#fff8ea;border-radius:999px;padding:7px 12px;font:600 14px Inter,system-ui,sans-serif;display:flex;gap:6px;align-items:baseline;transition:background .15s,border-color .15s,transform .1s}
-.kopi-opt em{font-style:normal;font-size:11px;color:rgba(255,248,234,.65);font-weight:600}
-.kopi-opt.on{background:linear-gradient(180deg,#f4cf7a,#e8b64c);color:#2a1d08;border-color:transparent}
+.kopi{position:fixed;inset:0;z-index:36;display:flex;align-items:flex-end;justify-content:center;padding:0 12px calc(12px + var(--safe-b));pointer-events:none;animation:kopiIn .22s ease-out}
+@keyframes kopiIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.kopi-panel{pointer-events:auto;width:min(860px,100%);display:grid;grid-template-columns:230px 1fr;gap:14px;background:linear-gradient(180deg,rgba(38,30,21,.96),rgba(24,19,13,.96));border:1px solid rgba(232,182,76,.35);border-radius:20px;padding:14px;color:#fff8ea;box-shadow:0 18px 50px rgba(0,0,0,.55);font-family:Inter,system-ui,sans-serif}
+.kopi-left{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.kopi-chit{position:relative;background:#f6ecd4;color:#2a1d08;border-radius:4px 4px 10px 10px;padding:10px 12px 12px;transform:rotate(-1.2deg);box-shadow:0 4px 10px rgba(0,0,0,.35);background-image:repeating-linear-gradient(180deg,transparent 0 21px,rgba(60,90,140,.13) 21px 22px)}
+.kopi-chit:before{content:'';position:absolute;left:50%;top:-6px;width:34px;height:12px;margin-left:-17px;background:rgba(232,182,76,.75);border-radius:2px}
+.kopi-chit small{display:block;font:700 10px/1.2 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7a6446}
+.kopi-chit b{display:block;font:700 21px/1.15 Gelasio,Georgia,serif;margin-top:4px}
+.kopi-cup{position:relative;flex:1;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;border-radius:14px;background:radial-gradient(ellipse at 50% 85%,rgba(232,182,76,.18),transparent 70%)}
+.kopi-cup svg{width:160px;height:auto;overflow:visible}
+.kopi-cup svg *{transition:fill .25s,opacity .25s,transform .25s}
+.kopi-name{font:700 19px/1.2 Gelasio,Georgia,serif;color:#f4cf7a;text-align:center;margin-top:4px;min-height:23px;white-space:nowrap;max-width:100%;overflow:hidden}
+.kopi-right{display:flex;flex-direction:column;gap:11px;min-width:0}
+.kopi-row{display:grid;grid-template-columns:78px 1fr;align-items:center;gap:8px}
+.kopi-row>span{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,248,234,.62)}
+.kopi-opts{display:flex;flex-wrap:wrap;gap:9px}
+.kopi-opt{position:relative;border:1px solid rgba(255,248,234,.22);background:rgba(255,248,234,.05);color:#fff8ea;border-radius:12px;padding:6px 11px 6px 8px;font:700 14px Inter,system-ui,sans-serif;display:flex;gap:8px;align-items:center;text-align:left;transition:background .15s,border-color .15s,transform .1s,box-shadow .15s;cursor:pointer}
+.kopi-opt:hover{background:rgba(255,248,234,.1)}
+.kopi-opt .ic{flex:none;width:22px;height:22px;display:grid;place-items:center}
+.kopi-opt .tx{display:flex;flex-direction:column;line-height:1.1}
+.kopi-opt em{font-style:normal;font-size:11px;color:rgba(255,248,234,.6);font-weight:600}
+.kopi-opt.on{background:linear-gradient(180deg,#f7d98c,#e8b64c);color:#2a1d08;border-color:transparent;box-shadow:0 3px 10px rgba(232,182,76,.35)}
 .kopi-opt.on em{color:#5a4210}
-.kopi-opt.hint{box-shadow:0 0 0 3px rgba(120,200,255,.8)}
+.kopi-opt.hint{box-shadow:0 0 0 3px rgba(120,200,255,.85)}
+.kopi-opt.hint:after{content:'';position:absolute;right:-4px;top:-4px;width:10px;height:10px;border-radius:50%;background:#78c8ff}
 .kopi-opt:active{transform:scale(.96)}
-.kopi-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}
-.kopi-foot p{margin:0;font-size:12px;color:rgba(255,248,234,.7)}
-@media (max-height:480px){.kopi-panel{padding:10px 12px}.kopi-row{margin:3px 0}.kopi-opt{padding:5px 10px;font-size:13px}.kopi-ticket b,.kopi-now b{font-size:18px}}
+.kopi-opt:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.kopi-sw{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.55)}
+.kopi-sw.none{background:transparent;position:relative}
+.kopi-sw.none:after{content:'';position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;margin-left:-1px;background:rgba(255,255,255,.7);transform:rotate(45deg)}
+.kopi-opt.on .kopi-sw{border-color:rgba(42,29,8,.5)}
+.kopi-opt.on .kopi-sw.none:after{background:rgba(42,29,8,.6)}
+.kopi-cubes{display:flex;gap:2px;align-items:center;min-width:22px;justify-content:center}
+.kopi-cubes i{width:6px;height:6px;border-radius:1.5px;background:currentColor;opacity:.85}
+.kopi-cubes .z{font:700 12px Inter;opacity:.7}
+.kopi-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;gap:10px;padding-top:4px}
+.kopi-foot p{margin:0;font-size:12px;color:rgba(255,248,234,.62);line-height:1.35}
+.kopi-go{min-width:120px;font-size:16px !important}
+@media (max-width:760px),(max-height:540px){
+.kopi{padding:0 8px calc(8px + var(--safe-b))}
+.kopi-panel{grid-template-columns:164px 1fr;gap:12px;padding:10px 12px;border-radius:16px}
+.kopi-chit{padding:7px 9px 8px}.kopi-chit b{font-size:15px}.kopi-chit small{font-size:9px}
+.kopi-cup{min-height:0}.kopi-cup svg{width:112px}.kopi-name{font-size:15px;min-height:19px}
+.kopi-right{gap:6px}.kopi-row{grid-template-columns:1fr;gap:3px}.kopi-row>span{font-size:9px;letter-spacing:.1em}
+.kopi-opts{gap:7px;flex-wrap:nowrap}.kopi-opt{padding:4px 8px 4px 5px;font-size:12px;border-radius:10px;gap:5px;white-space:nowrap}.kopi-opt .ic{height:18px}
+.kopi-sw{width:15px;height:15px}.kopi-opt em{display:none}.kopi-foot p{display:none}.kopi-go{min-width:0;padding:7px 18px !important;font-size:15px !important}}
+@media (max-width:480px) and (orientation:portrait){.kopi-panel{grid-template-columns:1fr}.kopi-left{flex-direction:row}.kopi-chit{flex:1}.kopi-cup{flex:0 0 110px}}
 `;
+
+/** Sugar cubes beside the saucer (a little stack), or a dashed outline for kosong. */
+function sugarSVG(n) {
+  const cube = (x, y) => `<g transform="translate(${x} ${y})" stroke="#7d6a48" stroke-width="1.2" stroke-linejoin="round">
+    <path d="M0 5 L7 1 L15 5 L8 9 Z" fill="#ffffff"/><path d="M0 5 L8 9 L8 19 L0 15 Z" fill="#efe6d2"/><path d="M8 9 L15 5 L15 15 L8 19 Z" fill="#d7c9aa"/></g>`;
+  if (!n) return '<g transform="translate(126 110)" fill="none" stroke="rgba(255,248,234,.45)" stroke-width="1.4" stroke-dasharray="3 2"><path d="M0 5 L7 1 L15 5 L15 15 L8 19 L0 15 Z"/></g>';
+  const spots = [[124, 111], [139, 111], [131, 97]].slice(0, n);
+  return spots.map(([x, y]) => cube(x, y)).join('');
+}
+
+/** The drink as it is being made: an opaque kopitiam cup showing the surface colour, or (iced) a
+ *  glass where the condensed milk has settled at the bottom. Sugar cubes sit beside it. */
+function cupSVG(d) {
+  const mixed = LIQUID[`${d.drink}|${d.milk}`] || '#8a5a3a';
+  const sugar = sugarSVG(SWATCH.sugar[d.sugar] ?? 2);
+  if (d.ice) {
+    const dark = d.drink === 'teh' ? '#9a4a1c' : '#3e2213';
+    const top = d.milk === 'condensed' ? dark : mixed;
+    const grad = d.milk === 'condensed'
+      ? `<stop offset="0" stop-color="${top}"/><stop offset=".62" stop-color="${top}"/><stop offset=".74" stop-color="#d9c29a"/><stop offset="1" stop-color="#f3e6c6"/>`
+      : `<stop offset="0" stop-color="${top}"/><stop offset="1" stop-color="${top}"/>`;
+    return `<svg viewBox="0 0 160 140" aria-hidden="true"><defs><clipPath id="kc"><path d="M34 32 L86 32 L81 122 Q60 128 39 122 Z"/></clipPath>
+      <linearGradient id="kg" x1="0" y1="0" x2="0" y2="1">${grad}</linearGradient></defs>
+      <ellipse cx="60" cy="128" rx="34" ry="5" fill="rgba(0,0,0,.25)"/>
+      <rect x="20" y="44" width="80" height="90" fill="url(#kg)" clip-path="url(#kc)"/>
+      ${d.milk === 'C' ? '<path d="M40 50 q12 -5 20 2 q10 7 22 -1" fill="none" stroke="rgba(255,250,240,.55)" stroke-width="3" clip-path="url(#kc)"/>' : ''}
+      <g fill="rgba(245,252,255,.7)" stroke="rgba(255,255,255,.95)" stroke-width="1.2"><rect x="42" y="38" width="16" height="16" rx="3" transform="rotate(-12 50 46)"/><rect x="60" y="44" width="16" height="16" rx="3" transform="rotate(18 68 52)"/><rect x="50" y="58" width="15" height="15" rx="3" transform="rotate(6 57 65)"/></g>
+      <path d="M34 32 L86 32 L81 122 Q60 128 39 122 Z" fill="rgba(220,240,245,.12)" stroke="rgba(235,248,252,.85)" stroke-width="3"/>
+      <path d="M40 40 L44 116" stroke="rgba(255,255,255,.35)" stroke-width="3" stroke-linecap="round"/>
+      ${sugar}</svg>`;
+  }
+  const swirl = d.milk === 'condensed' ? '<path d="M44 60 q10 -4 18 0 q9 4 16 -1" fill="none" stroke="rgba(245,225,185,.55)" stroke-width="2.5"/>'
+    : d.milk === 'C' ? '<path d="M44 60 q10 -4 18 0 q9 4 16 -1" fill="none" stroke="rgba(255,250,240,.7)" stroke-width="2.5"/>' : '';
+  return `<svg viewBox="0 0 160 140" aria-hidden="true">
+    <g stroke="rgba(255,248,234,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"><path d="M48 44 q-6 -9 0 -18 q6 -9 0 -18"/><path d="M62 44 q-6 -9 0 -18 q6 -9 0 -18"/><path d="M76 44 q-6 -9 0 -18 q6 -9 0 -18"/></g>
+    <ellipse cx="60" cy="124" rx="52" ry="11" fill="rgba(0,0,0,.22)"/>
+    <ellipse cx="60" cy="120" rx="50" ry="10" fill="#e9e3d6"/><ellipse cx="60" cy="117" rx="40" ry="6" fill="#f6f2e8"/>
+    <path d="M94 70 q20 2 16 20 q-4 14 -22 10" fill="none" stroke="#f3efe6" stroke-width="7"/>
+    <path d="M24 57 L96 57 L89 108 Q60 122 31 108 Z" fill="#f6f2e8" stroke="#d8d0bf" stroke-width="1.5"/>
+    <path d="M30 70 L36 104" stroke="rgba(255,255,255,.8)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M25 64 L95 64" stroke="#3f7a5a" stroke-width="3"/>
+    <ellipse cx="60" cy="58" rx="35" ry="6" fill="#f6f2e8" stroke="#d8d0bf" stroke-width="1.5"/>
+    <ellipse cx="60" cy="58.5" rx="31" ry="4.6" fill="${mixed}"/>${swirl}
+    ${sugar}</svg>`;
+}
 
 function ensureCSS() {
   if (document.getElementById('kopi-css')) return;
@@ -69,25 +146,40 @@ export function makeDrink({ ticket, target, hint = false, onTap }) {
   const root = document.createElement('div');
   root.className = 'kopi';
   root.innerHTML = `<div class="kopi-panel" role="dialog" aria-label="Make the drink">
-    <div class="kopi-top">
-      <div class="kopi-ticket"><small>${ticket.who} ordered</small><b>${ticket.words}</b></div>
-      <div class="kopi-now"><small>You're making</small><b class="kopi-name"></b></div>
+    <div class="kopi-left">
+      <div class="kopi-chit"><small>Order · ${ticket.who}</small><b>${ticket.words}</b></div>
+      <div class="kopi-cup"><div class="kopi-svg"></div><div class="kopi-name" aria-live="polite"></div></div>
     </div>
-    <div class="kopi-rows"></div>
-    <div class="kopi-foot"><p>Kopi & teh come with sweet condensed milk unless you choose otherwise.</p><button class="btn primary small kopi-go">Pour!</button></div>
+    <div class="kopi-right">
+      <div class="kopi-rows"></div>
+      <div class="kopi-foot"><p>Kopi and teh come with sweet condensed milk unless you choose otherwise.</p><button class="btn primary kopi-go">Pour ☕</button></div>
+    </div>
   </div>`;
   const rows = root.querySelector('.kopi-rows');
   const nameEl = root.querySelector('.kopi-name');
+  const svgEl = root.querySelector('.kopi-svg');
   const buttons = [];
+  const icon = (key, val) => {
+    if (key === 'drink' || key === 'milk') {
+      const c = SWATCH[key][val];
+      return c ? `<span class="kopi-sw" style="background:${c}"></span>` : '<span class="kopi-sw none"></span>';
+    }
+    if (key === 'sugar') {
+      const n = SWATCH.sugar[val];
+      return `<span class="kopi-cubes">${n ? '<i></i>'.repeat(n) : '<span class="z">0</span>'}</span>`;
+    }
+    return val ? '❄️' : '♨️';
+  };
   for (const [key, opts] of Object.entries(OPTIONS)) {
     const row = document.createElement('div');
     row.className = 'kopi-row';
-    row.innerHTML = `<span>${ROW_LABEL[key]}</span><div class="kopi-opts"></div>`;
+    row.innerHTML = `<span>${ROW_LABEL[key]}</span><div class="kopi-opts" role="radiogroup" aria-label="${ROW_LABEL[key]}"></div>`;
     const wrap = row.querySelector('.kopi-opts');
     for (const [val, label, gloss] of opts) {
       const b = document.createElement('button');
       b.className = 'kopi-opt';
-      b.innerHTML = `${label}<em>${gloss}</em>`;
+      b.setAttribute('role', 'radio');
+      b.innerHTML = `<span class="ic">${icon(key, val)}</span><span class="tx">${label}<em>${gloss}</em></span>`;
       b.onclick = () => { state[key] = val; onTap?.(); refresh(); };
       b._key = key; b._val = val;
       wrap.appendChild(b);
@@ -97,10 +189,16 @@ export function makeDrink({ ticket, target, hint = false, onTap }) {
   }
   const refresh = () => {
     for (const b of buttons) {
-      b.classList.toggle('on', state[b._key] === b._val);
-      b.classList.toggle('hint', hint && target && target[b._key] === b._val && state[b._key] !== b._val);
+      const on = state[b._key] === b._val;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-checked', on ? 'true' : 'false');
+      b.classList.toggle('hint', hint && target && target[b._key] === b._val && !on);
     }
     nameEl.textContent = drinkName(state);
+    // keep the name on one line: shrink it for the longest combinations (e.g. "Kopi-C siew dai peng")
+    nameEl.style.fontSize = '';
+    for (let fs = parseFloat(getComputedStyle(nameEl).fontSize); nameEl.scrollWidth > nameEl.clientWidth && fs > 11; fs -= 1) nameEl.style.fontSize = `${fs - 1}px`;
+    svgEl.innerHTML = cupSVG(state);
   };
   refresh();
   document.body.appendChild(root);

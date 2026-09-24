@@ -7,9 +7,9 @@ import { settings, onSettings } from '../engine/settings.js';
 // The picture lives only on the TV screen in the kopitiam; subtitles and the credit are HTML.
 
 const CSS = `
-.tv-sub{position:fixed;left:50%;bottom:calc(9vh + var(--safe-b));transform:translateX(-50%);max-width:min(86vw,900px);padding:10px 18px;border-radius:10px;background:rgba(10,8,6,.78);color:#fff8ea;font:600 clamp(16px,2.4vw,24px)/1.35 Inter,system-ui,sans-serif;text-align:center;z-index:30;pointer-events:none;transition:opacity .25s}
+.tv-sub{position:fixed;left:50%;bottom:calc(max(9vh, 74px) + var(--safe-b));transform:translateX(-50%);max-width:min(86vw,900px);padding:10px 18px;border-radius:10px;background:rgba(10,8,6,.78);color:#fff8ea;font:600 clamp(16px,2.4vw,24px)/1.35 Inter,system-ui,sans-serif;text-align:center;z-index:30;pointer-events:none;transition:opacity .25s}
 .tv-sub.off{opacity:0}
-.tv-credit{position:fixed;left:calc(14px + var(--safe-l));bottom:calc(10px + var(--safe-b));max-width:min(60vw,560px);color:rgba(255,248,234,.72);font:500 12px/1.3 Inter,system-ui,sans-serif;z-index:30;pointer-events:none;text-shadow:0 1px 2px #000}
+.tv-credit{position:fixed;left:calc(14px + var(--safe-l));bottom:calc(12px + var(--safe-b));max-width:min(56vw,520px);color:rgba(255,248,234,.72);font:500 11px/1.3 Inter,system-ui,sans-serif;z-index:30;pointer-events:none;text-shadow:0 1px 2px #000}
 .tv-label{position:fixed;left:50%;top:calc(14px + var(--safe-t));transform:translateX(-50%);color:rgba(255,248,234,.85);font:600 13px/1.3 Inter,system-ui,sans-serif;letter-spacing:.04em;z-index:30;pointer-events:none;text-shadow:0 1px 2px #000;text-align:center}
 .tv-skip{position:fixed;right:calc(16px + var(--safe-r));bottom:calc(14px + var(--safe-b));z-index:31;padding:9px 16px;border-radius:999px;border:1px solid rgba(255,248,234,.35);background:rgba(20,16,11,.72);color:#fff8ea;font:600 13px Inter,system-ui,sans-serif;overflow:hidden}
 .tv-skip i{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(232,182,76,.45);pointer-events:none}
@@ -32,8 +32,9 @@ export class TV {
     this.texture = new THREE.VideoTexture(v);
     this.texture.colorSpace = THREE.SRGBColorSpace;
     this.texture.flipY = false; // glTF UVs on the screen quad
-    this.off = new THREE.MeshBasicMaterial({ color: 0x0c0d0d });
-    this.on = new THREE.MeshBasicMaterial({ map: this.texture, toneMapped: false });
+    // Switched off: dark grey-green glass that still catches the lamps.
+    this.off = new THREE.MeshStandardMaterial({ color: 0x1b211f, roughness: 0.18, metalness: 0.1 });
+    this.on = crt(new THREE.MeshBasicMaterial({ map: this.texture, toneMapped: false }));
     if (screenMesh) screenMesh.material = this.off;
     this.cues = [];
     loadJSON('video/lky-1965-en.json').then((c) => { this.cues = c || []; });
@@ -66,7 +67,7 @@ export class TV {
       this.staticCtx = c.getContext('2d');
       this.staticTex = new THREE.CanvasTexture(c);
       this.staticTex.flipY = false;
-      this.staticMat = new THREE.MeshBasicMaterial({ map: this.staticTex, toneMapped: false });
+      this.staticMat = crt(new THREE.MeshBasicMaterial({ map: this.staticTex, toneMapped: false }));
     }
     this.screen.material = this.staticMat;
   }
@@ -149,6 +150,19 @@ export class TV {
     removeEventListener('keydown', this.unlock);
     document.querySelectorAll('.tv-sub,.tv-credit,.tv-label,.tv-skip').forEach((e) => e.remove());
   }
+}
+
+/** A 1960s picture tube: faint scanlines, darker rounded corners, a little glow in the middle. */
+function crt(mat) {
+  mat.onBeforeCompile = (sh) => {
+    sh.fragmentShader = sh.fragmentShader.replace('#include <map_fragment>', `#include <map_fragment>
+      vec2 q = vMapUv - 0.5;
+      float scan = 0.9 + 0.1 * sin(vMapUv.y * 900.0);
+      float vig = smoothstep(0.62, 0.28, length(q * vec2(1.0, 1.15)));
+      diffuseColor.rgb = diffuseColor.rgb * scan * mix(0.55, 1.08, vig) + vec3(0.015, 0.02, 0.02);`);
+  };
+  mat.customProgramCacheKey = () => 'crt';
+  return mat;
 }
 
 function el(tag, cls, html = '') {

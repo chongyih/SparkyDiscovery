@@ -78,18 +78,20 @@ changes each rush:** routine → orders carrying worries → customers ordering 
    the block!"
 1. Then & Now 20 s. Queenstown today → the block, 9 Aug 1965. The block with ground-floor shops is invented;
    the research found no shops in the Stirling Road blocks, so no real block is named.
-2. Morning rush 25 s: **2 orders** (tutorial). Everyday 1965 chatter (prices, Konfrontasi, Malaysian
+2. Morning rush 25 s: **1 order** (tutorial), then a moment to chat with the regulars. Everyday 1965 chatter (prices, Konfrontasi, Malaysian
    dollars). Customers sit apart by community.
 3. 10 a.m. 15 s: the counter radio (on Radio Singapura's Malay service, for Makcik Rohani's songs) breaks in
    with the Proclamation. It's the real Malay recording, the only 1965 one known to survive. Makcik understands first. Cups stop mid-sip. Boon freezes:
    "Every time the news changes, someone disappears." (His papa, 1942.)
 4. Errand 15 s: Boon sends Sparky along the shop corridor to fetch Siti. On the way, ambient rumours
    echo Ch1 ("No more water from tomorrow!", "The army from KL is coming!"). Siti hesitates, then comes.
-5. Worries rush 30 s: **3 orders, each with a worry** half-heard in another language. Siti answers
-   from her corner table; Sparky delivers drink + answer; chairs start turning towards each other.
+5. Worries 30 s: Sparky **listens to three worries** (one half-heard in Tamil, translated by Ravi). Siti answers the
+   water and bases questions aloud and admits she can't answer the riots one. Boon pours Makcik Rohani's teh-C and Sparky carries
+   it over with that honest answer; Auntie Letchumi pats the stool beside her and Makcik smiles back (in the evening they share a table).
    Fact cards: water (the Separation Agreement kept the water deals), the British bases, the riots/jobs.
 6. Evening + TV 30 s: the whole block crowds in. One quick **cross-order** (a Hokkien uncle orders
-   teh-C for the Tamil auntie). Then the press conference: the "moment of anguish" and "This is not a
+   teh-O ga dai for the Tamil auntie; Boon pours, Sparky delivers). Only the morning order uses the
+   counter (playtest: more felt repetitive). Then the press conference: the "moment of anguish" and "This is not a
    Malay nation, this is not a Chinese nation, this is not an Indian nation." Hold on faces.
 7. **Choice: something for the wall** 10 s. Boon: "Today needs to go on the wall, bear."
    - the next day's newspaper (Siti's newspaper thread; ST 10 Aug 1965 headline "Singapore is out", confirmed)
@@ -107,6 +109,11 @@ characters appear in the evening crowd with a line.
 
 **Built (branch `ch2-independence`):** set `tools/build_kopitiam.py` → `kopitiam.glb`; cast `tools/build_1965_npcs.py`;
 code `src/chapters/ind*.js`. If no family photo was saved in 1942, a red 福 diamond hangs in Papa's frame.
+Sparky wears a 1965 kopitiam-helper outfit (`tools/build_sparky_1965.py` → `sparky-ind.glb`): pale-blue cotton shirt,
+pencil in the pocket, khaki shorts, canvas shoes, a striped face towel over the shoulder, no hood. Boon's TV is a
+1960s walnut table set (curved screen behind a gold mask, speaker grille, rabbit ears) with a CRT shader on the picture.
+The Then & Now opens on present-day Queenstown (research §14): the repainted block, parked cars, Dawson-style towers and
+an East-West Line train, then the player pans back to the shops.
 
 **Ch3 seeds:** only **Farid (16, helps at the counter)** and **Ravi (Mr. Rajan's son)** are planted:
 separate tables all day, side by side on the bench at the TV, not speaking. Ah Hock and the Eurasian
@@ -200,7 +207,7 @@ the first intake's passing out; training only began 11 Sep 1967]**.
   (= three.js +Z) in their rest pose.
 
 ## Asset outputs (all under `public/assets/`)
-- `models/sparky-ww2.glb`, `models/sparky-ns.glb`, `models/sparky.glb` — optimised Sparky.
+- `models/sparky-ww2.glb`, `models/sparky-ind.glb`, `models/sparky-ns.glb`, `models/sparky.glb` — optimised Sparky.
 - `models/ww2-street.glb` — the level, with named marker empties and colliders (see level contract).
 - `models/npc-*.glb` — NPCs.
 - `audio/*.mp3` — audio (mp3 for iOS Safari compatibility).

@@ -3,6 +3,7 @@ import { settings } from './settings.js';
 
 const tmp = new THREE.Vector3();
 const tmp2 = new THREE.Vector3();
+const headV = new THREE.Vector3();
 const dirV = new THREE.Vector3();
 
 /**
@@ -73,6 +74,36 @@ export class CameraRig {
   }
 
   /** Is the straight line between two points clear of level geometry? */
+  /** Is someone (other than `except`) standing in the line of sight from `pos` to `target`? */
+  blocked(pos, target, except) {
+    const people = this.blockers?.();
+    if (!people) return false;
+    const sx = target.x - pos.x, sz = target.z - pos.z, sy = target.y - pos.y;
+    const len2 = sx * sx + sz * sz;
+    if (len2 < 1e-4) return false;
+    for (const c of people) {
+      if (!c?.root?.visible || except.includes(c)) continue;
+      const q = c.root.position;
+      const t = ((q.x - pos.x) * sx + (q.z - pos.z) * sz) / len2;
+      if (t < 0.05 || t > 0.95) continue;
+      const y = pos.y + sy * t;
+      if (Math.hypot(pos.x + sx * t - q.x, pos.z + sz * t - q.z) < 0.34 && y > q.y && y < c.headPosition(headV).y + 0.18) return true;
+    }
+    return false;
+  }
+
+  /** Would a camera at `pos` be standing inside someone (other than `except`)? */
+  crowded(pos, except) {
+    const people = this.blockers?.();
+    if (!people) return false;
+    for (const c of people) {
+      if (!c?.root?.visible || except.includes(c)) continue;
+      const q = c.root.position;
+      if (Math.hypot(pos.x - q.x, pos.z - q.z) < 0.6 && pos.y < c.headPosition(headV).y + 0.35) return true;
+    }
+    return false;
+  }
+
   clear(a, b) {
     if (!this.world) return true;
     dirV.copy(b).sub(a);
@@ -113,9 +144,14 @@ export class CameraRig {
     let best = null;
     const consider = (pos, bonus = 0) => {
       this.safePos(pos, look);
-      const seesA = this.clear(pos, pa), seesB = this.clear(pos, pb);
+      const seesA = this.clear(pos, pa) && !this.blocked(pos, pa, [a, b]);
+      const seesB = this.clear(pos, pb) && !this.blocked(pos, pb, [a, b]);
       const room = Math.min(pos.distanceTo(look), d);
-      const score = (seesA && seesB ? 3 : (seesA || seesB ? 1 : 0)) + room / (d * 4) + bonus;
+      // Prefer angles that see faces (seated people can't turn to the camera): mostly b's, the speaker's.
+      const face = (ch, p) => Math.max(0, Math.sin(ch.yaw) * (pos.x - p.x) + Math.cos(ch.yaw) * (pos.z - p.z)) / Math.max(0.01, Math.hypot(pos.x - p.x, pos.z - p.z));
+      // A camera standing inside someone would hide them (near-lens rule): avoid those spots.
+      const inside = this.crowded(pos, [a, b]) ? 2.5 : 0;
+      const score = (seesA && seesB ? 3 : (seesA || seesB ? 1 : 0)) + room / (d * 4) + bonus + 0.6 * face(b, pb) + 0.15 * face(a, pa) - inside;
       if (!best || score > best.score) best = { pos, score };
     };
     // Side-on two-shots (good in the open road)…

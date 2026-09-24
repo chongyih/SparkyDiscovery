@@ -642,34 +642,84 @@ def build_conversions_1965():
     convert('tv-static.ogg', 'tv-static', 22050, 48, loop=True)
 
 
+def tv_peak(x, fn, q, db, rate, step=32):
+    """Peaking EQ whose centre frequency fn(t in 0..1) glides, keeping filter state (no clicks)."""
+    y = [0.0] * len(x)
+    x1 = x2 = y1 = y2 = 0.0
+    n = len(x)
+    A = 10 ** (db / 40)
+    for s0 in range(0, n, step):
+        w = TAU * fn(s0 / n) / rate
+        cw, sw = math.cos(w), math.sin(w)
+        al = sw / (2 * q)
+        a0 = 1 + al / A
+        b0, b1, b2 = (1 + al * A) / a0, -2 * cw / a0, (1 - al * A) / a0
+        a1, a2 = -2 * cw / a0, (1 - al / A) / a0
+        for i in range(s0, min(n, s0 + step)):
+            v = x[i]
+            o = b0 * v + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2
+            x2, x1, y2, y1 = x1, v, y1, o
+            y[i] = o
+    return y
+
+
+def bubble(r_mm, rate, rng):
+    """One air bubble in liquid: a damped sine at the Minnaert frequency, chirping upwards as it rises."""
+    f0 = 3260.0 / r_mm                       # Minnaert: ~3.26 m·Hz / radius
+    d = 0.043 * f0 + 0.0014 * f0 ** 1.5      # damping (van den Doel)
+    rise = 0.1 * f0 * rng.uniform(1.0, 3.0)  # Hz per second of upward glide
+    m = int(min(0.08, 6.0 / d) * rate)
+    ph = 0.0
+    out = []
+    for i in range(m):
+        t = i / rate
+        ph += TAU * (f0 + rise * t * 40) / rate
+        out.append(math.sin(ph) * math.exp(-d * t))
+    return out
+
+
 def synth_kopi_pour():
-    """Kopi poured from a long-spouted pot into a thick cup: a hissing stream whose resonance rises as the cup fills."""
+    """Kopi poured from a long-spouted pot into a thick cup: a stream full of little bubbles, the cup's
+    ring rising as it fills, the stream thinning to a few last drips."""
     r = 44100; rng = random.Random(1965)
-    n = int(1.5 * r)
-    nz = noise(n, rng)
-    wob = smooth_noise(n, r, 18, rng)
+    dur, stream = 1.75, 1.4                   # total length, time the stream runs
+    n = int(dur * r)
     buf = [0.0] * n
-    # Filter in short blocks so the resonant (cup cavity) frequency can glide upwards.
-    blk = 512
-    for b0 in range(0, n, blk):
-        t = b0 / n
-        f = 380 + 900 * t ** 0.8
-        seg = biquad(nz[b0:b0 + blk + 64], 'bp', f * (1 + 0.06 * wob[b0]), 5.0, r)[:blk]
-        for i, v in enumerate(seg):
-            if b0 + i < n:
-                buf[b0 + i] += v * 1.2
-    hiss = biquad(noise(n, rng), 'hp', 2500, 0.7, r)
+
+    def density(t):                            # bubbles per second: fast attack, thins at the end
+        if t < 0.05:
+            return 520 * t / 0.05
+        if t < stream - 0.25:
+            return 520
+        return max(0.0, 520 * (stream - t) / 0.25)
+    # 1) bubbles (a Poisson stream; smaller bubbles are more common and quieter)
+    t = 0.0
+    while t < stream:
+        t += rng.expovariate(520)               # constant-rate stream, thinned by density()
+        if t >= stream or rng.random() > density(t) / 520:
+            continue
+        r_mm = math.exp(rng.uniform(math.log(0.9), math.log(4.5)))
+        add(buf, bubble(r_mm, r, rng), int(t * r), 0.12 * (r_mm / 2.5) ** 0.8)
+    # 2) the stream itself: splashy broadband noise that flutters
+    fl = smooth_noise(n, r, 45, rng)
+    sp = biquad(biquad(noise(n, rng), 'hp', 500, 0.7, r), 'lp', 3200, 0.7, r)
     for i in range(n):
-        t = i / r
-        env = min(1, t / 0.06) * min(1, (1.5 - t) / 0.18)
-        buf[i] = (buf[i] + 0.08 * hiss[i]) * env
-    # A few bubbly "blips" near the end.
-    for k in range(6):
-        at = int((0.7 + 0.12 * k + 0.05 * rng.random()) * r)
-        f = 900 + 500 * rng.random()
-        m = int(0.03 * r)
-        add(buf, [math.sin(TAU * (f + 4000 * i / r) * i / r) * math.exp(-120 * i / r) for i in range(m)], at, 0.12)
-    emit('kopi-pour', norm_peak(fade(buf, r, 0.01, 0.1), -5), r, 64)
+        tt = i / r
+        env = min(1.0, tt / 0.04) * (1.0 if tt < stream - 0.2 else max(0.0, (stream - tt) / 0.2))
+        buf[i] += sp[i] * env * (0.05 + 0.03 * fl[i])
+    # 3) the cup: its air column shortens as it fills, so the ring rises (~500 Hz -> ~1.7 kHz)
+    buf = tv_peak(buf, lambda u: 500 + 1200 * min(1.0, u * dur / stream) ** 1.3, 4.0, 12.0, r)
+    buf = biquad(buf, 'hp', 180, 0.7, r)
+    # 4) a first splash as the stream hits the empty cup, then the last drips
+    m = int(0.06 * r)
+    splash = biquad(noise(m, rng), 'bp', 1800, 0.9, r)
+    add(buf, [v * math.exp(-60 * i / r) for i, v in enumerate(splash)], 0, 0.35)
+    for k, at in enumerate((stream + 0.07, stream + 0.2, stream + 0.29)):
+        add(buf, bubble(rng.uniform(1.4, 2.2), r, rng), int(at * r), 0.16 - 0.03 * k)
+    # a touch of room (the kopitiam's tiled walls)
+    wet = convolve(buf, room_ir(r, 0.35, 0.3, rng, bright=5000), r)[:n]
+    out = [d + 0.18 * w for d, w in zip(buf, wet)]
+    emit('kopi-pour', norm_peak(fade(out, r, 0.004, 0.08), -4), r, 80)
 
 
 def synth_cup_clink():
