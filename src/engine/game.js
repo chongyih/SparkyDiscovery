@@ -379,7 +379,7 @@ export class Game {
   /** Shared panel in two modes: in-game pause menu, or plain settings over the title screen. */
   setPanelMode(fromTitle) {
     $('pause').classList.toggle('from-title', fromTitle);
-    $('pause-kicker').textContent = fromTitle ? 'Sparky Discovery' : 'Game paused';
+    $('pause-kicker').textContent = fromTitle ? 'Footsteps of a Nation' : 'Game paused';
     $('pause-title').textContent = fromTitle ? 'Settings' : 'Paused';
     $('btn-resume').textContent = fromTitle ? 'Done' : 'Resume';
     this.showSettingsTab('settings');
@@ -434,7 +434,7 @@ export class Game {
       this.time += dt;
       this.update(dt);
     } else dt = 0;
-    this.renderer.render(dt);
+    if (!this.skipRender) this.renderer.render(dt); // the title skips it while a still covers the canvas
     if (this.statsEl) this.updateStats(now);
   }
 

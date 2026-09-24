@@ -1,4 +1,4 @@
-# Sparky Discovery — One Roll of Film
+# Footsteps of a Nation: A Singapore Story
 
 A Three.js browser game: Sparky the plush bear steps through an old box camera into three days that
 shaped Singapore — 1942, 1965 and 1967. Plays on desktop (keyboard/mouse or gamepad) and phones

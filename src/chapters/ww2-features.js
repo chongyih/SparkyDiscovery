@@ -32,7 +32,7 @@ export function setEra(c, era) {
   c.refreshShadows();
 }
 
-function thenNowPose(c) {
+export function thenNowPose(c) {
   if (c.m.THEN_NOW_Camera) {
     // Step forward into the middle of the arch bay: the marker sits right beside an arcade
     // column, which fills the view (and clips) when the player turns toward the road.

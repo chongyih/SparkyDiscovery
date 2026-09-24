@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import { Game } from './engine/game.js';
 import { WW2Chapter } from './chapters/ww2.js';
 import T from './chapters/ww2-text.js';
+import { thenNowPose } from './chapters/ww2-features.js';
+import { capturePhoto } from './engine/album.js';
+import { settings } from './engine/settings.js';
 
 const $ = (id) => document.getElementById(id);
 const game = new Game($('game'));
@@ -72,6 +75,26 @@ async function loadChapter(opts = {}) {
   return chapter;
 }
 
+/** Mr. Boon's 1942 frame for the title's chapter print, from the same viewpoint as the Then & Now photo. */
+function developTitlePrint() {
+  const img = $('print-1942');
+  if (img.src) return;
+  const cam = game.rig.camera, fov = cam.fov, targetFov = game.rig.targetFov;
+  const pose = thenNowPose(chapter);
+  const eye = pose.pos.clone();
+  const grade = { ...game.renderer.grade };
+  Object.assign(game.renderer.grade, { sepia: 0, saturation: 1, vignette: 0, flash: 0 });
+  chapter.player.root.visible = false;
+  game.rig.viewfinder(eye, eye.clone().add(new THREE.Vector3(Math.sin(pose.yaw), -0.04, Math.cos(pose.yaw))), true);
+  game.rig.update(0, null, null);
+  game.renderer.renderer.shadowMap.needsUpdate = true;
+  game.renderer.render(0);
+  img.src = capturePhoto(game.canvas, { size: 384 });
+  chapter.player.root.visible = true;
+  Object.assign(game.renderer.grade, grade);
+  cam.fov = fov; game.rig.targetFov = targetFov; cam.updateProjectionMatrix();
+}
+
 /** Title: the 1942 street as a slowly drifting sepia photograph behind the menu. */
 function showTitle() {
   game.mode = 'menu';
@@ -83,6 +106,7 @@ function showTitle() {
   chapter.placeCast();
   const sp = chapter.marker('SPAWN_Sparky');
   const fwd = new THREE.Vector3(Math.sin(sp.yaw), 0, Math.cos(sp.yaw));
+  developTitlePrint();
   const g = game.renderer.grade;
   Object.assign(g, { sepia: 0.75, saturation: 0.35, vignette: 0.75, contrast: 1.05, flash: 0 });
   let t = 0;
@@ -91,16 +115,95 @@ function showTitle() {
     t += dt;
     // Slow drift above the middle of the road, looking down the street.
     const x = sp.pos.x + fwd.x * (4 + Math.sin(t * 0.05) * 3);
-    game.rig.cut(new THREE.Vector3(x, 2.8 + Math.sin(t * 0.07) * 0.3, Math.sin(t * 0.04) * 0.8), new THREE.Vector3(x + fwd.x * 14, 2.6, 0), 0.6);
+    game.rig.cut(new THREE.Vector3(x, 2.8 + Math.sin(t * 0.07) * 0.3, Math.sin(t * 0.04) * 0.8), new THREE.Vector3(x + fwd.x * 14, 2.6, 0), 0.6, t === dt);
   });
   hideLoading();
-  $('title').classList.remove('hidden');
-  $('title-hint').textContent = `${T.contentNote} Best played with sound.`;
-  $('btn-begin').focus();
+  const title = $('title');
+  title.classList.toggle('intro', !settings.reduceMotion);
+  document.body.classList.toggle('calm', settings.reduceMotion);
+  // Drop the intro once it has played, so re-showing the prints doesn't replay the deal delays.
+  clearTimeout(title.introT);
+  title.introT = setTimeout(() => title.classList.remove('intro'), 3200);
+  title.classList.remove('hidden');
+  selectChapter(selected.id);
+  showBackdrop(0);
+  $('btn-begin').focus({ preventScroll: true });
 }
+
+// ---------------- Title chapter select + backdrop cycle ----------------
+// Only Chapter 1 is playable in this build; the others can be picked to preview them.
+const TITLE_CHAPTERS = [
+  { id: 'ww2', n: 1, place: 'Chinatown', when: 'Chinatown · February 1942', blurb: 'Bombs are falling on the city everyone called a fortress.', note: T.contentNote, playable: true },
+  { id: 'ind', n: 2, place: 'Queenstown', when: 'Queenstown · 9 August 1965', blurb: 'Separated from Malaysia overnight, a worried island must stand on its own.' },
+  { id: 'ns', n: 3, place: 'Taman Jurong', when: 'Taman Jurong Camp · 1967–68', blurb: 'The first national servicemen report for duty. Few families want them to go.' },
+].map((c) => ({ ...c, year: document.querySelector(`.print[data-chapter="${c.id}"] .print-yr`).textContent }));
+let selected = TITLE_CHAPTERS[0];
+const prints = [...document.querySelectorAll('.print[data-chapter]')];
+
+function selectChapter(id, { focus = false } = {}) {
+  selected = TITLE_CHAPTERS.find((c) => c.id === id);
+  prints.forEach((p) => {
+    const on = p.dataset.chapter === id;
+    p.setAttribute('aria-checked', on);
+    p.tabIndex = on ? 0 : -1;
+    if (on && focus) p.focus();
+  });
+  $('ci-kicker').textContent = `Chapter ${selected.n} · ${selected.when}`;
+  $('ci-blurb').textContent = selected.blurb;
+  const info = document.querySelector('.chapter-info');
+  info.classList.remove('swap'); void info.offsetWidth; info.classList.add('swap');
+  $('title-note').classList.toggle('hidden', !selected.note);
+  $('title-hint').textContent = selected.note || '';
+  const b = $('btn-begin');
+  b.disabled = !selected.playable;
+  b.textContent = selected.playable ? 'Begin' : 'Coming soon';
+}
+
+// The backdrop steps through the chapters: 1942 is the live street (the canvas behind), the others
+// are stills. Picking a print jumps to its chapter; the cycle carries on from there.
+const backdrop = { i: 0, timer: 0, idle: 0 };
+function showBackdrop(i) {
+  backdrop.i = i;
+  const ch = TITLE_CHAPTERS[i];
+  document.querySelectorAll('.backdrop').forEach((el) => el.classList.toggle('on', el.dataset.chapter === ch.id));
+  // Skip rendering the 3D street while a still fully covers it (after its fade-in).
+  clearTimeout(backdrop.idle);
+  game.skipRender = false;
+  if (ch.id !== 'ww2') backdrop.idle = setTimeout(() => { game.skipRender = true; }, 1800);
+  const cap = $('backdrop-caption');
+  cap.classList.add('swap');
+  setTimeout(() => { cap.textContent = `${ch.place}, ${ch.year}`; cap.classList.remove('swap'); }, 400);
+  clearTimeout(backdrop.timer);
+  backdrop.timer = setTimeout(() => showBackdrop((i + 1) % TITLE_CHAPTERS.length), 9000);
+}
+function stopBackdrops() {
+  clearTimeout(backdrop.timer);
+  clearTimeout(backdrop.idle);
+  game.skipRender = false;
+  document.querySelectorAll('.backdrop').forEach((el) => el.classList.remove('on'));
+}
+
+prints.forEach((p, i) => {
+  p.onclick = () => {
+    selectChapter(p.dataset.chapter);
+    if (backdrop.i !== i) showBackdrop(i);
+    // Small screens pick from an overlay: close it once the choice has registered.
+    if ($('chapter-list').classList.contains('open')) setTimeout(() => showPrints(false), 350);
+  };
+  // Radio-group keys: arrows move the selection.
+  p.onkeydown = (e) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!step) return;
+    e.preventDefault();
+    const next = prints[(i + step + prints.length) % prints.length];
+    selectChapter(next.dataset.chapter, { focus: true });
+    showBackdrop(prints.indexOf(next));
+  };
+});
 
 async function begin(opts = {}) {
   $('title').classList.add('hidden');
+  stopBackdrops();
   game.audio.unlock();
   titleSpin?.();
   titleSpin = null;
@@ -115,10 +218,18 @@ async function begin(opts = {}) {
   chapter.run().catch((e) => { if (e?.message !== 'aborted') console.error(e); });
 }
 
-$('btn-begin').onclick = () => { game.album.clearChapter('ww2'); begin(); };
-$('btn-chapters').onclick = () => $('chapter-list').classList.toggle('hidden');
+$('btn-begin').onclick = () => { if (!selected.playable) return; game.album.clearChapter(selected.id); begin(); };
+// Small screens only: the prints open over the title (on larger ones they're always shown).
+function showPrints(open) {
+  $('chapter-list').classList.toggle('open', open);
+  $('btn-chapters').setAttribute('aria-expanded', open);
+  (open ? document.querySelector('.print[aria-checked="true"]') : $('btn-chapters')).focus();
+}
+$('btn-chapters').onclick = () => showPrints(true);
+$('btn-prints-back').onclick = () => showPrints(false);
+$('chapter-list').addEventListener('click', (e) => { if (e.target === e.currentTarget) showPrints(false); });
+game.input.on('pause', () => { if (game.mode === 'menu' && $('chapter-list').classList.contains('open') && !game.titleSettings) showPrints(false); });
 $('btn-settings-title').onclick = () => game.showTitleSettings(true);
-document.querySelectorAll('.chapter-card[data-chapter]').forEach((b) => { b.onclick = () => { game.album.clearChapter('ww2'); begin({ skipPrologue: true, fresh: true }); }; });
 
 game.onRestart = () => begin({ skipPrologue: true, fresh: true });
 game.onQuit = () => location.reload();

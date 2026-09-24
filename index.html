@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#1b1712" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <title>Sparky Discovery — One Roll of Film</title>
+  <title>Footsteps of a Nation: A Singapore Story</title>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
@@ -15,7 +15,7 @@
   <div id="loading" class="screen">
     <div class="dv-safelight" aria-hidden="true"></div>
     <div class="loading-inner">
-      <p class="dv-eyebrow">Sparky Discovery</p>
+      <p class="dv-eyebrow">Footsteps of a Nation</p>
       <!-- A print developing in a darkroom tray: darkest tones emerge first (see --p). -->
       <div class="dv-tray" aria-hidden="true">
         <div class="dv-print">
@@ -173,21 +173,41 @@
 
   <!-- Title -->
   <div id="title" class="screen hidden">
+    <!-- Backdrop cycles through the chapters: the live 1942 street (the canvas), then stills of the others. -->
+    <div class="backdrops" aria-hidden="true">
+      <div class="backdrop" data-chapter="ind" style="background-image: url(/assets/title/1965-kopitiam.jpg)"></div>
+      <div class="backdrop" data-chapter="ns" style="background-image: url(/assets/title/1967-camp.jpg)"></div>
+    </div>
+    <p class="backdrop-caption" id="backdrop-caption" aria-hidden="true"></p>
     <div class="title-inner">
-      <p class="eyebrow">Sparky Discovery</p>
-      <h1>One Roll of Film</h1>
-      <p class="tagline">Three photographs. Three days that shaped Singapore.</p>
+      <h1>Footsteps of a Nation<span class="subtitle">A Singapore Story</span></h1>
+      <div class="chapter-info" aria-live="polite">
+        <p class="ci-kicker" id="ci-kicker"></p>
+        <p class="ci-blurb" id="ci-blurb"></p>
+      </div>
       <div class="menu">
         <button id="btn-begin" class="btn primary">Begin</button>
-        <button id="btn-chapters" class="btn">Chapters</button>
+        <button id="btn-chapters" class="btn" aria-controls="chapter-list" aria-expanded="false">Chapters</button>
         <button id="btn-settings-title" class="btn">Settings</button>
       </div>
-      <div id="chapter-list" class="chapter-list hidden">
-        <button class="chapter-card" data-chapter="ww2"><span class="yr">1942</span><span>The Fortress Falls</span></button>
-        <button class="chapter-card locked" disabled><span class="yr">1965</span><span>A Nation Is Born</span><em>Coming soon</em></button>
-        <button class="chapter-card locked" disabled><span class="yr">1967</span><span>The First Intake</span><em>Coming soon</em></button>
-      </div>
-      <p class="hint" id="title-hint"></p>
+      <p class="title-note" id="title-note"><span class="note-label">Content note</span> <span id="title-hint"></span></p>
+      <p class="title-note sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-4h3l4-3.5v11L7 14z" fill="currentColor"/><path d="M15 9a4 4 0 0 1 0 6M17.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Best played with sound</p>
+    </div>
+    <!-- Chapter select: pick a print, then Begin. -->
+    <div id="chapter-list" class="prints" role="radiogroup" aria-label="Choose a chapter">
+      <button class="print" role="radio" data-chapter="ww2">
+        <span class="print-photo"><img id="print-1942" alt="" /></span>
+        <span class="print-yr">1942</span><span class="print-name">The Fortress Falls</span>
+      </button>
+      <button class="print" role="radio" data-chapter="ind">
+        <span class="print-photo"><img src="/assets/title/1965-kopitiam.jpg" alt="" /><span class="stamp">Coming soon</span></span>
+        <span class="print-yr">1965</span><span class="print-name">A Nation Is Born</span>
+      </button>
+      <button class="print" role="radio" data-chapter="ns">
+        <span class="print-photo"><img src="/assets/title/1967-camp.jpg" alt="" /><span class="stamp">Coming soon</span></span>
+        <span class="print-yr">1967</span><span class="print-name">The First Intake</span>
+      </button>
+      <button id="btn-prints-back" class="btn small prints-back">Done</button>
     </div>
   </div>
 
