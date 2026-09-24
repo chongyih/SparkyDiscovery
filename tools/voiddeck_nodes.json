@@ -1,0 +1,412 @@
+{
+ "markers": {
+  "PRO_Table": {
+   "three_pos": [
+    0.0,
+    0.75,
+    -0.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "board_top": 0.756
+   }
+  },
+  "PRO_Stool_Boon": {
+   "three_pos": [
+    -0.55,
+    0.0,
+    -0.0
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.17
+   }
+  },
+  "PRO_Stool_Sparky": {
+   "three_pos": [
+    0.55,
+    0.0,
+    -0.0
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.17
+   }
+  },
+  "PRO_SeatTop_Boon": {
+   "three_pos": [
+    -0.72,
+    0.45,
+    -0.0
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "PRO_SeatTop_Sparky": {
+   "three_pos": [
+    0.72,
+    0.45,
+    -0.0
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "PRO_Lamp_1": {
+   "three_pos": [
+    -2.0,
+    2.9,
+    1.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_2": {
+   "three_pos": [
+    2.0,
+    2.9,
+    1.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_3": {
+   "three_pos": [
+    -2.0,
+    2.9,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_4": {
+   "three_pos": [
+    2.0,
+    2.9,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_5": {
+   "three_pos": [
+    -6.0,
+    2.9,
+    1.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_6": {
+   "three_pos": [
+    6.0,
+    2.9,
+    1.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_7": {
+   "three_pos": [
+    -6.0,
+    2.9,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_8": {
+   "three_pos": [
+    6.0,
+    2.9,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_9": {
+   "three_pos": [
+    0.0,
+    2.7,
+    -7.5
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_10": {
+   "three_pos": [
+    -10.0,
+    2.9,
+    1.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_11": {
+   "three_pos": [
+    -10.0,
+    2.9,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_12": {
+   "three_pos": [
+    -16.0,
+    2.9,
+    1.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_13": {
+   "three_pos": [
+    -16.0,
+    2.9,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_14": {
+   "three_pos": [
+    -22.0,
+    2.9,
+    1.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Lamp_15": {
+   "three_pos": [
+    -22.0,
+    2.9,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "type": "fluorescent",
+    "length": 1.24,
+    "color": "#eef4ff"
+   }
+  },
+  "PRO_Camera_Wide": {
+   "three_pos": [
+    1.0,
+    2.2,
+    -3.87
+   ],
+   "three_facing": [
+    -0.239,
+    -0.298,
+    0.924
+   ],
+   "props": {
+    "fov": 55,
+    "look_at": "PRO_Table"
+   }
+  },
+  "PRO_Camera_Close": {
+   "three_pos": [
+    -0.56,
+    1.1,
+    -0.83
+   ],
+   "three_facing": [
+    0.54,
+    -0.26,
+    0.8
+   ],
+   "props": {
+    "fov": 55,
+    "look_at": "PRO_Table"
+   }
+  },
+  "PRO_Sun": {
+   "three_pos": [
+    48.72,
+    22.496,
+    84.382
+   ],
+   "three_facing": [
+    -0.487,
+    -0.225,
+    -0.844
+   ],
+   "props": {
+    "elevation_deg": 13,
+    "color": "#ffc98a",
+    "note": "direction from origin = direction to the sun"
+   }
+  }
+ },
+ "stats": {
+  "mobile_tris": 17778,
+  "audit_mobile": {
+   "same_facing_overlaps": 0,
+   "back_to_back": 0,
+   "inside_out_suspects": 15
+  },
+  "desktop_tris": 25360,
+  "audit": {
+   "same_facing_overlaps": 0,
+   "back_to_back": 0,
+   "inside_out_suspects": 15
+  },
+  "desktop_bytes": 2780436,
+  "mobile_bytes": 1054576,
+  "materials": [
+   "M_Paint",
+   "M_Floor",
+   "M_Concrete",
+   "M_Terrazzo",
+   "M_Grass",
+   "M_Foliage",
+   "M_Flower",
+   "M_Facade",
+   "M_Metal",
+   "M_Plastic",
+   "M_Rough",
+   "M_Tube",
+   "M_Atlas"
+  ]
+ }
+}

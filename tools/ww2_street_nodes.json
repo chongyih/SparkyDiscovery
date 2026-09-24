@@ -1,0 +1,5767 @@
+{
+ "markers": {
+  "DMG_Fire_1": {
+   "three_pos": [
+    9.4,
+    4.5,
+    -4.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "DMG_Fire_2": {
+   "three_pos": [
+    11.6,
+    0.5,
+    -3.2
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "DMG_Fire_3": {
+   "three_pos": [
+    10.6,
+    1.2,
+    -10.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "INT_Spawn": {
+   "three_pos": [
+    196.8,
+    0.0,
+    -0.3
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "INT_Radio": {
+   "three_pos": [
+    202.55,
+    0.56,
+    -1.35
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "radio sits on the crate; marker at its base, facing into the room"
+   }
+  },
+  "INT_Seat_1": {
+   "three_pos": [
+    198.0,
+    0.47,
+    1.72
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "seat_height": 0.47
+   }
+  },
+  "INT_Seat_2": {
+   "three_pos": [
+    198.9,
+    0.47,
+    1.72
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "seat_height": 0.47
+   }
+  },
+  "INT_Seat_3": {
+   "three_pos": [
+    199.8,
+    0.47,
+    1.72
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "seat_height": 0.47
+   }
+  },
+  "INT_Seat_4": {
+   "three_pos": [
+    200.7,
+    0.47,
+    1.72
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "seat_height": 0.47
+   }
+  },
+  "INT_Seat_5": {
+   "three_pos": [
+    199.4,
+    0.47,
+    -1.72
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "seat_height": 0.47
+   }
+  },
+  "INT_Camera": {
+   "three_pos": [
+    199.4,
+    1.35,
+    -0.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "eye-height camera for the candlelit family photo, looking at the south bench"
+   }
+  },
+  "SPAWN_Sparky": {
+   "three_pos": [
+    -33.0,
+    0.24,
+    -5.4
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "NPC_Siti": {
+   "three_pos": [
+    -28.6,
+    0.24,
+    -5.3
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "note": "newspaper stand behind her"
+   }
+  },
+  "NPC_Rajan": {
+   "three_pos": [
+    18.9,
+    0.0,
+    3.0
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "note": "at the ARP wardens' post by the shelter lot"
+   }
+  },
+  "NPC_AhMa": {
+   "three_pos": [
+    -6.1,
+    0.24,
+    -12.55
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "behind the kopitiam counter (0.75 m gap to the stove)"
+   }
+  },
+  "NPC_Boon": {
+   "three_pos": [
+    -4.55,
+    0.24,
+    -11.85
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "crouched at the right-hand end of the kopitiam counter; open >= 1.8 m to his right and in front"
+   }
+  },
+  "NPC_Hassan": {
+   "three_pos": [
+    -10.5,
+    0.0,
+    1.8
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "note": "beside his broken satay cart"
+   }
+  },
+  "DROP_1": {
+   "three_pos": [
+    -22.3,
+    0.24,
+    -6.15
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "shop": "Chee Seng Tong medical hall 濟生堂"
+   }
+  },
+  "DROP_2": {
+   "three_pos": [
+    -1.8,
+    0.24,
+    6.15
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "shop": "Mei Hua tailor 美華洋服"
+   }
+  },
+  "DROP_3": {
+   "three_pos": [
+    21.6,
+    0.24,
+    -6.15
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "shop": "Nam Hong provision shop 南豐號"
+   }
+  },
+  "SNAP_Poster": {
+   "three_pos": [
+    22.4,
+    0.0,
+    6.2
+   ],
+   "three_facing": [
+    0.854,
+    0.0,
+    0.52
+   ],
+   "props": {
+    "target": [
+     27.0,
+     1.5,
+     9.0
+    ]
+   }
+  },
+  "SNAP_Bicycle": {
+   "three_pos": [
+    -12.95,
+    0.0,
+    -1.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "target": [
+     -12.95,
+     0.8,
+     -4.33
+    ]
+   }
+  },
+  "SNAP_Smoke": {
+   "three_pos": [
+    -30.0,
+    0.0,
+    -0.5
+   ],
+   "three_facing": [
+    -0.989,
+    0.0,
+    -0.15
+   ],
+   "props": {
+    "target_node": "SMOKE_2"
+   }
+  },
+  "SHELTER_Entrance": {
+   "three_pos": [
+    21.2,
+    0.0,
+    8.1
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "mouth of the sandbagged porch; door is 2 m further -y (three.js +z)"
+   }
+  },
+  "SMOKE_1": {
+   "three_pos": [
+    -230.0,
+    0.0,
+    150.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "source": "Pulau Bukom oil tanks direction"
+   }
+  },
+  "SMOKE_2": {
+   "three_pos": [
+    -290.0,
+    0.0,
+    -40.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "source": "Normanton oil depot direction"
+   }
+  },
+  "SMOKE_3": {
+   "three_pos": [
+    -120.0,
+    0.0,
+    260.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "source": "harbour oil tanks"
+   }
+  },
+  "EPI_Spawn": {
+   "three_pos": [
+    21.2,
+    0.0,
+    7.4
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "note": "coming out of the shelter"
+   }
+  },
+  "EPI_Queue_1": {
+   "three_pos": [
+    21.6,
+    0.24,
+    -5.5
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "note": "rice-ration queue at Nam Hong provision shop"
+   }
+  },
+  "EPI_Queue_2": {
+   "three_pos": [
+    20.7,
+    0.24,
+    -5.5
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "EPI_Queue_3": {
+   "three_pos": [
+    19.8,
+    0.24,
+    -5.5
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "EPI_Queue_4": {
+   "three_pos": [
+    18.9,
+    0.24,
+    -5.5
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "EPI_Queue_5": {
+   "three_pos": [
+    18.0,
+    0.24,
+    -5.5
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "EPI_Queue_6": {
+   "three_pos": [
+    17.1,
+    0.24,
+    -5.5
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "EPI_AhMa": {
+   "three_pos": [
+    -5.5,
+    0.24,
+    -5.95
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "Ah Ma sits on the crate outside the shuttered kopitiam (OCC_KopiClosed)",
+    "seat_height": 0.45
+   }
+  },
+  "SHOPKEEPER_1": {
+   "three_pos": [
+    -22.3,
+    0.24,
+    -8.25
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "shop": "medical hall (DROP_1)"
+   }
+  },
+  "SHOPKEEPER_2": {
+   "three_pos": [
+    -1.8,
+    0.24,
+    8.25
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "shop": "tailor (DROP_2)"
+   }
+  },
+  "SHOPKEEPER_3": {
+   "three_pos": [
+    21.6,
+    0.24,
+    -8.25
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "shop": "provision shop (DROP_3)"
+   }
+  },
+  "KOPI_Customer_1": {
+   "three_pos": [
+    -7.2,
+    0.24,
+    -7.78
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "seat_height": 0.45,
+    "table": 1
+   }
+  },
+  "KOPI_Customer_2": {
+   "three_pos": [
+    -7.62,
+    0.24,
+    -10.2
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "seat_height": 0.45,
+    "table": 2
+   }
+  },
+  "KOPI_Customer_3": {
+   "three_pos": [
+    -5.5,
+    0.24,
+    -9.62
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "seat_height": 0.45,
+    "table": 3
+   }
+  },
+  "STREET_Extra_1": {
+   "three_pos": [
+    -25.5,
+    0.0,
+    2.9
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "note": "road, south kerb"
+   }
+  },
+  "STREET_Extra_2": {
+   "three_pos": [
+    -9.6,
+    0.24,
+    -6.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "north five-foot way, tea merchant's shutters"
+   }
+  },
+  "STREET_Extra_3": {
+   "three_pos": [
+    5.4,
+    0.24,
+    6.3
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "note": "south five-foot way, by the letter-writer"
+   }
+  },
+  "STREET_Extra_4": {
+   "three_pos": [
+    15.9,
+    0.0,
+    -2.7
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "note": "road, north kerb by the lamp post"
+   }
+  },
+  "STREET_Extra_5": {
+   "three_pos": [
+    29.6,
+    0.24,
+    -6.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "north five-foot way, pawnshop front"
+   }
+  },
+  "STREET_Extra_6": {
+   "three_pos": [
+    -8.0,
+    0.0,
+    2.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "note": "road, south kerb opposite the kopitiam"
+   }
+  },
+  "THEN_NOW_Camera": {
+   "three_pos": [
+    -30.0,
+    1.24,
+    -4.1
+   ],
+   "three_facing": [
+    0.995,
+    0.089,
+    0.038
+   ],
+   "props": {
+    "note": "old Mr. Boon's 1942 photo viewpoint; -Y axis looks at the gopuram",
+    "fov_deg": 55
+   }
+  },
+  "NIGHT_Spawn": {
+   "three_pos": [
+    21.0,
+    0.0,
+    5.6
+   ],
+   "three_facing": [
+    -0.989,
+    0.0,
+    -0.148
+   ],
+   "props": {
+    "note": "just outside the shelter lot, facing up the street (west)"
+   }
+  },
+  "NIGHT_Clue_1": {
+   "three_pos": [
+    4.2,
+    0.24,
+    5.5
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "surface": "south five-foot way (covered)"
+   }
+  },
+  "NIGHT_Clue_2": {
+   "three_pos": [
+    -12.8,
+    0.0,
+    -0.6
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "surface": "open road (no cover)"
+   }
+  },
+  "NIGHT_Clue_3": {
+   "three_pos": [
+    -29.2,
+    0.24,
+    -5.6
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "surface": "north five-foot way (covered)"
+   }
+  },
+  "NIGHT_Boon": {
+   "three_pos": [
+    -31.45,
+    0.24,
+    5.55
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {
+    "note": "crouched against the east end of the tipped handcart; open approach from the east (>= 1.2 m)"
+   }
+  },
+  "RUMOUR_1": {
+   "three_pos": [
+    -5.4,
+    0.0,
+    -2.6
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "note": "outside the kopitiam",
+    "group_radius": 1.2
+   }
+  },
+  "RUMOUR_2": {
+   "three_pos": [
+    1.8,
+    0.0,
+    -2.5
+   ],
+   "three_facing": [
+    0.287,
+    0.0,
+    -0.958
+   ],
+   "props": {
+    "note": "by the lamp post at the lane mouth",
+    "group_radius": 1.0
+   }
+  },
+  "RUMOUR_3": {
+   "three_pos": [
+    10.6,
+    0.0,
+    -1.4
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {
+    "note": "looking at the bombed house",
+    "group_radius": 1.4
+   }
+  },
+  "RUMOUR_4": {
+   "three_pos": [
+    -18.1,
+    0.24,
+    5.8
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "at a doorway on the south five-foot way",
+    "group_radius": 1.0
+   }
+  },
+  "FIRE_1": {
+   "three_pos": [
+    -20.0,
+    10.5,
+    -22.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "roof of the next street, north"
+   }
+  },
+  "FIRE_2": {
+   "three_pos": [
+    8.0,
+    9.0,
+    22.5
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "roof of the next street, south"
+   }
+  },
+  "FIRE_3": {
+   "three_pos": [
+    -56.0,
+    8.0,
+    14.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "beyond the west cross street"
+   }
+  },
+  "FIRE_4": {
+   "three_pos": [
+    60.0,
+    6.5,
+    -22.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "godown behind the east cross street"
+   }
+  },
+  "FIRE_5": {
+   "three_pos": [
+    -95.0,
+    12.0,
+    -70.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "note": "far fire on the skyline"
+   }
+  }
+ },
+ "colliders": {
+  "COL_Sandbags_1": {
+   "three_center": [
+    -34.6,
+    0.5,
+    -6.4
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.3
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -35.4,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     -33.8,
+     1.0,
+     -6.1
+    ]
+   }
+  },
+  "COL_Pillar_1": {
+   "three_center": [
+    -35.775,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -36.0,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     -35.55,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_2": {
+   "three_center": [
+    -30.4,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -30.625,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     -30.175,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_3": {
+   "three_center": [
+    -25.4,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -25.625,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     -25.175,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Sandbags_2": {
+   "three_center": [
+    -18.3,
+    0.5,
+    -6.4
+   ],
+   "three_half": [
+    0.5,
+    0.5,
+    0.3
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -18.8,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     -17.8,
+     1.0,
+     -6.1
+    ]
+   }
+  },
+  "COL_Sandbags_3": {
+   "three_center": [
+    -14.9,
+    0.5,
+    -6.4
+   ],
+   "three_half": [
+    0.5,
+    0.5,
+    0.3
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -15.4,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     -14.4,
+     1.0,
+     -6.1
+    ]
+   }
+  },
+  "COL_Pillar_4": {
+   "three_center": [
+    -19.2,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -19.425,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     -18.975,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_5": {
+   "three_center": [
+    -14.0,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -14.225,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     -13.775,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_6": {
+   "three_center": [
+    -8.5,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -8.725,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     -8.275,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_7": {
+   "three_center": [
+    -2.725,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -2.95,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     -2.5,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Kopi_Counter": {
+   "three_center": [
+    -6.525,
+    0.6,
+    -11.875
+   ],
+   "three_half": [
+    1.625,
+    0.6,
+    0.325
+   ],
+   "props": {
+    "aabb_min": [
+     -8.15,
+     0.0,
+     -12.2
+    ],
+    "aabb_max": [
+     -4.9,
+     1.2,
+     -11.55
+    ]
+   }
+  },
+  "COL_Kopi_Stove": {
+   "three_center": [
+    -7.2,
+    0.8,
+    -13.44
+   ],
+   "three_half": [
+    0.95,
+    0.8,
+    0.54
+   ],
+   "props": {
+    "aabb_min": [
+     -8.15,
+     0.0,
+     -13.98
+    ],
+    "aabb_max": [
+     -6.25,
+     1.6,
+     -12.9
+    ]
+   }
+  },
+  "COL_Kopi_Table_1": {
+   "three_center": [
+    -7.2,
+    0.5,
+    -8.2
+   ],
+   "three_half": [
+    0.4,
+    0.5,
+    0.4
+   ],
+   "props": {
+    "aabb_min": [
+     -7.6,
+     0.0,
+     -8.6
+    ],
+    "aabb_max": [
+     -6.8,
+     1.0,
+     -7.8
+    ]
+   }
+  },
+  "COL_Kopi_Table_2": {
+   "three_center": [
+    -7.2,
+    0.5,
+    -10.2
+   ],
+   "three_half": [
+    0.4,
+    0.5,
+    0.4
+   ],
+   "props": {
+    "aabb_min": [
+     -7.6,
+     0.0,
+     -10.6
+    ],
+    "aabb_max": [
+     -6.8,
+     1.0,
+     -9.8
+    ]
+   }
+  },
+  "COL_Kopi_Table_3": {
+   "three_center": [
+    -5.5,
+    0.5,
+    -9.2
+   ],
+   "three_half": [
+    0.4,
+    0.5,
+    0.4
+   ],
+   "props": {
+    "aabb_min": [
+     -5.9,
+     0.0,
+     -9.6
+    ],
+    "aabb_max": [
+     -5.1,
+     1.0,
+     -8.8
+    ]
+   }
+  },
+  "COL_Kopi_Back": {
+   "three_center": [
+    -5.5,
+    2.25,
+    -15.05
+   ],
+   "three_half": [
+    3.0,
+    2.25,
+    1.05
+   ],
+   "props": {
+    "aabb_min": [
+     -8.5,
+     0.0,
+     -16.1
+    ],
+    "aabb_max": [
+     -2.5,
+     4.5,
+     -14.0
+    ]
+   }
+  },
+  "COL_Kopi_WallE": {
+   "three_center": [
+    -2.6,
+    2.25,
+    -11.4
+   ],
+   "three_half": [
+    0.1,
+    2.25,
+    4.7
+   ],
+   "props": {
+    "aabb_min": [
+     -2.7,
+     0.0,
+     -16.1
+    ],
+    "aabb_max": [
+     -2.5,
+     4.5,
+     -6.7
+    ]
+   }
+  },
+  "COL_Pillar_8": {
+   "three_center": [
+    2.725,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     2.5,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     2.95,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_9": {
+   "three_center": [
+    8.0,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     7.775,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     8.225,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Sandbags_4": {
+   "three_center": [
+    14.2,
+    0.5,
+    -6.4
+   ],
+   "three_half": [
+    0.6,
+    0.5,
+    0.3
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     13.6,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     14.8,
+     1.0,
+     -6.1
+    ]
+   }
+  },
+  "COL_Pillar_10": {
+   "three_center": [
+    13.2,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     12.975,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     13.425,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_11": {
+   "three_center": [
+    18.8,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     18.575,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     19.025,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_12": {
+   "three_center": [
+    24.4,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     24.175,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     24.625,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_13": {
+   "three_center": [
+    30.0,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     29.775,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     30.225,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_14": {
+   "three_center": [
+    35.775,
+    1.95,
+    -4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     35.55,
+     0.0,
+     -4.45
+    ],
+    "aabb_max": [
+     36.0,
+     3.9,
+     -4.0
+    ]
+   }
+  },
+  "COL_Pillar_15": {
+   "three_center": [
+    35.775,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     35.55,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     36.0,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_16": {
+   "three_center": [
+    31.5,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     31.275,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     31.725,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_17": {
+   "three_center": [
+    27.225,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     27.0,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     27.45,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Sandbags_5": {
+   "three_center": [
+    16.05,
+    0.5,
+    6.4
+   ],
+   "three_half": [
+    0.55,
+    0.5,
+    0.3
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     15.5,
+     0.0,
+     6.1
+    ],
+    "aabb_max": [
+     16.6,
+     1.0,
+     6.7
+    ]
+   }
+  },
+  "COL_Sandbags_6": {
+   "three_center": [
+    12.75,
+    0.5,
+    6.4
+   ],
+   "three_half": [
+    0.55,
+    0.5,
+    0.3
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     12.2,
+     0.0,
+     6.1
+    ],
+    "aabb_max": [
+     13.3,
+     1.0,
+     6.7
+    ]
+   }
+  },
+  "COL_Pillar_18": {
+   "three_center": [
+    16.775,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     16.55,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     17.0,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_19": {
+   "three_center": [
+    11.8,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     11.575,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     12.025,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_20": {
+   "three_center": [
+    6.2,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     5.975,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     6.425,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Sandbags_7": {
+   "three_center": [
+    0.2,
+    0.5,
+    6.4
+   ],
+   "three_half": [
+    0.5,
+    0.5,
+    0.3
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -0.3,
+     0.0,
+     6.1
+    ],
+    "aabb_max": [
+     0.7,
+     1.0,
+     6.7
+    ]
+   }
+  },
+  "COL_Pillar_21": {
+   "three_center": [
+    1.2,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     0.975,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     1.425,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_22": {
+   "three_center": [
+    -4.8,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -5.025,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     -4.575,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_23": {
+   "three_center": [
+    -9.6,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -9.825,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     -9.375,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_24": {
+   "three_center": [
+    -15.0,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -15.225,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     -14.775,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_25": {
+   "three_center": [
+    -21.2,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -21.425,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     -20.975,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_26": {
+   "three_center": [
+    -26.2,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -26.425,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     -25.975,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_27": {
+   "three_center": [
+    -30.8,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -31.025,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     -30.575,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Pillar_28": {
+   "three_center": [
+    -35.775,
+    1.95,
+    4.225
+   ],
+   "three_half": [
+    0.225,
+    1.95,
+    0.225
+   ],
+   "props": {
+    "aabb_min": [
+     -36.0,
+     0.0,
+     4.0
+    ],
+    "aabb_max": [
+     -35.55,
+     3.9,
+     4.45
+    ]
+   }
+  },
+  "COL_Lane_End": {
+   "three_center": [
+    0.0,
+    1.6,
+    -12.25
+   ],
+   "three_half": [
+    2.5,
+    1.6,
+    0.35
+   ],
+   "props": {
+    "aabb_min": [
+     -2.5,
+     0.0,
+     -12.6
+    ],
+    "aabb_max": [
+     2.5,
+     3.2,
+     -11.9
+    ]
+   }
+  },
+  "COL_Lane_Jars": {
+   "three_center": [
+    0.0,
+    0.5,
+    -11.35
+   ],
+   "three_half": [
+    2.5,
+    0.5,
+    0.55
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -2.5,
+     0.0,
+     -11.9
+    ],
+    "aabb_max": [
+     2.5,
+     1.0,
+     -10.8
+    ]
+   }
+  },
+  "COL_Hawker": {
+   "three_center": [
+    0.3,
+    1.05,
+    -6.4
+   ],
+   "three_half": [
+    0.5,
+    1.05,
+    0.9
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -0.2,
+     0.0,
+     -7.3
+    ],
+    "aabb_max": [
+     0.8,
+     2.1,
+     -5.5
+    ]
+   }
+  },
+  "COL_Baskets": {
+   "three_center": [
+    -1.6,
+    0.3,
+    -8.8
+   ],
+   "three_half": [
+    0.4,
+    0.3,
+    0.9
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -2.0,
+     0.0,
+     -9.7
+    ],
+    "aabb_max": [
+     -1.2,
+     0.6,
+     -7.9
+    ]
+   }
+  },
+  "COL_Lot_Back": {
+   "three_center": [
+    22.0,
+    2.0,
+    16.8
+   ],
+   "three_half": [
+    6.0,
+    2.0,
+    0.8
+   ],
+   "props": {
+    "aabb_min": [
+     16.0,
+     0.0,
+     16.0
+    ],
+    "aabb_max": [
+     28.0,
+     4.0,
+     17.6
+    ]
+   }
+  },
+  "COL_Shelter": {
+   "three_center": [
+    21.2,
+    1.5,
+    12.75
+   ],
+   "three_half": [
+    3.75,
+    1.5,
+    2.6
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     17.45,
+     0.0,
+     10.15
+    ],
+    "aabb_max": [
+     24.95,
+     3.0,
+     15.35
+    ]
+   }
+  },
+  "COL_Shelter_N_W": {
+   "three_center": [
+    18.875,
+    1.0,
+    9.825
+   ],
+   "three_half": [
+    1.425,
+    1.0,
+    0.375
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     17.45,
+     0.0,
+     9.45
+    ],
+    "aabb_max": [
+     20.3,
+     2.0,
+     10.2
+    ]
+   }
+  },
+  "COL_Shelter_N_E": {
+   "three_center": [
+    23.525,
+    1.0,
+    9.825
+   ],
+   "three_half": [
+    1.425,
+    1.0,
+    0.375
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     22.1,
+     0.0,
+     9.45
+    ],
+    "aabb_max": [
+     24.95,
+     2.0,
+     10.2
+    ]
+   }
+  },
+  "COL_Shelter_Porch_W": {
+   "three_center": [
+    20.275,
+    1.0,
+    9.275
+   ],
+   "three_half": [
+    0.375,
+    1.0,
+    0.925
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     19.9,
+     0.0,
+     8.35
+    ],
+    "aabb_max": [
+     20.65,
+     2.0,
+     10.2
+    ]
+   }
+  },
+  "COL_Shelter_Porch_E": {
+   "three_center": [
+    22.125,
+    1.0,
+    9.275
+   ],
+   "three_half": [
+    0.375,
+    1.0,
+    0.925
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     21.75,
+     0.0,
+     8.35
+    ],
+    "aabb_max": [
+     22.5,
+     2.0,
+     10.2
+    ]
+   }
+  },
+  "COL_ARP_Post": {
+   "three_center": [
+    18.825,
+    1.2,
+    5.95
+   ],
+   "three_half": [
+    1.525,
+    1.2,
+    1.6
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     17.3,
+     0.0,
+     4.35
+    ],
+    "aabb_max": [
+     20.35,
+     2.4,
+     7.55
+    ]
+   }
+  },
+  "COL_ARP_Buckets": {
+   "three_center": [
+    21.3,
+    0.45,
+    4.4
+   ],
+   "three_half": [
+    0.9,
+    0.45,
+    0.3
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     20.4,
+     0.0,
+     4.1
+    ],
+    "aabb_max": [
+     22.2,
+     0.9,
+     4.7
+    ]
+   }
+  },
+  "COL_Lot_Bags": {
+   "three_center": [
+    25.4,
+    0.25,
+    5.6
+   ],
+   "three_half": [
+    0.8,
+    0.25,
+    0.6
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     24.6,
+     0.0,
+     5.0
+    ],
+    "aabb_max": [
+     26.2,
+     0.5,
+     6.2
+    ]
+   }
+  },
+  "COL_Lot_Cart": {
+   "three_center": [
+    25.95,
+    0.5,
+    12.1
+   ],
+   "three_half": [
+    0.95,
+    0.5,
+    2.1
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     25.0,
+     0.0,
+     10.0
+    ],
+    "aabb_max": [
+     26.9,
+     1.0,
+     14.2
+    ]
+   }
+  },
+  "COL_SatayCart": {
+   "three_center": [
+    -12.15,
+    0.55,
+    2.45
+   ],
+   "three_half": [
+    1.55,
+    0.55,
+    1.05
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -13.7,
+     0.0,
+     1.4
+    ],
+    "aabb_max": [
+     -10.6,
+     1.1,
+     3.5
+    ]
+   }
+  },
+  "COL_Rickshaw": {
+   "three_center": [
+    -19.0,
+    0.8,
+    -2.55
+   ],
+   "three_half": [
+    1.4,
+    0.8,
+    0.65
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -20.4,
+     0.0,
+     -3.2
+    ],
+    "aabb_max": [
+     -17.6,
+     1.6,
+     -1.9
+    ]
+   }
+  },
+  "COL_Trishaw": {
+   "three_center": [
+    7.95,
+    0.7,
+    2.7
+   ],
+   "three_half": [
+    1.25,
+    0.7,
+    0.7
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     6.7,
+     0.0,
+     2.0
+    ],
+    "aabb_max": [
+     9.2,
+     1.4,
+     3.4
+    ]
+   }
+  },
+  "COL_Bicycle": {
+   "three_center": [
+    -12.95,
+    0.5,
+    -4.35
+   ],
+   "three_half": [
+    0.65,
+    0.5,
+    0.25
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -13.6,
+     0.0,
+     -4.6
+    ],
+    "aabb_max": [
+     -12.3,
+     1.0,
+     -4.1
+    ]
+   }
+  },
+  "COL_Handcart": {
+   "three_center": [
+    -21.2,
+    0.6,
+    -2.3
+   ],
+   "three_half": [
+    1.8,
+    0.6,
+    0.8
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -23.0,
+     0.0,
+     -3.1
+    ],
+    "aabb_max": [
+     -19.4,
+     1.2,
+     -1.5
+    ]
+   }
+  },
+  "COL_Bundles_1": {
+   "three_center": [
+    -16.85,
+    0.35,
+    -6.3
+   ],
+   "three_half": [
+    0.95,
+    0.35,
+    0.4
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -17.8,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     -15.9,
+     0.7,
+     -5.9
+    ]
+   }
+  },
+  "COL_Bundles_2": {
+   "three_center": [
+    -7.25,
+    0.35,
+    6.3
+   ],
+   "three_half": [
+    0.95,
+    0.35,
+    0.4
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -8.2,
+     0.0,
+     5.9
+    ],
+    "aabb_max": [
+     -6.3,
+     0.7,
+     6.7
+    ]
+   }
+  },
+  "COL_Bundles_3": {
+   "three_center": [
+    4.5,
+    0.35,
+    -6.3
+   ],
+   "three_half": [
+    0.7,
+    0.35,
+    0.4
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     3.8,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     5.2,
+     0.7,
+     -5.9
+    ]
+   }
+  },
+  "COL_Bundles_4": {
+   "three_center": [
+    -24.4,
+    0.35,
+    6.3
+   ],
+   "three_half": [
+    0.7,
+    0.35,
+    0.4
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -25.1,
+     0.0,
+     5.9
+    ],
+    "aabb_max": [
+     -23.7,
+     0.7,
+     6.7
+    ]
+   }
+  },
+  "COL_NewsStand": {
+   "three_center": [
+    -27.6,
+    0.45,
+    -6.3
+   ],
+   "three_half": [
+    0.5,
+    0.45,
+    0.4
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -28.1,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     -27.1,
+     0.9,
+     -5.9
+    ]
+   }
+  },
+  "COL_LetterTable": {
+   "three_center": [
+    3.8,
+    0.5,
+    5.1
+   ],
+   "three_half": [
+    0.6,
+    0.5,
+    0.4
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     3.2,
+     0.0,
+     4.7
+    ],
+    "aabb_max": [
+     4.4,
+     1.0,
+     5.5
+    ]
+   }
+  },
+  "COL_Jar_1": {
+   "three_center": [
+    -15.7,
+    0.5,
+    -6.35
+   ],
+   "three_half": [
+    0.36,
+    0.5,
+    0.36
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -16.06,
+     0.0,
+     -6.71
+    ],
+    "aabb_max": [
+     -15.34,
+     1.0,
+     -5.99
+    ]
+   }
+  },
+  "COL_Jar_2": {
+   "three_center": [
+    -26.9,
+    0.5,
+    6.35
+   ],
+   "three_half": [
+    0.36,
+    0.5,
+    0.36
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -27.26,
+     0.0,
+     5.99
+    ],
+    "aabb_max": [
+     -26.54,
+     1.0,
+     6.71
+    ]
+   }
+  },
+  "COL_Jar_3": {
+   "three_center": [
+    -31.6,
+    0.5,
+    -6.4
+   ],
+   "three_half": [
+    0.36,
+    0.5,
+    0.36
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -31.96,
+     0.0,
+     -6.76
+    ],
+    "aabb_max": [
+     -31.24,
+     1.0,
+     -6.04
+    ]
+   }
+  },
+  "COL_Jar_4": {
+   "three_center": [
+    15.0,
+    0.5,
+    -6.35
+   ],
+   "three_half": [
+    0.36,
+    0.5,
+    0.36
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     14.64,
+     0.0,
+     -6.71
+    ],
+    "aabb_max": [
+     15.36,
+     1.0,
+     -5.99
+    ]
+   }
+  },
+  "COL_Jar_5": {
+   "three_center": [
+    34.2,
+    0.5,
+    6.35
+   ],
+   "three_half": [
+    0.36,
+    0.5,
+    0.36
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     33.84,
+     0.0,
+     5.99
+    ],
+    "aabb_max": [
+     34.56,
+     1.0,
+     6.71
+    ]
+   }
+  },
+  "COL_Sacks_1": {
+   "three_center": [
+    20.1,
+    0.4,
+    -6.325
+   ],
+   "three_half": [
+    0.8,
+    0.4,
+    0.375
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     19.3,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     20.9,
+     0.8,
+     -5.95
+    ]
+   }
+  },
+  "COL_Sacks_2": {
+   "three_center": [
+    23.5,
+    0.4,
+    -6.325
+   ],
+   "three_half": [
+    0.8,
+    0.4,
+    0.375
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     22.7,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     24.3,
+     0.8,
+     -5.95
+    ]
+   }
+  },
+  "COL_Bikes": {
+   "three_center": [
+    26.7,
+    0.5,
+    -6.35
+   ],
+   "three_half": [
+    1.9,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     24.8,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     28.6,
+     1.0,
+     -6.0
+    ]
+   }
+  },
+  "COL_PillarBox": {
+   "three_center": [
+    -12.3,
+    0.7,
+    4.4
+   ],
+   "three_half": [
+    0.28,
+    0.7,
+    0.28
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -12.58,
+     0.0,
+     4.12
+    ],
+    "aabb_max": [
+     -12.02,
+     1.4,
+     4.68
+    ]
+   }
+  },
+  "COL_Lamp_1": {
+   "three_center": [
+    -31.2,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -31.38,
+     0.0,
+     -3.8
+    ],
+    "aabb_max": [
+     -31.02,
+     3.0,
+     -3.44
+    ]
+   }
+  },
+  "COL_Lamp_2": {
+   "three_center": [
+    1.8,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     1.62,
+     0.0,
+     -3.8
+    ],
+    "aabb_max": [
+     1.98,
+     3.0,
+     -3.44
+    ]
+   }
+  },
+  "COL_Lamp_3": {
+   "three_center": [
+    14.8,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     14.62,
+     0.0,
+     -3.8
+    ],
+    "aabb_max": [
+     14.98,
+     3.0,
+     -3.44
+    ]
+   }
+  },
+  "COL_Lamp_4": {
+   "three_center": [
+    31.0,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     30.82,
+     0.0,
+     -3.8
+    ],
+    "aabb_max": [
+     31.18,
+     3.0,
+     -3.44
+    ]
+   }
+  },
+  "COL_Lamp_5": {
+   "three_center": [
+    -31.5,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -31.68,
+     0.0,
+     3.44
+    ],
+    "aabb_max": [
+     -31.32,
+     3.0,
+     3.8
+    ]
+   }
+  },
+  "COL_Lamp_6": {
+   "three_center": [
+    -14.8,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -14.98,
+     0.0,
+     3.44
+    ],
+    "aabb_max": [
+     -14.62,
+     3.0,
+     3.8
+    ]
+   }
+  },
+  "COL_Lamp_7": {
+   "three_center": [
+    4.6,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     4.42,
+     0.0,
+     3.44
+    ],
+    "aabb_max": [
+     4.78,
+     3.0,
+     3.8
+    ]
+   }
+  },
+  "COL_Lamp_8": {
+   "three_center": [
+    22.0,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     21.82,
+     0.0,
+     3.44
+    ],
+    "aabb_max": [
+     22.18,
+     3.0,
+     3.8
+    ]
+   }
+  },
+  "COL_Pole_1": {
+   "three_center": [
+    -33.0,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -33.18,
+     0.0,
+     -3.8
+    ],
+    "aabb_max": [
+     -32.82,
+     3.0,
+     -3.44
+    ]
+   }
+  },
+  "COL_Pole_2": {
+   "three_center": [
+    -8.3,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -8.48,
+     0.0,
+     -3.8
+    ],
+    "aabb_max": [
+     -8.12,
+     3.0,
+     -3.44
+    ]
+   }
+  },
+  "COL_Pole_3": {
+   "three_center": [
+    7.0,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     6.82,
+     0.0,
+     -3.8
+    ],
+    "aabb_max": [
+     7.18,
+     3.0,
+     -3.44
+    ]
+   }
+  },
+  "COL_Pole_4": {
+   "three_center": [
+    19.8,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     19.62,
+     0.0,
+     -3.8
+    ],
+    "aabb_max": [
+     19.98,
+     3.0,
+     -3.44
+    ]
+   }
+  },
+  "COL_Pole_5": {
+   "three_center": [
+    33.8,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     33.62,
+     0.0,
+     -3.8
+    ],
+    "aabb_max": [
+     33.98,
+     3.0,
+     -3.44
+    ]
+   }
+  },
+  "COL_Pole_6": {
+   "three_center": [
+    -26.5,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -26.68,
+     0.0,
+     3.44
+    ],
+    "aabb_max": [
+     -26.32,
+     3.0,
+     3.8
+    ]
+   }
+  },
+  "COL_Pole_7": {
+   "three_center": [
+    -10.0,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -10.18,
+     0.0,
+     3.44
+    ],
+    "aabb_max": [
+     -9.82,
+     3.0,
+     3.8
+    ]
+   }
+  },
+  "COL_Pole_8": {
+   "three_center": [
+    11.6,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     11.42,
+     0.0,
+     3.44
+    ],
+    "aabb_max": [
+     11.78,
+     3.0,
+     3.8
+    ]
+   }
+  },
+  "COL_Pole_9": {
+   "three_center": [
+    28.0,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.18,
+    1.5,
+    0.18
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     27.82,
+     0.0,
+     3.44
+    ],
+    "aabb_max": [
+     28.18,
+     3.0,
+     3.8
+    ]
+   }
+  },
+  "COL_NightCart": {
+   "three_center": [
+    -33.2,
+    0.5,
+    5.75
+   ],
+   "three_half": [
+    1.2,
+    0.5,
+    0.85
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -34.4,
+     0.0,
+     4.9
+    ],
+    "aabb_max": [
+     -32.0,
+     1.0,
+     6.6
+    ]
+   }
+  },
+  "COL_Bound_W": {
+   "three_center": [
+    -35.1,
+    2.0,
+    -0.0
+   ],
+   "three_half": [
+    0.5,
+    2.0,
+    7.0
+   ],
+   "props": {
+    "state": "war",
+    "aabb_min": [
+     -35.6,
+     0.0,
+     -7.0
+    ],
+    "aabb_max": [
+     -34.6,
+     4.0,
+     7.0
+    ]
+   }
+  },
+  "COL_Bound_E": {
+   "three_center": [
+    35.1,
+    2.0,
+    -0.0
+   ],
+   "three_half": [
+    0.5,
+    2.0,
+    7.0
+   ],
+   "props": {
+    "aabb_min": [
+     34.6,
+     0.0,
+     -7.0
+    ],
+    "aabb_max": [
+     35.6,
+     4.0,
+     7.0
+    ]
+   }
+  },
+  "COL_DMG_1": {
+   "three_center": [
+    10.6,
+    0.8,
+    -5.35
+   ],
+   "three_half": [
+    3.0,
+    0.8,
+    1.35
+   ],
+   "props": {
+    "aabb_min": [
+     7.6,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     13.6,
+     1.6,
+     -4.0
+    ]
+   }
+  },
+  "COL_DMG_2": {
+   "three_center": [
+    10.6,
+    0.45,
+    -3.15
+   ],
+   "three_half": [
+    2.8,
+    0.45,
+    0.85
+   ],
+   "props": {
+    "aabb_min": [
+     7.8,
+     0.0,
+     -4.0
+    ],
+    "aabb_max": [
+     13.4,
+     0.9,
+     -2.3
+    ]
+   }
+  },
+  "COL_DMG_3": {
+   "three_center": [
+    10.6,
+    2.0,
+    -11.4
+   ],
+   "three_half": [
+    2.6,
+    2.0,
+    4.7
+   ],
+   "props": {
+    "aabb_min": [
+     8.0,
+     0.0,
+     -16.1
+    ],
+    "aabb_max": [
+     13.2,
+     4.0,
+     -6.7
+    ]
+   }
+  },
+  "COL_OCC_KopiShutters": {
+   "three_center": [
+    -5.5,
+    1.65,
+    -6.62
+   ],
+   "three_half": [
+    2.8,
+    1.65,
+    0.08
+   ],
+   "props": {
+    "state": "occ",
+    "aabb_min": [
+     -8.3,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     -2.7,
+     3.3,
+     -6.54
+    ]
+   }
+  },
+  "COL_NOW_Cafe_1": {
+   "three_center": [
+    -23.6,
+    0.5,
+    -6.15
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -24.4,
+     0.0,
+     -6.5
+    ],
+    "aabb_max": [
+     -22.8,
+     1.0,
+     -5.8
+    ]
+   }
+  },
+  "COL_NOW_Cafe_2": {
+   "three_center": [
+    -11.2,
+    0.5,
+    -6.15
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -12.0,
+     0.0,
+     -6.5
+    ],
+    "aabb_max": [
+     -10.4,
+     1.0,
+     -5.8
+    ]
+   }
+  },
+  "COL_NOW_Cafe_3": {
+   "three_center": [
+    5.2,
+    0.5,
+    -6.15
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     4.4,
+     0.0,
+     -6.5
+    ],
+    "aabb_max": [
+     6.0,
+     1.0,
+     -5.8
+    ]
+   }
+  },
+  "COL_NOW_Cafe_4": {
+   "three_center": [
+    27.2,
+    0.5,
+    -6.15
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     26.4,
+     0.0,
+     -6.5
+    ],
+    "aabb_max": [
+     28.0,
+     1.0,
+     -5.8
+    ]
+   }
+  },
+  "COL_NOW_Cafe_5": {
+   "three_center": [
+    -20.0,
+    0.5,
+    6.15
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -20.8,
+     0.0,
+     5.8
+    ],
+    "aabb_max": [
+     -19.2,
+     1.0,
+     6.5
+    ]
+   }
+  },
+  "COL_NOW_Cafe_6": {
+   "three_center": [
+    -3.2,
+    0.5,
+    6.15
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -4.0,
+     0.0,
+     5.8
+    ],
+    "aabb_max": [
+     -2.4,
+     1.0,
+     6.5
+    ]
+   }
+  },
+  "COL_NOW_Cafe_7": {
+   "three_center": [
+    13.8,
+    0.5,
+    6.15
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     13.0,
+     0.0,
+     5.8
+    ],
+    "aabb_max": [
+     14.6,
+     1.0,
+     6.5
+    ]
+   }
+  },
+  "COL_NOW_Cafe_8": {
+   "three_center": [
+    33.0,
+    0.5,
+    6.15
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     32.2,
+     0.0,
+     5.8
+    ],
+    "aabb_max": [
+     33.8,
+     1.0,
+     6.5
+    ]
+   }
+  },
+  "COL_NOW_Umbrella_1": {
+   "three_center": [
+    19.0,
+    1.2,
+    6.2
+   ],
+   "three_half": [
+    0.3,
+    1.2,
+    0.3
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     18.7,
+     0.0,
+     5.9
+    ],
+    "aabb_max": [
+     19.3,
+     2.4,
+     6.5
+    ]
+   }
+  },
+  "COL_NOW_Cafe_9": {
+   "three_center": [
+    19.0,
+    0.5,
+    6.2
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     18.2,
+     0.0,
+     5.85
+    ],
+    "aabb_max": [
+     19.8,
+     1.0,
+     6.55
+    ]
+   }
+  },
+  "COL_NOW_Umbrella_2": {
+   "three_center": [
+    24.6,
+    1.2,
+    6.4
+   ],
+   "three_half": [
+    0.3,
+    1.2,
+    0.3
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     24.3,
+     0.0,
+     6.1
+    ],
+    "aabb_max": [
+     24.9,
+     2.4,
+     6.7
+    ]
+   }
+  },
+  "COL_NOW_Cafe_10": {
+   "three_center": [
+    24.6,
+    0.5,
+    6.4
+   ],
+   "three_half": [
+    0.8,
+    0.5,
+    0.35
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     23.8,
+     0.0,
+     6.05
+    ],
+    "aabb_max": [
+     25.4,
+     1.0,
+     6.75
+    ]
+   }
+  },
+  "COL_NOW_Planter_1": {
+   "three_center": [
+    11.0,
+    0.5,
+    -4.35
+   ],
+   "three_half": [
+    0.45,
+    0.5,
+    0.225
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     10.55,
+     0.0,
+     -4.575
+    ],
+    "aabb_max": [
+     11.45,
+     1.0,
+     -4.125
+    ]
+   }
+  },
+  "COL_NOW_Planter_2": {
+   "three_center": [
+    29.0,
+    0.5,
+    -4.35
+   ],
+   "three_half": [
+    0.45,
+    0.5,
+    0.225
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     28.55,
+     0.0,
+     -4.575
+    ],
+    "aabb_max": [
+     29.45,
+     1.0,
+     -4.125
+    ]
+   }
+  },
+  "COL_NOW_Planter_3": {
+   "three_center": [
+    -18.0,
+    0.5,
+    4.35
+   ],
+   "three_half": [
+    0.45,
+    0.5,
+    0.225
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -18.45,
+     0.0,
+     4.125
+    ],
+    "aabb_max": [
+     -17.55,
+     1.0,
+     4.575
+    ]
+   }
+  },
+  "COL_NOW_Planter_4": {
+   "three_center": [
+    -1.0,
+    0.5,
+    4.35
+   ],
+   "three_half": [
+    0.45,
+    0.5,
+    0.225
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -1.45,
+     0.0,
+     4.125
+    ],
+    "aabb_max": [
+     -0.55,
+     1.0,
+     4.575
+    ]
+   }
+  },
+  "COL_NOW_Planter_5": {
+   "three_center": [
+    16.0,
+    0.5,
+    4.35
+   ],
+   "three_half": [
+    0.45,
+    0.5,
+    0.225
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     15.55,
+     0.0,
+     4.125
+    ],
+    "aabb_max": [
+     16.45,
+     1.0,
+     4.575
+    ]
+   }
+  },
+  "COL_NOW_Planter_6": {
+   "three_center": [
+    34.0,
+    0.5,
+    4.35
+   ],
+   "three_half": [
+    0.45,
+    0.5,
+    0.225
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     33.55,
+     0.0,
+     4.125
+    ],
+    "aabb_max": [
+     34.45,
+     1.0,
+     4.575
+    ]
+   }
+  },
+  "COL_NOW_Planter_7": {
+   "three_center": [
+    -34.9,
+    0.5,
+    2.6
+   ],
+   "three_half": [
+    0.7,
+    0.5,
+    0.7
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -35.6,
+     0.0,
+     1.9
+    ],
+    "aabb_max": [
+     -34.2,
+     1.0,
+     3.3
+    ]
+   }
+  },
+  "COL_NOW_Planter_8": {
+   "three_center": [
+    -34.9,
+    0.5,
+    0.9
+   ],
+   "three_half": [
+    0.7,
+    0.5,
+    0.7
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -35.6,
+     0.0,
+     0.2
+    ],
+    "aabb_max": [
+     -34.2,
+     1.0,
+     1.6
+    ]
+   }
+  },
+  "COL_NOW_Planter_9": {
+   "three_center": [
+    -34.9,
+    0.5,
+    -0.9
+   ],
+   "three_half": [
+    0.7,
+    0.5,
+    0.7
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -35.6,
+     0.0,
+     -1.6
+    ],
+    "aabb_max": [
+     -34.2,
+     1.0,
+     -0.2
+    ]
+   }
+  },
+  "COL_NOW_Planter_10": {
+   "three_center": [
+    -34.9,
+    0.5,
+    -2.6
+   ],
+   "three_half": [
+    0.7,
+    0.5,
+    0.7
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -35.6,
+     0.0,
+     -3.3
+    ],
+    "aabb_max": [
+     -34.2,
+     1.0,
+     -1.9
+    ]
+   }
+  },
+  "COL_NOW_Bollard_1": {
+   "three_center": [
+    -34.9,
+    0.475,
+    5.4
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -35.02,
+     0.0,
+     5.28
+    ],
+    "aabb_max": [
+     -34.78,
+     0.95,
+     5.52
+    ]
+   }
+  },
+  "COL_NOW_Bollard_2": {
+   "three_center": [
+    -34.9,
+    0.475,
+    -5.4
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -35.02,
+     0.0,
+     -5.52
+    ],
+    "aabb_max": [
+     -34.78,
+     0.95,
+     -5.28
+    ]
+   }
+  },
+  "COL_NOW_Planter_11": {
+   "three_center": [
+    34.9,
+    0.5,
+    2.6
+   ],
+   "three_half": [
+    0.7,
+    0.5,
+    0.7
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     34.2,
+     0.0,
+     1.9
+    ],
+    "aabb_max": [
+     35.6,
+     1.0,
+     3.3
+    ]
+   }
+  },
+  "COL_NOW_Planter_12": {
+   "three_center": [
+    34.9,
+    0.5,
+    0.9
+   ],
+   "three_half": [
+    0.7,
+    0.5,
+    0.7
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     34.2,
+     0.0,
+     0.2
+    ],
+    "aabb_max": [
+     35.6,
+     1.0,
+     1.6
+    ]
+   }
+  },
+  "COL_NOW_Planter_13": {
+   "three_center": [
+    34.9,
+    0.5,
+    -0.9
+   ],
+   "three_half": [
+    0.7,
+    0.5,
+    0.7
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     34.2,
+     0.0,
+     -1.6
+    ],
+    "aabb_max": [
+     35.6,
+     1.0,
+     -0.2
+    ]
+   }
+  },
+  "COL_NOW_Planter_14": {
+   "three_center": [
+    34.9,
+    0.5,
+    -2.6
+   ],
+   "three_half": [
+    0.7,
+    0.5,
+    0.7
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     34.2,
+     0.0,
+     -3.3
+    ],
+    "aabb_max": [
+     35.6,
+     1.0,
+     -1.9
+    ]
+   }
+  },
+  "COL_NOW_Bollard_3": {
+   "three_center": [
+    34.9,
+    0.475,
+    5.4
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     34.78,
+     0.0,
+     5.28
+    ],
+    "aabb_max": [
+     35.02,
+     0.95,
+     5.52
+    ]
+   }
+  },
+  "COL_NOW_Bollard_4": {
+   "three_center": [
+    34.9,
+    0.475,
+    -5.4
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     34.78,
+     0.0,
+     -5.52
+    ],
+    "aabb_max": [
+     35.02,
+     0.95,
+     -5.28
+    ]
+   }
+  },
+  "COL_NOW_Bollard_5": {
+   "three_center": [
+    -1.8,
+    0.475,
+    -4.3
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -1.92,
+     0.0,
+     -4.42
+    ],
+    "aabb_max": [
+     -1.68,
+     0.95,
+     -4.18
+    ]
+   }
+  },
+  "COL_NOW_Bollard_6": {
+   "three_center": [
+    0.0,
+    0.475,
+    -4.3
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -0.12,
+     0.0,
+     -4.42
+    ],
+    "aabb_max": [
+     0.12,
+     0.95,
+     -4.18
+    ]
+   }
+  },
+  "COL_NOW_Bollard_7": {
+   "three_center": [
+    1.8,
+    0.475,
+    -4.3
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     1.68,
+     0.0,
+     -4.42
+    ],
+    "aabb_max": [
+     1.92,
+     0.95,
+     -4.18
+    ]
+   }
+  },
+  "COL_NOW_Bollard_8": {
+   "three_center": [
+    18.5,
+    0.475,
+    4.3
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     18.38,
+     0.0,
+     4.18
+    ],
+    "aabb_max": [
+     18.62,
+     0.95,
+     4.42
+    ]
+   }
+  },
+  "COL_NOW_Bollard_9": {
+   "three_center": [
+    21.0,
+    0.475,
+    4.3
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     20.88,
+     0.0,
+     4.18
+    ],
+    "aabb_max": [
+     21.12,
+     0.95,
+     4.42
+    ]
+   }
+  },
+  "COL_NOW_Bollard_10": {
+   "three_center": [
+    23.5,
+    0.475,
+    4.3
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     23.38,
+     0.0,
+     4.18
+    ],
+    "aabb_max": [
+     23.62,
+     0.95,
+     4.42
+    ]
+   }
+  },
+  "COL_NOW_Bollard_11": {
+   "three_center": [
+    25.8,
+    0.475,
+    4.3
+   ],
+   "three_half": [
+    0.12,
+    0.475,
+    0.12
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     25.68,
+     0.0,
+     4.18
+    ],
+    "aabb_max": [
+     25.92,
+     0.95,
+     4.42
+    ]
+   }
+  },
+  "COL_NOW_Lamp_1": {
+   "three_center": [
+    -31.2,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.15,
+    1.5,
+    0.15
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -31.35,
+     0.0,
+     -3.77
+    ],
+    "aabb_max": [
+     -31.05,
+     3.0,
+     -3.47
+    ]
+   }
+  },
+  "COL_NOW_Lamp_2": {
+   "three_center": [
+    1.8,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.15,
+    1.5,
+    0.15
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     1.65,
+     0.0,
+     -3.77
+    ],
+    "aabb_max": [
+     1.95,
+     3.0,
+     -3.47
+    ]
+   }
+  },
+  "COL_NOW_Lamp_3": {
+   "three_center": [
+    14.8,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.15,
+    1.5,
+    0.15
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     14.65,
+     0.0,
+     -3.77
+    ],
+    "aabb_max": [
+     14.95,
+     3.0,
+     -3.47
+    ]
+   }
+  },
+  "COL_NOW_Lamp_4": {
+   "three_center": [
+    31.0,
+    1.5,
+    -3.62
+   ],
+   "three_half": [
+    0.15,
+    1.5,
+    0.15
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     30.85,
+     0.0,
+     -3.77
+    ],
+    "aabb_max": [
+     31.15,
+     3.0,
+     -3.47
+    ]
+   }
+  },
+  "COL_NOW_Lamp_5": {
+   "three_center": [
+    -31.5,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.15,
+    1.5,
+    0.15
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -31.65,
+     0.0,
+     3.47
+    ],
+    "aabb_max": [
+     -31.35,
+     3.0,
+     3.77
+    ]
+   }
+  },
+  "COL_NOW_Lamp_6": {
+   "three_center": [
+    -14.8,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.15,
+    1.5,
+    0.15
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -14.95,
+     0.0,
+     3.47
+    ],
+    "aabb_max": [
+     -14.65,
+     3.0,
+     3.77
+    ]
+   }
+  },
+  "COL_NOW_Lamp_7": {
+   "three_center": [
+    4.6,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.15,
+    1.5,
+    0.15
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     4.45,
+     0.0,
+     3.47
+    ],
+    "aabb_max": [
+     4.75,
+     3.0,
+     3.77
+    ]
+   }
+  },
+  "COL_NOW_Lamp_8": {
+   "three_center": [
+    22.0,
+    1.5,
+    3.62
+   ],
+   "three_half": [
+    0.15,
+    1.5,
+    0.15
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     21.85,
+     0.0,
+     3.47
+    ],
+    "aabb_max": [
+     22.15,
+     3.0,
+     3.77
+    ]
+   }
+  },
+  "COL_NOW_SignPole_1": {
+   "three_center": [
+    2.2,
+    1.1,
+    3.66
+   ],
+   "three_half": [
+    0.1,
+    1.1,
+    0.1
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     2.1,
+     0.0,
+     3.56
+    ],
+    "aabb_max": [
+     2.3,
+     2.2,
+     3.76
+    ]
+   }
+  },
+  "COL_NOW_SignPole_2": {
+   "three_center": [
+    -2.2,
+    1.1,
+    3.66
+   ],
+   "three_half": [
+    0.1,
+    1.1,
+    0.1
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -2.3,
+     0.0,
+     3.56
+    ],
+    "aabb_max": [
+     -2.1,
+     2.2,
+     3.76
+    ]
+   }
+  },
+  "COL_NOW_SignPole_3": {
+   "three_center": [
+    -27.0,
+    1.1,
+    3.66
+   ],
+   "three_half": [
+    0.1,
+    1.1,
+    0.1
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -27.1,
+     0.0,
+     3.56
+    ],
+    "aabb_max": [
+     -26.9,
+     2.2,
+     3.76
+    ]
+   }
+  },
+  "COL_NOW_SignPole_4": {
+   "three_center": [
+    33.8,
+    1.1,
+    -3.66
+   ],
+   "three_half": [
+    0.1,
+    1.1,
+    0.1
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     33.7,
+     0.0,
+     -3.76
+    ],
+    "aabb_max": [
+     33.9,
+     2.2,
+     -3.56
+    ]
+   }
+  },
+  "COL_NOW_SignPole_5": {
+   "three_center": [
+    -34.4,
+    1.1,
+    3.8
+   ],
+   "three_half": [
+    0.1,
+    1.1,
+    0.1
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -34.5,
+     0.0,
+     3.7
+    ],
+    "aabb_max": [
+     -34.3,
+     2.2,
+     3.9
+    ]
+   }
+  },
+  "COL_NOW_Car_1": {
+   "three_center": [
+    -22.0,
+    0.75,
+    2.45
+   ],
+   "three_half": [
+    2.2,
+    0.75,
+    0.95
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -24.2,
+     0.0,
+     1.5
+    ],
+    "aabb_max": [
+     -19.8,
+     1.5,
+     3.4
+    ]
+   }
+  },
+  "COL_NOW_Car_2": {
+   "three_center": [
+    -14.6,
+    0.75,
+    2.45
+   ],
+   "three_half": [
+    2.2,
+    0.75,
+    0.95
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -16.8,
+     0.0,
+     1.5
+    ],
+    "aabb_max": [
+     -12.4,
+     1.5,
+     3.4
+    ]
+   }
+  },
+  "COL_NOW_Car_3": {
+   "three_center": [
+    -7.2,
+    0.75,
+    2.45
+   ],
+   "three_half": [
+    2.2,
+    0.75,
+    0.95
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -9.4,
+     0.0,
+     1.5
+    ],
+    "aabb_max": [
+     -5.0,
+     1.5,
+     3.4
+    ]
+   }
+  },
+  "COL_NOW_Bin_1": {
+   "three_center": [
+    -16.5,
+    0.55,
+    4.35
+   ],
+   "three_half": [
+    0.32,
+    0.55,
+    0.32
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -16.82,
+     0.0,
+     4.03
+    ],
+    "aabb_max": [
+     -16.18,
+     1.1,
+     4.67
+    ]
+   }
+  },
+  "COL_NOW_Bin_2": {
+   "three_center": [
+    8.0,
+    0.55,
+    -4.35
+   ],
+   "three_half": [
+    0.32,
+    0.55,
+    0.32
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     7.68,
+     0.0,
+     -4.67
+    ],
+    "aabb_max": [
+     8.32,
+     1.1,
+     -4.03
+    ]
+   }
+  },
+  "COL_NOW_Bin_3": {
+   "three_center": [
+    26.0,
+    0.55,
+    4.35
+   ],
+   "three_half": [
+    0.32,
+    0.55,
+    0.32
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     25.68,
+     0.0,
+     4.03
+    ],
+    "aabb_max": [
+     26.32,
+     1.1,
+     4.67
+    ]
+   }
+  },
+  "COL_NOW_Scooters": {
+   "three_center": [
+    -3.3,
+    0.55,
+    6.25
+   ],
+   "three_half": [
+    0.8,
+    0.55,
+    0.45
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     -4.1,
+     0.0,
+     5.8
+    ],
+    "aabb_max": [
+     -2.5,
+     1.1,
+     6.7
+    ]
+   }
+  },
+  "COL_NOW_Bikes": {
+   "three_center": [
+    4.2,
+    0.5,
+    -6.2
+   ],
+   "three_half": [
+    1.2,
+    0.5,
+    0.5
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     3.0,
+     0.0,
+     -6.7
+    ],
+    "aabb_max": [
+     5.4,
+     1.0,
+     -5.7
+    ]
+   }
+  },
+  "COL_NOW_Tree_1": {
+   "three_center": [
+    4.0,
+    0.5,
+    3.0
+   ],
+   "three_half": [
+    0.62,
+    0.5,
+    0.62
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     3.38,
+     0.0,
+     2.38
+    ],
+    "aabb_max": [
+     4.62,
+     1.0,
+     3.62
+    ]
+   }
+  },
+  "COL_NOW_Tree_2": {
+   "three_center": [
+    26.0,
+    0.5,
+    3.0
+   ],
+   "three_half": [
+    0.62,
+    0.5,
+    0.62
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     25.38,
+     0.0,
+     2.38
+    ],
+    "aabb_max": [
+     26.62,
+     1.0,
+     3.62
+    ]
+   }
+  },
+  "COL_NOW_Bench_1": {
+   "three_center": [
+    19.2,
+    0.45,
+    10.4
+   ],
+   "three_half": [
+    0.85,
+    0.45,
+    0.3
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     18.35,
+     0.0,
+     10.1
+    ],
+    "aabb_max": [
+     20.05,
+     0.9,
+     10.7
+    ]
+   }
+  },
+  "COL_NOW_Bench_2": {
+   "three_center": [
+    24.2,
+    0.45,
+    10.4
+   ],
+   "three_half": [
+    0.85,
+    0.45,
+    0.3
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     23.35,
+     0.0,
+     10.1
+    ],
+    "aabb_max": [
+     25.05,
+     0.9,
+     10.7
+    ]
+   }
+  },
+  "COL_NOW_Tree_3": {
+   "three_center": [
+    18.8,
+    1.5,
+    13.8
+   ],
+   "three_half": [
+    0.25,
+    1.5,
+    0.25
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     18.55,
+     0.0,
+     13.55
+    ],
+    "aabb_max": [
+     19.05,
+     3.0,
+     14.05
+    ]
+   }
+  },
+  "COL_NOW_Tree_4": {
+   "three_center": [
+    25.2,
+    1.5,
+    13.2
+   ],
+   "three_half": [
+    0.25,
+    1.5,
+    0.25
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     24.95,
+     0.0,
+     12.95
+    ],
+    "aabb_max": [
+     25.45,
+     3.0,
+     13.45
+    ]
+   }
+  },
+  "COL_NOW_Plaque": {
+   "three_center": [
+    21.8,
+    0.8,
+    8.6
+   ],
+   "three_half": [
+    0.5,
+    0.8,
+    0.2
+   ],
+   "props": {
+    "state": "now",
+    "aabb_min": [
+     21.3,
+     0.0,
+     8.4
+    ],
+    "aabb_max": [
+     22.3,
+     1.6,
+     8.8
+    ]
+   }
+  },
+  "COL_Int_WallN": {
+   "three_center": [
+    199.5,
+    1.3,
+    -2.2
+   ],
+   "three_half": [
+    3.9,
+    1.3,
+    0.2
+   ],
+   "props": {
+    "aabb_min": [
+     195.6,
+     0.0,
+     -2.4
+    ],
+    "aabb_max": [
+     203.4,
+     2.6,
+     -2.0
+    ]
+   }
+  },
+  "COL_Int_WallS": {
+   "three_center": [
+    199.5,
+    1.3,
+    2.2
+   ],
+   "three_half": [
+    3.9,
+    1.3,
+    0.2
+   ],
+   "props": {
+    "aabb_min": [
+     195.6,
+     0.0,
+     2.0
+    ],
+    "aabb_max": [
+     203.4,
+     2.6,
+     2.4
+    ]
+   }
+  },
+  "COL_Int_WallE": {
+   "three_center": [
+    203.2,
+    1.3,
+    -0.0
+   ],
+   "three_half": [
+    0.2,
+    1.3,
+    2.4
+   ],
+   "props": {
+    "aabb_min": [
+     203.0,
+     0.0,
+     -2.4
+    ],
+    "aabb_max": [
+     203.4,
+     2.6,
+     2.4
+    ]
+   }
+  },
+  "COL_Int_WallW": {
+   "three_center": [
+    195.8,
+    1.3,
+    -0.0
+   ],
+   "three_half": [
+    0.2,
+    1.3,
+    2.4
+   ],
+   "props": {
+    "aabb_min": [
+     195.6,
+     0.0,
+     -2.4
+    ],
+    "aabb_max": [
+     196.0,
+     2.6,
+     2.4
+    ]
+   }
+  },
+  "COL_Int_BenchN": {
+   "three_center": [
+    199.65,
+    0.25,
+    -1.725
+   ],
+   "three_half": [
+    2.45,
+    0.25,
+    0.275
+   ],
+   "props": {
+    "aabb_min": [
+     197.2,
+     0.0,
+     -2.0
+    ],
+    "aabb_max": [
+     202.1,
+     0.5,
+     -1.45
+    ]
+   }
+  },
+  "COL_Int_BenchS": {
+   "three_center": [
+    199.65,
+    0.25,
+    1.725
+   ],
+   "three_half": [
+    2.45,
+    0.25,
+    0.275
+   ],
+   "props": {
+    "aabb_min": [
+     197.2,
+     0.0,
+     1.45
+    ],
+    "aabb_max": [
+     202.1,
+     0.5,
+     2.0
+    ]
+   }
+  },
+  "COL_Int_Crates": {
+   "three_center": [
+    202.55,
+    0.4,
+    1.5
+   ],
+   "three_half": [
+    0.45,
+    0.4,
+    0.5
+   ],
+   "props": {
+    "aabb_min": [
+     202.1,
+     0.0,
+     1.0
+    ],
+    "aabb_max": [
+     203.0,
+     0.8,
+     2.0
+    ]
+   }
+  },
+  "COL_Int_Radio": {
+   "three_center": [
+    202.55,
+    0.55,
+    -1.5
+   ],
+   "three_half": [
+    0.45,
+    0.55,
+    0.5
+   ],
+   "props": {
+    "aabb_min": [
+     202.1,
+     0.0,
+     -2.0
+    ],
+    "aabb_max": [
+     203.0,
+     1.1,
+     -1.0
+    ]
+   }
+  },
+  "COL_Int_Bags": {
+   "three_center": [
+    196.4,
+    0.4,
+    1.4
+   ],
+   "three_half": [
+    0.4,
+    0.4,
+    0.6
+   ],
+   "props": {
+    "aabb_min": [
+     196.0,
+     0.0,
+     0.8
+    ],
+    "aabb_max": [
+     196.8,
+     0.8,
+     2.0
+    ]
+   }
+  },
+  "COL_Step_FFW_N_W": {
+   "three_center": [
+    -19.25,
+    -0.08,
+    -5.35
+   ],
+   "three_half": [
+    16.75,
+    0.32,
+    1.35
+   ],
+   "props": {
+    "walkable": true,
+    "top": 0.24,
+    "aabb_min": [
+     -36.0,
+     -0.4,
+     -6.7
+    ],
+    "aabb_max": [
+     -2.5,
+     0.24,
+     -4.0
+    ]
+   }
+  },
+  "COL_Step_FFW_N_E": {
+   "three_center": [
+    19.25,
+    -0.08,
+    -5.35
+   ],
+   "three_half": [
+    16.75,
+    0.32,
+    1.35
+   ],
+   "props": {
+    "walkable": true,
+    "top": 0.24,
+    "aabb_min": [
+     2.5,
+     -0.4,
+     -6.7
+    ],
+    "aabb_max": [
+     36.0,
+     0.24,
+     -4.0
+    ]
+   }
+  },
+  "COL_Step_FFW_S_W": {
+   "three_center": [
+    -9.5,
+    -0.08,
+    5.35
+   ],
+   "three_half": [
+    26.5,
+    0.32,
+    1.35
+   ],
+   "props": {
+    "walkable": true,
+    "top": 0.24,
+    "aabb_min": [
+     -36.0,
+     -0.4,
+     4.0
+    ],
+    "aabb_max": [
+     17.0,
+     0.24,
+     6.7
+    ]
+   }
+  },
+  "COL_Step_FFW_S_E": {
+   "three_center": [
+    31.5,
+    -0.08,
+    5.35
+   ],
+   "three_half": [
+    4.5,
+    0.32,
+    1.35
+   ],
+   "props": {
+    "walkable": true,
+    "top": 0.24,
+    "aabb_min": [
+     27.0,
+     -0.4,
+     4.0
+    ],
+    "aabb_max": [
+     36.0,
+     0.24,
+     6.7
+    ]
+   }
+  },
+  "COL_Step_Kopitiam": {
+   "three_center": [
+    -5.5,
+    -0.08,
+    -10.35
+   ],
+   "three_half": [
+    3.0,
+    0.32,
+    3.65
+   ],
+   "props": {
+    "walkable": true,
+    "top": 0.24,
+    "aabb_min": [
+     -8.5,
+     -0.4,
+     -14.0
+    ],
+    "aabb_max": [
+     -2.5,
+     0.24,
+     -6.7
+    ]
+   }
+  },
+  "COL_Step_Kerb_N": {
+   "three_center": [
+    0.0,
+    -0.14,
+    -3.75
+   ],
+   "three_half": [
+    36.0,
+    0.26,
+    0.25
+   ],
+   "props": {
+    "walkable": true,
+    "top": 0.12,
+    "aabb_min": [
+     -36.0,
+     -0.4,
+     -4.0
+    ],
+    "aabb_max": [
+     36.0,
+     0.12,
+     -3.5
+    ]
+   }
+  },
+  "COL_Step_Kerb_S": {
+   "three_center": [
+    0.0,
+    -0.14,
+    3.75
+   ],
+   "three_half": [
+    36.0,
+    0.26,
+    0.25
+   ],
+   "props": {
+    "walkable": true,
+    "top": 0.12,
+    "aabb_min": [
+     -36.0,
+     -0.4,
+     3.5
+    ],
+    "aabb_max": [
+     36.0,
+     0.12,
+     4.0
+    ]
+   }
+  },
+  "COL_Block_NW": {
+   "three_center": [
+    -22.25,
+    6.0,
+    -11.4
+   ],
+   "three_half": [
+    13.75,
+    6.0,
+    4.7
+   ],
+   "props": {
+    "aabb_min": [
+     -36.0,
+     0.0,
+     -16.1
+    ],
+    "aabb_max": [
+     -8.5,
+     12.0,
+     -6.7
+    ]
+   }
+  },
+  "COL_Block_NE": {
+   "three_center": [
+    19.25,
+    6.0,
+    -11.4
+   ],
+   "three_half": [
+    16.75,
+    6.0,
+    4.7
+   ],
+   "props": {
+    "aabb_min": [
+     2.5,
+     0.0,
+     -16.1
+    ],
+    "aabb_max": [
+     36.0,
+     12.0,
+     -6.7
+    ]
+   }
+  },
+  "COL_Block_SW": {
+   "three_center": [
+    -9.5,
+    6.0,
+    11.4
+   ],
+   "three_half": [
+    26.5,
+    6.0,
+    4.7
+   ],
+   "props": {
+    "aabb_min": [
+     -36.0,
+     0.0,
+     6.7
+    ],
+    "aabb_max": [
+     17.0,
+     12.0,
+     16.1
+    ]
+   }
+  },
+  "COL_Block_SE": {
+   "three_center": [
+    31.5,
+    6.0,
+    11.4
+   ],
+   "three_half": [
+    4.5,
+    6.0,
+    4.7
+   ],
+   "props": {
+    "aabb_min": [
+     27.0,
+     0.0,
+     6.7
+    ],
+    "aabb_max": [
+     36.0,
+     12.0,
+     16.1
+    ]
+   }
+  }
+ },
+ "meshes": {
+  "Backdrop_East": {
+   "tris": 30432,
+   "materials": [
+    "M_Plaster",
+    "M_RoofTile",
+    "M_Timber",
+    "M_Windows",
+    "M_Details",
+    "M_Signs"
+   ]
+  },
+  "Backdrop_Far": {
+   "tris": 1786,
+   "materials": [
+    "M_Plaster",
+    "M_RoofTile",
+    "M_Windows"
+   ]
+  },
+  "Backdrop_West": {
+   "tris": 25926,
+   "materials": [
+    "M_Plaster",
+    "M_RoofTile",
+    "M_Timber",
+    "M_Windows",
+    "M_Details",
+    "M_Signs"
+   ]
+  },
+  "DMG_Debris_Lantern": {
+   "tris": 84,
+   "materials": [
+    "M_Cloth"
+   ]
+  },
+  "DMG_Debris_Sandbags": {
+   "tris": 274,
+   "materials": [
+    "M_Sandbag"
+   ]
+  },
+  "DMG_Debris_Signboard": {
+   "tris": 12,
+   "materials": [
+    "M_Signs"
+   ]
+  },
+  "DMG_House": {
+   "tris": 2226,
+   "materials": [
+    "M_Plaster",
+    "M_RoofTile",
+    "M_Timber",
+    "M_Brick"
+   ]
+  },
+  "LAUNDRY_Street": {
+   "tris": 610,
+   "materials": [
+    "M_Cloth"
+   ]
+  },
+  "NOW_Lights": {
+   "tris": 1584,
+   "materials": [
+    "M_Metal",
+    "M_Emissive"
+   ]
+  },
+  "NOW_Road": {
+   "tris": 2048,
+   "materials": [
+    "M_Plaster",
+    "M_Floor",
+    "M_Road"
+   ]
+  },
+  "NOW_Shopfronts": {
+   "tris": 140,
+   "materials": [
+    "M_NowShop"
+   ]
+  },
+  "NOW_Skyline": {
+   "tris": 1964,
+   "materials": [
+    "M_Plaster",
+    "M_Glass",
+    "M_Emissive"
+   ]
+  },
+  "NOW_Street": {
+   "tris": 11316,
+   "materials": [
+    "M_Plaster",
+    "M_NowSigns",
+    "M_Metal",
+    "M_Emissive"
+   ]
+  },
+  "OCC_Banner": {
+   "tris": 124,
+   "materials": [
+    "M_Posters"
+   ]
+  },
+  "OCC_Flags": {
+   "tris": 132,
+   "materials": [
+    "M_Posters"
+   ]
+  },
+  "OCC_KopiClosed": {
+   "tris": 120,
+   "materials": [
+    "M_Timber"
+   ]
+  },
+  "OCC_Notices": {
+   "tris": 10,
+   "materials": [
+    "M_Posters"
+   ]
+  },
+  "OCC_RationNotice": {
+   "tris": 20,
+   "materials": [
+    "M_Posters"
+   ]
+  },
+  "OCC_Sentry": {
+   "tris": 168,
+   "materials": [
+    "M_Timber",
+    "M_Posters"
+   ]
+  },
+  "PRE_ARPSign": {
+   "tris": 12,
+   "materials": [
+    "M_Signs"
+   ]
+  },
+  "PRE_Barricade_E": {
+   "tris": 2492,
+   "materials": [
+    "M_Timber",
+    "M_Sandbag"
+   ]
+  },
+  "PRE_Intact_House": {
+   "tris": 1516,
+   "materials": [
+    "M_Plaster",
+    "M_RoofTile",
+    "M_Timber",
+    "M_Windows",
+    "M_Details",
+    "M_Signs"
+   ]
+  },
+  "PRE_Posters": {
+   "tris": 14,
+   "materials": [
+    "M_Posters"
+   ]
+  },
+  "Street_Static_A": {
+   "tris": 12593,
+   "materials": [
+    "M_Plaster",
+    "M_RoofTile",
+    "M_Timber",
+    "M_Floor",
+    "M_Road",
+    "M_Windows",
+    "M_Details",
+    "M_Signs"
+   ]
+  },
+  "Street_Static_B": {
+   "tris": 11276,
+   "materials": [
+    "M_Plaster",
+    "M_RoofTile",
+    "M_Timber",
+    "M_Floor",
+    "M_Road",
+    "M_Windows",
+    "M_Details",
+    "M_Signs"
+   ]
+  },
+  "Street_Static_C": {
+   "tris": 5893,
+   "materials": [
+    "M_Plaster",
+    "M_RoofTile",
+    "M_Timber",
+    "M_Floor",
+    "M_Road",
+    "M_Windows",
+    "M_Details",
+    "M_Signs"
+   ]
+  },
+  "Street_Static_D": {
+   "tris": 8928,
+   "materials": [
+    "M_Plaster",
+    "M_RoofTile",
+    "M_Timber",
+    "M_Floor",
+    "M_Road",
+    "M_Windows",
+    "M_Details",
+    "M_Signs"
+   ]
+  },
+  "ShelterInterior": {
+   "tris": 1410,
+   "materials": [
+    "M_Plaster",
+    "M_Timber",
+    "M_Floor",
+    "M_Brick",
+    "M_Details",
+    "M_Emissive",
+    "M_Sandbag"
+   ]
+  },
+  "WAR_Street": {
+   "tris": 40858,
+   "materials": [
+    "M_Plaster",
+    "M_Timber",
+    "M_Sandbag",
+    "M_Brick",
+    "M_Details",
+    "M_Signs",
+    "M_Metal"
+   ]
+  },
+  "WIRES_Street": {
+   "tris": 4644,
+   "materials": [
+    "M_Metal"
+   ]
+  }
+ },
+ "tris": {
+  "mobile": 98148,
+  "desktop": 168612
+ }
+}

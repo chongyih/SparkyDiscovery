@@ -1,0 +1,10 @@
+node_modules
+dist
+.DS_Store
+
+# Blender autosave backups and Python caches
+*.blend1
+__pycache__/
+
+# Regenerable preview renders (tools/render_sparky_previews.py, tools/preview_ww2_npcs.py, …)
+docs/previews/

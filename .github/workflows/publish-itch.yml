@@ -1,0 +1,82 @@
+name: Publish to itch.io
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Finish a running upload before starting the next release.
+concurrency:
+  group: itch-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: |
+          set -euo pipefail
+          npm run build
+          test -s dist/index.html
+
+      # Keep a downloadable build even when itch.io has not been configured yet.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sparky-web-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Check itch.io configuration
+        env:
+          ITCH_PROJECT: ${{ vars.ITCH_PROJECT }}
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          if [[ ! "$ITCH_PROJECT" =~ ^[a-z0-9_-]+/[a-z0-9_-]+$ ]]; then
+            echo "::error::Set the ITCH_PROJECT repository variable to your itch.io username/game-slug."
+            exit 1
+          fi
+          if [[ -z "$BUTLER_API_KEY" ]]; then
+            echo "::error::Add your itch.io API key as the BUTLER_API_KEY repository secret."
+            exit 1
+          fi
+
+      - name: Install itch.io Butler
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/butler"
+          curl --fail --location --retry 3 https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -o "$RUNNER_TEMP/butler.zip"
+          unzip -q "$RUNNER_TEMP/butler.zip" -d "$RUNNER_TEMP/butler"
+          chmod +x "$RUNNER_TEMP/butler/butler"
+          echo "$RUNNER_TEMP/butler" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/butler/butler" version
+
+      - name: Publish web build
+        env:
+          ITCH_PROJECT: ${{ vars.ITCH_PROJECT }}
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_RUN_NUMBER}-${GITHUB_SHA:0:8}"
+          butler push dist "$ITCH_PROJECT:html5" --userversion "$version"

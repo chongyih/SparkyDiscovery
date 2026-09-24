@@ -1,0 +1,153 @@
+import * as THREE from 'three';
+import { loadModel } from '../engine/assets.js';
+import { collectMarkers, markerPose } from '../engine/world.js';
+import { Character } from '../engine/character.js';
+import { createBrownie } from '../engine/brownie.js';
+import { tier } from '../engine/settings.js';
+
+// Present-day framing scenes (2026): a Queenstown HDB void deck where 91-year-old Mr. Boon shows
+// Sparky the Brownie camera. Used for every chapter's prologue and closing, so it lives on its own.
+
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+export class PresentDay {
+  constructor(game) {
+    this.game = game;
+  }
+
+  async load(envMap) {
+    const [set, boon, sparky] = await Promise.all([loadModel('voiddeck'), loadModel('npc-oldboon'), loadModel('sparky')]);
+    const s = new THREE.Scene();
+    this.scene = s;
+    const t = tier();
+    if (set) {
+      s.add(set.scene);
+      set.scene.traverse((o) => {
+        if (!o.isMesh) return;
+        o.receiveShadow = true; o.castShadow = t.shadows;
+        // Decals/signs sit just above their surfaces: bias them forward in depth to avoid shimmer.
+        for (const m of [].concat(o.material)) if (/Atlas|Paint/.test(m.name)) { m.polygonOffset = true; m.polygonOffsetFactor = -1; m.polygonOffsetUnits = -2; }
+      });
+      this.m = collectMarkers(set.scene);
+      // Golden hour: low warm sun from the open side, warm haze.
+      s.background = new THREE.Color('#e8cfae');
+      s.fog = new THREE.Fog('#e8cfae', 30, 140);
+      s.add(new THREE.HemisphereLight('#ffeedd', '#5e574c', 0.5));
+      const sun = new THREE.DirectionalLight('#ffc98a', 2.2);
+      const sunP = this.m.PRO_Sun ? markerPose(this.m.PRO_Sun).pos : V(20, 14, 12);
+      sun.position.copy(sunP.clone().normalize().multiplyScalar(30));
+      sun.castShadow = t.shadows;
+      if (t.shadows) {
+        sun.shadow.mapSize.set(t.shadowSize * 2, t.shadowSize * 2);
+        Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 80 });
+        sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.06;
+      }
+      s.add(sun, sun.target);
+      // Fluorescent tubes: a few cool fills.
+      Object.keys(this.m).filter((k) => k.startsWith('PRO_Lamp')).slice(0, Math.max(0, t.maxLights - 2)).forEach((k) => {
+        const l = new THREE.PointLight('#e8f2ff', 1.2, 6, 2);
+        l.position.copy(markerPose(this.m[k]).pos);
+        s.add(l);
+      });
+    } else this.buildFallback(s);
+    s.environment = envMap;
+    s.environmentIntensity = set ? 0.25 : 0.22;
+
+    const tablePos = this.pose('PRO_Table', V(0, 0.75, 0)).pos;
+    this.camera = createBrownie();
+    this.camera.scale.setScalar(0.12);
+    // Rest the camera's base on the table's mosaic board (0.15 m tall body → centre +0.075).
+    const boardTop = this.m?.PRO_Table?.userData?.board_top ?? tablePos.y;
+    this.camera.position.set(tablePos.x, boardTop + 0.075, tablePos.z);
+    s.add(this.camera);
+    // Turn the lens toward the close-up camera, so the push-in travels down the lens axis
+    // (never through the camera body).
+    const close = this.pose('PRO_Camera_Close', tablePos.clone().add(V(0.7, 0.4, 0.8))).pos;
+    this.camera.lookAt(close.x, this.camera.position.y, close.z);
+    this.camera.rotateY(0.25); // a slight three-quarter angle reads better than dead-on
+
+    // Mr. Boon and Sparky on opposite stools (only when the real set provides seats).
+    if (set) {
+      // NPC Sit clips expect the origin on the seat's centre line; Sparky's Sit expects the seat's
+      // front edge (his seat is 0.40 m, the stools are 0.45 m, so he's lifted a little).
+      const bs = this.pose('PRO_Stool_Boon', tablePos.clone().add(V(0, -0.75, 0.9)));
+      const off = this.m.PRO_Stool_Boon?.userData?.seat_centre_offset ?? 0.17;
+      bs.pos.add(V(-Math.sin(bs.yaw) * off, 0, -Math.cos(bs.yaw) * off));
+      const ss = this.pose('PRO_Stool_Sparky', tablePos.clone().add(V(0, -0.75, -0.9)));
+      ss.pos.y += 0.05;
+      this.boon = new Character('OldBoon', boon, { height: 1.55, placeholder: { shirt: '#f4f1ea', pants: '#6b6b6b', skin: '#d2a47c', hair: '#e8e6e0' } });
+      this.boon.place(bs.pos, bs.yaw);
+      this.boon.play('Sit');
+      this.sparky = new Character('Sparky', sparky, { height: 1.0 });
+      this.sparky.place(ss.pos, ss.yaw);
+      this.sparky.play('Sit');
+      s.add(this.boon.root, this.sparky.root);
+    }
+    this.hasSet = !!set;
+    this.tablePos = tablePos;
+  }
+
+  pose(name, fallback) {
+    const n = this.m?.[name];
+    return n ? markerPose(n) : { pos: fallback.clone(), yaw: 0 };
+  }
+
+  buildFallback(s) {
+    s.background = new THREE.Color('#0d0b09');
+    s.fog = new THREE.Fog('#0d0b09', 4, 14);
+    const terrazzo = new THREE.MeshStandardMaterial({ color: '#8f8a80', roughness: 0.45 });
+    const table = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 0.06, 40), terrazzo);
+    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.22, 0.72, 20), terrazzo);
+    leg.position.y = -0.36;
+    table.add(leg);
+    table.position.y = 0.72;
+    s.add(table);
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), new THREE.MeshStandardMaterial({ color: '#4a463f', roughness: 0.9 }));
+    floor.rotation.x = -Math.PI / 2;
+    s.add(floor);
+    s.add(new THREE.HemisphereLight('#f4ead6', '#302820', 0.22));
+    const key = new THREE.SpotLight('#ffd9a8', 9, 9, 0.55, 0.7, 1.5);
+    key.position.set(1.4, 2.6, 1.2);
+    key.castShadow = true;
+    s.add(key, key.target);
+  }
+
+  update(dt) {
+    this.boon?.update(dt);
+    this.sparky?.update(dt);
+  }
+
+  show() {
+    const g = this.game;
+    g.renderer.setScene(this.scene, g.camera);
+    g.scene = this.scene;
+    this.active = true;
+  }
+
+  wideShot(instant = false) {
+    const g = this.game;
+    const w = this.pose('PRO_Camera_Wide', this.tablePos.clone().add(V(2.4, 1.4, 3)));
+    g.rig.cut(w.pos, this.tablePos.clone().add(V(0, 0.2, 0)), instant ? 1 : 0.5, instant);
+  }
+
+  closeShot() {
+    const g = this.game;
+    const c = this.pose('PRO_Camera_Close', this.tablePos.clone().add(V(0.7, 0.4, 0.8)));
+    g.rig.cut(c.pos, this.tablePos.clone().add(V(0, 0.08, 0)), 0.35);
+  }
+
+  /** Push into the Brownie's viewfinder: sepia bleed + fade. */
+  async pushIn() {
+    const g = this.game;
+    // Glide toward the lens along its own axis, stopping just outside it.
+    const p = this.camera.position;
+    const lensDir = new THREE.Vector3(0, 0, 1).applyQuaternion(this.camera.quaternion).setY(0).normalize();
+    // Line up on the lens axis first (from the close-up side), then glide in.
+    g.rig.cut(p.clone().addScaledVector(lensDir, 0.8).add(V(0, 0.18, 0)), p.clone(), 2.5);
+    await g.wait(0.6);
+    const lens = p.clone().add(V(0, -0.012, 0));
+    g.rig.cut(lens.clone().addScaledVector(lensDir, 0.22).add(V(0, 0.01, 0)), lens, 1.3);
+    await g.tween(g.renderer.grade, { sepia: 1, saturation: 0.3, vignette: 0.9 }, 2.2);
+    await g.ui.fade(true, 0.6, 'sepia');
+  }
+}

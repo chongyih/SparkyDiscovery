@@ -1,0 +1,293 @@
+{
+  "aircraft": {
+    "file": "aircraft.mp3",
+    "duration": 12.0,
+    "rate": 22050,
+    "kbps": 64,
+    "bytes": 96800
+  },
+  "camera-shutter": {
+    "file": "camera-shutter.mp3",
+    "duration": 1.25,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 10492
+  },
+  "cicadas": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 45.721043,
+    "loopLength": 45.471066,
+    "file": "cicadas.mp3",
+    "duration": 45.971,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 276392,
+    "decodedSamples": 1013661,
+    "seamDipDb": -2.5
+  },
+  "distant-explosion": {
+    "file": "distant-explosion.mp3",
+    "duration": 4.5,
+    "rate": 22050,
+    "kbps": 64,
+    "bytes": 36823
+  },
+  "door": {
+    "file": "door.mp3",
+    "duration": 1.0,
+    "rate": 22050,
+    "kbps": 64,
+    "bytes": 8820
+  },
+  "ear-ring": {
+    "file": "ear-ring.mp3",
+    "duration": 3.2,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 26165,
+    "note": "kept quiet (-12 dBFS peak) on purpose"
+  },
+  "fire-crackle": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 12.249977,
+    "loopLength": 12.0,
+    "file": "fire-crackle.mp3",
+    "duration": 12.5,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 75615,
+    "decodedSamples": 275624,
+    "seamDipDb": -7.6
+  },
+  "footstep-1": {
+    "file": "footstep-1.mp3",
+    "duration": 0.103,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 1296
+  },
+  "footstep-2": {
+    "file": "footstep-2.mp3",
+    "duration": 0.105,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 1505
+  },
+  "footstep-3": {
+    "file": "footstep-3.mp3",
+    "duration": 0.11,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 1505
+  },
+  "footstep-4": {
+    "file": "footstep-4.mp3",
+    "duration": 0.108,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 1505
+  },
+  "footstep-5": {
+    "file": "footstep-5.mp3",
+    "duration": 0.111,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 1505
+  },
+  "heartbeat": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 6.249977,
+    "loopLength": 6.0,
+    "file": "heartbeat.mp3",
+    "duration": 6.5,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 39566,
+    "note": "80 bpm, 8 beats",
+    "decodedSamples": 143324,
+    "seamDipDb": 0.0
+  },
+  "impact": {
+    "file": "impact.mp3",
+    "duration": 4.0,
+    "rate": 22050,
+    "kbps": 64,
+    "bytes": 32852
+  },
+  "koel-short": {
+    "file": "koel-short.mp3",
+    "duration": 4.3,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 34942
+  },
+  "murmur": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 45.249977,
+    "loopLength": 45.0,
+    "file": "murmur.mp3",
+    "duration": 45.5,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 273571,
+    "note": "neighbours.ogg 0:00-0:47, re-looped to 45 s with a 2 s crossfade",
+    "decodedSamples": 1003274,
+    "seamDipDb": -4.2
+  },
+  "myna": {
+    "file": "myna.mp3",
+    "duration": 5.2,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 42256
+  },
+  "night-ambience": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 30.249977,
+    "loopLength": 30.0,
+    "file": "night-ambience.mp3",
+    "duration": 30.5,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 183605,
+    "decodedSamples": 672524,
+    "seamDipDb": -6.7
+  },
+  "paper": {
+    "file": "paper.mp3",
+    "duration": 1.15,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 9865
+  },
+  "paper-piece": {
+    "file": "paper-piece.mp3",
+    "duration": 0.6,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 5267
+  },
+  "pickup-chime": {
+    "file": "pickup-chime.mp3",
+    "duration": 1.7,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 14253
+  },
+  "radio-static": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 8.249977,
+    "loopLength": 8.0,
+    "file": "radio-static.mp3",
+    "duration": 8.5,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 51635,
+    "decodedSamples": 187424,
+    "seamDipDb": -2.1
+  },
+  "rumble": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 12.6,
+    "loopLength": 12.350023,
+    "file": "rumble.mp3",
+    "duration": 12.85,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 77653,
+    "note": "ww2-rumble.wav 0.15-13.7 s, 1.2 s crossfade",
+    "decodedSamples": 283342,
+    "seamDipDb": -2.6
+  },
+  "shell-whistle": {
+    "file": "shell-whistle.mp3",
+    "duration": 1.8,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 14880,
+    "note": "ends abruptly by design; play impact/distant-explosion right after"
+  },
+  "shelter-room": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 20.249977,
+    "loopLength": 20.0,
+    "file": "shelter-room.mp3",
+    "duration": 20.5,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 123576,
+    "decodedSamples": 452024,
+    "seamDipDb": -9.3
+  },
+  "shutter": {
+    "file": "shutter.mp3",
+    "duration": 0.8,
+    "rate": 22050,
+    "kbps": 64,
+    "bytes": 7148
+  },
+  "siren": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 24.983764,
+    "loopLength": 24.733787,
+    "file": "siren.mp3",
+    "duration": 25.234,
+    "rate": 22050,
+    "kbps": 64,
+    "bytes": 202544,
+    "note": "ww2-siren-recording.ogg from 8.00 s, loop 24.73 s (pitch-matched), 1.5 s crossfade",
+    "decodedSamples": 556404,
+    "seamDipDb": -14.2
+  },
+  "street": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 60.249977,
+    "loopLength": 60.0,
+    "file": "street.mp3",
+    "duration": 60.5,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 363694,
+    "note": "street.ogg 0:00-1:02, re-looped to 60 s with a 2 s equal-power crossfade",
+    "decodedSamples": 1334063,
+    "seamDipDb": -4.7
+  },
+  "theme-1942": {
+    "loop": true,
+    "loopStart": 0.25,
+    "loopEnd": 72.25,
+    "loopLength": 72.0,
+    "file": "theme-1942.mp3",
+    "duration": 72.5,
+    "rate": 32000,
+    "kbps": 64,
+    "bytes": 580652,
+    "note": "original music-box theme, A minor pentatonic, 80 bpm, 24 bars",
+    "decodedSamples": 2320000,
+    "seamDipDb": -13.1
+  },
+  "ui-click": {
+    "file": "ui-click.mp3",
+    "duration": 0.06,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 1087
+  },
+  "whistle": {
+    "file": "whistle.mp3",
+    "duration": 1.45,
+    "rate": 44100,
+    "kbps": 64,
+    "bytes": 12163
+  }
+}
