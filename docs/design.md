@@ -105,15 +105,18 @@ alone). *Newspaper* → Siti keeps the 1942 front page in her book bag and shows
 (fallback: a warm nod). *Tiffin carrier* → on Boon's shelf, saved for 1967. Kindnesses: helped
 characters appear in the evening crowd with a line.
 
+**Built (branch `ch2-independence`):** set `tools/build_kopitiam.py` → `kopitiam.glb`; cast `tools/build_1965_npcs.py`;
+code `src/chapters/ind*.js`. If no family photo was saved in 1942, a red 福 diamond hangs in Papa's frame.
+
 **Ch3 seeds:** only **Farid (16, helps at the counter)** and **Ravi (Mr. Rajan's son)** are planted:
 separate tables all day, side by side on the bench at the TV, not speaking. Ah Hock and the Eurasian
 boy are introduced fresh in Ch3.
 
-**LKY footage: use the real clip (user decision; internal, non-profit build).** Source: NAS "Prime
-Minister Meets The Press" (accession 1997002660), with subtitles verbatim from transcript lky19650809b.
-Credit on screen while it plays and in the album: "Courtesy of Mediacorp Pte Ltd / National Archives of
-Singapore". NAS says reuse needs Mediacorp's written permission, so ask them before any public
-release (itch.io, competition pages).
+**LKY footage: the real clip (built).** The 118 s "moment of anguish" excerpt from Wikimedia Commons
+("Lee Kuan Yew's press conference on 9 Aug 1965", Singapore Broadcasting Corporation archive, public domain),
+converted to H.264 with the archive timecode cropped; Commons captions (CC BY-SA 4.0). Credited on screen while
+it plays and in the album; details in `public/assets/video/ATTRIBUTION.md`. The "not a Malay nation…" words follow
+as narration from the NAS transcript (they aren't in the excerpt).
 
 **Research:** done, in `docs/research/1965-history.md` (press conference recorded at noon and shown
 on TV the same day; ST 10 Aug headline "Singapore is out"; firecrackers in Chinatown confirmed).

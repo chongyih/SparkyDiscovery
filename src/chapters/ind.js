@@ -223,14 +223,13 @@ export class IndependenceChapter extends ChapterKit {
     setTex('DECAL_Calendar', D.calendarPage());
     setTex('DECAL_Notice', D.notice(T.notice));
     setTex('DECAL_Portrait_AhMa', D.portrait('ahma'));
-    setTex('DECAL_Portrait_Papa', D.portrait('papa'));
+    setTex('DECAL_Portrait_Papa', this.heirlooms.includes('photo') ? D.portrait('papa') : D.fuDiamond());
     setTex('WALL_Newspaper', D.newspaper());
     setTex('WALL_Flag', D.flag());
     setTex('WALL_Sign', D.fourLanguageSign(T.newSign));
     setTex('WALL_Calendar', D.calendarPage());
     for (const k of ['WALL_Newspaper', 'WALL_Flag', 'WALL_Sign', 'WALL_Calendar']) if (this.nodes[k]) this.nodes[k].visible = false;
-    // Heirloom from 1942: the family photo hangs beside Ah Ma's portrait.
-    if (this.nodes.DECAL_Portrait_Papa) this.nodes.DECAL_Portrait_Papa.visible = this.heirlooms.includes('photo');
+    // Heirloom from 1942: the family photo hangs beside Ah Ma's portrait (otherwise a 福 diamond hangs there).
 
     this.tv = new TV(this.game, this.nodes.TV_Screen?.isMesh ? this.nodes.TV_Screen : this.findMesh(this.nodes.TV_Screen));
 

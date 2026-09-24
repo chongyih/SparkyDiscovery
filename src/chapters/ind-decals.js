@@ -170,6 +170,19 @@ export function portrait(kind) {
   return tex(c);
 }
 
+/** Fallback for Papa's frame (no family photo saved in 1942): a red 福 ("good fortune") diamond. */
+export function fuDiamond() {
+  const [c, g] = canvas(256, 320);
+  g.fillStyle = '#efe6cf'; g.fillRect(0, 0, 256, 320);
+  g.save(); g.translate(128, 160); g.rotate(Math.PI / 4);
+  g.fillStyle = '#b3261e'; g.fillRect(-72, -72, 144, 144);
+  g.strokeStyle = '#e9c46a'; g.lineWidth = 5; g.strokeRect(-64, -64, 128, 128);
+  g.restore();
+  fit(g, '福', 128, 164, 150, 110, CJK, '700', '#1a1a1a');
+  grain(g, 256, 320, 14);
+  return tex(c);
+}
+
 // ------------------------------------------------------------------ the wall choices
 export function newspaper() {
   const [c, g] = canvas(360, 320);

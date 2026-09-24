@@ -718,14 +718,14 @@ def kopitiam_tables():
             for k in range(R.randint(0, 2)):
                 a = R.uniform(0, 6.28)
                 cyl("M_Plaster", (x + math.cos(a) * 0.18, y + math.sin(a) * 0.18, ZF + 0.74), 0.045, 0.08, 8, PORCELAIN)
-    # a long bench against the front of the east wall, facing the TV corner
-    bx0, bx1, by = 0.6, 2.6, 3.55
+    # a long bench at the back of the room, between the tables and the family wall, facing the TV corner
+    bx0, bx1, by = 1.4, 3.2, 9.4
     box("M_Timber", (bx0, by - 0.18, ZF + 0.42), (bx1, by + 0.18, ZF + 0.46), TIMBER)
     for bx in (bx0 + 0.1, bx1 - 0.14):
         box("M_Timber", (bx, by - 0.15, ZF), (bx + 0.04, by + 0.15, ZF + 0.42), TIMBER_DARK)
     collider("COL_Bench", (bx0, by - 0.2, 0), (bx1, by + 0.2, 0.5))
-    marker("BENCH_1", (1.25, by + 0.02, ZF), facing((1.25, by), (TV[0], TV[1])), {"seat_height": 0.46})
-    marker("BENCH_2", (1.95, by + 0.02, ZF), facing((1.95, by), (TV[0], TV[1])), {"seat_height": 0.46})
+    marker("BENCH_1", (1.95, by + 0.02, ZF), (0, 1), {"seat_height": 0.46})
+    marker("BENCH_2", (2.65, by + 0.02, ZF), (0, 1), {"seat_height": 0.46})
 
 
 def kopitiam_walls():

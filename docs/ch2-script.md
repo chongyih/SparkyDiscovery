@@ -2,7 +2,8 @@
 
 _Monday, 9 August 1965. Queenstown, Singapore._
 
-> **Status:** first draft (24 Sep 2026). Facts and quotes checked against
+> **Status:** implemented on branch `ch2-independence` (25 Sep 2026; in-game text: `src/chapters/ind-text.js`,
+> which is the source of truth where the two differ). Facts and quotes checked against
 > [docs/research/1965-history.md](research/1965-history.md). Lines marked **[native review]** need a
 > native speaker to check them before they ship.
 
@@ -13,7 +14,7 @@ _Monday, 9 August 1965. Queenstown, Singapore._
   She hasn't forgotten the 1942 headline.
 - **Farid (16):** Siti's little brother; afternoon-session student who helps at the counter in the mornings. Cheeky and
   full of questions. He wants the day to be exciting.
-- **Mr. Rajan (~55):** once the ARP warden, now a grassroots leader at the community centre. Calm, dry, short sentences.
+- **Mr. Rajan (63):** once the ARP warden, now a grassroots leader at the community centre. Calm, dry, short sentences.
 - **Ravi (16):** Mr. Rajan's son. Quiet, reads a comic, watches everything. Almost never speaks.
 - **Ah Pek Tan:** old Hokkien uncle, speaks mostly Hokkien, a regular for thirty years. Grumbles.
 - **Makcik Rohani:** Malay auntie, a seamstress on the second floor. Warm, worried, sharp.
@@ -50,11 +51,11 @@ A wrong drink never fails you. The customer just laughs and corrects you, and yo
 
 > **[Title card]** Queenstown. Today.
 
-**MR. BOON (91):** My old block is gone now. New flats, same spot. But the road still bends the same way.
+**MR. BOON (91):** My old shop is a minimart now. Same corner, same pillars. Everything else changed.
 
 *Objective: Raise the camera. Line up the old photo with the road.*
 
-**MR. BOON (91):** Ah, there. My shop was right on that corner. Ground floor, next to the bookshop.
+**MR. BOON (91):** Ah, there. My kopitiam. Right next to the bookshop.
 
 *(Design note: an invented block with ground-floor shops. The research found no shops in the Stirling Road blocks, so don't name a real block.)*
 
@@ -124,7 +125,7 @@ A wrong drink never fails you. The customer just laughs and corrects you, and yo
 
 *(The Malay song on the counter radio stops mid-verse. A pause. Then an announcer reads, in Malay.)*
 
-**RADIO (Radio Singapura, Malay service):** *(real archival audio: the Malay reading of the Proclamation, 9 Aug 1965; subtitled in English)*
+**RADIO (Radio Singapura, Malay service):** *(the broadcast went out in Malay; in the game the player reads the lines, marked “(in Malay)”, with the Proclamation’s key sentence in English. The surviving Malay recording is held by the National Archives and is not in the game.)*
 
 > On-screen, the key sentence of the Proclamation, in English:
 > “…Singapore shall be forever a sovereign democratic and independent nation, founded upon the principles of liberty and justice…”
@@ -292,7 +293,9 @@ I have believed in Merger and the unity of these two territories.”
 
 *Photo card — **9 August 1965**: Singapore left Malaysia and became an independent country. At a press conference shown on TV, Prime Minister Lee Kuan Yew broke down. He had believed all his adult life that Singapore belonged with Malaysia. He ended with: “let us, really Singaporeans… we unite, regardless of race, language, religion, culture.”*
 
-*Footage credit shown on screen, lower corner, while it plays:* “Prime Minister Meets The Press, 9 August 1965. Courtesy of Mediacorp Pte Ltd / National Archives of Singapore.”
+*Footage credit shown on screen, lower corner, while it plays:* “Original footage: Lee Kuan Yew’s press conference, 9 Aug 1965 (Singapore Broadcasting Corporation archive), via Wikimedia Commons, public domain.”
+
+*Implemented clip: the 118 s “moment of anguish” excerpt (source 02:08–04:06) from Wikimedia Commons, with the Commons English captions (CC BY-SA 4.0). It ends at “Would you mind if we stop for a while?”. The “not a Malay nation…” words are not in the excerpt, so they follow as narration over the silent room, quoted from the NAS transcript. Two crowd reactions (Farid at 0:30, Siti at 0:48) cut away during the long silences. Hold to skip.*
 
 ## 8 · Something for the wall
 
@@ -345,11 +348,11 @@ I have believed in Merger and the unity of these two territories.”
 - Imagined: the rumours in the corridor stand for the many that spread that day.
 
 **Credits:**
-- Press conference footage: “Prime Minister Meets The Press”, 9 August 1965 (NAS accession 1997002660). Courtesy of Mediacorp Pte Ltd / National Archives of Singapore.
+- Press conference footage: “Lee Kuan Yew’s press conference on 9 Aug 1965” (Singapore Broadcasting Corporation archive), via Wikimedia Commons, public domain (PD-SG-broadcast). See `public/assets/video/ATTRIBUTION.md`.
+- Press conference captions: Wikimedia Commons English TimedText contributors, CC BY-SA 4.0.
 - Press conference transcript: “Transcript of a Press Conference Given by the Prime Minister, Mr. Lee Kuan Yew, at Broadcasting House, Singapore, at 1200 Hours on Monday 9th August, 1965” (lky19650809b), National Archives of Singapore. https://www.nas.gov.sg/archivesonline/data/pdfdoc/lky19650809b.pdf
-- Proclamation radio reading (Malay), Radio Singapura, 9 August 1965 (NAS audio 1997021116). Courtesy of Mediacorp Pte Ltd / National Archives of Singapore. **[confirm credit wording on the NAS record page]**
 - Proclamation of Singapore text: National Archives of Singapore.
 - Headline: *The Straits Times*, 10 August 1965, p. 1 (NewspaperSG, National Library Board).
 - Full source list: [docs/research/1965-history.md](research/1965-history.md).
 
-**Rights note:** NAS says reusing the footage needs written permission from Mediacorp. This build is internal and non-profit, and it credits every source. Ask Mediacorp before any public release (itch.io, competition entry pages).
+**Rights note:** the copy used is designated public domain on Wikimedia Commons. The National Archives also holds the recording, credited “Courtesy of Mediacorp Pte Ltd”; check with Mediacorp before any commercial release.
