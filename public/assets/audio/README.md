@@ -94,3 +94,14 @@ file name (footsteps share `footstep`).
 python3 tools/build_audio.py                 # everything
 python3 tools/build_audio.py --only theme-1942 whistle
 ```
+
+## Chapter 2 (1965) additions
+
+| File | Source | Licence |
+| --- | --- | --- |
+| `ceiling-fan.mp3` | [Electric fan #2](https://bigsoundbank.com/electric-fan-2-s0079.html), Joseph Sardin, BigSoundBank (via the Godot project's `ceiling-fan.ogg`) | CC0 |
+| `tv-static.mp3` | Generated white noise with a slight shimmer (Godot project's `tv-static.ogg`) | Original |
+| `kopi-pour.mp3`, `cup-clink.mp3`, `spoon-stir.mp3`, `firecrackers.mp3` | Synthesised by `tools/build_audio.py` | Original |
+| `radio-song.mp3` | Original tune in the style of 1960s Malay pop (joget), synthesised and radio-filtered by `tools/build_audio.py` | Original |
+
+The TV's press-conference audio is part of the archival video: see `public/assets/video/ATTRIBUTION.md`.

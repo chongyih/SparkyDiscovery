@@ -1,0 +1,1533 @@
+{
+ "markers": {
+  "SNAP_MoneyTin": {
+   "three_pos": [
+    -1.4,
+    1.25,
+    -9.55
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "RADIO": {
+   "three_pos": [
+    -0.35,
+    1.28,
+    -9.6
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "COUNTER_Cup": {
+   "three_pos": [
+    -1.9,
+    1.15,
+    -9.45
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "COUNTER_Serve": {
+   "three_pos": [
+    -1.9,
+    0.15,
+    -8.45
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {}
+  },
+  "SNAP_Rediffusion": {
+   "three_pos": [
+    -3.4,
+    2.75,
+    -11.7
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "NPC_Boon": {
+   "three_pos": [
+    -1.8,
+    0.15,
+    -10.6
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "NPC_Farid": {
+   "three_pos": [
+    0.9,
+    0.15,
+    -9.35
+   ],
+   "three_facing": [
+    -0.928,
+    0.0,
+    0.371
+   ],
+   "props": {}
+  },
+  "TABLE_T1": {
+   "three_pos": [
+    -2.7,
+    0.89,
+    -7.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "SEAT_T1_a": {
+   "three_pos": [
+    -3.153,
+    0.15,
+    -6.947
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T1_b": {
+   "three_pos": [
+    -2.247,
+    0.15,
+    -6.947
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T1_c": {
+   "three_pos": [
+    -2.247,
+    0.15,
+    -7.853
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T1_d": {
+   "three_pos": [
+    -3.153,
+    0.15,
+    -7.853
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "TABLE_T2": {
+   "three_pos": [
+    0.0,
+    0.89,
+    -7.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "SEAT_T2_a": {
+   "three_pos": [
+    -0.453,
+    0.15,
+    -6.947
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T2_b": {
+   "three_pos": [
+    0.453,
+    0.15,
+    -6.947
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T2_c": {
+   "three_pos": [
+    0.453,
+    0.15,
+    -7.853
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T2_d": {
+   "three_pos": [
+    -0.453,
+    0.15,
+    -7.853
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "TABLE_T3": {
+   "three_pos": [
+    2.7,
+    0.89,
+    -7.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "SEAT_T3_a": {
+   "three_pos": [
+    2.247,
+    0.15,
+    -6.947
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T3_b": {
+   "three_pos": [
+    3.153,
+    0.15,
+    -6.947
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T3_c": {
+   "three_pos": [
+    3.153,
+    0.15,
+    -7.853
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T3_d": {
+   "three_pos": [
+    2.247,
+    0.15,
+    -7.853
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "TABLE_T4": {
+   "three_pos": [
+    -2.7,
+    0.89,
+    -5.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "SEAT_T4_a": {
+   "three_pos": [
+    -3.153,
+    0.15,
+    -4.547
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T4_b": {
+   "three_pos": [
+    -2.247,
+    0.15,
+    -4.547
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T4_c": {
+   "three_pos": [
+    -2.247,
+    0.15,
+    -5.453
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T4_d": {
+   "three_pos": [
+    -3.153,
+    0.15,
+    -5.453
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "TABLE_T5": {
+   "three_pos": [
+    0.0,
+    0.89,
+    -5.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "SEAT_T5_a": {
+   "three_pos": [
+    -0.453,
+    0.15,
+    -4.547
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T5_b": {
+   "three_pos": [
+    0.453,
+    0.15,
+    -4.547
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T5_c": {
+   "three_pos": [
+    0.453,
+    0.15,
+    -5.453
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T5_d": {
+   "three_pos": [
+    -0.453,
+    0.15,
+    -5.453
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "TABLE_T6": {
+   "three_pos": [
+    2.7,
+    0.89,
+    -5.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "SEAT_T6_a": {
+   "three_pos": [
+    2.247,
+    0.15,
+    -4.547
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T6_b": {
+   "three_pos": [
+    3.153,
+    0.15,
+    -4.547
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T6_c": {
+   "three_pos": [
+    3.153,
+    0.15,
+    -5.453
+   ],
+   "three_facing": [
+    -0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "SEAT_T6_d": {
+   "three_pos": [
+    2.247,
+    0.15,
+    -5.453
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    0.707
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "BENCH_1": {
+   "three_pos": [
+    1.25,
+    0.15,
+    -3.57
+   ],
+   "three_facing": [
+    0.309,
+    0.0,
+    -0.951
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "BENCH_2": {
+   "three_pos": [
+    1.95,
+    0.15,
+    -3.57
+   ],
+   "three_facing": [
+    0.228,
+    0.0,
+    -0.974
+   ],
+   "props": {
+    "seat_height": 0.46
+   }
+  },
+  "WALL_Focus": {
+   "three_pos": [
+    1.9,
+    1.95,
+    -11.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "FAN_1_Axis": {
+   "three_pos": [
+    -1.6,
+    2.68,
+    -6.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "FAN_2_Axis": {
+   "three_pos": [
+    1.6,
+    2.68,
+    -6.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "LAMP": {
+   "three_pos": [
+    -2.6,
+    3.2,
+    -4.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "LAMP.001": {
+   "three_pos": [
+    2.6,
+    3.2,
+    -4.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "LAMP.002": {
+   "three_pos": [
+    -2.6,
+    3.2,
+    -8.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "LAMP.003": {
+   "three_pos": [
+    2.6,
+    3.2,
+    -8.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "LAMP.004": {
+   "three_pos": [
+    0.0,
+    3.2,
+    -10.6
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {}
+  },
+  "TV": {
+   "three_pos": [
+    3.604,
+    2.5,
+    -11.047
+   ],
+   "three_facing": [
+    -0.584,
+    0.0,
+    0.812
+   ],
+   "props": {}
+  },
+  "SNAP_TV": {
+   "three_pos": [
+    3.604,
+    2.5,
+    -11.047
+   ],
+   "three_facing": [
+    -0.584,
+    0.0,
+    0.812
+   ],
+   "props": {}
+  },
+  "SPAWN_Sparky": {
+   "three_pos": [
+    0.6,
+    0.15,
+    -1.4
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "props": {}
+  },
+  "THEN_NOW_Camera": {
+   "three_pos": [
+    0.8,
+    1.45,
+    8.5
+   ],
+   "three_facing": [
+    -0.0,
+    0.05,
+    -0.999
+   ],
+   "props": {
+    "note": "Then & Now viewpoint in the car park"
+   }
+  },
+  "NPC_AhPek": {
+   "three_pos": [
+    -2.7,
+    0.15,
+    -7.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "seat": "SEAT_T1_c"
+   }
+  },
+  "NPC_Rohani": {
+   "three_pos": [
+    -2.7,
+    0.15,
+    -5.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "seat": "SEAT_T4_b"
+   }
+  },
+  "NPC_Letchumi": {
+   "three_pos": [
+    2.7,
+    0.15,
+    -5.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "seat": "SEAT_T6_a"
+   }
+  },
+  "NPC_Ravi": {
+   "three_pos": [
+    0.0,
+    0.15,
+    -5.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "seat": "SEAT_T5_d"
+   }
+  },
+  "NPC_SitiTable": {
+   "three_pos": [
+    2.7,
+    0.15,
+    -7.4
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "props": {
+    "seat": "SEAT_T3_c"
+   }
+  },
+  "NPC_Siti": {
+   "three_pos": [
+    6.7,
+    0.15,
+    -1.7
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "NPC_Rajan": {
+   "three_pos": [
+    -12.5,
+    0.15,
+    -1.5
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "RAJAN_Door": {
+   "three_pos": [
+    -3.4,
+    0.15,
+    -3.6
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {}
+  },
+  "RUMOUR_1": {
+   "three_pos": [
+    10.9,
+    0.15,
+    -1.6
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "RUMOUR_2": {
+   "three_pos": [
+    4.2,
+    0.15,
+    -0.9
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "RUMOUR_3": {
+   "three_pos": [
+    -6.6,
+    0.15,
+    -1.8
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "RUMOUR_4": {
+   "three_pos": [
+    8.2,
+    0.15,
+    -2.0
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "RUMOUR_5": {
+   "three_pos": [
+    12.2,
+    0.15,
+    -2.2
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "props": {}
+  },
+  "CROWD_1": {
+   "three_pos": [
+    -3.6,
+    0.15,
+    -4.0
+   ],
+   "three_facing": [
+    0.712,
+    0.0,
+    -0.702
+   ],
+   "props": {}
+  },
+  "CROWD_2": {
+   "three_pos": [
+    -3.2,
+    0.15,
+    -3.5
+   ],
+   "three_facing": [
+    0.668,
+    0.0,
+    -0.744
+   ],
+   "props": {}
+  },
+  "CROWD_3": {
+   "three_pos": [
+    -1.8,
+    0.15,
+    -3.4
+   ],
+   "three_facing": [
+    0.577,
+    0.0,
+    -0.817
+   ],
+   "props": {}
+  },
+  "CROWD_4": {
+   "three_pos": [
+    -0.9,
+    0.15,
+    -3.9
+   ],
+   "three_facing": [
+    0.535,
+    0.0,
+    -0.845
+   ],
+   "props": {}
+  },
+  "CROWD_5": {
+   "three_pos": [
+    -1.3,
+    0.15,
+    -6.2
+   ],
+   "three_facing": [
+    0.707,
+    0.0,
+    -0.707
+   ],
+   "props": {}
+  },
+  "CROWD_6": {
+   "three_pos": [
+    1.3,
+    0.15,
+    -6.2
+   ],
+   "three_facing": [
+    0.436,
+    0.0,
+    -0.9
+   ],
+   "props": {}
+  },
+  "CROWD_7": {
+   "three_pos": [
+    -3.9,
+    0.15,
+    -6.2
+   ],
+   "three_facing": [
+    0.835,
+    0.0,
+    -0.551
+   ],
+   "props": {}
+  },
+  "CROWD_8": {
+   "three_pos": [
+    3.9,
+    0.15,
+    -6.6
+   ],
+   "three_facing": [
+    -0.032,
+    0.0,
+    -0.999
+   ],
+   "props": {}
+  },
+  "CROWD_9": {
+   "three_pos": [
+    -2.3,
+    0.15,
+    -2.6
+   ],
+   "three_facing": [
+    0.573,
+    0.0,
+    -0.819
+   ],
+   "props": {}
+  },
+  "CROWD_10": {
+   "three_pos": [
+    -1.0,
+    0.15,
+    -2.5
+   ],
+   "three_facing": [
+    0.477,
+    0.0,
+    -0.879
+   ],
+   "props": {}
+  },
+  "CROWD_11": {
+   "three_pos": [
+    0.4,
+    0.15,
+    -2.6
+   ],
+   "three_facing": [
+    0.361,
+    0.0,
+    -0.933
+   ],
+   "props": {}
+  },
+  "CROWD_12": {
+   "three_pos": [
+    1.8,
+    0.15,
+    -2.5
+   ],
+   "three_facing": [
+    0.218,
+    0.0,
+    -0.976
+   ],
+   "props": {}
+  },
+  "CROWD_13": {
+   "three_pos": [
+    3.0,
+    0.15,
+    -2.8
+   ],
+   "three_facing": [
+    0.088,
+    0.0,
+    -0.996
+   ],
+   "props": {}
+  },
+  "CROWD_14": {
+   "three_pos": [
+    -3.6,
+    0.15,
+    -2.2
+   ],
+   "three_facing": [
+    0.63,
+    0.0,
+    -0.776
+   ],
+   "props": {}
+  },
+  "CAM_Wide": {
+   "three_pos": [
+    -3.9,
+    2.5,
+    -3.4
+   ],
+   "three_facing": [
+    0.58,
+    -0.255,
+    -0.773
+   ],
+   "props": {}
+  },
+  "CAM_TVCrowd": {
+   "three_pos": [
+    3.2,
+    2.0,
+    -10.6
+   ],
+   "three_facing": [
+    -0.575,
+    -0.176,
+    0.799
+   ],
+   "props": {}
+  },
+  "CAM_Counter": {
+   "three_pos": [
+    -1.0,
+    1.55,
+    -7.0
+   ],
+   "three_facing": [
+    -0.285,
+    -0.114,
+    -0.952
+   ],
+   "props": {}
+  },
+  "CAM_Wall": {
+   "three_pos": [
+    1.9,
+    1.6,
+    -9.8
+   ],
+   "three_facing": [
+    -0.0,
+    0.05,
+    -0.999
+   ],
+   "props": {}
+  },
+  "CAM_Corridor": {
+   "three_pos": [
+    -1.5,
+    1.9,
+    2.2
+   ],
+   "three_facing": [
+    0.51,
+    -0.128,
+    -0.85
+   ],
+   "props": {}
+  }
+ },
+ "colliders": {
+  "COL_Pillar_1": {
+   "three_center": [
+    -13.5,
+    1.5,
+    -0.22
+   ]
+  },
+  "COL_Pillar_2": {
+   "three_center": [
+    -9.0,
+    1.5,
+    -0.22
+   ]
+  },
+  "COL_Pillar_3": {
+   "three_center": [
+    -4.5,
+    1.5,
+    -0.22
+   ]
+  },
+  "COL_Pillar_4": {
+   "three_center": [
+    0.0,
+    1.5,
+    -0.22
+   ]
+  },
+  "COL_Pillar_5": {
+   "three_center": [
+    4.5,
+    1.5,
+    -0.22
+   ]
+  },
+  "COL_Pillar_6": {
+   "three_center": [
+    9.0,
+    1.5,
+    -0.22
+   ]
+  },
+  "COL_Pillar_7": {
+   "three_center": [
+    13.5,
+    1.5,
+    -0.22
+   ]
+  },
+  "COL_Pillar_8": {
+   "three_center": [
+    -14.7,
+    1.5,
+    -0.22
+   ]
+  },
+  "COL_Pillar_9": {
+   "three_center": [
+    14.7,
+    1.5,
+    -0.22
+   ]
+  },
+  "COL_End_1": {
+   "three_center": [
+    -15.0,
+    1.5,
+    -1.5
+   ]
+  },
+  "COL_End_2": {
+   "three_center": [
+    15.0,
+    1.5,
+    -1.5
+   ]
+  },
+  "COL_EndBay_1": {
+   "three_center": [
+    -14.25,
+    1.5,
+    -3.15
+   ]
+  },
+  "COL_EndBay_2": {
+   "three_center": [
+    14.25,
+    1.5,
+    -3.15
+   ]
+  },
+  "COL_Shopfront_1": {
+   "three_center": [
+    -11.25,
+    1.5,
+    -3.15
+   ]
+  },
+  "COL_Shopfront_2": {
+   "three_center": [
+    -6.75,
+    1.5,
+    -3.15
+   ]
+  },
+  "COL_Shopfront_3": {
+   "three_center": [
+    6.75,
+    1.5,
+    -3.15
+   ]
+  },
+  "COL_Shopfront_4": {
+   "three_center": [
+    11.25,
+    1.5,
+    -3.15
+   ]
+  },
+  "COL_Kopi_WallW": {
+   "three_center": [
+    -4.65,
+    1.5,
+    -7.5
+   ]
+  },
+  "COL_Kopi_WallE": {
+   "three_center": [
+    4.65,
+    1.5,
+    -7.5
+   ]
+  },
+  "COL_Kopi_Back": {
+   "three_center": [
+    0.0,
+    1.5,
+    -12.15
+   ]
+  },
+  "COL_Counter": {
+   "three_center": [
+    -2.06,
+    0.65,
+    -10.575
+   ]
+  },
+  "COL_Table_T1": {
+   "three_center": [
+    -2.7,
+    0.5,
+    -7.4
+   ]
+  },
+  "COL_Table_T2": {
+   "three_center": [
+    0.0,
+    0.5,
+    -7.4
+   ]
+  },
+  "COL_Table_T3": {
+   "three_center": [
+    2.7,
+    0.5,
+    -7.4
+   ]
+  },
+  "COL_Table_T4": {
+   "three_center": [
+    -2.7,
+    0.5,
+    -5.0
+   ]
+  },
+  "COL_Table_T5": {
+   "three_center": [
+    0.0,
+    0.5,
+    -5.0
+   ]
+  },
+  "COL_Table_T6": {
+   "three_center": [
+    2.7,
+    0.5,
+    -5.0
+   ]
+  },
+  "COL_Bench": {
+   "three_center": [
+    1.6,
+    0.25,
+    -3.55
+   ]
+  }
+ },
+ "meshes": {
+  "DECAL_Calendar": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_Notice": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_NowSign": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_OrderBoard": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_Portrait_AhMa": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_Portrait_Papa": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_ShopSign": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_Sign_Barber": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_Sign_Bookshop": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_Sign_Provision": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "DECAL_Sign_Tailor": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "FAN_1": {
+   "tris": 72,
+   "materials": [
+    "M_Metal"
+   ]
+  },
+  "FAN_2": {
+   "tris": 72,
+   "materials": [
+    "M_Metal"
+   ]
+  },
+  "NOW_Kopitiam": {
+   "tris": 104,
+   "materials": [
+    "M_NowSigns",
+    "M_Glass",
+    "M_Metal"
+   ]
+  },
+  "NOW_Shops": {
+   "tris": 248,
+   "materials": [
+    "M_Glass",
+    "M_Metal"
+   ]
+  },
+  "NOW_Street": {
+   "tris": 1140,
+   "materials": [
+    "M_Plaster",
+    "M_Cloth",
+    "M_Metal"
+   ]
+  },
+  "Kopitiam_Static": {
+   "tris": 5178,
+   "materials": [
+    "M_Plaster",
+    "M_Timber",
+    "M_Floor",
+    "M_Road",
+    "M_Cloth",
+    "M_Glass",
+    "M_Metal"
+   ]
+  },
+  "THEN_Kopitiam": {
+   "tris": 3524,
+   "materials": [
+    "M_Plaster",
+    "M_Timber",
+    "M_Cloth",
+    "M_Windows",
+    "M_Details",
+    "M_Glass",
+    "M_Metal",
+    "M_Emissive"
+   ]
+  },
+  "THEN_Laundry": {
+   "tris": 484,
+   "materials": [
+    "M_Timber",
+    "M_Cloth"
+   ]
+  },
+  "THEN_Shops": {
+   "tris": 706,
+   "materials": [
+    "M_Plaster",
+    "M_Timber",
+    "M_Cloth",
+    "M_Windows",
+    "M_Details",
+    "M_Glass"
+   ]
+  },
+  "THEN_Street": {
+   "tris": 758,
+   "materials": [
+    "M_Timber",
+    "M_Cloth",
+    "M_Metal"
+   ]
+  },
+  "TV_Screen": {
+   "tris": 2,
+   "materials": [
+    "M_Screen"
+   ]
+  },
+  "WALL_Calendar": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "WALL_Flag": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "WALL_Newspaper": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  },
+  "WALL_Sign": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ]
+  }
+ },
+ "tris": {
+  "mobile": 12020,
+  "desktop": 12318
+ }
+}
