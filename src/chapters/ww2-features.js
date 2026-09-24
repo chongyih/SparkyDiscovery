@@ -32,7 +32,7 @@ export function setEra(c, era) {
   c.refreshShadows();
 }
 
-function thenNowPose(c) {
+export function thenNowPose(c) {
   if (c.m.THEN_NOW_Camera) {
     // Step forward into the middle of the arch bay: the marker sits right beside an arcade
     // column, which fills the view (and clips) when the player turns toward the road.
@@ -89,7 +89,8 @@ export async function thenNow(c) {
   const offYaw = towardRoad(1) >= towardRoad(-1) ? 0.4 : -0.4, offPitch = -0.1;
   g.rig.viewfinder(eye, eye.clone().add(dirAt(pose.yaw + offYaw, pitch + offPitch)), true, 1.3);
   Object.assign(g.renderer.grade, { sepia: 0, saturation: 1.05, vignette: 0.35 });
-  await g.ui.fade(false, 1.2);
+  // Coming in through the Brownie's lens (the prologue closed the iris on it): open it onto the street.
+  if (g.ui.irisClosed) { g.ui.fade(false, 0); await g.ui.iris(false, 1.5, { y: 50, soft: 6 }); } else await g.ui.fade(false, 1.2);
   await c.cardLine(X.card.text);
   await c.lines(X.before, { frame: false });
 

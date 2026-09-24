@@ -888,13 +888,9 @@ def birdcage(x, y, z_hook):
 
 
 def table_things():
-    # Mr. Boon's takeaway kopi in a plastic bag (string loop + straw) and his walking cane
-    kx, ky = -0.27, -0.24
-    blob("M_Plastic", (kx, ky, TABLE_Z + 0.05), 0.042, C(0.64, 0.42, 0.24), sub=2, squash=(0.9, 0.9, 1.25), noise=0.04,
-         flat_bottom=TABLE_Z + 0.009)
-    blob("M_Plastic", (kx, ky, TABLE_Z + 0.108), 0.014, C(0.92, 0.92, 0.9), sub=1, noise=0.1)            # knot
-    tube("M_Plastic", (kx + 0.005, ky, TABLE_Z + 0.07), (kx + 0.03, ky - 0.01, TABLE_Z + 0.19), 0.0035, 5, C(0.95, 0.45, 0.55))
-    torus("M_Plastic", M_at(kx - 0.015, ky, TABLE_Z + 0.125, 0.4, rx=0.3), 0.017, 0.0025, 10, 3, C(0.92, 0.92, 0.9))  # string loop
+    # Mr. Boon's takeaway kopi in a plastic bag is built at runtime (translucent plastic; see
+    # src/engine/kopi.js): only its spot on the chessboard is exported. Then his walking cane.
+    marker("PRO_Kopi", (-0.27, -0.24, TABLE_Z + 0.006), (0, -1))
     CANE = C(0.30, 0.20, 0.12)
     tube("M_Plastic", (-0.50, -0.50, 0.0), (-0.40, -0.40, 0.84), 0.013, 6, CANE)
     tube("M_Plastic", (-0.40, -0.40, 0.84), (-0.31, -0.35, 0.86), 0.014, 6, CANE)
@@ -1263,7 +1259,7 @@ MAT_DEF = {  # name: (texture, roughness, metallic)
     "M_Paint": ("paint", 0.85, 0.0),
     "M_Floor": ("floor", 0.42, 0.0),
     "M_Concrete": ("concrete", 0.9, 0.0),
-    "M_Terrazzo": ("terrazzo", 0.35, 0.0),
+    "M_Terrazzo": ("terrazzo", 0.7, 0.0),  # honed, not mirror-polished: the low sun blew out the table top
     "M_Grass": ("grass", 0.95, 0.0),
     "M_Foliage": ("foliage", 0.8, 0.0),
     "M_Flower": ("flower", 0.8, 0.0),

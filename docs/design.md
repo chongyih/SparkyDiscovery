@@ -248,7 +248,8 @@ Queenstown HDB void deck, 2026, late afternoon (built by `tools/build_voiddeck.p
 warm bounce baked into COLOR_0 (multiply with the base colour map), meshopt-compressed.
 - `PRO_Table` (top surface centre, three (0, 0.75, 0)); `PRO_Stool_Boon` / `PRO_Stool_Sparky`
   (floor, under the seat's front edge, facing the table; extras `seat_height` 0.45 and
-  `seat_centre_offset` 0.17); `PRO_SeatTop_Boon` / `PRO_SeatTop_Sparky` (seat-top centres).
+  `seat_centre_offset` 0.17); `PRO_SeatTop_Boon` / `PRO_SeatTop_Sparky` (seat-top centres);
+  `PRO_Kopi` (on the chessboard: Mr. Boon's bag of kopi, built at runtime in `present-kopi.js`).
 - `PRO_Camera_Wide`, `PRO_Camera_Close` (their −Y already aims at the table, same targets as
   `present-day.js`); `PRO_Sun` (100 m out along the sun direction, 13° elevation);
   `PRO_Lamp_1..15` (fluorescent battens, sorted nearest-to-table first; 9 = lift lobby).

@@ -381,7 +381,7 @@ export class Game {
   setPanelMode(fromTitle) {
     $('pause').classList.toggle('from-title', fromTitle);
     const meta = this.chapter?.T?.meta || this.chapter?.meta;
-    $('pause-kicker').textContent = fromTitle ? 'Sparky Discovery' : (meta ? `Chapter ${meta.chapter} · ${meta.title}` : 'Sparky Discovery');
+    $('pause-kicker').textContent = fromTitle ? 'Footsteps of a Nation' : (meta ? `Chapter ${meta.chapter} · ${meta.title}` : 'Game paused');
     $('pause-title').textContent = fromTitle ? 'Settings' : 'Paused';
     $('btn-resume').textContent = fromTitle ? 'Done' : 'Resume';
     this.showSettingsTab('settings');
@@ -436,7 +436,7 @@ export class Game {
       this.time += dt;
       this.update(dt);
     } else dt = 0;
-    this.renderer.render(dt);
+    if (!this.skipRender) this.renderer.render(dt); // the title skips it while a still covers the canvas
     if (this.statsEl) this.updateStats(now);
   }
 
