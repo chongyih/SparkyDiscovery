@@ -17,11 +17,12 @@ export function setEra(c, era) {
   c.level.traverse((o) => {
     const n = o.name || '';
     if (n.startsWith('COL_')) return;
-    // The chalkboard A-frame signs (the only M_Now-textured piece) are removed at the user's request.
-    if (o.isMesh && [].concat(o.material).some((m) => m.name === 'M_Now')) { o.visible = false; return; }
     if (n.startsWith('NOW_')) o.visible = now;
-    else if (/^(PRE_|WAR_)/.test(n)) o.visible = !now;
+    else if (n === 'PRE_Intact_House') o.visible = true; // rebuilt after the war; stands today
+    else if (/^(PRE_|WAR_|WIRES_|LAUNDRY_)/.test(n)) o.visible = !now;
+    else if (/^(OCC_|DMG_)/.test(n) && !/^DMG_Fire/.test(n) && now) o.visible = false;
   });
+  c.world.applyStates(now ? ['now'] : ['war']);
   for (const f of c.fx) if (f.isSmokeColumn) f.visible = !now;
   if (c.eraUniform) c.eraUniform.value = now ? 1 : 0;
   for (const ch of Object.values(c.cast)) ch.root.visible = !now;

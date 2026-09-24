@@ -193,7 +193,11 @@ export class WW2Chapter {
       const n = o.name || '';
       if (n.startsWith('COL_')) {
         // COL_Step_* are walkable ledges (ground comes from the visible mesh), not walls.
-        if (o.isMesh && !o.userData.walkable && !n.startsWith('COL_Step')) this.world.addBoxFromMesh(o, !n.startsWith('COL_DMG'));
+        if (o.isMesh && !o.userData.walkable && !n.startsWith('COL_Step')) {
+          const st = o.userData.state;
+          const box = this.world.addBoxFromMesh(o, !n.startsWith('COL_DMG') && st !== 'now' && st !== 'occ');
+          if (st) box.state = st;
+        }
         o.visible = false;
         return;
       }
@@ -934,6 +938,7 @@ export class WW2Chapter {
     this.fires.forEach((f) => { this.scene.remove(f); this.pool.release(f.light); disposeEffect(f); });
     this.fires = [];
     setLighting(this, 'occupation');
+    this.world.applyStates(['war', 'occ']);
     for (const ch of Object.values(this.cast)) ch.root.visible = true;
     for (const ex of this.extras) ex.root.visible = false;
     // A long, silent ration queue: townsfolk, with Rajan, Pak Hassan and Siti among them.

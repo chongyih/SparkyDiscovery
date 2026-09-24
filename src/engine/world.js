@@ -66,6 +66,11 @@ export class World {
     for (const b of this.boxes) if (b.name.startsWith(prefix)) b.enabled = enabled;
   }
 
+  /** Colliders tagged with a level `state` ('war' | 'now' | 'occ'): enable per era. */
+  applyStates(active) {
+    for (const b of this.boxes) if (b.state) b.enabled = active.includes(b.state) && !(b.name.startsWith('COL_DMG') && !active.includes('dmg'));
+  }
+
   addRayMesh(mesh) {
     if (!mesh.geometry.boundsTree) mesh.geometry.computeBoundsTree();
     this.rayMeshes.push(mesh);
