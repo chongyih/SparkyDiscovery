@@ -149,6 +149,8 @@ export class IndependenceChapter extends ChapterKit {
 
   /** Title background: a slow drift across the car park, looking at the shops. */
   titleShot(t) {
+    // No Sparky on the title screen (like the other chapters' prints); run() shows him again.
+    if (this.player) this.player.root.visible = false;
     // Between the corridor pillars (x = 0 and 4.5), so the camera never snags on one.
     const s = Math.sin(t * 0.05);
     return [V(2.25 + s * 1.4, 2.3 + Math.sin(t * 0.07) * 0.25, 8.5), V(2.0 + s * 0.6, 1.9, -5)];
@@ -405,6 +407,7 @@ export class IndependenceChapter extends ChapterKit {
     g.album.setPages({ realVsImagined: T.realVsImagined, sources: T.sources.map((s) => ({ title: `${s.title} — ${s.publisher}`, url: s.url })), credits: T.credits.audio });
     g.npcs = Object.values(this.cast);
     g.player = this.player;
+    this.player.root.visible = true;
     this.placeCast();
     this.setEra('then');
     this.setLighting('day');
