@@ -26,7 +26,7 @@ export default {
   },
 
   contentNote:
-    'This chapter shows wartime air raids, fear and loss, including the Sook Ching massacre. Nothing graphic is shown.',
+    'This chapter shows wartime air raids, fear and loss. Nothing graphic is shown.',
 
   // Present day, a Queenstown void deck. Old Mr. Boon (91) shows Sparky the Brownie camera.
   // (Code: first two lines play on the wide shot, the rest on the close-up.)
