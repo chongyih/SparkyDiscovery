@@ -1526,7 +1526,9 @@ export class NSChapter extends ChapterKit {
     for (const [x0, x1] of [[-10.5, 3.6], [12.4, 26.6]]) add(P.bunting(V(x0, 2.85, 24.2), V(x1, 2.85, 24.2), { n: 22, sag: 0.3 }));
     add(P.bunting(V(4.9, 2.5, 22.1), V(11.1, 2.5, 22.1), { n: 10, sag: 0.25 }));
     // A banner on the front of the dais.
-    const banner = new THREE.Mesh(new THREE.PlaneGeometry(5.8, 0.72), new THREE.MeshStandardMaterial({ map: P.banner(T.parade.banner), roughness: 0.85 }));
+    const bannerTex = P.banner(T.parade.banner);
+    bannerTex.flipY = true; // a PlaneGeometry's UVs run v-up (the level's glTF quads are v-down)
+    const banner = new THREE.Mesh(new THREE.PlaneGeometry(5.8, 0.72), new THREE.MeshStandardMaterial({ map: bannerTex, roughness: 0.85 }));
     banner.position.set(8, 1.05, 22.13);
     banner.rotation.y = Math.PI; // facing the square
     add(banner);
