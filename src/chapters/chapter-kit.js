@@ -107,6 +107,7 @@ export class ChapterKit {
   /** Back to free play after a cutscene bit. */
   resume() {
     const g = this.game;
+    if (g.ui.irisClosed && g.mode !== 'viewfinder') g.ui.iris(false, 0.4);   // never hand back control through a closed iris
     g.rig.follow();
     // Right next to someone (just served or talked)? Put the camera behind Sparky, looking past him
     // towards them, so their body doesn't block the view and push the camera overhead.

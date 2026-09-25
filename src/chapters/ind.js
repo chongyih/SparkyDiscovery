@@ -504,7 +504,9 @@ export class IndependenceChapter extends ChapterKit {
     // Start looking past the east end of the block (Dawson's towers, the MRT), then pan back to the shops.
     this.trainT = 110;
     g.rig.viewfinder(eye, eye.clone().add(dirAt(pose.yaw - 1.05, pitch - 0.16)), true, 1.3);
-    await g.ui.fade(false, 1.2);
+    // Coming in through the Brownie's lens (the prologue's push-in closed the iris on it): open it onto
+    // today's Queenstown, as Chapter 1 does. Otherwise (e.g. no prologue) just fade in.
+    if (g.ui.irisClosed) { g.ui.fade(false, 0); await g.ui.iris(false, 1.5, { y: 50, soft: 6 }); } else await g.ui.fade(false, 1.2);
     await this.cardLine(X.card.text);
     await this.lines(X.before, { frame: false });
 
