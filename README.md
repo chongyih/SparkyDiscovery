@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/assets/logo/logo.svg" />
+    <img src="public/assets/logo/logo-light.svg" alt="Footsteps of a Nation" width="560" />
+  </picture>
+</p>
+
 # Footsteps of a Nation: A Singapore Story
 
 A Three.js browser game: Sparky the plush bear steps through an old box camera into three days that
@@ -40,7 +47,9 @@ reduced camera shake & flashes, invert Y.
   Chapter 2: `ind-text.js` writing + sources, `ind-kopi.js` kopi orders, `ind-tv.js` the archival TV, `ind-decals.js`
   runtime signage; `chapter-kit.js` shared helpers).
 - `public/assets/` — models (Blender-built, meshopt-compressed, desktop + `-mobile` variants),
-  audio (with licences in `audio/README.md`), fonts (OFL).
+  audio (with licences in `audio/README.md`), fonts (OFL), and `logo/`: the film-strip logo (`logo.svg` for dark
+  backgrounds, `logo-light.svg`, `logo-strip.svg`), app icons, favicon and `social-preview.png`. Text in the logo
+  files is outlined; the title screen rebuilds the logo inline in `index.html`.
 - `tools/` — reproducible Blender / audio build scripts (Chapter 2: `build_kopitiam.py` set, `build_1965_npcs.py` cast,
   `build_sparky_1965.py` + `OUTFITS=ind tools/optimize_sparky.sh` Sparky's 1965 outfit).
 - `docs/research/` — historical, architectural and costume research with sources.
