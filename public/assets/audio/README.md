@@ -105,3 +105,9 @@ python3 tools/build_audio.py --only theme-1942 whistle
 | `radio-song.mp3` | Original tune in the style of 1960s Malay pop (joget), synthesised and radio-filtered by `tools/build_audio.py` | Original |
 
 The TV's press-conference audio is part of the archival video: see `public/assets/video/ATTRIBUTION.md`.
+
+## Chapter 3 sounds (`tools/build_audio_ns.py`)
+
+- The drill has no cue sound: commands are shown on screen and the section's boots answer them.
+- `band-march.mp3` (loop): an original synthesised march, 116 bpm.
+- `truck-engine.mp3` (loop): a synthesised lorry idle.

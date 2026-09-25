@@ -27,6 +27,7 @@ const defaults = () => ({
   subtitles: true,
   reduceMotion: false,
   invertY: false,
+  relaxedTiming: false,
 });
 
 function load() {

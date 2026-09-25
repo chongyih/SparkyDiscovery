@@ -1,0 +1,4663 @@
+{
+ "markers": {
+  "SNAP_Flagpole": {
+   "three_pos": [
+    3.6,
+    6.0,
+    22.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "SNAP_Marker": {
+   "three_pos": [
+    4.0,
+    1.05,
+    16.222
+   ],
+   "three_facing": [
+    0.0,
+    -0.794,
+    -0.607
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "above DECAL_Marker, looking at the plate"
+   }
+  },
+  "SPAWN_Sparky": {
+   "three_pos": [
+    22.0,
+    0.0,
+    -26.2
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "STAIR_Bottom": {
+   "three_pos": [
+    22.0,
+    0.0,
+    -28.4
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "STAIR_Landing": {
+   "three_pos": [
+    22.0,
+    1.485,
+    -31.2
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "half landing (first landing), top of the 9-step flight"
+   }
+  },
+  "STAIR_Top": {
+   "three_pos": [
+    22.0,
+    1.485,
+    -31.6
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "first landing; the built flight continues east to the first floor"
+   }
+  },
+  "BED_Start": {
+   "three_pos": [
+    22.0,
+    0.45,
+    -27.4
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "carried bed centre at the stair foot; facing = up the stair"
+   }
+  },
+  "BED_Landing": {
+   "three_pos": [
+    22.0,
+    1.935,
+    -31.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "NPC_Osman_Stair": {
+   "three_pos": [
+    19.6,
+    0.0,
+    -26.4
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "NPC_Leo_Stair": {
+   "three_pos": [
+    22.2,
+    0.825,
+    -29.575
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "NPC_Ravi_Stair": {
+   "three_pos": [
+    24.4,
+    0.0,
+    -25.8
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "arriving at the stair with his cupboard"
+   }
+  },
+  "NPC_Farid_Landing": {
+   "three_pos": [
+    21.55,
+    1.485,
+    -32.5
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "DRILL_1": {
+   "three_pos": [
+    -2.0,
+    0.0,
+    -0.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "who": "Leo"
+   }
+  },
+  "DRILL_2": {
+   "three_pos": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "who": "Farid"
+   }
+  },
+  "DRILL_3": {
+   "three_pos": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "who": "Sparky"
+   }
+  },
+  "DRILL_4": {
+   "three_pos": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "who": "AhHock"
+   }
+  },
+  "DRILL_5": {
+   "three_pos": [
+    2.0,
+    0.0,
+    -0.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "who": "Ravi"
+   }
+  },
+  "NPC_Osman_Drill": {
+   "three_pos": [
+    0.0,
+    0.0,
+    -4.0
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "NPC_Adviser_1": {
+   "three_pos": [
+    -14.0,
+    0.0,
+    -6.0
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "NPC_Adviser_2": {
+   "three_pos": [
+    -15.0,
+    0.0,
+    -4.6
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "SNAP_Mexicans": {
+   "three_pos": [
+    -14.5,
+    1.6,
+    -5.3
+   ],
+   "three_facing": [
+    -1.0,
+    0.0,
+    -0.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "PARADE_1": {
+   "three_pos": [
+    -14.0,
+    0.0,
+    12.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "PARADE_2": {
+   "three_pos": [
+    -13.0,
+    0.0,
+    12.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "PARADE_3": {
+   "three_pos": [
+    -12.0,
+    0.0,
+    12.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "PARADE_4": {
+   "three_pos": [
+    -11.0,
+    0.0,
+    12.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "PARADE_5": {
+   "three_pos": [
+    -10.0,
+    0.0,
+    12.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "PARADE_Halt": {
+   "three_pos": [
+    22.0,
+    0.0,
+    12.0
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "NPC_Minister": {
+   "three_pos": [
+    8.0,
+    0.6,
+    24.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "STAND_X": {
+   "three_pos": [
+    12.0,
+    0.0,
+    19.5
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "Boon's spot (Ravi's X), in front of the east stand"
+   }
+  },
+  "STAND_Seat_1": {
+   "three_pos": [
+    13.0,
+    0.25,
+    24.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "east",
+    "row": 0
+   }
+  },
+  "STAND_Seat_2": {
+   "three_pos": [
+    17.34,
+    0.25,
+    24.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "east",
+    "row": 0
+   }
+  },
+  "STAND_Seat_3": {
+   "three_pos": [
+    21.68,
+    0.25,
+    24.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "east",
+    "row": 0
+   }
+  },
+  "STAND_Seat_4": {
+   "three_pos": [
+    13.0,
+    0.67,
+    26.1
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "east",
+    "row": 1
+   }
+  },
+  "STAND_Seat_5": {
+   "three_pos": [
+    17.34,
+    0.67,
+    26.1
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "east",
+    "row": 1
+   }
+  },
+  "STAND_Seat_6": {
+   "three_pos": [
+    21.68,
+    0.67,
+    26.1
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "east",
+    "row": 1
+   }
+  },
+  "STAND_Seat_7": {
+   "three_pos": [
+    13.0,
+    1.09,
+    27.3
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "east",
+    "row": 2
+   }
+  },
+  "STAND_Seat_8": {
+   "three_pos": [
+    17.34,
+    1.09,
+    27.3
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "east",
+    "row": 2
+   }
+  },
+  "STAND_Seat_9": {
+   "three_pos": [
+    -9.9,
+    0.25,
+    24.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "west",
+    "row": 0
+   }
+  },
+  "STAND_Seat_10": {
+   "three_pos": [
+    -5.56,
+    0.25,
+    24.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "west",
+    "row": 0
+   }
+  },
+  "STAND_Seat_11": {
+   "three_pos": [
+    -1.22,
+    0.25,
+    24.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "west",
+    "row": 0
+   }
+  },
+  "STAND_Seat_12": {
+   "three_pos": [
+    -9.9,
+    0.67,
+    26.1
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "west",
+    "row": 1
+   }
+  },
+  "STAND_Seat_13": {
+   "three_pos": [
+    -5.56,
+    0.67,
+    26.1
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "west",
+    "row": 1
+   }
+  },
+  "STAND_Seat_14": {
+   "three_pos": [
+    -1.22,
+    0.67,
+    26.1
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "west",
+    "row": 1
+   }
+  },
+  "STAND_Seat_15": {
+   "three_pos": [
+    -9.9,
+    1.09,
+    27.3
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "west",
+    "row": 2
+   }
+  },
+  "STAND_Seat_16": {
+   "three_pos": [
+    -5.56,
+    1.09,
+    27.3
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "seat_height": 0.45,
+    "seat_centre_offset": 0.2,
+    "stand": "west",
+    "row": 2
+   }
+  },
+  "NPC_Siti_Stand": {
+   "three_pos": [
+    13.6,
+    0.0,
+    20.6
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "standing in front of the stands"
+   }
+  },
+  "NPC_Rajan_Stand": {
+   "three_pos": [
+    14.6,
+    0.0,
+    20.6
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "standing in front of the stands"
+   }
+  },
+  "NPC_Rohani_Stand": {
+   "three_pos": [
+    16.0,
+    0.0,
+    21.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "standing in front of the stands"
+   }
+  },
+  "NPC_AhPek_Stand": {
+   "three_pos": [
+    17.0,
+    0.0,
+    21.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "standing in front of the stands"
+   }
+  },
+  "NPC_Letchumi_Stand": {
+   "three_pos": [
+    0.6,
+    0.0,
+    21.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "standing in front of the stands"
+   }
+  },
+  "NPC_Neighbour_Stand": {
+   "three_pos": [
+    1.6,
+    0.0,
+    21.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "standing in front of the stands"
+   }
+  },
+  "NPC_AhMa_Stand": {
+   "three_pos": [
+    2.8,
+    0.0,
+    21.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {
+    "note": "standing in front of the stands"
+   }
+  },
+  "CAM_Title": {
+   "three_pos": [
+    -26.0,
+    6.0,
+    26.0
+   ],
+   "three_facing": [
+    0.421,
+    -0.04,
+    -0.906
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "CAM_DrillDay": {
+   "three_pos": [
+    -3.6,
+    2.3,
+    4.6
+   ],
+   "three_facing": [
+    0.513,
+    -0.228,
+    -0.827
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "CAM_Parade": {
+   "three_pos": [
+    -8.0,
+    1.8,
+    5.0
+   ],
+   "three_facing": [
+    -0.493,
+    -0.111,
+    0.863
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "THEN_NOW_Camera": {
+   "three_pos": [
+    -26.0,
+    1.45,
+    26.0
+   ],
+   "three_facing": [
+    0.707,
+    -0.005,
+    -0.707
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "SNAP_Stair": {
+   "three_pos": [
+    22.0,
+    1.6,
+    -27.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Parade",
+   "props": {}
+  },
+  "LAMP_Bar_1": {
+   "three_pos": [
+    194.0,
+    2.28,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {}
+  },
+  "LAMP_Bar_2": {
+   "three_pos": [
+    200.0,
+    2.28,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {}
+  },
+  "LAMP_Bar_3": {
+   "three_pos": [
+    206.0,
+    2.28,
+    -3.9
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {}
+  },
+  "BAR_Spawn": {
+   "three_pos": [
+    192.0,
+    0.0,
+    -0.9
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {}
+  },
+  "BAR_Farid": {
+   "three_pos": [
+    194.0,
+    0.0,
+    -3.7
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {
+    "seat_height": 0.46,
+    "note": "sitting on the foot of his bed"
+   }
+  },
+  "BAR_AhHock": {
+   "three_pos": [
+    200.0,
+    0.0,
+    -3.7
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {
+    "seat_height": 0.46,
+    "note": "sitting on the bed he carried"
+   }
+  },
+  "BAR_Ravi": {
+   "three_pos": [
+    206.0,
+    0.0,
+    -3.7
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {
+    "seat_height": 0.46,
+    "lie_pos": [
+     206.0,
+     0.53,
+     -5.0
+    ],
+    "note": "his bed (lie_pos = mattress centre)"
+   }
+  },
+  "BAR_Leo": {
+   "three_pos": [
+    208.0,
+    1.0,
+    -3.7
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {
+    "seat_height": 0.46,
+    "note": "top bunk (marker raised so the Sit pose rests on the top mattress)"
+   }
+  },
+  "BAR_Uniform": {
+   "three_pos": [
+    198.8,
+    0.0,
+    -2.6
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {}
+  },
+  "SNAP_Uniform": {
+   "three_pos": [
+    198.8,
+    1.0,
+    -2.55
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_Barracks",
+   "props": {}
+  },
+  "CAM_Barracks": {
+   "three_pos": [
+    190.7,
+    1.6,
+    -0.8
+   ],
+   "three_facing": [
+    0.999,
+    -0.027,
+    -0.033
+   ],
+   "area": "AREA_Barracks",
+   "props": {}
+  },
+  "NIGHT_Spawn": {
+   "three_pos": [
+    -200.0,
+    0.009,
+    4.5
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {}
+  },
+  "NIGHT_Group_1": {
+   "three_pos": [
+    -201.8,
+    -0.036,
+    1.2
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "pose": "crouch",
+    "note": "under the big tree"
+   }
+  },
+  "NIGHT_Group_2": {
+   "three_pos": [
+    -200.9,
+    0.031,
+    0.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "pose": "crouch",
+    "note": "under the big tree"
+   }
+  },
+  "NIGHT_Group_3": {
+   "three_pos": [
+    -200.0,
+    0.04,
+    0.6
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "pose": "crouch",
+    "note": "under the big tree"
+   }
+  },
+  "NIGHT_Group_4": {
+   "three_pos": [
+    -199.1,
+    -0.003,
+    0.9
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "pose": "crouch",
+    "note": "under the big tree"
+   }
+  },
+  "NIGHT_Group_5": {
+   "three_pos": [
+    -198.2,
+    -0.022,
+    1.2
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "pose": "crouch",
+    "note": "under the big tree"
+   }
+  },
+  "NIGHT_Stream": {
+   "three_pos": [
+    -200.0,
+    0.086,
+    -8.137
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "note": "the stream's south bank"
+   }
+  },
+  "NIGHT_Rest_1": {
+   "three_pos": [
+    -202.0,
+    -0.184,
+    -7.987
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "seat_height": 0.44,
+    "note": "sitting on the log, facing the stream"
+   }
+  },
+  "NIGHT_Rest_2": {
+   "three_pos": [
+    -201.0,
+    -0.009,
+    -7.987
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "seat_height": 0.44,
+    "note": "sitting on the log, facing the stream"
+   }
+  },
+  "NIGHT_Rest_3": {
+   "three_pos": [
+    -200.0,
+    0.082,
+    -7.987
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "seat_height": 0.44,
+    "note": "sitting on the log, facing the stream"
+   }
+  },
+  "NIGHT_Rest_4": {
+   "three_pos": [
+    -199.0,
+    0.048,
+    -7.987
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "seat_height": 0.44,
+    "note": "sitting on the log, facing the stream"
+   }
+  },
+  "NIGHT_Rest_5": {
+   "three_pos": [
+    -198.0,
+    -0.022,
+    -7.987
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_Night",
+   "props": {
+    "seat_height": 0.44,
+    "note": "sitting on the log, facing the stream"
+   }
+  },
+  "CAM_Night": {
+   "three_pos": [
+    -203.5,
+    1.7,
+    5.0
+   ],
+   "three_facing": [
+    0.445,
+    -0.089,
+    -0.891
+   ],
+   "area": "AREA_Night",
+   "props": {}
+  },
+  "CC_Spawn": {
+   "three_pos": [
+    -3.0,
+    0.0,
+    206.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Truck_Tail": {
+   "three_pos": [
+    3.4,
+    0.0,
+    205.4
+   ],
+   "three_facing": [
+    1.0,
+    0.0,
+    -0.0
+   ],
+   "area": "AREA_CC",
+   "props": {
+    "note": "behind the tailboard, facing the lorry"
+   }
+  },
+  "CC_Gate": {
+   "three_pos": [
+    0.0,
+    0.0,
+    197.0
+   ],
+   "three_facing": [
+    -0.0,
+    0.0,
+    -1.0
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Boon_Spot": {
+   "three_pos": [
+    -1.2,
+    0.0,
+    197.6
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_CC",
+   "props": {
+    "note": "left empty"
+   }
+  },
+  "CC_Band_1": {
+   "three_pos": [
+    -8.0,
+    0.0,
+    195.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_CC",
+   "props": {
+    "note": "facing the gate and the road"
+   }
+  },
+  "CC_Band_2": {
+   "three_pos": [
+    -7.0,
+    0.0,
+    195.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_CC",
+   "props": {
+    "note": "facing the gate and the road"
+   }
+  },
+  "CC_Band_3": {
+   "three_pos": [
+    -6.0,
+    0.0,
+    195.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_CC",
+   "props": {
+    "note": "facing the gate and the road"
+   }
+  },
+  "CC_Band_4": {
+   "three_pos": [
+    -5.0,
+    0.0,
+    195.3
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_CC",
+   "props": {
+    "note": "facing the gate and the road"
+   }
+  },
+  "CC_Family_1": {
+   "three_pos": [
+    -6.0,
+    0.0,
+    199.6
+   ],
+   "three_facing": [
+    0.851,
+    0.0,
+    0.525
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Family_2": {
+   "three_pos": [
+    -4.4,
+    0.0,
+    200.2
+   ],
+   "three_facing": [
+    0.832,
+    0.0,
+    0.555
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Family_3": {
+   "three_pos": [
+    -2.4,
+    0.0,
+    199.4
+   ],
+   "three_facing": [
+    0.695,
+    0.0,
+    0.719
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Family_4": {
+   "three_pos": [
+    -0.4,
+    0.0,
+    200.3
+   ],
+   "three_facing": [
+    0.597,
+    0.0,
+    0.802
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Family_5": {
+   "three_pos": [
+    1.6,
+    0.0,
+    199.7
+   ],
+   "three_facing": [
+    0.301,
+    0.0,
+    0.954
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Family_6": {
+   "three_pos": [
+    -6.6,
+    0.0,
+    201.4
+   ],
+   "three_facing": [
+    0.928,
+    0.0,
+    0.371
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Family_7": {
+   "three_pos": [
+    -5.0,
+    0.0,
+    202.0
+   ],
+   "three_facing": [
+    0.927,
+    0.0,
+    0.375
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Family_8": {
+   "three_pos": [
+    -2.9,
+    0.0,
+    201.6
+   ],
+   "three_facing": [
+    0.856,
+    0.0,
+    0.516
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Family_9": {
+   "three_pos": [
+    0.2,
+    0.0,
+    201.5
+   ],
+   "three_facing": [
+    0.634,
+    0.0,
+    0.773
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CC_Family_10": {
+   "three_pos": [
+    2.4,
+    0.0,
+    201.0
+   ],
+   "three_facing": [
+    0.222,
+    0.0,
+    0.975
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "NPC_Rajan_CC": {
+   "three_pos": [
+    1.2,
+    0.0,
+    201.2
+   ],
+   "three_facing": [
+    0.464,
+    0.0,
+    0.886
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "NPC_Ravi_CC": {
+   "three_pos": [
+    1.9,
+    0.0,
+    201.8
+   ],
+   "three_facing": [
+    0.385,
+    0.0,
+    0.923
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "NPC_Siti_CC": {
+   "three_pos": [
+    -1.6,
+    0.0,
+    202.2
+   ],
+   "three_facing": [
+    0.842,
+    0.0,
+    0.539
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "NPC_Farid_CC": {
+   "three_pos": [
+    -0.8,
+    0.0,
+    202.9
+   ],
+   "three_facing": [
+    0.859,
+    0.0,
+    0.511
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "NPC_AhMa_CC": {
+   "three_pos": [
+    -8.2,
+    0.0,
+    203.0
+   ],
+   "three_facing": [
+    0.949,
+    0.0,
+    0.316
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "NPC_Neighbour_CC": {
+   "three_pos": [
+    -3.2,
+    0.0,
+    200.6
+   ],
+   "three_facing": [
+    0.809,
+    0.0,
+    0.588
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "NPC_MP_CC": {
+   "three_pos": [
+    -5.1,
+    0.0,
+    197.7
+   ],
+   "three_facing": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  },
+  "CAM_CC": {
+   "three_pos": [
+    -8.0,
+    2.2,
+    211.0
+   ],
+   "three_facing": [
+    0.639,
+    -0.051,
+    -0.767
+   ],
+   "area": "AREA_CC",
+   "props": {}
+  }
+ },
+ "colliders": {
+  "COL_BlockA_Flats": {
+   "three_center": [
+    3.9,
+    8.0,
+    -38.5
+   ],
+   "aabb_min": [
+    -19.2,
+    0.0,
+    -41.6
+   ],
+   "aabb_max": [
+    27.0,
+    16.0,
+    -35.4
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_EndW": {
+   "three_center": [
+    -19.325,
+    8.0,
+    -37.525
+   ],
+   "aabb_min": [
+    -19.45,
+    0.0,
+    -41.6
+   ],
+   "aabb_max": [
+    -19.2,
+    16.0,
+    -33.45
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_EndE": {
+   "three_center": [
+    27.125,
+    8.0,
+    -37.525
+   ],
+   "aabb_min": [
+    27.0,
+    0.0,
+    -41.6
+   ],
+   "aabb_max": [
+    27.25,
+    16.0,
+    -33.45
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_1": {
+   "three_center": [
+    -19.2,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    -19.36,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    -19.04,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_2": {
+   "three_center": [
+    -15.9,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    -16.06,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    -15.74,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_3": {
+   "three_center": [
+    -12.6,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    -12.76,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    -12.44,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_4": {
+   "three_center": [
+    -9.3,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    -9.46,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    -9.14,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_5": {
+   "three_center": [
+    -6.0,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    -6.16,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    -5.84,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_6": {
+   "three_center": [
+    -2.7,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    -2.86,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    -2.54,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_7": {
+   "three_center": [
+    0.6,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    0.44,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    0.76,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_8": {
+   "three_center": [
+    3.9,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    3.74,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    4.06,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_9": {
+   "three_center": [
+    7.2,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    7.04,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    7.36,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_10": {
+   "three_center": [
+    10.5,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    10.34,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    10.66,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_11": {
+   "three_center": [
+    13.8,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    13.64,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    13.96,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_12": {
+   "three_center": [
+    17.1,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    16.94,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    17.26,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Col_13": {
+   "three_center": [
+    20.4,
+    1.5,
+    -33.64
+   ],
+   "aabb_min": [
+    20.24,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    20.56,
+    3.0,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockA_Parapet1": {
+   "three_center": [
+    2.9,
+    3.92,
+    -33.615
+   ],
+   "aabb_min": [
+    -19.2,
+    2.87,
+    -33.75
+   ],
+   "aabb_max": [
+    25.0,
+    4.97,
+    -33.48
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockB": {
+   "three_center": [
+    -42.2,
+    8.0,
+    -40.425
+   ],
+   "aabb_min": [
+    -62.25,
+    0.0,
+    -44.5
+   ],
+   "aabb_max": [
+    -22.15,
+    16.0,
+    -36.35
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockB_Tower": {
+   "three_center": [
+    -25.775,
+    8.0,
+    -33.775
+   ],
+   "aabb_min": [
+    -28.7,
+    0.0,
+    -36.5
+   ],
+   "aabb_max": [
+    -22.85,
+    16.0,
+    -31.05
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockC": {
+   "three_center": [
+    53.8,
+    8.0,
+    -40.925
+   ],
+   "aabb_min": [
+    33.75,
+    0.0,
+    -45.0
+   ],
+   "aabb_max": [
+    73.85,
+    16.0,
+    -36.85
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BlockC_Tower": {
+   "three_center": [
+    70.225,
+    8.0,
+    -34.275
+   ],
+   "aabb_min": [
+    67.3,
+    0.0,
+    -37.0
+   ],
+   "aabb_max": [
+    73.15,
+    16.0,
+    -31.55
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Stair_W": {
+   "three_center": [
+    20.95,
+    8.0,
+    -30.9
+   ],
+   "aabb_min": [
+    20.85,
+    0.0,
+    -33.65
+   ],
+   "aabb_max": [
+    21.05,
+    16.0,
+    -28.15
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Stair_Store": {
+   "three_center": [
+    24.675,
+    8.0,
+    -30.075
+   ],
+   "aabb_min": [
+    22.6,
+    0.0,
+    -32.0
+   ],
+   "aabb_max": [
+    26.75,
+    16.0,
+    -28.15
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Stair_UnderB": {
+   "three_center": [
+    24.775,
+    0.65,
+    -32.7
+   ],
+   "aabb_min": [
+    22.8,
+    0.0,
+    -33.4
+   ],
+   "aabb_max": [
+    26.75,
+    1.3,
+    -32.0
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Stair_N": {
+   "three_center": [
+    23.825,
+    8.3,
+    -33.6
+   ],
+   "aabb_min": [
+    20.9,
+    0.6,
+    -33.8
+   ],
+   "aabb_max": [
+    26.75,
+    16.0,
+    -33.4
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Stair_E": {
+   "three_center": [
+    26.625,
+    8.0,
+    -32.9
+   ],
+   "aabb_min": [
+    26.4,
+    0.0,
+    -33.8
+   ],
+   "aabb_max": [
+    26.85,
+    16.0,
+    -32.0
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_BedPile": {
+   "three_center": [
+    25.05,
+    0.9,
+    -27.325
+   ],
+   "aabb_min": [
+    23.2,
+    0.0,
+    -28.15
+   ],
+   "aabb_max": [
+    26.9,
+    1.8,
+    -26.5
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Cupboards": {
+   "three_center": [
+    27.35,
+    0.9,
+    -29.6
+   ],
+   "aabb_min": [
+    26.95,
+    0.0,
+    -30.75
+   ],
+   "aabb_max": [
+    27.75,
+    1.8,
+    -28.45
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Dais": {
+   "three_center": [
+    8.0,
+    0.9,
+    24.625
+   ],
+   "aabb_min": [
+    4.9,
+    0.0,
+    22.25
+   ],
+   "aabb_max": [
+    11.1,
+    1.8,
+    27.0
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Flagpole": {
+   "three_center": [
+    3.6,
+    1.5,
+    22.0
+   ],
+   "aabb_min": [
+    3.15,
+    0.0,
+    21.55
+   ],
+   "aabb_max": [
+    4.05,
+    3.0,
+    22.45
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Stand_1": {
+   "three_center": [
+    -3.45,
+    1.5,
+    26.8
+   ],
+   "aabb_min": [
+    -10.6,
+    0.0,
+    24.3
+   ],
+   "aabb_max": [
+    3.7,
+    3.0,
+    29.3
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Stand_2": {
+   "three_center": [
+    19.45,
+    1.5,
+    26.8
+   ],
+   "aabb_min": [
+    12.3,
+    0.0,
+    24.3
+   ],
+   "aabb_max": [
+    26.6,
+    3.0,
+    29.3
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Fence_1": {
+   "three_center": [
+    -62.0,
+    1.0,
+    44.0
+   ],
+   "aabb_min": [
+    -80.15,
+    0.0,
+    43.85
+   ],
+   "aabb_max": [
+    -43.85,
+    2.0,
+    44.15
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Fence_2": {
+   "three_center": [
+    21.0,
+    1.0,
+    44.0
+   ],
+   "aabb_min": [
+    -38.15,
+    0.0,
+    43.85
+   ],
+   "aabb_max": [
+    80.15,
+    2.0,
+    44.15
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Fence_3": {
+   "three_center": [
+    80.0,
+    1.0,
+    -4.0
+   ],
+   "aabb_min": [
+    79.85,
+    0.0,
+    -52.15
+   ],
+   "aabb_max": [
+    80.15,
+    2.0,
+    44.15
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Fence_4": {
+   "three_center": [
+    0.0,
+    1.0,
+    -52.0
+   ],
+   "aabb_min": [
+    -80.15,
+    0.0,
+    -52.15
+   ],
+   "aabb_max": [
+    80.15,
+    2.0,
+    -51.85
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Fence_5": {
+   "three_center": [
+    -80.0,
+    1.0,
+    -4.0
+   ],
+   "aabb_min": [
+    -80.15,
+    0.0,
+    -52.15
+   ],
+   "aabb_max": [
+    -79.85,
+    2.0,
+    44.15
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_GuardHut": {
+   "three_center": [
+    -34.3,
+    1.5,
+    39.9
+   ],
+   "aabb_min": [
+    -35.5,
+    0.0,
+    38.8
+   ],
+   "aabb_max": [
+    -33.1,
+    3.0,
+    41.0
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_1": {
+   "three_center": [
+    -30.0,
+    2.0,
+    36.0
+   ],
+   "aabb_min": [
+    -30.325,
+    0.0,
+    35.675
+   ],
+   "aabb_max": [
+    -29.675,
+    4.0,
+    36.325
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_2": {
+   "three_center": [
+    -12.0,
+    2.0,
+    38.0
+   ],
+   "aabb_min": [
+    -12.316,
+    0.0,
+    37.684
+   ],
+   "aabb_max": [
+    -11.684,
+    4.0,
+    38.316
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_3": {
+   "three_center": [
+    6.0,
+    2.0,
+    39.0
+   ],
+   "aabb_min": [
+    5.691,
+    0.0,
+    38.691
+   ],
+   "aabb_max": [
+    6.309,
+    4.0,
+    39.309
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_4": {
+   "three_center": [
+    24.0,
+    2.0,
+    37.0
+   ],
+   "aabb_min": [
+    23.717,
+    0.0,
+    36.717
+   ],
+   "aabb_max": [
+    24.283,
+    4.0,
+    37.283
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_5": {
+   "three_center": [
+    40.0,
+    2.0,
+    36.0
+   ],
+   "aabb_min": [
+    39.715,
+    0.0,
+    35.715
+   ],
+   "aabb_max": [
+    40.285,
+    4.0,
+    36.285
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_6": {
+   "three_center": [
+    58.0,
+    2.0,
+    38.0
+   ],
+   "aabb_min": [
+    57.71,
+    0.0,
+    37.71
+   ],
+   "aabb_max": [
+    58.29,
+    4.0,
+    38.29
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_7": {
+   "three_center": [
+    -58.0,
+    2.0,
+    22.0
+   ],
+   "aabb_min": [
+    -58.332,
+    0.0,
+    21.668
+   ],
+   "aabb_max": [
+    -57.668,
+    4.0,
+    22.332
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_8": {
+   "three_center": [
+    -62.0,
+    2.0,
+    -0.0
+   ],
+   "aabb_min": [
+    -62.279,
+    0.0,
+    -0.279
+   ],
+   "aabb_max": [
+    -61.721,
+    4.0,
+    0.279
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_9": {
+   "three_center": [
+    -56.0,
+    2.0,
+    -18.0
+   ],
+   "aabb_min": [
+    -56.297,
+    0.0,
+    -18.297
+   ],
+   "aabb_max": [
+    -55.703,
+    4.0,
+    -17.703
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_10": {
+   "three_center": [
+    -50.0,
+    2.0,
+    -40.0
+   ],
+   "aabb_min": [
+    -50.317,
+    0.0,
+    -40.317
+   ],
+   "aabb_max": [
+    -49.683,
+    4.0,
+    -39.683
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_11": {
+   "three_center": [
+    60.0,
+    2.0,
+    20.0
+   ],
+   "aabb_min": [
+    59.718,
+    0.0,
+    19.718
+   ],
+   "aabb_max": [
+    60.282,
+    4.0,
+    20.282
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_12": {
+   "three_center": [
+    64.0,
+    2.0,
+    -2.0
+   ],
+   "aabb_min": [
+    63.671,
+    0.0,
+    -2.329
+   ],
+   "aabb_max": [
+    64.329,
+    4.0,
+    -1.671
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_13": {
+   "three_center": [
+    58.0,
+    2.0,
+    -22.0
+   ],
+   "aabb_min": [
+    57.716,
+    0.0,
+    -22.284
+   ],
+   "aabb_max": [
+    58.284,
+    4.0,
+    -21.716
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_14": {
+   "three_center": [
+    -14.0,
+    2.0,
+    -28.5
+   ],
+   "aabb_min": [
+    -14.345,
+    0.0,
+    -28.845
+   ],
+   "aabb_max": [
+    -13.655,
+    4.0,
+    -28.155
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_Tree_15": {
+   "three_center": [
+    30.5,
+    2.0,
+    -29.0
+   ],
+   "aabb_min": [
+    30.184,
+    0.0,
+    -29.316
+   ],
+   "aabb_max": [
+    30.816,
+    4.0,
+    -28.684
+   ],
+   "area": "AREA_Parade",
+   "state": "then"
+  },
+  "COL_NowTree_1": {
+   "three_center": [
+    -44.0,
+    2.0,
+    -34.0
+   ],
+   "aabb_min": [
+    -44.288,
+    0.0,
+    -34.288
+   ],
+   "aabb_max": [
+    -43.712,
+    4.0,
+    -33.712
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_2": {
+   "three_center": [
+    -22.0,
+    2.0,
+    -38.0
+   ],
+   "aabb_min": [
+    -22.301,
+    0.0,
+    -38.301
+   ],
+   "aabb_max": [
+    -21.699,
+    4.0,
+    -37.699
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_3": {
+   "three_center": [
+    4.0,
+    2.0,
+    -40.0
+   ],
+   "aabb_min": [
+    3.701,
+    0.0,
+    -40.299
+   ],
+   "aabb_max": [
+    4.299,
+    4.0,
+    -39.701
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_4": {
+   "three_center": [
+    28.0,
+    2.0,
+    -36.0
+   ],
+   "aabb_min": [
+    27.684,
+    0.0,
+    -36.316
+   ],
+   "aabb_max": [
+    28.316,
+    4.0,
+    -35.684
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_5": {
+   "three_center": [
+    52.0,
+    2.0,
+    -32.0
+   ],
+   "aabb_min": [
+    51.664,
+    0.0,
+    -32.336
+   ],
+   "aabb_max": [
+    52.336,
+    4.0,
+    -31.664
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_6": {
+   "three_center": [
+    -48.0,
+    2.0,
+    8.0
+   ],
+   "aabb_min": [
+    -48.346,
+    0.0,
+    7.654
+   ],
+   "aabb_max": [
+    -47.654,
+    4.0,
+    8.346
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_7": {
+   "three_center": [
+    -50.0,
+    2.0,
+    -14.0
+   ],
+   "aabb_min": [
+    -50.311,
+    0.0,
+    -14.311
+   ],
+   "aabb_max": [
+    -49.689,
+    4.0,
+    -13.689
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_8": {
+   "three_center": [
+    48.0,
+    2.0,
+    14.0
+   ],
+   "aabb_min": [
+    47.655,
+    0.0,
+    13.655
+   ],
+   "aabb_max": [
+    48.345,
+    4.0,
+    14.345
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_9": {
+   "three_center": [
+    50.0,
+    2.0,
+    -10.0
+   ],
+   "aabb_min": [
+    49.72,
+    0.0,
+    -10.28
+   ],
+   "aabb_max": [
+    50.28,
+    4.0,
+    -9.72
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_10": {
+   "three_center": [
+    -18.0,
+    2.0,
+    30.0
+   ],
+   "aabb_min": [
+    -18.35,
+    0.0,
+    29.65
+   ],
+   "aabb_max": [
+    -17.65,
+    4.0,
+    30.35
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_11": {
+   "three_center": [
+    22.0,
+    2.0,
+    30.0
+   ],
+   "aabb_min": [
+    21.695,
+    0.0,
+    29.695
+   ],
+   "aabb_max": [
+    22.305,
+    4.0,
+    30.305
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_12": {
+   "three_center": [
+    -60.0,
+    2.0,
+    30.0
+   ],
+   "aabb_min": [
+    -60.358,
+    0.0,
+    29.642
+   ],
+   "aabb_max": [
+    -59.642,
+    4.0,
+    30.358
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_13": {
+   "three_center": [
+    62.0,
+    2.0,
+    30.0
+   ],
+   "aabb_min": [
+    61.669,
+    0.0,
+    29.669
+   ],
+   "aabb_max": [
+    62.331,
+    4.0,
+    30.331
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_14": {
+   "three_center": [
+    -66.0,
+    2.0,
+    -30.0
+   ],
+   "aabb_min": [
+    -66.271,
+    0.0,
+    -30.271
+   ],
+   "aabb_max": [
+    -65.729,
+    4.0,
+    -29.729
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_15": {
+   "three_center": [
+    68.0,
+    2.0,
+    -28.0
+   ],
+   "aabb_min": [
+    67.723,
+    0.0,
+    -28.277
+   ],
+   "aabb_max": [
+    68.277,
+    4.0,
+    -27.723
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowTree_16": {
+   "three_center": [
+    0.0,
+    2.0,
+    -30.0
+   ],
+   "aabb_min": [
+    -0.294,
+    0.0,
+    -30.294
+   ],
+   "aabb_max": [
+    0.294,
+    4.0,
+    -29.706
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowBench_1": {
+   "three_center": [
+    -8.0,
+    0.4,
+    21.4
+   ],
+   "aabb_min": [
+    -8.9,
+    0.0,
+    20.95
+   ],
+   "aabb_max": [
+    -7.1,
+    0.8,
+    21.85
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowBench_2": {
+   "three_center": [
+    12.0,
+    0.4,
+    21.4
+   ],
+   "aabb_min": [
+    11.1,
+    0.0,
+    20.95
+   ],
+   "aabb_max": [
+    12.9,
+    0.8,
+    21.85
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowBench_3": {
+   "three_center": [
+    -20.0,
+    0.4,
+    -21.4
+   ],
+   "aabb_min": [
+    -20.9,
+    0.0,
+    -21.85
+   ],
+   "aabb_max": [
+    -19.1,
+    0.8,
+    -20.95
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowBench_4": {
+   "three_center": [
+    20.0,
+    0.4,
+    -21.4
+   ],
+   "aabb_min": [
+    19.1,
+    0.0,
+    -21.85
+   ],
+   "aabb_max": [
+    20.9,
+    0.8,
+    -20.95
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowBench_5": {
+   "three_center": [
+    41.4,
+    0.4,
+    -0.0
+   ],
+   "aabb_min": [
+    40.5,
+    0.0,
+    -0.45
+   ],
+   "aabb_max": [
+    42.3,
+    0.8,
+    0.45
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_NowBench_6": {
+   "three_center": [
+    -41.4,
+    0.4,
+    -0.0
+   ],
+   "aabb_min": [
+    -42.3,
+    0.0,
+    -0.45
+   ],
+   "aabb_max": [
+    -40.5,
+    0.8,
+    0.45
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_Marker": {
+   "three_center": [
+    4.0,
+    0.55,
+    16.0
+   ],
+   "aabb_min": [
+    3.3,
+    0.0,
+    15.56
+   ],
+   "aabb_max": [
+    4.7,
+    1.1,
+    16.44
+   ],
+   "area": "AREA_Parade",
+   "state": "now"
+  },
+  "COL_Bar_Column_1": {
+   "three_center": [
+    190.0,
+    1.5,
+    0.28
+   ],
+   "aabb_min": [
+    189.84,
+    0.0,
+    0.11
+   ],
+   "aabb_max": [
+    190.16,
+    3.0,
+    0.45
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Column_2": {
+   "three_center": [
+    196.6,
+    1.5,
+    0.28
+   ],
+   "aabb_min": [
+    196.44,
+    0.0,
+    0.11
+   ],
+   "aabb_max": [
+    196.76,
+    3.0,
+    0.45
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Column_3": {
+   "three_center": [
+    203.4,
+    1.5,
+    0.28
+   ],
+   "aabb_min": [
+    203.24,
+    0.0,
+    0.11
+   ],
+   "aabb_max": [
+    203.56,
+    3.0,
+    0.45
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Column_4": {
+   "three_center": [
+    210.0,
+    1.5,
+    0.28
+   ],
+   "aabb_min": [
+    209.84,
+    0.0,
+    0.11
+   ],
+   "aabb_max": [
+    210.16,
+    3.0,
+    0.45
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Parapet": {
+   "three_center": [
+    200.0,
+    1.5,
+    0.4
+   ],
+   "aabb_min": [
+    190.0,
+    0.0,
+    0.25
+   ],
+   "aabb_max": [
+    210.0,
+    3.0,
+    0.55
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_EndW": {
+   "three_center": [
+    189.85,
+    1.5,
+    -2.9
+   ],
+   "aabb_min": [
+    189.7,
+    0.0,
+    -6.05
+   ],
+   "aabb_max": [
+    190.0,
+    3.0,
+    0.25
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_EndE": {
+   "three_center": [
+    210.15,
+    1.5,
+    -2.9
+   ],
+   "aabb_min": [
+    210.0,
+    0.0,
+    -6.05
+   ],
+   "aabb_max": [
+    210.3,
+    3.0,
+    0.25
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Front_1": {
+   "three_center": [
+    190.65,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    190.0,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    191.3,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Front_2": {
+   "three_center": [
+    193.1,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    192.2,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    194.0,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Window_1": {
+   "three_center": [
+    194.75,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    194.0,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    195.5,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Front_3": {
+   "three_center": [
+    196.4,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    195.5,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    197.3,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Front_4": {
+   "three_center": [
+    199.1,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    198.2,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    200.0,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Window_2": {
+   "three_center": [
+    200.75,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    200.0,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    201.5,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Front_5": {
+   "three_center": [
+    202.4,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    201.5,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    203.3,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Front_6": {
+   "three_center": [
+    205.1,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    204.2,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    206.0,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Window_3": {
+   "three_center": [
+    206.75,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    206.0,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    207.5,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Front_7": {
+   "three_center": [
+    208.75,
+    1.5,
+    -1.875
+   ],
+   "aabb_min": [
+    207.5,
+    0.0,
+    -1.95
+   ],
+   "aabb_max": [
+    210.0,
+    3.0,
+    -1.8
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Partition_1": {
+   "three_center": [
+    197.0,
+    1.5,
+    -4.0
+   ],
+   "aabb_min": [
+    196.925,
+    0.0,
+    -6.05
+   ],
+   "aabb_max": [
+    197.075,
+    3.0,
+    -1.95
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Partition_2": {
+   "three_center": [
+    203.0,
+    1.5,
+    -4.0
+   ],
+   "aabb_min": [
+    202.925,
+    0.0,
+    -6.05
+   ],
+   "aabb_max": [
+    203.075,
+    3.0,
+    -1.95
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Back": {
+   "three_center": [
+    200.0,
+    1.5,
+    -6.2
+   ],
+   "aabb_min": [
+    191.0,
+    0.0,
+    -6.35
+   ],
+   "aabb_max": [
+    209.0,
+    3.0,
+    -6.05
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_RoomW": {
+   "three_center": [
+    190.85,
+    1.5,
+    -4.0
+   ],
+   "aabb_min": [
+    190.7,
+    0.0,
+    -6.05
+   ],
+   "aabb_max": [
+    191.0,
+    3.0,
+    -1.95
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_RoomE": {
+   "three_center": [
+    209.15,
+    1.5,
+    -4.0
+   ],
+   "aabb_min": [
+    209.0,
+    0.0,
+    -6.05
+   ],
+   "aabb_max": [
+    209.3,
+    3.0,
+    -1.95
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Bed_1": {
+   "three_center": [
+    192.0,
+    0.5,
+    -5.0
+   ],
+   "aabb_min": [
+    191.58,
+    0.0,
+    -5.97
+   ],
+   "aabb_max": [
+    192.42,
+    1.0,
+    -4.03
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Bed_2": {
+   "three_center": [
+    194.0,
+    0.5,
+    -5.0
+   ],
+   "aabb_min": [
+    193.58,
+    0.0,
+    -5.97
+   ],
+   "aabb_max": [
+    194.42,
+    1.0,
+    -4.03
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Bed_3": {
+   "three_center": [
+    196.0,
+    0.5,
+    -5.0
+   ],
+   "aabb_min": [
+    195.58,
+    0.0,
+    -5.97
+   ],
+   "aabb_max": [
+    196.42,
+    1.0,
+    -4.03
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Locker_1": {
+   "three_center": [
+    191.26,
+    1.0,
+    -2.75
+   ],
+   "aabb_min": [
+    191.01,
+    0.0,
+    -3.25
+   ],
+   "aabb_max": [
+    191.51,
+    2.0,
+    -2.25
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Locker_2": {
+   "three_center": [
+    196.74,
+    1.0,
+    -2.75
+   ],
+   "aabb_min": [
+    196.49,
+    0.0,
+    -3.25
+   ],
+   "aabb_max": [
+    196.99,
+    2.0,
+    -2.25
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Bed_4": {
+   "three_center": [
+    198.0,
+    0.5,
+    -5.0
+   ],
+   "aabb_min": [
+    197.58,
+    0.0,
+    -5.97
+   ],
+   "aabb_max": [
+    198.42,
+    1.0,
+    -4.03
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Bed_5": {
+   "three_center": [
+    200.0,
+    0.5,
+    -5.0
+   ],
+   "aabb_min": [
+    199.58,
+    0.0,
+    -5.97
+   ],
+   "aabb_max": [
+    200.42,
+    1.0,
+    -4.03
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Bed_6": {
+   "three_center": [
+    202.0,
+    0.5,
+    -5.0
+   ],
+   "aabb_min": [
+    201.58,
+    0.0,
+    -5.97
+   ],
+   "aabb_max": [
+    202.42,
+    1.0,
+    -4.03
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Locker_3": {
+   "three_center": [
+    197.26,
+    1.0,
+    -2.75
+   ],
+   "aabb_min": [
+    197.01,
+    0.0,
+    -3.25
+   ],
+   "aabb_max": [
+    197.51,
+    2.0,
+    -2.25
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Locker_4": {
+   "three_center": [
+    202.74,
+    1.0,
+    -2.75
+   ],
+   "aabb_min": [
+    202.49,
+    0.0,
+    -3.25
+   ],
+   "aabb_max": [
+    202.99,
+    2.0,
+    -2.25
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Bed_7": {
+   "three_center": [
+    204.0,
+    0.5,
+    -5.0
+   ],
+   "aabb_min": [
+    203.58,
+    0.0,
+    -5.97
+   ],
+   "aabb_max": [
+    204.42,
+    1.0,
+    -4.03
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Bed_8": {
+   "three_center": [
+    206.0,
+    0.5,
+    -5.0
+   ],
+   "aabb_min": [
+    205.58,
+    0.0,
+    -5.97
+   ],
+   "aabb_max": [
+    206.42,
+    1.0,
+    -4.03
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Bed_9": {
+   "three_center": [
+    208.0,
+    1.0,
+    -5.0
+   ],
+   "aabb_min": [
+    207.58,
+    0.0,
+    -5.97
+   ],
+   "aabb_max": [
+    208.42,
+    2.0,
+    -4.03
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Locker_5": {
+   "three_center": [
+    203.26,
+    1.0,
+    -2.75
+   ],
+   "aabb_min": [
+    203.01,
+    0.0,
+    -3.25
+   ],
+   "aabb_max": [
+    203.51,
+    2.0,
+    -2.25
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Bar_Locker_6": {
+   "three_center": [
+    208.74,
+    1.0,
+    -2.75
+   ],
+   "aabb_min": [
+    208.49,
+    0.0,
+    -3.25
+   ],
+   "aabb_max": [
+    208.99,
+    2.0,
+    -2.25
+   ],
+   "area": "AREA_Barracks",
+   "state": null
+  },
+  "COL_Night_Tree": {
+   "three_center": [
+    -200.0,
+    2.0,
+    -1.5
+   ],
+   "aabb_min": [
+    -200.6,
+    0.0,
+    -2.1
+   ],
+   "aabb_max": [
+    -199.4,
+    4.0,
+    -0.9
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_Night_Log": {
+   "three_center": [
+    -200.1,
+    0.225,
+    -7.437
+   ],
+   "aabb_min": [
+    -203.3,
+    0.0,
+    -7.737
+   ],
+   "aabb_max": [
+    -196.9,
+    0.45,
+    -7.137
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_Night_Shrub_1": {
+   "three_center": [
+    -196.163,
+    0.6,
+    8.639
+   ],
+   "aabb_min": [
+    -196.663,
+    0.0,
+    8.139
+   ],
+   "aabb_max": [
+    -195.663,
+    1.2,
+    9.139
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_Night_Shrub_2": {
+   "three_center": [
+    -203.8,
+    0.6,
+    7.293
+   ],
+   "aabb_min": [
+    -204.3,
+    0.0,
+    6.793
+   ],
+   "aabb_max": [
+    -203.3,
+    1.2,
+    7.793
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_Night_Shrub_3": {
+   "three_center": [
+    -196.221,
+    0.6,
+    8.204
+   ],
+   "aabb_min": [
+    -196.721,
+    0.0,
+    7.704
+   ],
+   "aabb_max": [
+    -195.721,
+    1.2,
+    8.704
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_Night_Shrub_4": {
+   "three_center": [
+    -196.064,
+    0.6,
+    8.246
+   ],
+   "aabb_min": [
+    -196.564,
+    0.0,
+    7.746
+   ],
+   "aabb_max": [
+    -195.564,
+    1.2,
+    8.746
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_Night_Edge_1": {
+   "three_center": [
+    -213.0,
+    1.5,
+    -0.0
+   ],
+   "aabb_min": [
+    -213.5,
+    0.0,
+    -14.0
+   ],
+   "aabb_max": [
+    -212.5,
+    3.0,
+    14.0
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_Night_Edge_2": {
+   "three_center": [
+    -187.0,
+    1.5,
+    -0.0
+   ],
+   "aabb_min": [
+    -187.5,
+    0.0,
+    -14.0
+   ],
+   "aabb_max": [
+    -186.5,
+    3.0,
+    14.0
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_Night_Edge_3": {
+   "three_center": [
+    -200.0,
+    1.5,
+    13.5
+   ],
+   "aabb_min": [
+    -213.5,
+    0.0,
+    13.0
+   ],
+   "aabb_max": [
+    -186.5,
+    3.0,
+    14.0
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_Night_Edge_4": {
+   "three_center": [
+    -200.0,
+    1.5,
+    -13.5
+   ],
+   "aabb_min": [
+    -213.5,
+    0.0,
+    -14.0
+   ],
+   "aabb_max": [
+    -186.5,
+    3.0,
+    -13.0
+   ],
+   "area": "AREA_Night",
+   "state": null
+  },
+  "COL_CC_Building": {
+   "three_center": [
+    0.0,
+    2.0,
+    189.25
+   ],
+   "aabb_min": [
+    -14.3,
+    0.0,
+    185.0
+   ],
+   "aabb_max": [
+    14.3,
+    4.0,
+    193.5
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Verandah": {
+   "three_center": [
+    -8.65,
+    2.0,
+    194.3
+   ],
+   "aabb_min": [
+    -14.3,
+    0.0,
+    193.5
+   ],
+   "aabb_max": [
+    -3.0,
+    4.0,
+    195.1
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Verandah2": {
+   "three_center": [
+    8.65,
+    2.0,
+    194.3
+   ],
+   "aabb_min": [
+    3.0,
+    0.0,
+    193.5
+   ],
+   "aabb_max": [
+    14.3,
+    4.0,
+    195.1
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Fence_1": {
+   "three_center": [
+    -9.0,
+    0.6,
+    197.0
+   ],
+   "aabb_min": [
+    -16.0,
+    0.0,
+    196.85
+   ],
+   "aabb_max": [
+    -2.0,
+    1.2,
+    197.15
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Fence_2": {
+   "three_center": [
+    9.0,
+    0.6,
+    197.0
+   ],
+   "aabb_min": [
+    2.0,
+    0.0,
+    196.85
+   ],
+   "aabb_max": [
+    16.0,
+    1.2,
+    197.15
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_FenceSide_1": {
+   "three_center": [
+    -16.0,
+    0.6,
+    195.25
+   ],
+   "aabb_min": [
+    -16.15,
+    0.0,
+    193.5
+   ],
+   "aabb_max": [
+    -15.85,
+    1.2,
+    197.0
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_FenceSide_2": {
+   "three_center": [
+    16.0,
+    0.6,
+    195.25
+   ],
+   "aabb_min": [
+    15.85,
+    0.0,
+    193.5
+   ],
+   "aabb_max": [
+    16.15,
+    1.2,
+    197.0
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_GatePost_1": {
+   "three_center": [
+    -2.0,
+    0.75,
+    197.0
+   ],
+   "aabb_min": [
+    -2.25,
+    0.0,
+    196.75
+   ],
+   "aabb_max": [
+    -1.75,
+    1.5,
+    197.25
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_GatePost_2": {
+   "three_center": [
+    2.0,
+    0.75,
+    197.0
+   ],
+   "aabb_min": [
+    1.75,
+    0.0,
+    196.75
+   ],
+   "aabb_max": [
+    2.25,
+    1.5,
+    197.25
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_BannerPole_1": {
+   "three_center": [
+    -7.2,
+    1.5,
+    196.2
+   ],
+   "aabb_min": [
+    -7.3,
+    0.0,
+    196.1
+   ],
+   "aabb_max": [
+    -7.1,
+    3.0,
+    196.3
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_BannerPole_2": {
+   "three_center": [
+    -0.8,
+    1.5,
+    196.2
+   ],
+   "aabb_min": [
+    -0.9,
+    0.0,
+    196.1
+   ],
+   "aabb_max": [
+    -0.7,
+    3.0,
+    196.3
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Table": {
+   "three_center": [
+    -5.1,
+    0.45,
+    198.45
+   ],
+   "aabb_min": [
+    -6.1,
+    0.0,
+    198.0
+   ],
+   "aabb_max": [
+    -4.1,
+    0.9,
+    198.9
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Tree_1": {
+   "three_center": [
+    -12.5,
+    2.0,
+    195.3
+   ],
+   "aabb_min": [
+    -12.785,
+    0.0,
+    195.015
+   ],
+   "aabb_max": [
+    -12.215,
+    4.0,
+    195.585
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Tree_2": {
+   "three_center": [
+    12.5,
+    2.0,
+    195.3
+   ],
+   "aabb_min": [
+    12.215,
+    0.0,
+    195.015
+   ],
+   "aabb_max": [
+    12.785,
+    4.0,
+    195.585
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Tree_3": {
+   "three_center": [
+    -24.0,
+    2.0,
+    200.0
+   ],
+   "aabb_min": [
+    -24.285,
+    0.0,
+    199.715
+   ],
+   "aabb_max": [
+    -23.715,
+    4.0,
+    200.285
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Tree_4": {
+   "three_center": [
+    26.0,
+    2.0,
+    199.0
+   ],
+   "aabb_min": [
+    25.715,
+    0.0,
+    198.715
+   ],
+   "aabb_max": [
+    26.285,
+    4.0,
+    199.285
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Tree_5": {
+   "three_center": [
+    -30.0,
+    2.0,
+    217.0
+   ],
+   "aabb_min": [
+    -30.285,
+    0.0,
+    216.715
+   ],
+   "aabb_max": [
+    -29.715,
+    4.0,
+    217.285
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Tree_6": {
+   "three_center": [
+    18.0,
+    2.0,
+    218.0
+   ],
+   "aabb_min": [
+    17.715,
+    0.0,
+    217.715
+   ],
+   "aabb_max": [
+    18.285,
+    4.0,
+    218.285
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_CC_Tree_7": {
+   "three_center": [
+    40.0,
+    2.0,
+    215.0
+   ],
+   "aabb_min": [
+    39.715,
+    0.0,
+    214.715
+   ],
+   "aabb_max": [
+    40.285,
+    4.0,
+    215.285
+   ],
+   "area": "AREA_CC",
+   "state": null
+  },
+  "COL_Truck": {
+   "three_center": [
+    7.2,
+    1.6,
+    205.4
+   ],
+   "aabb_min": [
+    3.65,
+    0.0,
+    204.15
+   ],
+   "aabb_max": [
+    10.75,
+    3.2,
+    206.65
+   ],
+   "area": "AREA_CC",
+   "state": null
+  }
+ },
+ "meshes": {
+  "Barracks_Static": {
+   "tris": 7538,
+   "materials": [
+    "M_Plaster",
+    "M_Ground",
+    "M_Foliage",
+    "M_Atlas",
+    "M_Emissive"
+   ],
+   "area": "AREA_Barracks"
+  },
+  "CC_Static": {
+   "tris": 23482,
+   "materials": [
+    "M_Plaster",
+    "M_Ground",
+    "M_Grass",
+    "M_Foliage",
+    "M_Atlas"
+   ],
+   "area": "AREA_CC"
+  },
+  "DECAL_Banner": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ],
+   "area": "AREA_CC"
+  },
+  "DECAL_CCSign": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ],
+   "area": "AREA_CC"
+  },
+  "DECAL_Marker": {
+   "tris": 2,
+   "materials": [
+    "M_Decal"
+   ],
+   "area": "AREA_Parade"
+  },
+  "NOW_Blocks": {
+   "tris": 2682,
+   "materials": [
+    "M_Atlas"
+   ],
+   "area": "AREA_Parade"
+  },
+  "NOW_Lawn": {
+   "tris": 2184,
+   "materials": [
+    "M_Grass"
+   ],
+   "area": "AREA_Parade"
+  },
+  "NOW_Marker": {
+   "tris": 30,
+   "materials": [
+    "M_Atlas"
+   ],
+   "area": "AREA_Parade"
+  },
+  "NOW_Path": {
+   "tris": 738,
+   "materials": [
+    "M_Ground"
+   ],
+   "area": "AREA_Parade"
+  },
+  "NOW_Trees": {
+   "tris": 17816,
+   "materials": [
+    "M_Foliage",
+    "M_Atlas"
+   ],
+   "area": "AREA_Parade"
+  },
+  "Night_Static": {
+   "tris": 22436,
+   "materials": [
+    "M_Ground",
+    "M_Grass",
+    "M_Foliage",
+    "M_Atlas",
+    "M_Water"
+   ],
+   "area": "AREA_Night"
+  },
+  "PROP_Bed": {
+   "tris": 168,
+   "materials": [
+    "M_Atlas"
+   ],
+   "area": "AREA_Parade"
+  },
+  "PROP_Truck": {
+   "tris": 1174,
+   "materials": [
+    "M_Atlas"
+   ],
+   "area": "AREA_CC"
+  },
+  "Parade_Static": {
+   "tris": 24900,
+   "materials": [
+    "M_Grass",
+    "M_Foliage"
+   ],
+   "area": "AREA_Parade"
+  },
+  "THEN_BedPile": {
+   "tris": 1416,
+   "materials": [
+    "M_Atlas"
+   ],
+   "area": "AREA_Parade"
+  },
+  "THEN_Blocks": {
+   "tris": 13078,
+   "materials": [
+    "M_Plaster",
+    "M_Atlas"
+   ],
+   "area": "AREA_Parade"
+  },
+  "THEN_Dais": {
+   "tris": 668,
+   "materials": [
+    "M_Plaster",
+    "M_Atlas"
+   ],
+   "area": "AREA_Parade"
+  },
+  "THEN_Edge": {
+   "tris": 13320,
+   "materials": [
+    "M_Plaster",
+    "M_Foliage",
+    "M_Atlas"
+   ],
+   "area": "AREA_Parade"
+  },
+  "THEN_Square": {
+   "tris": 5674,
+   "materials": [
+    "M_Ground",
+    "M_Grass"
+   ],
+   "area": "AREA_Parade"
+  },
+  "THEN_Stands": {
+   "tris": 1804,
+   "materials": [
+    "M_Atlas"
+   ],
+   "area": "AREA_Parade"
+  }
+ },
+ "tris": {
+  "mobile": 118466,
+  "desktop": 139114
+ },
+ "draw_calls": {
+  "mobile": 39,
+  "desktop": 39
+ },
+ "per_area": {
+  "mobile": {
+   "AREA_Barracks": [
+    7246,
+    5
+   ],
+   "AREA_CC": [
+    19228,
+    8
+   ],
+   "AREA_Parade": [
+    70410,
+    21
+   ],
+   "AREA_Night": [
+    21582,
+    5
+   ]
+  },
+  "desktop": {
+   "AREA_Barracks": [
+    7538,
+    5
+   ],
+   "AREA_CC": [
+    24660,
+    8
+   ],
+   "AREA_Parade": [
+    84480,
+    21
+   ],
+   "AREA_Night": [
+    22436,
+    5
+   ]
+  }
+ },
+ "sizes_mb": {
+  "mobile": 1.82,
+  "desktop": 2.57
+ },
+ "areas": {
+  "AREA_Parade": {
+   "centre": [
+    0,
+    0,
+    -4
+   ],
+   "walk_bounds": [
+    -78,
+    78,
+    -50,
+    42
+   ]
+  },
+  "AREA_Barracks": {
+   "centre": [
+    200,
+    0,
+    -2
+   ],
+   "walk_bounds": [
+    190.3,
+    209.7,
+    -6.0,
+    0.1
+   ]
+  },
+  "AREA_Night": {
+   "centre": [
+    -200,
+    0,
+    -2
+   ],
+   "walk_bounds": [
+    -212.5,
+    -187.5,
+    -12.5,
+    12.5
+   ]
+  },
+  "AREA_CC": {
+   "centre": [
+    0,
+    0,
+    200
+   ],
+   "walk_bounds": [
+    -30,
+    30,
+    186,
+    212
+   ]
+  }
+ }
+}

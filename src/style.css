@@ -114,8 +114,7 @@ kbd { display: inline-block; min-width: 1.6em; padding: 0.1em 0.45em; border-rad
 #btn-chapters { display: none; } /* only where the prints don't fit (see below) */
 .title-note { margin: 10px 0 0; max-width: 34em; font-size: 12.5px; line-height: 1.45; color: var(--muted); text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
 .title-note:first-of-type { margin-top: 16px; }
-.note-label { margin-right: 4px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; color: var(--gold-2); }
-.title-note.sound { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.title-note.sound { display: flex; align-items: center; gap: 6px; margin-top: 16px; }
 .title-note.sound svg { width: 16px; height: 16px; flex: none; color: var(--gold-2); }
 
 /* The prints: cream-bordered photos fanned on a table. The selected one straightens and lifts. */

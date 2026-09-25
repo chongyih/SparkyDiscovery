@@ -6,7 +6,7 @@ _12–15 February 1942 (epilogue: March 1942). Content note: This chapter shows 
 
 **MR. BOON (91):** Ah, you found my old Brownie camera. Careful, ah. It’s even older than me. And I’m ninety-one!
 
-**MR. BOON (91):** There are still three photos left on this roll. I never took them. Three days I could never forget.
+**MR. BOON (91):** There are three photos on this roll I never got developed [printed]. Three days I could never forget.
 
 **MR. BOON (91):** The first one is 1942. I was seven years old, hiding under a table in my Ah Ma [grandma]’s kopitiam [coffee shop].
 
