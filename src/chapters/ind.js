@@ -13,6 +13,7 @@ import { tier } from '../engine/settings.js';
 import { PresentDay } from './present-day.js';
 import { TV } from './ind-tv.js';
 import { makeDrink, drinkName, sameDrink, cupMesh } from './ind-kopi.js';
+import { spawnNowPeople, preloadNowPeople } from './ind-now.js';
 import * as D from './ind-decals.js';
 
 // Chapter 2 — "A Nation Is Born" (Queenstown, 9 August 1965). Script: docs/ch2-script.md.
@@ -139,7 +140,7 @@ export class IndependenceChapter extends ChapterKit {
     this.player.root.add(this.brownie);
 
     this.present = new PresentDay(g);
-    await this.present.load(this.envMap);
+    await Promise.all([this.present.load(this.envMap), preloadNowPeople()]);
     await audioLoad;
     this.setEra('then');
     this.setLighting('day');
@@ -464,7 +465,7 @@ export class IndependenceChapter extends ChapterKit {
     P.wideShot(true);
     await g.ui.fade(false, 1.5);
     g.audio.music('theme-1942', { fade: 3, volume: 0.6 });
-    await g.ui.card('Present day', 'The void deck, Queenstown', '', 2.4);
+    await g.ui.card('Queenstown, Singapore', 'Today', '', 2.4);
     await this.lines(T.bridge.slice(0, 1), { frame: false });
     P.closeShot();
     await this.lines(T.bridge.slice(1), { frame: false });
@@ -498,7 +499,8 @@ export class IndependenceChapter extends ChapterKit {
     const ghost = capturePhoto(g.canvas, { size: 512 });
     Object.assign(g.renderer.grade, grade);
 
-    // 2) Today.
+    // 2) Today, with people going about their day (as in Chapter 1).
+    const clearNowPeople = await spawnNowPeople(this);
     this.setEra('now');
     this.setLighting('now');
     const amb = g.audio.play('street', { volume: 0.35, loop: true, fadeIn: 2, caption: '[Traffic, voices, a scooter passing]' });
@@ -557,6 +559,7 @@ export class IndependenceChapter extends ChapterKit {
     await this.lines(X.locked, { frame: false });
     amb.stop(1.5);
     await g.ui.fade(true, 0.7, 'sepia');
+    clearNowPeople();
     g.input.lookEnabled = true;
     vf.classList.add('hidden');
     vf.querySelector('.vf-frame').classList.remove('found');

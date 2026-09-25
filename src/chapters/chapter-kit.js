@@ -180,7 +180,19 @@ export class ChapterKit {
     const prevMode = g.mode;
     g.mode = 'cutscene';
     p.faceTowards(aim, true);
-    g.rig.frameOne(p, { dist: 1.9, height: -0.1, angle: 0.55, lambda: 5 });
+    // Side-on, on whichever side has room — never between Sparky and what he's photographing (as Chapter 1).
+    const head = p.headPosition();
+    const sideDir = (s) => V(Math.sin(p.yaw + s * 1.25), 0, Math.cos(p.yaw + s * 1.25));
+    // (Unlike Chapter 1's street, the kopitiam is full of people: also skip a side with someone in the way.)
+    const side = (s) => {
+      const room = this.world.rayDistance(head, sideDir(s), 2.5);
+      const pos = head.clone().addScaledVector(sideDir(s), Math.min(1.9, room - 0.3)).add(V(0, -0.05, 0));
+      const near = (g.rig.blockers?.() || []).some((c) => c !== p && c.root.visible && Math.hypot(c.root.position.x - pos.x, c.root.position.z - pos.z) < 1.2);
+      const people = near || g.rig.blocked?.(pos, head, [p]);
+      return { pos, score: room - (people ? 3 : 0) };
+    };
+    const L = side(1), R = side(-1);
+    g.rig.cut((L.score >= R.score ? L : R).pos, head.clone().add(V(0, -0.15, 0)), 5, true);
     p.play('Snap', { loop: false });
     await g.wait(0.38);
     this.brownie.visible = true;
