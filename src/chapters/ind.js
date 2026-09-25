@@ -379,7 +379,8 @@ export class IndependenceChapter extends ChapterKit {
   /** Where Sparky starts: in the corridor between two pillars, so the follow camera has room behind him. */
   spawnPose() {
     const sp = this.marker('SPAWN_Sparky');
-    return { pos: V(2.25, sp.pos.y, -1.3), yaw: sp.yaw };
+    // Out in the car park (the street), facing the shops: a few steps to the corridor.
+    return { pos: V(2.25, 0, 2.6), yaw: sp.yaw };
   }
 
   placeCast() {
@@ -579,7 +580,7 @@ export class IndependenceChapter extends ChapterKit {
     const sp = this.spawnPose();
     p.place(sp.pos, sp.yaw);
     // From the car park, looking at the shops, the photograph's colour bleeding back.
-    const cam = { pos: V(2.25, 1.7, 3.6) };
+    const cam = { pos: V(2.6, 1.7, 6.6) };
     const look = sp.pos.clone().add(V(0, 1.0, -4));
     g.rig.cut(cam.pos, look, 1, true);
     Object.assign(g.renderer.grade, { sepia: 1, saturation: 0, vignette: 0.8 });

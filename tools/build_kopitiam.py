@@ -1231,10 +1231,17 @@ def build_corridor_props():
         # bicycles parked by the pillars, a hawker's push-cart in the car park, a rattan birdcage
         for (bx, rz) in ((-11.3, 0.1), (-6.8, -0.05), (10.8, 0.05)):
             bicycle(bx, 0.6, rz)
+        # the cart body rides on two upright bicycle-type wheels, a leg at the front, handles at the back
         box("M_Timber", (6.0, -3.2, 0.5), (7.6, -2.3, 1.2), TIMBER)
-        for wx in (6.2, 7.4):
-            cyl("M_Metal", (wx, -2.25, 0.0), 0.3, 0.05, 10, IRON)
+        for wy in (-3.28, -2.22):
+            tube("M_Metal", (6.95, wy - 0.03, 0.36), (6.95, wy + 0.03, 0.36), 0.36, 14, IRON, caps=True)      # tyre
+            tube("M_Metal", (6.95, wy - 0.035, 0.36), (6.95, wy + 0.035, 0.36), 0.08, 8, STEEL, caps=True)    # hub
+        tube("M_Metal", (6.95, -3.3, 0.36), (6.95, -2.2, 0.36), 0.02, 5, STEEL)                                # axle
+        for ly in (-3.1, -2.4):
+            tube("M_Timber", (6.1, ly, 0.0), (6.1, ly, 0.52), 0.035, 5, TIMBER_DARK, caps=True)                  # front legs
+            tube("M_Timber", (7.6, ly, 0.95), (8.25, ly, 0.85), 0.025, 5, TIMBER_DARK, caps=True)                # handles
         box("M_Cloth", (5.9, -3.3, 1.9), (7.7, -2.2, 1.95), C(0.85, 0.35, 0.3))
+        collider("COL_Cart", (5.95, -3.35, 0), (8.3, -2.15, 1.3))
         for (px, py) in ((6.0, -3.2), (7.6, -3.2), (6.0, -2.3), (7.6, -2.3)):
             tube("M_Timber", (px, py, 1.2), (px, py, 1.9), 0.02, 4, TIMBER_DARK, smooth=False)
         with DETAIL():

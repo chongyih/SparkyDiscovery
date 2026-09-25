@@ -1389,6 +1389,13 @@
     0.25,
     -9.4
    ]
+  },
+  "COL_Cart": {
+   "three_center": [
+    7.125,
+    0.65,
+    2.75
+   ]
   }
  },
  "meshes": {
@@ -1623,7 +1630,7 @@
    ]
   },
   "THEN_Street": {
-   "tris": 758,
+   "tris": 920,
    "materials": [
     "M_Timber",
     "M_Cloth",
@@ -1662,7 +1669,7 @@
   }
  },
  "tris": {
-  "mobile": 26640,
-  "desktop": 26938
+  "mobile": 26802,
+  "desktop": 27100
  }
 }
