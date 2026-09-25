@@ -1,6 +1,6 @@
 # Chapter 1 — The Fortress Falls
 
-_12–15 February 1942 (epilogue: March 1942). Content note: This chapter shows wartime air raids, fear and loss, including the Sook Ching massacre. Nothing graphic is shown._
+_12–15 February 1942 (epilogue: March 1942). Content note: This chapter shows wartime air raids, fear and loss. Nothing graphic is shown._
 
 ## 0 · Prologue — a Queenstown void deck, today
 

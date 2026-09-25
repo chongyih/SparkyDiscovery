@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#1b1712" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Footsteps of a Nation: A Singapore Story</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo/favicon.svg" />
+  <link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png" />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
@@ -180,7 +182,28 @@
     </div>
     <p class="backdrop-caption" id="backdrop-caption" aria-hidden="true"></p>
     <div class="title-inner">
-      <h1>Footsteps of a Nation<span class="subtitle">A Singapore Story</span></h1>
+      <!-- The logo (public/assets/logo/logo.svg), rebuilt live: the strip is a translucent negative, so the
+           scene behind shows through its frames; the wordmark is real text in the same face. -->
+      <h1 class="logo">
+        <svg class="logo-strip" viewBox="0 0 1120 320" aria-hidden="true" focusable="false">
+          <defs>
+            <path id="lg-paw" d="M-26 -4C-19 -13 19 -13 26 -4C32 4 29 22 16 27C8 30 -8 30 -16 27C-29 22 -32 4 -26 -4ZM-33.8 -18a5.8 5.8 0 1 0 11.6 0a5.8 5.8 0 1 0 -11.6 0ZM-20.9 -28a6.4 6.4 0 1 0 12.8 0a6.4 6.4 0 1 0 -12.8 0ZM-6.8 -31a6.8 6.8 0 1 0 13.6 0a6.8 6.8 0 1 0 -13.6 0ZM8.1 -28a6.4 6.4 0 1 0 12.8 0a6.4 6.4 0 1 0 -12.8 0ZM22.2 -18a5.8 5.8 0 1 0 11.6 0a5.8 5.8 0 1 0 -11.6 0Z" />
+            <pattern id="lg-holes" x="22" width="36.3" height="320" patternUnits="userSpaceOnUse"><rect y="16.5" width="16.5" height="19.5" rx="3.3" /><rect y="284" width="16.5" height="19.5" rx="3.3" /></pattern>
+            <!-- Film base with the holes punched out and the frames thinned: 1942 is the densest negative, 1967 the clearest. -->
+            <mask id="lg-film"><rect width="1120" height="320" rx="10" fill="#fff" /><rect x="22" width="1080" height="320" fill="url(#lg-holes)" />
+              <rect x="34" y="56" width="332" height="208" rx="8" fill="#9a9a9a" /><rect x="394" y="56" width="332" height="208" rx="8" fill="#6a6a6a" /><rect x="754" y="56" width="332" height="208" rx="8" fill="#383838" /></mask>
+            <radialGradient id="lg-glow" cx="55%" cy="50%" r="62%"><stop offset="0" stop-color="#e8b64c" stop-opacity="0.42" /><stop offset="1" stop-color="#e8b64c" stop-opacity="0" /></radialGradient>
+          </defs>
+          <rect class="lg-base" width="1120" height="320" mask="url(#lg-film)" />
+          <rect x="754" y="56" width="332" height="208" rx="8" fill="url(#lg-glow)" />
+          <use class="lg-p lg-p1" href="#lg-paw" transform="translate(196 172) rotate(46) scale(1.6)" />
+          <use class="lg-p lg-p2" href="#lg-paw" transform="translate(564 150) rotate(60) scale(1.6)" />
+          <use class="lg-p lg-p3" href="#lg-paw" transform="translate(916 172) rotate(46) scale(1.6)" />
+        </svg>
+        <span class="logo-word">Footsteps</span>
+        <span class="logo-of"> of a Nation</span>
+        <span class="subtitle">A Singapore Story</span>
+      </h1>
       <div class="chapter-info" aria-live="polite">
         <p class="ci-kicker" id="ci-kicker"></p>
         <p class="ci-blurb" id="ci-blurb"></p>
