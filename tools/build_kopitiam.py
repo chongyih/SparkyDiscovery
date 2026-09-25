@@ -961,6 +961,186 @@ def kopitiam_tv():
     marker("SNAP_TV", tuple(front), (fd.x, fd.y, 0.0))
 
 
+# ---------------------------------------------------------------- Queenstown, 1965 (around the block)
+# The estate around Boon's block (research section 12): more seven-storey blocks, an open-sided wet market
+# (Queenstown's first opened in 1960), a tall slab in the distance (Forfar House, 14 storeys, was the
+# tall one), a bus shelter on the road, a few period cars and a trishaw, a basic playground, and zinc-roofed
+# kampong houses at the edge of the estate. All THEN_ (hidden in the present-day view).
+OLD_R = random.Random(1965)
+
+
+def old_block(cx, cy, length, storeys, rz=0.0, tint=C(0.88, 0.86, 0.79)):
+    """A 1960s slab block, long facade on local -y: window bands, slab lips, a dark ground-floor corridor."""
+    M = M_at(cx, cy, 0, rz)
+    dep, fh = 10.0, 2.8
+    h = storeys * fh + 3.3
+    mbox(M @ Matrix.Translation((0, 0, h / 2)), "M_Plaster", (length, dep, h), tint, s=4.0, skip=("-z",))
+    mbox(M @ Matrix.Translation((0, -dep / 2 + 0.6, 1.6)), "M_Plaster", (length - 0.4, 1.3, 3.2), C(0.2, 0.19, 0.18))
+    for k in range(storeys):
+        z = 3.3 + k * fh
+        for sgn in (-1, 1):
+            pts = [M @ Vector((-length / 2 + 0.6, sgn * (dep / 2 + 0.03), z + 1.0)), M @ Vector((length / 2 - 0.6, sgn * (dep / 2 + 0.03), z + 1.0)),
+                   M @ Vector((length / 2 - 0.6, sgn * (dep / 2 + 0.03), z + 2.2)), M @ Vector((-length / 2 + 0.6, sgn * (dep / 2 + 0.03), z + 2.2))]
+            face("M_Glass", [tuple(p) for p in (pts if sgn < 0 else pts[::-1])], mul(WHITE, 0.78), s=1.25)
+        mbox(M @ Matrix.Translation((0, -dep / 2 - 0.3, z + 2.55)), "M_Plaster", (length, 0.6, 0.12), mul(tint, 0.94), s=4.0)
+        for i in range(int(length / 3)):                       # bamboo laundry poles
+            if OLD_R.random() < 0.4:
+                x = -length / 2 + 1.5 + i * 3
+                a = M @ Vector((x, -dep / 2, z + 2.3)); b = M @ Vector((x + OLD_R.uniform(-0.2, 0.2), -dep / 2 - 1.5, z + 2.35))
+                tube("M_Timber", tuple(a), tuple(b), 0.025, 4, C(0.78, 0.68, 0.42), smooth=False)
+
+
+def market_pavilion(x0, x1, y0, y1):
+    """Open-sided wet market: concrete floor, columns, a gabled zinc roof, rows of stalls."""
+    box("M_Plaster", (x0, y0, 0), (x1, y1, 0.15), C(0.7, 0.69, 0.66))
+    eave, ridge = 4.0, 5.8
+    for x in [x0 + 0.3 + i * (x1 - x0 - 0.6) / 5 for i in range(6)]:
+        for y in (y0 + 0.3, y1 - 0.3):
+            tube("M_Plaster", (x, y, 0.15), (x, y, eave), 0.16, 8, C(0.82, 0.8, 0.74), caps=True)
+    ym = (y0 + y1) / 2
+    for sgn in (-1, 1):                                        # roof slopes (both faces)
+        ye = y0 - 0.8 if sgn < 0 else y1 + 0.8
+        pts = [(x0 - 0.6, ye, eave - 0.2), (x1 + 0.6, ye, eave - 0.2), (x1 + 0.6, ym, ridge), (x0 - 0.6, ym, ridge)]
+        top = pts if sgn > 0 else [pts[1], pts[0], pts[3], pts[2]]
+        face("M_Metal", top[::-1] if newell(top)[2] < 0 else top, C(0.52, 0.54, 0.55))
+        face("M_Metal", top if newell(top)[2] < 0 else top[::-1], C(0.36, 0.36, 0.35))
+    for gx in (x0 - 0.6, x1 + 0.6):                            # gable ends, open under a louvred band
+        for fa in (1, -1):
+            tri = [(gx, y0 - 0.8, eave - 0.2), (gx, y1 + 0.8, eave - 0.2), (gx, ym, ridge)]
+            face("M_Metal", tri if fa > 0 else tri[::-1], C(0.62, 0.62, 0.6))
+    produce = [C(0.8, 0.45, 0.15), C(0.35, 0.6, 0.25), C(0.85, 0.75, 0.3), C(0.7, 0.2, 0.2), C(0.55, 0.45, 0.35)]
+    for row_y in (y0 + 2.2, y1 - 2.2):
+        for i in range(4):
+            sx = x0 + 1.6 + i * (x1 - x0 - 3.2) / 3
+            box("M_Timber", (sx - 0.9, row_y - 0.45, 0.15), (sx + 0.9, row_y + 0.45, 0.95), TIMBER)
+            for k in range(5):
+                sphere("M_Cloth", (sx - 0.7 + k * 0.35, row_y + OLD_R.uniform(-0.15, 0.15), 1.05), 0.14, OLD_R.choice(produce), nu=6, nv=4)
+            tube("M_Metal", (sx, row_y, eave - 0.1), (sx, row_y, 2.6), 0.005, 3, IRON, smooth=False)
+            sphere("M_Emissive", (sx, row_y, 2.55), 0.08, C(1.0, 0.9, 0.7), nu=6, nv=4)
+
+
+def bus_shelter(x, y):
+    box("M_Plaster", (x - 2.0, y - 0.8, 0), (x + 2.0, y + 0.8, 0.12), C(0.72, 0.71, 0.68))
+    for px in (x - 1.8, x + 1.8):
+        box("M_Plaster", (px - 0.1, y + 0.5, 0.12), (px + 0.1, y + 0.7, 2.5), C(0.82, 0.8, 0.74))
+    box("M_Plaster", (x - 2.2, y - 0.9, 2.5), (x + 2.2, y + 0.9, 2.65), C(0.8, 0.78, 0.72))
+    box("M_Timber", (x - 1.5, y + 0.2, 0.45), (x + 1.5, y + 0.55, 0.52), TIMBER_DARK)
+    box("M_Metal", (x + 2.3, y - 0.9, 0), (x + 2.36, y - 0.84, 2.4), IRON)
+    box("M_Metal", (x + 2.1, y - 0.95, 2.1), (x + 2.6, y - 0.9, 2.5), C(0.85, 0.83, 0.75))
+
+
+def old_bus(x, y, rz):
+    """A 1960s single-deck bus: cream lower body, green upper band, dark window strip."""
+    M = M_at(x, y, 0, rz)
+    mbox(M @ Matrix.Translation((0, 0, 1.4)), "M_Metal", (9.6, 2.45, 1.8), C(0.85, 0.82, 0.7))
+    mbox(M @ Matrix.Translation((0, 0, 2.75)), "M_Metal", (9.6, 2.45, 0.9), C(0.2, 0.42, 0.3))
+    mbox(M @ Matrix.Translation((0, 0, 3.25)), "M_Metal", (9.4, 2.35, 0.14), C(0.82, 0.8, 0.72))
+    for sgn in (-1, 1):
+        pts = [M @ Vector((-4.5, sgn * 1.235, 2.05)), M @ Vector((4.5, sgn * 1.235, 2.05)), M @ Vector((4.5, sgn * 1.235, 2.95)), M @ Vector((-4.5, sgn * 1.235, 2.95))]
+        face("M_Glass", [tuple(p) for p in (pts if sgn < 0 else pts[::-1])], C(0.18, 0.22, 0.26))
+        for wx in (-3.2, 3.0):
+            c0 = M @ Vector((wx, sgn * 1.15, 0.5))
+            tube("M_Metal", tuple(c0), tuple(M @ Vector((wx, sgn * 1.3, 0.5))), 0.5, 12, IRON, caps=True)
+    pts = [M @ Vector((4.81, -1.1, 2.05)), M @ Vector((4.81, 1.1, 2.05)), M @ Vector((4.81, 1.1, 3.0)), M @ Vector((4.81, -1.1, 3.0))]
+    face("M_Glass", [tuple(p) for p in pts[::-1]], C(0.18, 0.22, 0.26))
+
+
+def period_car(x, y, rz, col):
+    """A rounded late-1950s saloon (Morris-Minor-like silhouette), with running-board wheels and chrome bumpers."""
+    M = M_at(x, y, 0, rz)
+    prof = [(-1.95, 0.32), (1.95, 0.32), (2.0, 0.62), (1.75, 0.86), (0.95, 0.92), (0.55, 1.36), (-0.85, 1.4), (-1.45, 1.02), (-1.95, 0.86)]
+    extrude(M, "M_Metal", prof, -0.76, 0.76, col)
+    glass = C(0.14, 0.17, 0.2)
+    for sgn in (-1, 1):
+        w = [tuple(M @ Vector((px, sgn * 0.765, pz))) for px, pz in ((-1.2, 1.0), (0.75, 1.0), (0.45, 1.3), (-0.8, 1.33))]
+        face("M_Glass", w if sgn < 0 else w[::-1], glass)
+        for wx in (-1.3, 1.3):
+            tube("M_Metal", tuple(M @ Vector((wx, sgn * 0.72, 0.32))), tuple(M @ Vector((wx, sgn * 0.82, 0.32))), 0.3, 10, IRON, caps=True)
+    for bx in (-2.02, 2.02):
+        mbox(M @ Matrix.Translation((bx, 0, 0.45)), "M_Metal", (0.08, 1.5, 0.1), STEEL)
+    for sgn in (-1, 1):
+        cyl("M_Emissive", tuple(M @ Vector((1.98, sgn * 0.5, 0.72))), 0.08, 0.02, 8, C(1, 0.97, 0.88))
+
+
+def trishaw(x, y, rz):
+    bicycle(x, y, rz)
+    M = M_at(x, y, 0, rz)
+    mbox(M @ Matrix.Translation((0.1, 0.75, 0.62)), "M_Timber", (0.9, 0.7, 0.5), C(0.32, 0.4, 0.34))
+    mbox(M @ Matrix.Translation((0.1, 0.75, 0.9)), "M_Cloth", (0.8, 0.6, 0.1), C(0.6, 0.15, 0.12))
+    tube("M_Metal", tuple(M @ Vector((0.1, 1.1, 0.33))), tuple(M @ Vector((0.1, 1.0, 0.33))), 0.3, 10, IRON, caps=True)
+    for k in range(6):                                         # folding hood
+        a = math.pi * k / 5
+        p0 = M @ Vector((-0.35 + 0.0 * a, 0.42, 0.9)); p1 = M @ Vector((-0.35 - 0.1 * math.sin(a), 0.75 - 0.33 * math.cos(a), 0.9 + 0.55 * math.sin(a)))
+        tube("M_Metal", tuple(p0), tuple(p1), 0.008, 3, IRON, smooth=False)
+
+
+def playground(x, y):
+    """A basic 1960s playground on the verge: swings, a see-saw, a slide."""
+    for sx in (x - 1.2, x + 1.2):                              # swing frame
+        tube("M_Metal", (sx, y - 0.7, 0), (sx, y, 2.4), 0.05, 6, C(0.55, 0.2, 0.15))
+        tube("M_Metal", (sx, y + 0.7, 0), (sx, y, 2.4), 0.05, 6, C(0.55, 0.2, 0.15))
+    tube("M_Metal", (x - 1.2, y, 2.4), (x + 1.2, y, 2.4), 0.05, 6, C(0.55, 0.2, 0.15))
+    for sx in (x - 0.55, x + 0.55):
+        for d in (-0.2, 0.2):
+            tube("M_Metal", (sx + d, y, 2.4), (sx + d, y, 0.5), 0.008, 3, STEEL, smooth=False)
+        box("M_Timber", (sx - 0.25, y - 0.1, 0.46), (sx + 0.25, y + 0.1, 0.52), TIMBER)
+    box("M_Metal", (x + 3.0, y - 0.15, 0), (x + 3.2, y + 0.15, 0.5), IRON)
+    mbox(M_at(x + 3.1, y, 0.55, 0, ry=0.18), "M_Timber", (3.2, 0.3, 0.06), TIMBER)
+    mbox(M_at(x - 3.6, y, 1.0, 0, ry=0.55), "M_Metal", (3.0, 0.5, 0.05), STEEL)
+    tube("M_Metal", (x - 2.4, y, 0), (x - 2.4, y, 1.75), 0.04, 6, IRON)
+    for k in range(5):
+        box("M_Metal", (x - 2.45, y - 0.25, 0.3 * k + 0.2), (x - 2.25, y + 0.25, 0.3 * k + 0.24), IRON)
+
+
+def kampong_house(x, y, rz, w=5.0, d=4.0):
+    """A timber house on short stilts with a zinc gable roof and front steps."""
+    M = M_at(x, y, 0, rz)
+    for sx in (-w / 2 + 0.2, w / 2 - 0.2):
+        for sy in (-d / 2 + 0.2, d / 2 - 0.2):
+            p = M @ Vector((sx, sy, 0))
+            tube("M_Timber", (p.x, p.y, 0), (p.x, p.y, 0.7), 0.08, 5, TIMBER_DARK)
+    mbox(M @ Matrix.Translation((0, 0, 1.9)), "M_Timber", (w, d, 2.4), OLD_R.choice([C(0.62, 0.48, 0.32), C(0.55, 0.62, 0.55), C(0.7, 0.6, 0.45)]))
+    for sgn in (-1, 1):
+        pts = [M @ Vector((-w / 2 - 0.4, sgn * (d / 2 + 0.5), 3.0)), M @ Vector((w / 2 + 0.4, sgn * (d / 2 + 0.5), 3.0)),
+               M @ Vector((w / 2 + 0.4, 0, 4.4)), M @ Vector((-w / 2 - 0.4, 0, 4.4))]
+        pts = [tuple(p) for p in pts]
+        face("M_Metal", pts if newell(pts)[2] > 0 else pts[::-1], C(0.5, 0.45, 0.4))
+        face("M_Metal", pts if newell(pts)[2] < 0 else pts[::-1], C(0.35, 0.3, 0.28))
+    for sx in (-w / 2, w / 2):
+        tri = [tuple(M @ Vector((sx, -d / 2, 3.1))), tuple(M @ Vector((sx, d / 2, 3.1))), tuple(M @ Vector((sx, 0, 4.35)))]
+        face("M_Timber", tri, C(0.55, 0.42, 0.3)); face("M_Timber", tri[::-1], C(0.55, 0.42, 0.3))
+    for k in range(3):
+        p = M @ Vector((0, -d / 2 - 0.25 - k * 0.3, 0.55 - k * 0.2))
+        mbox(M_at(p.x, p.y, p.z, rz), "M_Timber", (1.0, 0.3, 0.06), TIMBER)
+    pts = [tuple(M @ Vector((px, -d / 2 - 0.01, pz))) for px, pz in ((-0.5, 0.7), (0.5, 0.7), (0.5, 2.6), (-0.5, 2.6))]
+    face("M_Timber", pts, C(0.3, 0.2, 0.14))
+
+
+def old_estate():
+    with GROUP("THEN_Estate"):
+        # grass either side of the block (the road grid only covers the car park)
+        for (xa, xb) in ((-40, X0), (X1, 40)):
+            face("M_Road", [(xa, 0, -0.01), (xb, 0, -0.01), (xb, 12, -0.01), (xa, 12, -0.01)], GRASS, s=6.0)
+        old_block(-46, 10, 36, 7, math.pi / 2)                    # the next block along, west, facing the gap
+        tree(-19, -3, 1.1, seed=41); tree(-35, -8, 0.95, seed=42)
+        bus_shelter(-22, -14.2)
+        old_bus(-31, -13.4, 0.0)
+        market_pavilion(19, 33, -9, 3)                            # the wet market, east
+        tree(17.2, 6, 1.0, seed=43); tree(36, -12, 1.05, seed=44)
+        old_block(78, 28, 52, 14, math.radians(-25))              # the tall slab in the distance
+        playground(12, -22.5)
+        for i, (hx, hy, r) in enumerate(((-48, -30, 0.3), (-56, -36, -0.2), (-41, -40, 0.5), (-62, -27, 0.1))):
+            kampong_house(hx, hy, r)
+            tree(hx + 5, hy - 3, 0.9, seed=50 + i)
+        # a few period cars and a trishaw in the car park (outside the Then & Now frame)
+        for (cx_, cy_, rz, col) in ((-10.4, -4.0, math.pi / 2, C(0.12, 0.13, 0.12)), (-12.9, -4.1, -math.pi / 2, C(0.8, 0.76, 0.62)),
+                                    (11.7, -4.0, math.pi / 2, C(0.36, 0.45, 0.4))):
+            period_car(cx_, cy_, rz, col)
+            collider("COL_Car", (cx_ - 0.85, cy_ - 2.05, 0), (cx_ + 0.85, cy_ + 2.05, 1.5), unique=False)
+        trishaw(-6.4, -1.2, 0.0)
+        collider("COL_Trishaw", (-7.0, -1.4, 0), (-5.8, -0.2, 1.4))
+
+
 # ---------------------------------------------------------------- Queenstown today (Then & Now)
 # What the same corner looks like now (docs/research/1965-history.md §14): the early blocks are still
 # lived in (Stirling Road's first HDB blocks of 1960 are 7-storey rental blocks with laundry-pole
@@ -1314,6 +1494,7 @@ def build_level():
     build_shops()
     build_kopitiam()
     build_corridor_props()
+    old_estate()
     now_facade()
     now_carpark()
     now_skyline()

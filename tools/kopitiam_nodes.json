@@ -1396,6 +1396,34 @@
     0.65,
     2.75
    ]
+  },
+  "COL_Car_1": {
+   "three_center": [
+    -10.4,
+    0.75,
+    4.0
+   ]
+  },
+  "COL_Car_2": {
+   "three_center": [
+    -12.9,
+    0.75,
+    4.1
+   ]
+  },
+  "COL_Car_3": {
+   "three_center": [
+    11.7,
+    0.75,
+    4.0
+   ]
+  },
+  "COL_Trishaw": {
+   "three_center": [
+    -6.4,
+    0.7,
+    0.8
+   ]
   }
  },
  "meshes": {
@@ -1597,6 +1625,18 @@
     "M_Metal"
    ]
   },
+  "THEN_Estate": {
+   "tris": 9548,
+   "materials": [
+    "M_Plaster",
+    "M_Timber",
+    "M_Road",
+    "M_Cloth",
+    "M_Glass",
+    "M_Metal",
+    "M_Emissive"
+   ]
+  },
   "THEN_Kopitiam": {
    "tris": 4342,
    "materials": [
@@ -1669,7 +1709,7 @@
   }
  },
  "tris": {
-  "mobile": 26802,
-  "desktop": 27100
+  "mobile": 36350,
+  "desktop": 36648
  }
 }
