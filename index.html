@@ -175,8 +175,9 @@
 
   <!-- Title -->
   <div id="title" class="screen hidden">
-    <!-- Backdrop cycles through the chapters: the live 1942 street (the canvas), then stills of the others. -->
+    <!-- Backdrop cycles through the chapters: the loaded chapter live (the canvas), stills of the others. -->
     <div class="backdrops" aria-hidden="true">
+      <div class="backdrop" data-chapter="ww2" style="background-image: url(/assets/title/1942-street.jpg)"></div>
       <div class="backdrop" data-chapter="ind" style="background-image: url(/assets/title/1965-kopitiam.jpg)"></div>
       <div class="backdrop" data-chapter="ns" style="background-image: url(/assets/title/1967-camp.jpg)"></div>
     </div>
@@ -213,7 +214,6 @@
         <button id="btn-chapters" class="btn" aria-controls="chapter-list" aria-expanded="false">Chapters</button>
         <button id="btn-settings-title" class="btn">Settings</button>
       </div>
-      <p class="title-note" id="title-note"><span class="note-label">Content note</span> <span id="title-hint"></span></p>
       <p class="title-note sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-4h3l4-3.5v11L7 14z" fill="currentColor"/><path d="M15 9a4 4 0 0 1 0 6M17.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Best played with sound</p>
     </div>
     <!-- Chapter select: pick a print, then Begin. -->
@@ -227,7 +227,7 @@
         <span class="print-yr">1965</span><span class="print-name">A Nation Is Born</span>
       </button>
       <button class="print" role="radio" data-chapter="ns">
-        <span class="print-photo"><img src="/assets/title/1967-camp.jpg" alt="" /><span class="stamp">Coming soon</span></span>
+        <span class="print-photo"><img src="/assets/title/1967-camp.jpg" alt="" /></span>
         <span class="print-yr">1967</span><span class="print-name">The First Intake</span>
       </button>
       <button id="btn-prints-back" class="btn small prints-back">Done</button>
@@ -373,6 +373,10 @@
           <label class="sp-row toggle">
             <span class="sp-label">Invert camera Y<small>Push up to look down</small></span>
             <input id="set-invert" type="checkbox" class="switch" />
+          </label>
+          <label class="sp-row toggle">
+            <span class="sp-label">Relaxed drill timing<small>More time to answer the sergeant's commands</small></span>
+            <input id="set-relaxed" type="checkbox" class="switch" />
           </label>
         </section>
         <button id="btn-settings-reset" class="sp-reset">Reset to defaults</button>

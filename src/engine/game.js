@@ -334,7 +334,7 @@ export class Game {
 
   bindSettings() {
     const radios = [...document.querySelectorAll('input[name=quality]')];
-    const vol = $('set-volume'), mus = $('set-music'), sub = $('set-subtitles'), mot = $('set-motion'), inv = $('set-invert');
+    const vol = $('set-volume'), mus = $('set-music'), sub = $('set-subtitles'), mot = $('set-motion'), inv = $('set-invert'), rel = $('set-relaxed');
     const loadedVariant = TIERS[settings.quality]?.assetVariant;
     const notes = {
       low: 'No shadows and fewer particles — smoothest on phones.',
@@ -349,6 +349,7 @@ export class Game {
       vol.value = settings.volume; mus.value = settings.music;
       pct(vol, 'out-volume'); pct(mus, 'out-music');
       sub.checked = settings.subtitles; mot.checked = settings.reduceMotion; inv.checked = settings.invertY;
+      if (rel) rel.checked = !!settings.relaxedTiming;
     };
     sync();
     onSettings(sync);
@@ -358,6 +359,7 @@ export class Game {
     sub.onchange = () => saveSettings({ subtitles: sub.checked });
     mot.onchange = () => saveSettings({ reduceMotion: mot.checked });
     inv.onchange = () => saveSettings({ invertY: inv.checked });
+    if (rel) rel.onchange = () => saveSettings({ relaxedTiming: rel.checked });
     $('btn-settings-reset').onclick = () => resetSettings();
 
     const tabs = [...document.querySelectorAll('.sp-tabs [data-tab]')];

@@ -1075,7 +1075,7 @@ export class IndependenceChapter extends ChapterKit {
     this.present.wideShot();
     await this.lines(T.oldBoon, { frame: false });
     await g.ui.fade(true, 1.2);
-    await g.ui.card('Chapter 2 complete', 'A Nation Is Born', 'Next: 17 August 1967 — The First Intake (coming soon)', 5);
+    await g.ui.card('Chapter 2 complete', 'A Nation Is Born', 'Next: 1967 — The First Intake', 5);
     g.audio.music(null, { fade: 3 });
     g.mode = 'cutscene';
     this.game.onChapterComplete?.('ind');

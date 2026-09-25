@@ -2,14 +2,13 @@ import * as THREE from 'three';
 import { Game } from './engine/game.js';
 import { WW2Chapter } from './chapters/ww2.js';
 import { IndependenceChapter } from './chapters/ind.js';
-import T from './chapters/ww2-text.js';
-import T2 from './chapters/ind-text.js';
+import { NSChapter } from './chapters/ns.js';
 import { thenNowPose } from './chapters/ww2-features.js';
 import { capturePhoto } from './engine/album.js';
 import { settings } from './engine/settings.js';
 
-// Chapter id -> class. ?chapter=ind opens straight on Chapter 2 (title background + Begin).
-const CHAPTERS = { ww2: WW2Chapter, ind: IndependenceChapter };
+// Chapter id -> class. ?chapter=ind (or ns) opens straight on that chapter (title background + Begin).
+const CHAPTERS = { ww2: WW2Chapter, ind: IndependenceChapter, ns: NSChapter };
 const startChapter = CHAPTERS[new URLSearchParams(location.search).get('chapter')] ? new URLSearchParams(location.search).get('chapter') : 'ww2';
 
 const $ = (id) => document.getElementById(id);
@@ -86,7 +85,10 @@ async function loadChapter(opts = {}) {
 /** Mr. Boon's 1942 frame for the title's chapter print, from the same viewpoint as the Then & Now photo. */
 function developTitlePrint() {
   const img = $('print-1942');
-  if (img.src || chapter.chapterId !== 'ww2') return;
+  if (img.src) return;
+  // Another chapter is loaded behind the title (e.g. ?chapter=ns), or there's no canvas to render into yet
+  // (a zero-sized window): use the saved 1942 print.
+  if (chapter.chapterId !== 'ww2' || !game.canvas.width || !game.canvas.height) { img.src = '/assets/title/1942-print.jpg'; return; }
   const cam = game.rig.camera, fov = cam.fov, targetFov = game.rig.targetFov;
   const pose = thenNowPose(chapter);
   const eye = pose.pos.clone();
@@ -144,9 +146,9 @@ function showTitle() {
 // ---------------- Title chapter select + backdrop cycle ----------------
 // Chapters 1 and 2 are playable; Chapter 3 can be picked to preview it.
 const TITLE_CHAPTERS = [
-  { id: 'ww2', n: 1, place: 'Chinatown', when: 'Chinatown · February 1942', blurb: 'Bombs are falling on the city everyone called a fortress.', note: T.contentNote, playable: true },
-  { id: 'ind', n: 2, place: 'Queenstown', when: 'Queenstown · 9 August 1965', blurb: 'Separated from Malaysia overnight, a worried island must stand on its own.', note: T2.contentNote, playable: true },
-  { id: 'ns', n: 3, place: 'Taman Jurong', when: 'Taman Jurong Camp · 1967–68', blurb: 'The first national servicemen report for duty. Few families want them to go.' },
+  { id: 'ww2', n: 1, place: 'Chinatown', when: 'Chinatown · February 1942', blurb: 'Bombs are falling on the city everyone called a fortress.', playable: true },
+  { id: 'ind', n: 2, place: 'Queenstown', when: 'Queenstown · 9 August 1965', blurb: 'Separated from Malaysia overnight, a worried island must stand on its own.', playable: true },
+  { id: 'ns', n: 3, place: 'Taman Jurong', when: 'Taman Jurong Camp · 1967–68', blurb: 'The first national servicemen report for duty. Few families want them to go.', playable: true },
 ].map((c) => ({ ...c, year: document.querySelector(`.print[data-chapter="${c.id}"] .print-yr`).textContent }));
 let selected = TITLE_CHAPTERS.find((c) => c.id === startChapter) || TITLE_CHAPTERS[0];
 const prints = [...document.querySelectorAll('.print[data-chapter]')];
@@ -163,24 +165,24 @@ function selectChapter(id, { focus = false } = {}) {
   $('ci-blurb').textContent = selected.blurb;
   const info = document.querySelector('.chapter-info');
   info.classList.remove('swap'); void info.offsetWidth; info.classList.add('swap');
-  $('title-note').classList.toggle('hidden', !selected.note);
-  $('title-hint').textContent = selected.note || '';
   const b = $('btn-begin');
   b.disabled = !selected.playable;
   b.textContent = selected.playable ? 'Begin' : 'Coming soon';
 }
 
-// The backdrop steps through the chapters: 1942 is the live street (the canvas behind), the others
-// are stills. Picking a print jumps to its chapter; the cycle carries on from there.
+// The backdrop steps through the chapters: the loaded one is the live scene (the canvas behind, usually
+// 1942), the others are stills. Picking a print jumps to its chapter; the cycle carries on from there.
 const backdrop = { i: 0, timer: 0, idle: 0 };
 function showBackdrop(i) {
   backdrop.i = i;
   const ch = TITLE_CHAPTERS[i];
-  document.querySelectorAll('.backdrop').forEach((el) => el.classList.toggle('on', el.dataset.chapter === ch.id));
-  // Skip rendering the 3D street while a still fully covers it (after its fade-in).
+  // The chapter loaded behind the title is the live canvas; the others are stills over it.
+  const live = ch.id === chapter.chapterId;
+  document.querySelectorAll('.backdrop').forEach((el) => el.classList.toggle('on', !live && el.dataset.chapter === ch.id));
+  // Skip rendering the 3D scene while a still fully covers it (after its fade-in).
   clearTimeout(backdrop.idle);
   game.skipRender = false;
-  if (ch.id !== 'ww2') backdrop.idle = setTimeout(() => { game.skipRender = true; }, 1800);
+  if (!live) backdrop.idle = setTimeout(() => { game.skipRender = true; }, 1800);
   const cap = $('backdrop-caption');
   cap.classList.add('swap');
   setTimeout(() => { cap.textContent = `${ch.place}, ${ch.year}`; cap.classList.remove('swap'); }, 400);
@@ -256,8 +258,9 @@ game.onChapterComplete = async (id) => {
   game.album.open();
   await new Promise((r) => { const prev = game.album.onToggle; game.album.onToggle = (open) => { prev?.(open); if (!open) { game.album.onToggle = prev; r(); } }; });
   await game.ui.fade(false, 0.1);
-  // 1942 leads straight on to 1965 (the same roll of film); after that, back to the title.
+  // One roll of film: 1942 leads straight on to 1965, then 1967; after the ending, back to the title.
   if (id === 'ww2') { begin({ fresh: true, chapter: 'ind' }); return; }
+  if (id === 'ind') { begin({ fresh: true, chapter: 'ns' }); return; }
   location.reload();
 };
 

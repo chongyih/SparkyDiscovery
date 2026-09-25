@@ -6,6 +6,18 @@
     "kbps": 64,
     "bytes": 96800
   },
+  "band-march": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 33.353424,
+    "loopLength": 33.103447,
+    "file": "band-march.mp3",
+    "duration": 33.603,
+    "rate": 22050,
+    "kbps": 64,
+    "bytes": 269626,
+    "note": "Original synthesised march, 116 bpm, 16 bars (tools/build_audio_ns.py)."
+  },
   "camera-shutter": {
     "file": "camera-shutter.mp3",
     "duration": 1.25,
@@ -330,6 +342,18 @@
     "note": "original music-box theme, A minor pentatonic, 80 bpm, 24 bars",
     "decodedSamples": 2320000,
     "seamDipDb": -13.1
+  },
+  "truck-engine": {
+    "loop": true,
+    "loopStart": 0.249977,
+    "loopEnd": 6.249977,
+    "loopLength": 6.0,
+    "file": "truck-engine.mp3",
+    "duration": 6.5,
+    "rate": 22050,
+    "kbps": 48,
+    "bytes": 39566,
+    "note": "Synthesised lorry idle (tools/build_audio_ns.py)."
   },
   "tv-static": {
     "loop": true,

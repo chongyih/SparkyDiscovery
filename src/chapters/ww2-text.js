@@ -32,7 +32,7 @@ export default {
   // (Code: first two lines play on the wide shot, the rest on the close-up.)
   prologue: [
     { who: 'OldBoon', text: 'Careful, Sparky! That’s my old Brownie camera. It’s even older than me. And I’m ninety-one!' },
-    { who: 'OldBoon', text: 'There are still three photos left on this roll. I never took them. Three days I could never forget.' },
+    { who: 'OldBoon', text: 'There are three photos on this roll I never got {developed|printed}. Three days I could never forget.' },
     { who: 'OldBoon', text: 'The first one is 1942. I was seven years old, hiding under a table in my {Ah Ma|grandma}’s {kopitiam|coffee shop}.' },
     { who: 'OldBoon', text: 'Go on, Sparky. Look through it. Maybe you’ll see what I saw.' },
     { who: 'Sparky', react: 'peer' },

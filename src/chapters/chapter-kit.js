@@ -61,7 +61,7 @@ export class ChapterKit {
       const ch = this.cast[line.who];
       if (ch) this.lastSpeaker = line.who;
       if (frame && ch && framedFor !== line.who) { this.frameSpeaker(line.who); framedFor = line.who; }
-      const posed = ['Sit', 'Cower'].includes(ch?.currentName);
+      const posed = ['Sit', 'Cower', 'Attention'].includes(ch?.currentName); // on parade, recruits keep facing front
       if (ch && !posed) { ch.faceTowards(this.player.root.position); if (ch.has('Talk')) ch.play('Talk'); }
       g.input.moveEnabled = false;
       await g.ui.say(line.who === 'Narrator' ? '' : this.nameOf(line.who), line.text, { style });
